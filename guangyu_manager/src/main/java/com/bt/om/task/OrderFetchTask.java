@@ -85,10 +85,7 @@ public class OrderFetchTask {
 	}
 	
 	private void orderTaobaoFetch() throws Exception {
-		try{			
-			driver.navigate().refresh();
-			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*2, sleepTimeEnd*2));
-			
+		try{						
 			driver.findElement(By.xpath("//*[@id='sitemapTimeRange']")).click();
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
 			
@@ -118,7 +115,8 @@ public class OrderFetchTask {
 				}else{
 				  tkOrderInputServiceService.insert(tkOrderInput);
 				}
-			}			
+			}
+			driver.navigate().refresh();
 		}catch(Exception e){
 			e.printStackTrace();
 			driver.navigate().refresh();
