@@ -91,12 +91,12 @@ public class OrderFetchTask {
 			
 //			String idd = driver.findElement(By.cssSelector("a.quick-item[4]")).getAttribute("id");
 			List<WebElement> element = driver.findElements(By.cssSelector("a.quick-item")); 
-			PageUtils.scrollToElementAndPick(element.get(3), driver);
+			PageUtils.scrollToElementAndClick(element.get(3), driver);
 //			element.get(3).click();
 			System.out.println(element.size());
 //			driver.findElement(By.xpath("//*[@id="brix_1453"]/div/div/ul/li[4]/a")).click();			
             
-			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*10, sleepTimeEnd*10));
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*2, sleepTimeEnd*2));
 			String id = driver.findElement(By.xpath("//*[@id='magix_vf_main']/div[1]")).getAttribute("id");
 			System.out.println(id);
 			//点击下载报告			
