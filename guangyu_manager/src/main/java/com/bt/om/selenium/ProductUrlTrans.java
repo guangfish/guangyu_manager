@@ -34,7 +34,7 @@ public class ProductUrlTrans {
 	
 	@Autowired
 	private static ITkInfoTaskService tkInfoTaskService;
-
+ 
 	// private static String key = "webdriver.chrome.driver";
 	// private static String value = ".\\conf\\tools\\chromedriver.exe";
 	// private static String key = ConfigUtil.getString("selenium.drive.name");
