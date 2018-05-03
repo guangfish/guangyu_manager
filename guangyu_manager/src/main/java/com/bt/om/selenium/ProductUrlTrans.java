@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.bt.om.common.ServiceLocator;
 import com.bt.om.entity.TkInfoTask;
@@ -22,12 +24,16 @@ import com.bt.om.util.NumberUtil;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
+@Component
 public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-	private static ITkInfoTaskService tkInfoTaskService = ServiceLocator.getService(TkInfoTaskService.class);
+//	private static ITkInfoTaskService tkInfoTaskService = ServiceLocator.getService(TkInfoTaskService.class);
+	
+	@Autowired
+	private static ITkInfoTaskService tkInfoTaskService;
 
 	// private static String key = "webdriver.chrome.driver";
 	// private static String value = ".\\conf\\tools\\chromedriver.exe";
