@@ -8,7 +8,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 
 
-<task:annotation-driven scheduler="myScheduler"/>
-<!-- <task:scheduler id="myScheduler" pool-size="6"/> -->
+<task:annotation-driven />
+<!--<task:annotation-driven scheduler="myScheduler"/>
+<task:scheduler id="myScheduler" pool-size="6"/> -->
 
 </beans>
