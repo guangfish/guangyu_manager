@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.common.ServiceLocator;
 import com.bt.om.entity.TkInfoTask;
@@ -24,7 +25,7 @@ import com.bt.om.util.NumberUtil;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
-@Component
+//@Component
 public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
@@ -32,8 +33,10 @@ public class ProductUrlTrans {
 
 //	private static ITkInfoTaskService tkInfoTaskService = ServiceLocator.getService(TkInfoTaskService.class);
 	
-	@Autowired
-	private static ITkInfoTaskService tkInfoTaskService;
+	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext().getBean(TkInfoTaskService.class);
+	
+//	@Autowired
+//	private static ITkInfoTaskService tkInfoTaskService;
  
 	// private static String key = "webdriver.chrome.driver";
 	// private static String value = ".\\conf\\tools\\chromedriver.exe";
