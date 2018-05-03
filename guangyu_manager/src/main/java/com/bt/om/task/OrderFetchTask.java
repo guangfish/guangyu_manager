@@ -84,7 +84,7 @@ public class OrderFetchTask {
 		}
 	}
 	
-	private void orderTaobaoFetch() throws Exception {
+	private void orderTaobaoFetch() throws Exception { 
 		try{						
 			driver.findElement(By.xpath("//*[@id='sitemapTimeRange']")).click();
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
