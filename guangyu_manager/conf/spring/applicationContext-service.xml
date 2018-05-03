@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxTotal" value="${redis.maxTotal}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
+
+	<!-- jedis shard pool配置 -->
+	<bean id="jedisPool" class="com.bt.om.cache.JedisPool" scope="singleton">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.pool.list}" />
+	</bean>
+
+	<!-- jedis clutcher配置 -->
+	<!--  <bean id="JedisClutcherTemplate" class="com.bt.om.cache.JedisClutcherTemplate"
+		scope="singleton">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.pool.list}" />
+	</bean> -->
+	
+	<!-- 配置权限管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroService"></property>
+	</bean>
+	
+	<!-- 配置shiro的过滤工厂类，id-shiroFilter要和web.xml中配置的一致 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/index" />
+		<!-- 用户无权限访问时访问的路径 -->
+		<property name="unauthorizedUrl" value="/noAuthority" />
+		
+		<property name="filterChainDefinitions">
+			<value>
+				/static/** = anon
+				/search* = anon
+				/order* = anon
+				/help* = anon
+				/register* = anon
+				/login* = anon
+				/doLogin* = anon
+				/autoLogin* = anon
+				/noAuthority* = anon
+				/getCode* = anon
+				/error.htm = anon
+				/index.htm = anon
+				/nofind.htm = anon
+                /accountSetup*=anon
+				/site* = anon
+				/api/** = anon
+				/throwThree*= anon
+				/throwThree/*= anon
+				<!-- /index*=roles[ADMIN]
+				/user=perms[user:query] -->
+				/oauth* = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+</beans>
