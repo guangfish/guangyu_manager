@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 import com.adtime.common.lang.StringUtil;
 import com.bt.om.entity.TkOrderInput;
+import com.bt.om.selenium.util.PageUtils;
 import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
@@ -91,7 +92,8 @@ public class OrderFetchTask {
 			
 //			String idd = driver.findElement(By.cssSelector("a.quick-item[4]")).getAttribute("id");
 			List<WebElement> element = driver.findElements(By.cssSelector("a.quick-item")); 
-			element.get(3).click();
+			PageUtils.scrollToElementAndPick(element.get(3), driver);
+//			element.get(3).click();
 			System.out.println(element.size());
 //			driver.findElement(By.xpath("//*[@id="brix_1453"]/div/div/ul/li[4]/a")).click();			
             
