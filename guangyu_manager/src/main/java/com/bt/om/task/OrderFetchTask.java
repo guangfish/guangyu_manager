@@ -73,7 +73,7 @@ public class OrderFetchTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-	@Scheduled(cron = "0 0/20 * * * ?")
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void orderFetch() {
 		logger.info("淘宝订单报表下载入库");
 		try {
@@ -96,12 +96,13 @@ public class OrderFetchTask {
 			System.out.println(element.size());
 //			driver.findElement(By.xpath("//*[@id="brix_1453"]/div/div/ul/li[4]/a")).click();			
             
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*10, sleepTimeEnd*10));
 			String id = driver.findElement(By.xpath("//*[@id='magix_vf_main']/div[1]")).getAttribute("id");
 			System.out.println(id);
 			//点击下载报告			
 			driver.findElement(By.xpath("//*[@id='"+id+"']/div[2]/div[1]/div[1]/a")).click();
 			//点击下载报告后等待时间
-			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*2, sleepTimeEnd*2));
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*5, sleepTimeEnd*5));
 			
 			//开始读取分析下载的报告
 			String filePath=ConfigUtil.getString("report.file.path")+"TaokeDetail-"+DateUtil.dateFormate(new Date(),DateUtil.CHINESE_PATTERN)+".xls";
