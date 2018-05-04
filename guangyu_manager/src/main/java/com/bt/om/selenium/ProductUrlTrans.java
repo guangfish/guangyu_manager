@@ -30,7 +30,7 @@ public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+//  这样会导致spring配置中bean再次实例化
 //	private static ITkInfoTaskService tkInfoTaskService = ServiceLocator.getService(TkInfoTaskService.class);
 	
 	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext().getBean(TkInfoTaskService.class);

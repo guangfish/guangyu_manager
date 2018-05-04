@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -41,6 +43,9 @@ import com.bt.om.util.NumberUtil;
 @Component
 public class OrderFetchTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchTask.class);
+	
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	
 	@Autowired
 	private ITkOrderInputService tkOrderInputServiceService;
 	
@@ -63,6 +68,7 @@ public class OrderFetchTask {
 	private static int sleepTimeEnd = 2000;
 
 	static {
+		schedule();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			driver = new ChromeDriver();
@@ -246,6 +252,21 @@ public class OrderFetchTask {
         }  
         return tkOrderInputList;
     }
+	
+	private static void schedule() {
+		// 延迟3-5分钟，间隔3-5分钟执行
+		scheduler.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					logger.info("OrderFetchTask refresh...");
+					driver.navigate().refresh();
+				} catch (Exception e) {
+					logger.error("OrderFetchTask refresh error:[{}]", e);
+				}
+			}
+		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
+	}
 
 	public static void main(String[] args) throws Exception {
 		String[] cfgs = new String[] { "classpath:spring/applicationContext.xml" };
