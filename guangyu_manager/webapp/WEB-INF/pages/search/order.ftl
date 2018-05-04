@@ -143,7 +143,7 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result=="0"){
-								    alert("提交成功");
+								    alert("提交成功，请在收货后，在淘宝/京东'确认收货'后方可提现");
 								    $("#orderid").val("");
 								    $("#mobile").val("");
 								    //暂时屏蔽掉

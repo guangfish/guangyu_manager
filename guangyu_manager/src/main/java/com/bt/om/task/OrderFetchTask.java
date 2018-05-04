@@ -47,7 +47,7 @@ public class OrderFetchTask {
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	@Autowired
-	private ITkOrderInputService tkOrderInputServiceService;
+	private ITkOrderInputService tkOrderInputService;
 	
 	private static String key = "";
 	private static String value = "";
@@ -80,6 +80,7 @@ public class OrderFetchTask {
 	}
 
 	@Scheduled(cron = "0 0 0/1 * * ?")
+//	@Scheduled(cron = "0 0/2 * * * ?")
 	public void orderFetch() {
 		logger.info("淘宝订单报表下载入库");
 		try {
@@ -110,20 +111,27 @@ public class OrderFetchTask {
 			//点击下载报告后等待时间
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*5, sleepTimeEnd*5));
 			
-			//开始读取分析下载的报告
-			String filePath=ConfigUtil.getString("report.file.path")+"TaokeDetail-"+DateUtil.dateFormate(new Date(),DateUtil.CHINESE_PATTERN)+".xls";
+			
+			//开始读取分析下载的报告			
+			String filePath=ConfigUtil.getString("report.file.path")+"TaokeDetail-"+DateUtil.dateFormate(new Date(),DateUtil.CHINESE_PATTERN)+".xls";						
 			List<TkOrderInput> tkOrderInputList = readTaobaoReport(filePath);
+			//先清空表中数据，然后再插入数据
+			tkOrderInputService.truncateTkOrderInput();
 			for(TkOrderInput tkOrderInput:tkOrderInputList){
-				List<TkOrderInput> tkOrderInputExist = tkOrderInputServiceService.selectByOrderId(tkOrderInput.getOrderId());
-				if(tkOrderInputExist!=null && tkOrderInputExist.size()>0){
-					TkOrderInput tkOrderInput1 = tkOrderInputExist.get(0);
-					if(!(tkOrderInput1.getOrderStatus()).equals(tkOrderInput.getOrderStatus())){
-						tkOrderInputServiceService.updateByOrderId(tkOrderInput);
-					}					
-				}else{
-				  tkOrderInputServiceService.insert(tkOrderInput);
-				}
+				tkOrderInputService.insert(tkOrderInput);
 			}
+//			for(TkOrderInput tkOrderInput:tkOrderInputList){
+//				List<TkOrderInput> tkOrderInputExist = tkOrderInputService.selectByOrderId(tkOrderInput.getOrderId());
+//				if(tkOrderInputExist!=null && tkOrderInputExist.size()>0){
+//					TkOrderInput tkOrderInput1 = tkOrderInputExist.get(0);
+//					if(!(tkOrderInput1.getOrderStatus()).equals(tkOrderInput.getOrderStatus())){
+//						tkOrderInputService.updateByOrderId(tkOrderInput);
+//					}					
+//				}else{
+//					tkOrderInputService.insert(tkOrderInput);
+//				}
+//			}
+			
 			driver.navigate().refresh();
 		}catch(Exception e){
 			e.printStackTrace();

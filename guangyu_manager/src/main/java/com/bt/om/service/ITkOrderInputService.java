@@ -11,4 +11,6 @@ public interface ITkOrderInputService {
     public void insert(TkOrderInput tkOrderInput);
     
     public void updateByOrderId(TkOrderInput record);
+    
+    public void truncateTkOrderInput();
 }

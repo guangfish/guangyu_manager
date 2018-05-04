@@ -44,4 +44,6 @@ public interface TkOrderInputMapper {
 	List<TkOrderInput> selectByOrderId(String orderId);
 	
 	void updateByOrderId(TkOrderInput record);
+	
+	void truncateTkOrderInput();
 }

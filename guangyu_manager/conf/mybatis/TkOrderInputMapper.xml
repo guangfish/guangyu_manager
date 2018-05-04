@@ -490,4 +490,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
+  <update id="truncateTkOrderInput">
+        truncate table tk_order_input
+    </update>
 </mapper>

@@ -28,4 +28,9 @@ public class TkOrderInputService implements ITkOrderInputService {
 	public void updateByOrderId(TkOrderInput record) {
 		tkOrderInputMapper.updateByOrderId(record);
 	}
+	
+	@Override
+	public void truncateTkOrderInput() {
+		tkOrderInputMapper.truncateTkOrderInput();
+	}
 }
