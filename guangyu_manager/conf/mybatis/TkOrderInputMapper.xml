@@ -492,5 +492,5 @@
   </update>
   <update id="truncateTkOrderInput">
         truncate table tk_order_input
-    </update>
+  </update>
 </mapper>
