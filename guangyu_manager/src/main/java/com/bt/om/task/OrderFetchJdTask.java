@@ -75,7 +75,7 @@ public class OrderFetchJdTask {
 
 //	@Scheduled(cron = "0 0 */1 * * ?")
 	@Scheduled(cron = "0 0/2 * * * ?")
-	public void orderFetch() {
+	public void orderJdFetchTask() {
 		logger.info("京东订单报表下载入库");
 		try {
 			orderJdFetch();
@@ -219,6 +219,6 @@ public class OrderFetchJdTask {
 	public static void main(String[] args) throws Exception {
 		String[] cfgs = new String[] { "classpath:spring/applicationContext.xml" };
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(cfgs);
-		((OrderFetchJdTask) ctx.getBean("orderFetchJdTask")).orderFetch();
+		((OrderFetchJdTask) ctx.getBean("orderFetchJdTask")).orderJdFetchTask();
 	}
 }

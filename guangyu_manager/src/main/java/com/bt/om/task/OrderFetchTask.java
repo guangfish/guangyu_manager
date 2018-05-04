@@ -81,7 +81,7 @@ public class OrderFetchTask {
 
 //	@Scheduled(cron = "0 0 0/1 * * ?")
 	@Scheduled(cron = "0 0/4 * * * ?")
-	public void orderFetch() {
+	public void orderFetchTask() {
 		logger.info("淘宝订单报表下载入库");
 		try {
 			orderTaobaoFetch();
@@ -93,7 +93,8 @@ public class OrderFetchTask {
 	
 	private void orderTaobaoFetch() throws Exception { 
 		try{						
-			driver.findElement(By.xpath("//*[@id='sitemapTimeRange']")).click();
+			WebElement element0 = driver.findElement(By.xpath("//*[@id='sitemapTimeRange']"));
+			PageUtils.scrollToElementAndClick(element0, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
 			
 //			String idd = driver.findElement(By.cssSelector("a.quick-item[4]")).getAttribute("id");
@@ -107,7 +108,8 @@ public class OrderFetchTask {
 			String id = driver.findElement(By.xpath("//*[@id='magix_vf_main']/div[1]")).getAttribute("id");
 			System.out.println(id);
 			//点击下载报告			
-			driver.findElement(By.xpath("//*[@id='"+id+"']/div[2]/div[1]/div[1]/a")).click();
+			WebElement element1 = driver.findElement(By.xpath("//*[@id='"+id+"']/div[2]/div[1]/div[1]/a"));
+			PageUtils.scrollToElementAndClick(element1, driver);
 			//点击下载报告后等待时间
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*5, sleepTimeEnd*5));
 			
@@ -279,6 +281,6 @@ public class OrderFetchTask {
 	public static void main(String[] args) throws Exception {
 		String[] cfgs = new String[] { "classpath:spring/applicationContext.xml" };
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(cfgs);
-		((OrderFetchTask) ctx.getBean("orderFetchTask")).orderFetch();
+		((OrderFetchTask) ctx.getBean("orderFetchTask")).orderFetchTask();
 	}
 }
