@@ -38,7 +38,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 京东订单报表下载入库
  */
-//@Component
+@Component
 public class OrderFetchJdTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchJdTask.class);
 	@Autowired
@@ -73,8 +73,8 @@ public class OrderFetchJdTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-//	@Scheduled(cron = "0 0 */1 * * ?")
-	@Scheduled(cron = "0 0/2 * * * ?")
+	@Scheduled(cron = "0 0 */1 * * ?")
+//	@Scheduled(cron = "0 0/2 * * * ?")
 	public void orderJdFetchTask() {
 		logger.info("京东订单报表下载入库");
 		try {
