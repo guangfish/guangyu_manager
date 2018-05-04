@@ -80,7 +80,7 @@ public class OrderFetchTask {
 	}
 
 //	@Scheduled(cron = "0 0 0/1 * * ?")
-	@Scheduled(cron = "0 0/4 * * * ?")
+	@Scheduled(cron = "0 0/2 * * * ?")
 	public void orderFetchTask() {
 		logger.info("淘宝订单报表下载入库");
 		try {
@@ -93,6 +93,9 @@ public class OrderFetchTask {
 	
 	private void orderTaobaoFetch() throws Exception { 
 		try{						
+			driver.navigate().refresh();
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
+			
 			WebElement element0 = driver.findElement(By.xpath("//*[@id='sitemapTimeRange']"));
 			PageUtils.scrollToElementAndClick(element0, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
