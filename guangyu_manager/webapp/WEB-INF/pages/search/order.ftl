@@ -90,12 +90,13 @@
 	      var mobile = $('#mobile').val();
 	      var vcode = $('#vcode').val();
 	      if (!orderid) {
-	        alert("请输入18位订单号！");
+	        alert("请粘贴或输入订单号！");
 	        return;
 	      }else{
-	        if(orderid.toString().length!=18){
+	        if(orderid.toString().length==18 || orderid.toString().length==11){			  
+			}else{ 
 			  alert("订单号位数不正确！");
-			  return;
+			  return; 
 			}
 	      }
 	      if(!mobile){
