@@ -142,6 +142,12 @@ public class ApiController extends BasicController {
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String ua=request.getHeader("User-Agent");
+		System.out.println(ua);
+		String ifWeixinBrower="no";
+		if((ua.toLowerCase()).contains("micromessenger")){
+			ifWeixinBrower="yes";
+		}
 		ResultVo<ProductInfoVo> result = new ResultVo<>();
 		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
 		result.setResultDes("商品信息获取成功");
@@ -267,6 +273,10 @@ public class ApiController extends BasicController {
 				productInfo.setCouponLink(couponLink);
 				String sellNum = taskBean.getMap().get("sellNum");
 				productInfo.setMonthSales(Integer.parseInt(sellNum));
+				String tkl=taskBean.getMap().get("tkl");
+				productInfo.setTkl(tkl);
+				String tklquan=taskBean.getMap().get("tklquan");
+				productInfo.setTklquan(tklquan);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
 				productInfoService.insertProductInfo(productInfo);
@@ -276,11 +286,20 @@ public class ApiController extends BasicController {
 				sb.append(
 						"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
 				sb.append(productImgUrl);
-				sb.append("' height='220' width='220' onclick=drump('");
-				if (StringUtils.isNotEmpty(couponLink)) {
-					sb.append(couponLink);
-				} else {
-					sb.append(tkLink);
+				if ("no".equals(ifWeixinBrower)) {
+					sb.append("' height='220' width='220' onclick=drump('");
+					if (StringUtils.isNotEmpty(couponLink)) {
+						sb.append(couponLink);
+					} else {
+						sb.append(tkLink);
+					}
+				}else{
+					sb.append("' height='220' width='220' onclick=jsCopy('");
+					if (StringUtils.isNotEmpty(tklquan)) {
+						sb.append("tklquan");
+					} else {
+						sb.append("tkl");
+					}
 				}
 				sb.append("')></div><div>");
 				sb.append(productName);
@@ -300,7 +319,7 @@ public class ApiController extends BasicController {
 //				sb.append(((float) (Math.round(incomeRate * 1 * 100)) / 100));
 				sb.append("%)");
 				sb.append(
-						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><a href='javascript;' onclick=drump('");
+						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'><a href='javascript;' onclick=drump('");
 				sb.append(tkLink);
 				sb.append("')>推广链接</a>");
 				if (StringUtils.isNotEmpty(couponLink)) {
@@ -308,7 +327,7 @@ public class ApiController extends BasicController {
 					sb.append(couponLink);
 					sb.append("')>优惠券</a>");
 				}
-				sb.append("</div><div style='color:red;'>点击图片即可跳回淘宝或京东购物。</div></div></div>");
+				sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
 				msg = sb.toString();
 			} else {
 				return model;
@@ -319,12 +338,22 @@ public class ApiController extends BasicController {
 			sb.append(
 					"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
 			sb.append(productInfo.getProductImgUrl());
-			sb.append("' height='220' width='220' onclick=drump('");
-			if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-				sb.append(productInfo.getCouponLink());
-			} else {
-				sb.append(productInfo.getTkLink());
-			}
+			
+			if ("no".equals(ifWeixinBrower)) {
+				sb.append("' height='220' width='220' onclick=drump('");
+				if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
+					sb.append(productInfo.getCouponLink());
+				} else {
+					sb.append(productInfo.getTkLink());
+				}
+			}else{
+				sb.append("' height='220' width='220' onclick=jsCopy('");
+				if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
+					sb.append("tklquan");
+				} else {
+					sb.append("tkl");
+				}
+			}			
 			sb.append("')></div><div>");
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
@@ -346,7 +375,7 @@ public class ApiController extends BasicController {
 //			sb.append(((float) (Math.round(productInfo.getIncomeRate() * 1 * 100)) / 100));
 			sb.append("%)");
 			sb.append(
-					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><a href='javascript;' onclick=drump('");
+					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'><a href='javascript;' onclick=drump('");
 			sb.append(productInfo.getTkLink());
 			sb.append("')>推广链接</a>");
 			if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
@@ -354,7 +383,7 @@ public class ApiController extends BasicController {
 				sb.append(productInfo.getCouponLink());
 				sb.append("')>优惠券</a>");
 			}
-			sb.append("</div><div style='color:red;'>点击图片即可跳回淘宝或京东购物。</div></div></div>");
+			sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
 			msg = sb.toString();
 		}
         //查询成功
@@ -542,6 +571,8 @@ public class ApiController extends BasicController {
 				map.put("per", tkInfoTask.getRate() + "%");
 				map.put("sellNum", tkInfoTask.getSales() + "");
 				map.put("goodUrl1", tkInfoTask.getTkurl());
+				map.put("tkl", tkInfoTask.getTcode());
+				map.put("tklquan", tkInfoTask.getQuanCode());
 
 				StringBuffer sb = new StringBuffer();
 				sb.append(

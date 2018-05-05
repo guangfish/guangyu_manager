@@ -75,15 +75,16 @@
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
-		  if(isContains(link,"taobao.com")){
-			if(isWeiXin()){
-			  alert("无法用微信浏览器打开淘宝商品页，建议您在手机浏览器中打开本网址，并保存成书签。操作步骤：按右上角'...' 苹果手机选择'在Safari中打开'，安卓手机选择'在浏览器打开'；也可以选择'复制链接'，在喜欢的浏览器打开；");
-			}else{
-			  window.open(link);
-			}
-		  }else{
-		    window.open(link);
-		  }		
+			window.open(link);
+		  //if(isContains(link,"taobao.com")){
+			//if(isWeiXin()){
+			  //alert("无法用微信浏览器打开淘宝商品页，建议您在手机浏览器中打开本网址，并保存成书签。操作步骤：按右上角'...' 苹果手机选择'在Safari中打开'，安卓手机选择'在浏览器打开'；也可以选择'复制链接'，在喜欢的浏览器打开；");
+			//}else{
+			  //window.open(link);
+			//}
+		  //}else{
+		    //window.open(link);
+		  //}		
 		}
 		
 		function isContains(str, substr) {
@@ -100,6 +101,15 @@
           }else{
             return false;
           }
+        }
+        
+        function jsCopy(tkl){   
+          var e=document.getElementById(tkl);//对象是contents   
+          e.select(); //选择对象   
+          tag=document.execCommand("Copy"); //执行浏览器复制命令  
+          if(tag){  
+            alert('淘口令复制成功，请再次打开手机淘宝完成购买');  
+          }  
         }
 		
 		function vcodevalid() {

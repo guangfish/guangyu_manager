@@ -87,8 +87,8 @@ public class OrderFetchJdTask {
 
 	private void orderJdFetch() throws Exception {
 		try {
-			driver.navigate().refresh();
-			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
+//			driver.navigate().refresh();
+//			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
 			
 			try {
 				WebElement element0 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div[2]/a"));
