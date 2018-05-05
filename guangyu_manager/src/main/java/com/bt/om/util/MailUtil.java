@@ -29,6 +29,10 @@ public class MailUtil {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.timeout", "25000");
 		props.put("mail.smtp.starttls.enable", "true");
+		//阿里云不开放25端口，所以这里改成465端口 ，不配置默认用25端口
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.port", "465");
+		
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	}
 
