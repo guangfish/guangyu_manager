@@ -1,6 +1,7 @@
 package com.bt.om.util;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -72,5 +73,17 @@ public class MailUtil {
 			sb.append(list.get(i)).append(separator);
 		}
 		return sb.toString().substring(0, sb.toString().length() - 1);
+	}
+	
+	public static void main(String []args){
+		if ("on".equals(ConfigUtil.getString("monitor.email.send.status"))) {
+			List<String> tos = new ArrayList<>();
+			String mailToStr = ConfigUtil.getString("monitor.email.to");
+			String[] mailTos = mailToStr.split(";");
+			for (int i = 0; i < mailTos.length; i++) {
+				tos.add(mailTos[i]);
+			}
+			MailUtil.sendEmail("逛鱼返利", "用户发起提现申请，请及时处理", tos);
+		}
 	}
 }

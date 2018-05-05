@@ -225,6 +225,7 @@ public class OrderDrawController extends BasicController {
 					for (int i = 0; i < mailTos.length; i++) {
 						tos.add(mailTos[i]);
 					}
+					logger.info("开始发送邮件通知");
 					MailUtil.sendEmail("逛鱼返利", "用户发起提现申请，请及时处理", tos);
 				}
 		    }

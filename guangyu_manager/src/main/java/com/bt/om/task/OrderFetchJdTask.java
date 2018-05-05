@@ -79,8 +79,8 @@ public class OrderFetchJdTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-	@Scheduled(cron = "0 0 */1 * * ?")
-//	@Scheduled(cron = "0 0/2 * * * ?")
+//	@Scheduled(cron = "0 0 */1 * * ?")
+	@Scheduled(cron = "0 0/20 * * * ?")
 	public void orderJdFetchTask() {
 		logger.info("京东订单报表下载入库");
 		try {
@@ -96,14 +96,14 @@ public class OrderFetchJdTask {
 //			driver.navigate().refresh();
 //			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
 			
-			try {
-				WebElement element0 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div[2]/a"));
-				PageUtils.scrollToElementAndClick(element0, driver);
-				Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
-			} catch (Exception e) {
-//				e.printStackTrace();
-				System.out.println("京东右下角浮动窗口已关闭");
-			}
+//			try {
+//				WebElement element0 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div[2]/a"));
+//				PageUtils.scrollToElementAndClick(element0, driver);
+//				Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+//			} catch (Exception e) {
+////				e.printStackTrace();
+//				System.out.println("京东右下角浮动窗口已关闭");
+//			}
 
 			// 点击快捷日期
 			WebElement element = driver.findElement(By.xpath("//*[@id='inShortcutDate']"));
