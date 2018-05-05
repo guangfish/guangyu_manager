@@ -294,11 +294,20 @@ public class ApiController extends BasicController {
 						sb.append(tkLink);
 					}
 				}else{
-					sb.append("' height='220' width='220' onclick=jsCopy('");
-					if (StringUtils.isNotEmpty(tklquan)) {
-						sb.append("tklquan");
-					} else {
-						sb.append("tkl");
+					if("taobao".equals(platform)){
+						sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
+						if (StringUtils.isNotEmpty(tklquan)) {
+							sb.append("tklquan");
+						} else {
+							sb.append("tkl");
+						}
+					}else{
+						sb.append("' height='220' width='220' onclick=drump('");
+						if (StringUtils.isNotEmpty(couponLink)) {
+							sb.append(couponLink);
+						} else {
+							sb.append(tkLink);
+						}
 					}
 				}
 				sb.append("')></div><div>");
@@ -319,14 +328,8 @@ public class ApiController extends BasicController {
 //				sb.append(((float) (Math.round(incomeRate * 1 * 100)) / 100));
 				sb.append("%)");
 				sb.append(
-						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'><a href='javascript;' onclick=drump('");
-				sb.append(tkLink);
-				sb.append("')>推广链接</a>");
-				if (StringUtils.isNotEmpty(couponLink)) {
-					sb.append(" | <a href='javascript;' onclick=drump('");
-					sb.append(couponLink);
-					sb.append("')>优惠券</a>");
-				}
+						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'>");
+				
 				sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
 				msg = sb.toString();
 			} else {
@@ -347,12 +350,21 @@ public class ApiController extends BasicController {
 					sb.append(productInfo.getTkLink());
 				}
 			}else{
-				sb.append("' height='220' width='220' onclick=jsCopy('");
-				if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
-					sb.append("tklquan");
-				} else {
-					sb.append("tkl");
-				}
+				if("taobao".equals(platform)){
+					sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
+					if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
+						sb.append("tklquan");
+					} else {
+						sb.append("tkl");
+					}
+				}else{
+					sb.append("' height='220' width='220' onclick=drump('");
+					if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
+						sb.append(productInfo.getCouponLink());
+					} else {
+						sb.append(productInfo.getTkLink());
+					}
+				}				
 			}			
 			sb.append("')></div><div>");
 			sb.append(productInfo.getProductName());
@@ -375,14 +387,8 @@ public class ApiController extends BasicController {
 //			sb.append(((float) (Math.round(productInfo.getIncomeRate() * 1 * 100)) / 100));
 			sb.append("%)");
 			sb.append(
-					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'><a href='javascript;' onclick=drump('");
-			sb.append(productInfo.getTkLink());
-			sb.append("')>推广链接</a>");
-			if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-				sb.append(" | <a href='javascript; onclick=drump('");
-				sb.append(productInfo.getCouponLink());
-				sb.append("')>优惠券</a>");
-			}
+					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
+			
 			sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
 			msg = sb.toString();
 		}

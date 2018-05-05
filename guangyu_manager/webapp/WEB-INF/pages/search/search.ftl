@@ -72,6 +72,7 @@
 
 	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
 	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
+	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
@@ -103,14 +104,18 @@
           }
         }
         
-        function jsCopy(tkl){   
-          var e=document.getElementById(tkl);//对象是contents   
-          e.select(); //选择对象   
-          tag=document.execCommand("Copy"); //执行浏览器复制命令  
-          if(tag){  
-            alert('淘口令复制成功，请再次打开手机淘宝完成购买');  
-          }  
-        }
+        function jsCopy(tkl){
+		  var value = $('#'+tkl).val();
+		  $('#copy').attr('data-clipboard-text', value);
+		  var clipboard = new Clipboard('#copy');
+          clipboard.on('success', function (e) {
+            alert('复制成功，打开手机淘宝会自动弹出口令');
+            $('#copy').removeAttr('data-clipboard-text');
+          });
+          clipboard.on('error', function (e) {
+            alert('复制失败');
+          });
+	     }
 		
 		function vcodevalid() {
 			var vcode = $('#vcode').val();
