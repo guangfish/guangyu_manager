@@ -310,7 +310,7 @@ public class ApiController extends BasicController {
 						}
 					}
 				}
-				sb.append("')></div><div>");
+				sb.append("')></div><div style='color:red;'>点击图片回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
 				sb.append(productName);
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
@@ -330,7 +330,7 @@ public class ApiController extends BasicController {
 				sb.append(
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'>");
 				
-				sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
+				sb.append("</div></div></div>");
 				msg = sb.toString();
 			} else {
 				return model;
@@ -366,7 +366,7 @@ public class ApiController extends BasicController {
 					}
 				}				
 			}			
-			sb.append("')></div><div>");
+			sb.append("')></div><div style='color:red;'>点击图片回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 			sb.append(productInfo.getShopName());
@@ -389,7 +389,7 @@ public class ApiController extends BasicController {
 			sb.append(
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
 			
-			sb.append("</div><div style='color:red;'>点击图片回淘宝或京东购物。</div></div></div>");
+			sb.append("</div></div></div>");
 			msg = sb.toString();
 		}
         //查询成功

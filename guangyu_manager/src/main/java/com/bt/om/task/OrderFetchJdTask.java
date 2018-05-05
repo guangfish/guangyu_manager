@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -41,6 +43,9 @@ import com.bt.om.util.NumberUtil;
 @Component
 public class OrderFetchJdTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchJdTask.class);
+	
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	
 	@Autowired
 	private ITkOrderInputJdService tkOrderInputJdService;
 
@@ -63,6 +68,7 @@ public class OrderFetchJdTask {
 	private static int sleepTimeEnd = 2000;
 
 	static {
+		schedule();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			driver = new ChromeDriver();
@@ -81,7 +87,7 @@ public class OrderFetchJdTask {
 			orderJdFetch();
 		} catch (Exception e) {
 			e.printStackTrace();
-			driver.navigate().refresh();
+//			driver.navigate().refresh();
 		}
 	}
 
@@ -113,23 +119,26 @@ public class OrderFetchJdTask {
 			WebElement element2 = driver.findElement(By.xpath("//*[@id='inOrderExportBtn']"));
 			PageUtils.scrollToElementAndClick(element2, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
+			
+			Alert alt = driver.switchTo().alert();
+	        alt.accept();
 
-			WebDriverWait wait = new WebDriverWait(driver, 10);
-			try {
-				Alert alert = wait.until(new ExpectedCondition<Alert>() {
-					@Override
-					public Alert apply(WebDriver driver) {
-						try {
-							return driver.switchTo().alert();
-						} catch (NoAlertPresentException e) {
-							return null;
-						}
-					}
-				});
-				alert.accept();
-			} catch (NullPointerException e) {
-				System.out.println("ff2 nullpoint");
-			}
+//			WebDriverWait wait = new WebDriverWait(driver, 10);
+//			try {
+//				Alert alert = wait.until(new ExpectedCondition<Alert>() {
+//					@Override
+//					public Alert apply(WebDriver driver) {
+//						try {
+//							return driver.switchTo().alert();
+//						} catch (NoAlertPresentException e) {
+//							return null;
+//						}
+//					}
+//				});
+//				alert.accept();
+//			} catch (NullPointerException e) {
+//				System.out.println("ff2 nullpoint");
+//			}
 
 			// 开始读取分析下载的报告
 			String filePath = ConfigUtil.getString("report.file.path") + "引入订单明细报表"
@@ -214,6 +223,21 @@ public class OrderFetchJdTask {
 			}
 		}
 		return tkOrderInputJdList;
+	}
+	
+	private static void schedule() {
+		// 延迟3-5分钟，间隔3-5分钟执行
+		scheduler.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					logger.info("OrderFetchJdTask refresh...");
+					driver.navigate().refresh();
+				} catch (Exception e) {
+					logger.error("OrderFetchJdTask refresh error:[{}]", e);
+				}
+			}
+		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
 	}
 
 	public static void main(String[] args) throws Exception {

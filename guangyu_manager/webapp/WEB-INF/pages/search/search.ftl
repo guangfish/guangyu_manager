@@ -60,12 +60,13 @@
 		<div id="result" align="center">
 		  <a href="/api/invitation.html"><img id="search" width="90%" height="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
 		  <br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font>
-		  <br/><font style="font-size: 0.6rem;color: red;">往下拉查看保存书签、商品链接复制</font>
-		  <br/><font style="font-size: 0.6rem;color: red;">保存书签：请在手机浏览器打开本页面，并保存成书签</font>
-		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">
+		  <!--<br/><font style="font-size: 0.6rem;color: red;">往下拉查看商品链接复制、保存书签</font>-->		
+		  <!--<br/><img width="50%" src="http://help.guangfish.com/imgs/logo300x300.jpg"> --> 
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-taobao-jd.png">
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/andorid-taobao.png">
-		  <br/><img width="90%" src="http://help.guangfish.com/imgs/wx.png">
+		  <br/><font style="font-size: 0.6rem;color: red;">保存书签：请在手机浏览器打开本页面，并保存成书签</font>
+		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">
+		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
 		</div>	
 
 	</div>
@@ -109,7 +110,7 @@
 		  $('#copy').attr('data-clipboard-text', value);
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
-            alert('复制成功，打开手机淘宝会自动弹出口令');
+            alert('淘口令复制成功，去打开手机淘宝完成商品购买');
             $('#copy').removeAttr('data-clipboard-text');
           });
           clipboard.on('error', function (e) {
