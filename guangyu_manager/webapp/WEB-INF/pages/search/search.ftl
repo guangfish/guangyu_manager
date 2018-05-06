@@ -61,19 +61,19 @@
 		  <a href="/api/invitation.html"><img id="search" width="90%" height="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
 		  <br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font>
 		  <!--<br/><font style="font-size: 0.6rem;color: red;">往下拉查看商品链接复制、保存书签</font>-->		
-		  <!--<br/><img width="50%" src="http://help.guangfish.com/imgs/logo300x300.jpg"> --> 
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-taobao-jd.png">
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/andorid-taobao.png">
 		  <br/><font style="font-size: 0.6rem;color: red;">保存书签：请在手机浏览器打开本页面，并保存成书签</font>
-		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">
+		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">	  
 		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
 		</div>	
 
 	</div>
-
+	
 	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
 	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
+
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
@@ -242,6 +242,5 @@
 				alert("请输入商品地址后再查询");
 			}
 		}
-		
 	</script>
 <@model.webendsearch />

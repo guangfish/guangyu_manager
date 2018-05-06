@@ -64,7 +64,7 @@ public class UserOrderCheckJdTask {
 						commission3 = commission3 + ((double) (Math.round(
 								tkOrderInputJd.getActualCommission() * ConfigUtil.getFloat("commission.rate", 1) * 100))
 								/ 100);
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())) {
+						if ("已结算".equals(tkOrderInputJd.getOrderStatus())||"已完成".equals(tkOrderInputJd.getOrderStatus())) {
 							status1 = 2;
 						} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
 							status1 = 3;
@@ -72,7 +72,7 @@ public class UserOrderCheckJdTask {
 					}
 					if ("已付款".equals(orderStatus)) {
 						orderStatus = "订单付款";
-					} else if ("已结算".equals(orderStatus)) {
+					} else if ("已结算".equals(orderStatus)||"已完成".equals(orderStatus)) {
 						orderStatus = "订单结算";
 					} else if ("无效".equals(orderStatus)) {
 						orderStatus = "订单失效";

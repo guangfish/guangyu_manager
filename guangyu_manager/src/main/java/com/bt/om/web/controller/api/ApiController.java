@@ -310,7 +310,15 @@ public class ApiController extends BasicController {
 						}
 					}
 				}
-				sb.append("')></div><div style='color:red;'>点击图片回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+				if("yes".equals(ifWeixinBrower)){
+					if("taobao".equals(platform)){
+						sb.append("')></div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
+					}else{
+						sb.append("')></div><div style='color:red;'>点击图片返回京东购物。</div><div>");
+					}
+				}else{
+				  sb.append("')></div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+				}
 				sb.append(productName);
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
@@ -365,8 +373,16 @@ public class ApiController extends BasicController {
 						sb.append(productInfo.getTkLink());
 					}
 				}				
-			}			
-			sb.append("')></div><div style='color:red;'>点击图片回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+			}
+			if("yes".equals(ifWeixinBrower)){
+				if("taobao".equals(platform)){
+					sb.append("')></div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
+				}else{
+					sb.append("')></div><div style='color:red;'>点击图片返回京东购物。</div><div>");
+				}
+			}else{
+			  sb.append("')></div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+			}
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 			sb.append(productInfo.getShopName());

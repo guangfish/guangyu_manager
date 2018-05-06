@@ -80,7 +80,7 @@ public class OrderFetchJdTask {
 	}
 
 //	@Scheduled(cron = "0 0 */1 * * ?")
-	@Scheduled(cron = "0 0/20 * * * ?")
+	@Scheduled(cron = "0 0/20 7-23 * * ?")
 	public void orderJdFetchTask() {
 		logger.info("京东订单报表下载入库");
 		try {

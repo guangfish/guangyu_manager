@@ -79,7 +79,7 @@ public class OrderFetchTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-	@Scheduled(cron = "0 0 0/1 * * ?")
+	@Scheduled(cron = "0 0 7-23 * * ?")
 //	@Scheduled(cron = "0 0/2 * * * ?")
 	public void orderFetchTask() {
 		logger.info("淘宝订单报表下载入库");
