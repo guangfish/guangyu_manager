@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0" metadata-complete="true">
 
-	<display-name>cpc-manager</display-name>
+	<display-name>guangyu-manager</display-name>
 
 	<!-- spring配置文件 -->
 	<context-param>
@@ -12,6 +12,12 @@
 		<param-value>
 	    	classpath:/spring/applicationContext.xml
 	    </param-value>
+	</context-param>
+	
+	<!-- 解决jetty请求的操作无法在使用用户映射区域打开的问题 -->
+	<context-param>
+		<param-name>org.eclipse.jetty.servlet.Default.useFileMappedBuffer</param-name>
+		<param-value>false</param-value>
 	</context-param>
 
 	<!-- spring监听器 -->
