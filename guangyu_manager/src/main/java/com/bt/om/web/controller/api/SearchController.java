@@ -33,6 +33,11 @@ public class SearchController extends BasicController {
 	public String search(Model model, HttpServletRequest request) {
 		return "search/search";
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search1(Model model, HttpServletRequest request) {
+		return "search/search";
+	}
 
 	// 图形验证码验证
 	@RequestMapping(value = "/api/vcodevaild", method = RequestMethod.POST)

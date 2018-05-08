@@ -2,7 +2,7 @@
 	<div class="page">
 		<div class="content">
 			<form id="formdata">
-				<div class="page-login" style="margin-top: 1rem">
+				<div class="page-login" style="margin-top: 1rem">				    
 					<div class="list-block inset text-center">
 						<ul>
 							<li>
@@ -58,8 +58,10 @@
 		</div> 
 
 		<div id="result" align="center">
-		  <a href="/api/invitation.html"><img id="search" width="90%" height="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
-		  <br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font>
+		  <a href="/api/invitation.html"><img id="search" width="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
+		  <!--<br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font> -->
+		  <br/><font style="color: red;font-size: 0.7rem;">复制商品链接地址请看下面图示</font>
+		  <br/><font style="color: red;font-size: 1.2rem;">▽</font>
 		  <!--<br/><font style="font-size: 0.6rem;color: red;">往下拉查看商品链接复制、保存书签</font>-->		
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-taobao-jd.png">
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/andorid-taobao.png">
