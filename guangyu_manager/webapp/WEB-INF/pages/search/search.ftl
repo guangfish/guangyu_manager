@@ -185,7 +185,7 @@
 			//加载中						
 			$('#result')
 					.html(
-							"<div id='waiting'><img src='http://help.guangfish.com/imgs/timg.gif'><br/><br/><img width='80%' src='http://help.guangfish.com/imgs/search0"+Math.ceil(Math.random()*13)+".gif'></div>");			
+							"<div id='waiting'><img src='http://help.guangfish.com/imgs/timg.gif'><br/><br/><img width='80%' src='http://help.guangfish.com/imgs/search"+Math.ceil(Math.random()*13)+".gif'></div>");
 			
 			if (producturl) {
 				$
