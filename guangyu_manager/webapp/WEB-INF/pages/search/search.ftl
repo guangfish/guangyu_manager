@@ -10,7 +10,7 @@
 									<div class="item-inner">
 										<div class="item-input">
 											<input type="text" class="input_enter"
-												placeholder="请粘贴从淘宝或京东复制的商品地址" name="product_url">											
+												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">											
 										</div>										
 									</div>
 								</div>
@@ -61,7 +61,7 @@
 		  <a href="/api/invitation.html"><img id="search" width="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
 		  <!--<br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font> -->
 		  <br/><font style="color: red;font-size: 0.7rem;">复制商品链接地址请看下面图示</font>
-		  <br/><font style="color: red;font-size: 1.2rem;">▽</font>
+		  <br/><font style="color: red;font-size: 1.0rem;">▽</font>
 		  <!--<br/><font style="font-size: 0.6rem;color: red;">往下拉查看商品链接复制、保存书签</font>-->		
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-taobao-jd.png">
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/andorid-taobao.png">
@@ -161,26 +161,31 @@
 						return dt;
 		}
 
-		function fetch() {		    	
-			$('#e-c').remove();
+		function fetch() {		    				
 			var producturl = $('.input_enter').val();
 			var reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-			if (!reg.test(producturl)) {
-				alert("请输入有效的地址！");
-				return;
-			}else{
-			  //暂时屏蔽掉
-			  //var adt=vcodevalid();
-			  //if(adt==-1 || adt==-2){
-			  //  return;
-			  //}			  
-			  //if(!(adt==0)){
-		      //  alert("验证码验证失败");
-		      //  return;
-		      //}else{		        
-		      //  document.getElementById('num').src='/getCode?'+(new Date()).getTime();
-		      //}
-			}
+			var regtkl=/￥.*￥/;
+			if(!producturl.match(regtkl)){			    
+			    if (!reg.test(producturl)) {
+				  alert("请粘贴有效的链接或内容！");
+				  return;
+			    }else{
+			      //暂时屏蔽掉
+			      //var adt=vcodevalid();
+			      //if(adt==-1 || adt==-2){
+			      //  return;
+			    //}			  
+			    //if(!(adt==0)){
+		        //  alert("验证码验证失败");
+		        //  return;
+		        //}else{		        
+		        //  document.getElementById('num').src='/getCode?'+(new Date()).getTime();
+		        //}
+			  }
+			}			
+			
+			$('#e-c').remove();
+			
             $('#submitlogin').removeAttr('onclick');
 			//加载中						
 			$('#result')

@@ -9,6 +9,7 @@ import com.bt.om.enums.SessionKey;
 import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.service.ITkInfoTaskService;
+import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.util.TaobaoSmsUtil;
@@ -30,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -178,6 +181,26 @@ public class ApiController extends BasicController {
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
+		
+		//判断是否发送的是淘口令请求
+		String reg="￥.*￥";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(product_url);
+		if(matcher.find()){
+			product_url=TaoKouling.parserTkl(product_url);
+			logger.info("通过淘口令转换获得的商品链接==>"+product_url);
+			if(StringUtils.isEmpty(product_url)){
+				result.setCode(ResultCode.RESULT_FAILURE.getCode());
+				result.setResultDes("商品链接为空！");
+				result.setResult(new ProductInfoVo("","","","","2"));
+				model.addAttribute(SysConst.RESULT_KEY, result);
+				return model;
+			}else{
+				Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
+				product_url=urlMap0.get("puri")+"?id="+urlMap0.get("id");
+				logger.info("通过淘口令转换获得的商品缩短链接==>"+product_url);
+			}
+		}
 
 		Map<String, String> urlMap = StringUtil.urlSplit(product_url);
 		String platform = "taobao";
@@ -248,9 +271,12 @@ public class ApiController extends BasicController {
 				if ("taobao".equals(platform)) {
 					productId = urlMap.get("id");
 					productInfoUrl = taskBean.getMap().get("url");
-				} else {
+				} else if("jd".equals(platform)){
 					productId = uriProductId;
 					productInfoUrl = urlMap.get("puri");
+				}else{
+					productId="";
+					productInfoUrl="";
 				}
 				productInfo.setProductId(productId);
 				productInfo.setProductInfoUrl(productInfoUrl);
@@ -312,18 +338,18 @@ public class ApiController extends BasicController {
 				}
 				if("yes".equals(ifWeixinBrower)){
 					if("taobao".equals(platform)){
-						sb.append("')></div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
+						sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
 					}else{
-						sb.append("')></div><div style='color:red;'>点击图片返回京东购物。</div><div>");
+						sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
 					}
 				}else{
-				  sb.append("')></div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+				  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
 				}
 				sb.append(productName);
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 				sb.append(shopName);
-				sb.append("</span><span style='float:right;'>销量：");
+				sb.append("</span><span style='float:right;'>月销量：");
 				sb.append(sellNum);
 				sb.append(
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
@@ -376,17 +402,17 @@ public class ApiController extends BasicController {
 			}
 			if("yes".equals(ifWeixinBrower)){
 				if("taobao".equals(platform)){
-					sb.append("')></div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
+					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
 				}else{
-					sb.append("')></div><div style='color:red;'>点击图片返回京东购物。</div><div>");
+					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
 				}
 			}else{
-			  sb.append("')></div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+			  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
 			}
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 			sb.append(productInfo.getShopName());
-			sb.append("</span><span style='float:right;'>销量：");
+			sb.append("</span><span style='float:right;'>月销量：");
 			sb.append(productInfo.getMonthSales());
 			sb.append(
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
