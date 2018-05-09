@@ -19,7 +19,7 @@
 
     <!-- Main content -->
     <section class="content container-fluid">
-      <div class="row pre-scrollable">
+      <div class="row">
       
         <div class="col-md-12">
           <div class="box">
