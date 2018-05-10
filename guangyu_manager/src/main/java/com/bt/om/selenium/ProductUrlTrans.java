@@ -28,7 +28,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
-	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
 	// 这样会导致spring配置中bean再次实例化
 	// private static ITkInfoTaskService tkInfoTaskService =
 	// ServiceLocator.getService(TkInfoTaskService.class);
@@ -70,7 +70,8 @@ public class ProductUrlTrans {
 
 	static {
 		init();
-		schedule();
+		scheduleTaobao();
+		scheduleJd();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			driver = new ChromeDriver();
@@ -389,19 +390,34 @@ public class ProductUrlTrans {
 		}
 	}
 
-	private static void schedule() {
+	private static void scheduleTaobao() {
+		// 延迟5-10分钟，间隔5-10分钟执行
+		scheduler.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					logger.info("taobao refresh...");
+					driver.navigate().refresh();
+					jdDriver.navigate().refresh();
+				} catch (Exception e) {
+					logger.error("taobao refresh error:[{}]", e);
+				}
+			}
+		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
+	}
+	
+	private static void scheduleJd() {
 		// 延迟3-5分钟，间隔3-5分钟执行
 		scheduler.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					logger.info("refresh...");
-					driver.navigate().refresh();
+					logger.info("jd refresh...");
 					jdDriver.navigate().refresh();
 				} catch (Exception e) {
-					logger.error("refresh error:[{}]", e);
+					logger.error("jd refresh error:[{}]", e);
 				}
 			}
-		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
+		}, NumberUtil.getRandomNumber(3, 5), NumberUtil.getRandomNumber(3, 5), TimeUnit.MINUTES);
 	}
 }

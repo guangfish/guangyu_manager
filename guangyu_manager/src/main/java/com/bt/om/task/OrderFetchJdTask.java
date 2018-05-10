@@ -237,7 +237,7 @@ public class OrderFetchJdTask {
 					logger.error("OrderFetchJdTask refresh error:[{}]", e);
 				}
 			}
-		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
+		}, NumberUtil.getRandomNumber(3, 5), NumberUtil.getRandomNumber(3, 5), TimeUnit.MINUTES);
 	}
 
 	public static void main(String[] args) throws Exception {
