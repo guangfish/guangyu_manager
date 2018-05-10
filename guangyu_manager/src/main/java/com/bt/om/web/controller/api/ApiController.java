@@ -206,6 +206,7 @@ public class ApiController extends BasicController {
 		String platform = "taobao";
 		if (urlMap.get("puri").contains("taobao.com") || urlMap.get("puri").contains("tmall.com")) {
 			platform = "taobao";
+			product_url=urlMap.get("puri")+"?id="+urlMap.get("id");
 		} else if (urlMap.get("puri").contains("jd.com")) {
 			platform = "jd";
 		}else{

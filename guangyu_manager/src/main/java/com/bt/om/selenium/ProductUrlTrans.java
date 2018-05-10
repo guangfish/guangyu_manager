@@ -1,5 +1,7 @@
 package com.bt.om.selenium;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -10,11 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 
-import com.bt.om.common.ServiceLocator;
 import com.bt.om.entity.TkInfoTask;
 import com.bt.om.queue.disruptor.DisruptorQueueImpl;
 import com.bt.om.selenium.util.PageUtils;
@@ -30,14 +29,16 @@ public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//  这样会导致spring配置中bean再次实例化
-//	private static ITkInfoTaskService tkInfoTaskService = ServiceLocator.getService(TkInfoTaskService.class);
-	
-	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext().getBean(TkInfoTaskService.class);
-	
-//	@Autowired
-//	private static ITkInfoTaskService tkInfoTaskService;
- 
+	// 这样会导致spring配置中bean再次实例化
+	// private static ITkInfoTaskService tkInfoTaskService =
+	// ServiceLocator.getService(TkInfoTaskService.class);
+
+	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext()
+			.getBean(TkInfoTaskService.class);
+
+	// @Autowired
+	// private static ITkInfoTaskService tkInfoTaskService;
+
 	// private static String key = "webdriver.chrome.driver";
 	// private static String value = ".\\conf\\tools\\chromedriver.exe";
 	// private static String key = ConfigUtil.getString("selenium.drive.name");
@@ -123,10 +124,16 @@ public class ProductUrlTrans {
 		queue.publish(tkInfoTask);
 	}
 
+	public static void setClipboardData(String string) {
+		StringSelection stringSelection = new StringSelection(string);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+	}
+
 	private static void getTKUrl(TkInfoTask tkInfoTask) throws Exception {
 		try {
 			driver.findElement(By.id("q")).clear();
 			driver.findElement(By.id("q")).sendKeys(tkInfoTask.getProductUrl());
+
 			driver.findElement(By.xpath("//div[@id='magix_vf_header']/div/div/div[2]/div[2]/button")).click();
 			// 点击搜索按钮后sleep
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
