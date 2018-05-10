@@ -64,6 +64,7 @@
 		  <br/><font style="color: red;font-size: 1.0rem;">▽</font>
 		  <!--<br/><font style="font-size: 0.6rem;color: red;">往下拉查看商品链接复制、保存书签</font>-->		
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-taobao-jd.png">
+		  <br/><img width="90%" src="http://help.guangfish.com/imgs/ios-jd.png">
 		  <!--<br/><img width="90%" src="http://help.guangfish.com/imgs/andorid-taobao.png">
 		  <br/><font style="font-size: 0.6rem;color: red;">保存书签：请在手机浏览器打开本页面，并保存成书签</font>
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">	  
