@@ -9,7 +9,7 @@ import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
 import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
-import com.bt.om.service.ISearchRecordService;
+//import com.bt.om.service.ISearchRecordService;
 import com.bt.om.service.ITkInfoTaskService;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
