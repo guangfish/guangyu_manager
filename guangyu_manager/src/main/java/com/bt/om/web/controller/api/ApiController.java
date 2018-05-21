@@ -202,10 +202,13 @@ public class ApiController extends BasicController {
 		}
 		
 		//判断是否发送的是淘口令请求
-		String reg="《.*《";
+		String reg="￥.*￥";
+		String reg1="《.*《";		
 		Pattern pattern = Pattern.compile(reg);
 		Matcher matcher = pattern.matcher(product_url);
-		if(matcher.find()){
+		Pattern pattern1 = Pattern.compile(reg1);
+		Matcher matcher1 = pattern1.matcher(product_url);
+		if(matcher.find() || matcher1.find()){
 			product_url=TaoKouling.parserTkl(product_url);
 			logger.info("通过淘口令转换获得的商品链接==>"+product_url);
 			if(StringUtils.isEmpty(product_url)){

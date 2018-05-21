@@ -164,8 +164,9 @@
 		function fetch() {
 			var producturl = $('#product_url').val();
 			var reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-			var regtkl=/《.*《/;
-			if(!producturl.match(regtkl)){			    
+			var regtkl=/￥.*￥/;
+			var regtkl1=/《.*《/;
+			if(!producturl.match(regtkl) || !producturl.match(regtkl1)){
 			    if (!reg.test(producturl)) {
 				  alert("请粘贴有效的链接或内容！");
 				  return;
