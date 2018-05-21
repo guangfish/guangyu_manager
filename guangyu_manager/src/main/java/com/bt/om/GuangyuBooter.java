@@ -22,7 +22,7 @@ public class GuangyuBooter {
 
 	public static void main(String[] args) {
 		//启动远程任务获取线程
-		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
+		if ("on".equals(ConfigUtil.getString("if.start.remote.get.task"))) {
 			schedule();
 		}
 		
