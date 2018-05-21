@@ -3,11 +3,13 @@ package com.bt.om.web.controller.api;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.common.SysConst;
 import com.bt.om.entity.ProductInfo;
+//import com.bt.om.entity.SearchRecord;
 import com.bt.om.entity.TkInfoTask;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
 import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
+import com.bt.om.service.ISearchRecordService;
 import com.bt.om.service.ITkInfoTaskService;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
@@ -55,6 +57,9 @@ public class ApiController extends BasicController {
 
 	@Autowired
 	private ITkInfoTaskService tkInfoTaskService;
+	
+//	@Autowired
+//	private ISearchRecordService searchRecordService;
 
 	// @Autowired
 	// private JedisService jedisService;
@@ -158,13 +163,16 @@ public class ApiController extends BasicController {
 		@SuppressWarnings("unused")
 		String user_id;
 		String product_url = "";
+		String mobile = "";
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			user_id = obj.get("user_id").getAsString();
-
 			product_url = obj.get("product_url").getAsString();
+			if(obj.get("mobile")!=null){
+				mobile = obj.get("mobile").getAsString();
+			}
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
@@ -307,6 +315,15 @@ public class ApiController extends BasicController {
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
 				productInfoService.insertProductInfo(productInfo);
+				
+				//插入搜索记录
+//				SearchRecord searchRecord=new SearchRecord();
+//				searchRecord.setMobile(mobile);
+//				searchRecord.setStatus(1);
+//				searchRecord.setTitle(productName);
+//				searchRecord.setCreateTime(new Date());
+//				searchRecord.setUpdateTime(new Date());
+//				searchRecordService.insert(searchRecord);
 
 				// 组装msg
 				StringBuffer sb = new StringBuffer();
@@ -371,6 +388,15 @@ public class ApiController extends BasicController {
 				return model;
 			}
 		} else {
+			//插入搜索记录
+//			SearchRecord searchRecord=new SearchRecord();
+//			searchRecord.setMobile(mobile);
+//			searchRecord.setStatus(1);
+//			searchRecord.setTitle(productInfo.getProductName());
+//			searchRecord.setCreateTime(new Date());
+//			searchRecord.setUpdateTime(new Date());
+//			searchRecordService.insert(searchRecord);
+			
 			// 组装msg
 			StringBuffer sb = new StringBuffer();
 			sb.append(
@@ -434,6 +460,7 @@ public class ApiController extends BasicController {
 			
 			sb.append("</div></div></div>");
 			msg = sb.toString();
+						
 		}
         //查询成功
 		result.setResult(new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,"0"));
@@ -658,6 +685,21 @@ public class ApiController extends BasicController {
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
+		return model;
+	}
+	
+	// 从队列中获取任务
+	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
+	@ResponseBody
+	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+		TkInfoTask tkInfoTask=null;
+		Object object =ProductUrlTrans.get();
+		if(object!=null){
+			tkInfoTask=(TkInfoTask)object;
+			tkInfoTask.setCreateTime(null);
+			tkInfoTask.setUpdateTime(null);
+		}
+		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
 		return model;
 	}
 

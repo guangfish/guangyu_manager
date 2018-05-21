@@ -9,12 +9,12 @@
 								<div class="item-content">
 									<div class="item-inner">
 										<div class="item-input">
-											<input type="text" class="input_enter"
+											<input id="product_url" type="text" class="input_enter"
 												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">											
 										</div>										
 									</div>
 								</div>
-							</li>							
+							</li>
 							<!-- 暂时屏蔽掉
 							<li>
 								<div class="item-content">
@@ -73,9 +73,7 @@
 		</div>	
 
 	</div>
-	
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
+			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 
 	<script>	    	    
@@ -163,10 +161,10 @@
 						return dt;
 		}
 
-		function fetch() {		    				
-			var producturl = $('.input_enter').val();
+		function fetch() {
+			var producturl = $('#product_url').val();
 			var reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-			var regtkl=/￥.*￥/;
+			var regtkl=/《.*《/;
 			if(!producturl.match(regtkl)){			    
 			    if (!reg.test(producturl)) {
 				  alert("请粘贴有效的链接或内容！");
@@ -184,7 +182,7 @@
 		        //  document.getElementById('num').src='/getCode?'+(new Date()).getTime();
 		        //}
 			  }
-			}			
+			}						
 			
 			$('#e-c').remove();
 			
@@ -236,7 +234,7 @@
 								      }
 								    }							    
 								}
-								$(".input_enter").val("");
+								$("#product_url").val("");
 								//暂时屏蔽掉
 								$("#vcode").val("");
 								
