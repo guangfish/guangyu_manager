@@ -191,7 +191,7 @@ public class ApiController extends BasicController {
 		}
 		
 		//判断是否发送的是淘口令请求
-		String reg="￥.*￥";
+		String reg="《.*《";
 		Pattern pattern = Pattern.compile(reg);
 		Matcher matcher = pattern.matcher(product_url);
 		if(matcher.find()){
@@ -688,20 +688,20 @@ public class ApiController extends BasicController {
 		return model;
 	}
 	
-	// 从队列中获取任务
-	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
-	@ResponseBody
-	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
-		TkInfoTask tkInfoTask=null;
-		Object object =ProductUrlTrans.get();
-		if(object!=null){
-			tkInfoTask=(TkInfoTask)object;
-			tkInfoTask.setCreateTime(null);
-			tkInfoTask.setUpdateTime(null);
-		}
-		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
-		return model;
-	}
+//	// 从队列中获取任务
+//	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
+//	@ResponseBody
+//	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+//		TkInfoTask tkInfoTask=null;
+//		Object object =ProductUrlTrans.get();
+//		if(object!=null){
+//			tkInfoTask=(TkInfoTask)object;
+//			tkInfoTask.setCreateTime(null);
+//			tkInfoTask.setUpdateTime(null);
+//		}
+//		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
+//		return model;
+//	}
 
 	/**
 	 * 根据位数生成验证码
