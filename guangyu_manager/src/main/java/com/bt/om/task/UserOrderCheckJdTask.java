@@ -19,7 +19,7 @@ import com.bt.om.util.ConfigUtil;
 /**
  * 京东订单核验
  */
-@Component
+//@Component
 public class UserOrderCheckJdTask {
 	private static final Logger logger = Logger.getLogger(UserOrderCheckJdTask.class);
 	@Autowired

@@ -54,9 +54,9 @@ public final class HttpcomponentsUtil {
 
     private static final String EMPTY                              = "";
     private static final String DEFAULT_ENCODE                     = Consts.UTF_8.name();
-    private static int          DEFAULT_SOCKET_TIMEOUT             = 5000;
-    private static int          DEFAULT_CONNECT_TIMEOUT            = 5000;
-    private static int          DEFAULT_CONNECTION_REQUEST_TIMEOUT = 5000;
+    private static int          DEFAULT_SOCKET_TIMEOUT             = 30000;
+    private static int          DEFAULT_CONNECT_TIMEOUT            = 30000;
+    private static int          DEFAULT_CONNECTION_REQUEST_TIMEOUT = 30000;
 
     public class Sms implements Runnable {
 

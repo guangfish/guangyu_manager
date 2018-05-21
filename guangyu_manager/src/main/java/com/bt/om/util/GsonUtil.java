@@ -66,6 +66,15 @@ public class GsonUtil {
 		}
 		return list;
 	}
+	
+	public static <T> ArrayList<T> fromJsonList(String json, Class<T> cls) {  
+        ArrayList<T> mList = new ArrayList<T>();  
+        JsonArray array = new JsonParser().parse(json).getAsJsonArray();  
+        for(final JsonElement elem : array){  
+            mList.add(gson.fromJson(elem, cls));  
+        }  
+        return mList;  
+    }
 
 	/**
 	 * 转成list中有map的

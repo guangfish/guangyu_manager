@@ -13,6 +13,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -20,7 +22,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,26 +30,32 @@ import org.springframework.stereotype.Component;
 import com.adtime.common.lang.StringUtil;
 import com.bt.om.entity.TkOrderInputJd;
 import com.bt.om.selenium.util.PageUtils;
-import com.bt.om.service.ITkOrderInputJdService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
+import com.bt.om.util.HttpcomponentsUtil;
 import com.bt.om.util.NumberUtil;
+import com.google.gson.Gson;
 
 /**
  * 京东订单报表下载入库
  */
-//@Component
-public class OrderFetchJdTask {
-	private static final Logger logger = Logger.getLogger(OrderFetchJdTask.class);
+@Component
+public class OrderFetchJdLocalTask {
+	private static final Logger logger = Logger.getLogger(OrderFetchJdLocalTask.class);
 	
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
-	@Autowired
-	private ITkOrderInputJdService tkOrderInputJdService;
+	private static String reportJd2DbUrl = ConfigUtil.getString("crawl.task.send.domain")
+			+ ConfigUtil.getString("local.report.jd.url");
 
 	private static String key = "";
 	private static String value = "";
-	static {		
+	static {
+		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+			reportJd2DbUrl = ConfigUtil.getString("crawl.task.send.domain.test")
+					+ ConfigUtil.getString("local.report.jd.url");
+		}
+		
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			key = "webdriver.chrome.driver";
 			value = ".\\conf\\tools\\chromedriver.exe";
@@ -142,11 +149,13 @@ public class OrderFetchJdTask {
 					+ DateUtil.dateFormate(new Date(), DateUtil.DEFAULT_PATTERN) + ".csv";
 			List<TkOrderInputJd> tkOrderInputJdList = readJdReport(filePath);
 
-			tkOrderInputJdService.truncateTkOrderInputJd();
-			for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
-				tkOrderInputJdService.insert(tkOrderInputJd);
-			}
-
+			Gson gson = new Gson();
+			String gString = gson.toJson(tkOrderInputJdList);
+			// System.out.println(gString);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, reportJd2DbUrl);
 		} catch (Exception e) {
 			e.printStackTrace();
 			driver.navigate().refresh();
@@ -242,6 +251,6 @@ public class OrderFetchJdTask {
 	public static void main(String[] args) throws Exception {
 		String[] cfgs = new String[] { "classpath:spring/applicationContext.xml" };
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(cfgs);
-		((OrderFetchJdTask) ctx.getBean("orderFetchJdTask")).orderJdFetchTask();
+		((OrderFetchJdLocalTask) ctx.getBean("orderFetchJdLocalTask")).orderJdFetchTask();
 	}
 }

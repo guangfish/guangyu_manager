@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -35,23 +37,30 @@ import com.bt.om.selenium.util.PageUtils;
 import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
+import com.bt.om.util.HttpcomponentsUtil;
 import com.bt.om.util.NumberUtil;
+import com.google.gson.Gson;
 
 /**
  * 淘宝订单报表下载入库
  */
-//@Component
-public class OrderFetchTask {
-	private static final Logger logger = Logger.getLogger(OrderFetchTask.class);
+@Component
+public class OrderFetchLocalTask {
+	private static final Logger logger = Logger.getLogger(OrderFetchLocalTask.class);
 	
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
-	@Autowired
-	private ITkOrderInputService tkOrderInputService;
+	private static String reportTb2DbUrl = ConfigUtil.getString("crawl.task.send.domain")
+			+ ConfigUtil.getString("local.report.taobao.url");
 	
 	private static String key = "";
 	private static String value = "";
-	static {		
+	static {
+		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+			reportTb2DbUrl = ConfigUtil.getString("crawl.task.send.domain.test")
+					+ ConfigUtil.getString("local.report.taobao.url");
+		}
+		
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			key = "webdriver.chrome.driver";
 			value = ".\\conf\\tools\\chromedriver.exe";
@@ -121,11 +130,13 @@ public class OrderFetchTask {
 			String filePath=ConfigUtil.getString("report.file.path")+"TaokeDetail-"+DateUtil.dateFormate(new Date(),DateUtil.CHINESE_PATTERN)+".xls";						
 			List<TkOrderInput> tkOrderInputList = readTaobaoReport(filePath);
 
-			// 先清空表中数据，然后再插入数据
-			tkOrderInputService.truncateTkOrderInput();
-			for (TkOrderInput tkOrderInput : tkOrderInputList) {
-				tkOrderInputService.insert(tkOrderInput);
-			}
+			Gson gson = new Gson();
+			String gString = gson.toJson(tkOrderInputList);
+			// System.out.println(gString);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, reportTb2DbUrl);
 
 //			for(TkOrderInput tkOrderInput:tkOrderInputList){
 //				List<TkOrderInput> tkOrderInputExist = tkOrderInputService.selectByOrderId(tkOrderInput.getOrderId());
@@ -286,6 +297,6 @@ public class OrderFetchTask {
 	public static void main(String[] args) throws Exception {
 		String[] cfgs = new String[] { "classpath:spring/applicationContext.xml" };
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(cfgs);
-		((OrderFetchTask) ctx.getBean("orderFetchTask")).orderFetchTask();
+		((OrderFetchLocalTask) ctx.getBean("orderFetchLocalTask")).orderFetchTask();
 	}
 }

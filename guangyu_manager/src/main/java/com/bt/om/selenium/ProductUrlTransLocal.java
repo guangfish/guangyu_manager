@@ -16,13 +16,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.entity.TkInfoTask;
 import com.bt.om.queue.disruptor.DisruptorQueueImpl;
 import com.bt.om.selenium.util.PageUtils;
-import com.bt.om.service.ITkInfoTaskService;
-import com.bt.om.service.impl.TkInfoTaskService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.HttpcomponentsUtil;
@@ -30,29 +27,22 @@ import com.bt.om.util.NumberUtil;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
-//@Component
-public class ProductUrlTrans {
-	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
+public class ProductUrlTransLocal {
+	private static final Logger logger = Logger.getLogger(ProductUrlTransLocal.class);
 
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-	// 这样会导致spring配置中bean再次实例化
-	// private static ITkInfoTaskService tkInfoTaskService =
-	// ServiceLocator.getService(TkInfoTaskService.class);
 
-	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext()
-			.getBean(TkInfoTaskService.class);
+	private static String receiveApi = ConfigUtil.getString("crawl.task.send.domain")
+			+ ConfigUtil.getString("local.task.result.send.url");
 
-	// @Autowired
-	// private static ITkInfoTaskService tkInfoTaskService;
-
-	// private static String key = "webdriver.chrome.driver";
-	// private static String value = ".\\conf\\tools\\chromedriver.exe";
-	// private static String key = ConfigUtil.getString("selenium.drive.name");
-	// private static String value =
-	// ConfigUtil.getString("selenium.drive.path");
 	private static String key = "";
 	private static String value = "";
 	static {
+		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+			receiveApi = ConfigUtil.getString("crawl.task.send.domain.test")
+					+ ConfigUtil.getString("local.task.result.send.url");
+		}
+
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			key = "webdriver.chrome.driver";
 			value = ".\\conf\\tools\\chromedriver.exe";
@@ -75,23 +65,21 @@ public class ProductUrlTrans {
 			new BlockingWaitStrategy());
 
 	static {
-		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
-			init();
-			scheduleTaobao();
-			scheduleJd();
-			System.setProperty(key, value);
-			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
-				driver = new ChromeDriver();
-				jdDriver = new ChromeDriver();
-			} else {
-				driver = new FirefoxDriver();
-				jdDriver = new FirefoxDriver();
-			}
-			driver.get(baseUrl);
-			jdDriver.get(jdBaseUrl);
-			driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
-			jdDriver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+		init();
+		scheduleTaobao();
+		scheduleJd();
+		System.setProperty(key, value);
+		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+			driver = new ChromeDriver();
+			jdDriver = new ChromeDriver();
+		} else {
+			driver = new FirefoxDriver();
+			jdDriver = new FirefoxDriver();
 		}
+		driver.get(baseUrl);
+		jdDriver.get(jdBaseUrl);
+		driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+		jdDriver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
 	}
 
 	public static void init() {
@@ -114,9 +102,15 @@ public class ProductUrlTrans {
 					} catch (Exception e) {
 						logger.info(e.getMessage());
 						// e.printStackTrace();
-						// 做数据库任务状态更新操作
-						tkInfoTask.setStatus(1);
-						tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+						String gString = GsonUtil.GsonString(tkInfoTask);
+						List<NameValuePair> nvpList = new ArrayList<>();
+						nvpList.add(new BasicNameValuePair("gString", gString));
+						// 发送结果数据
+						try {
+							HttpcomponentsUtil.postReq(nvpList, receiveApi);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
@@ -129,12 +123,12 @@ public class ProductUrlTrans {
 	}
 
 	public static void put(TkInfoTask tkInfoTask) {
-//		logger.info("publish..");
+		logger.info("publish..");
 		queue.publish(tkInfoTask);
 	}
-	
+
 	public static Object get() {
-//		logger.info("consumer..");
+		logger.info("consumer..");
 		return queue.poll();
 	}
 
@@ -286,12 +280,22 @@ public class ProductUrlTrans {
 			tkInfoTask.setQuanUrl(quanurl);
 			tkInfoTask.setTcode(tcode);
 			tkInfoTask.setQuanCode(quancode);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			
+
+			// 调用HTTP接口 返回结果数据
+			String gString = GsonUtil.GsonString(tkInfoTask);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, receiveApi);
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			// 调用HTTP接口 返回结果数据
+			String gString = GsonUtil.GsonString(tkInfoTask);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, receiveApi);
 			driver.navigate().refresh();
 			return;
 		}
@@ -393,12 +397,22 @@ public class ProductUrlTrans {
 			tkInfoTask.setTcode("");
 			tkInfoTask.setQuanCode("");
 
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			// 调用HTTP接口 返回结果数据
+			String gString = GsonUtil.GsonString(tkInfoTask);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, receiveApi);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			// 调用HTTP接口 返回结果数据
+			String gString = GsonUtil.GsonString(tkInfoTask);
+			List<NameValuePair> nvpList = new ArrayList<>();
+			nvpList.add(new BasicNameValuePair("gString", gString));
+			// 发送结果数据
+			HttpcomponentsUtil.postReq(nvpList, receiveApi);
 			jdDriver.navigate().refresh();
 			return;
 		}

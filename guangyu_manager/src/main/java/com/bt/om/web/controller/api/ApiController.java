@@ -5,14 +5,19 @@ import com.bt.om.common.SysConst;
 import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.SearchRecord;
 import com.bt.om.entity.TkInfoTask;
+import com.bt.om.entity.TkOrderInput;
+import com.bt.om.entity.TkOrderInputJd;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
 import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.service.ISearchRecordService;
 import com.bt.om.service.ITkInfoTaskService;
+import com.bt.om.service.ITkOrderInputJdService;
+import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
+import com.bt.om.util.GsonUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.util.TaobaoSmsUtil;
 import com.bt.om.vo.api.GetSmsCodeVo;
@@ -60,6 +65,12 @@ public class ApiController extends BasicController {
 	
 	@Autowired
 	private ISearchRecordService searchRecordService;
+	
+	@Autowired
+	private ITkOrderInputService tkOrderInputService;
+	
+	@Autowired
+	private ITkOrderInputJdService tkOrderInputJdService;
 
 	// @Autowired
 	// private JedisService jedisService;
@@ -700,6 +711,45 @@ public class ApiController extends BasicController {
 			tkInfoTask.setUpdateTime(null);
 		}
 		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
+		return model;
+	}
+	
+	// 任务执行完后的反馈
+	@RequestMapping(value = "/receiveTaskFeedback", method = RequestMethod.POST)
+	@ResponseBody
+	public Model receiveTaskFeedback(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String gString=request.getParameter("gString");
+		System.out.println(gString);		
+		TkInfoTask tkInfoTask = GsonUtil.GsonToBean(gString, TkInfoTask.class);
+		tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+		return model;
+	}
+	
+	// 淘宝报表数据下载后的入库
+	@RequestMapping(value = "/reportTb2Db", method = RequestMethod.POST)
+	@ResponseBody
+	public Model reportTb2Db(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String gString = request.getParameter("gString");
+//		System.out.println("reportTb2Db=="+gString);
+		List<TkOrderInput> tkOrderInputList = GsonUtil.fromJsonList(gString, TkOrderInput.class);
+		tkOrderInputService.truncateTkOrderInput();
+		for (TkOrderInput tkOrderInput : tkOrderInputList) {
+			tkOrderInputService.insert(tkOrderInput);
+		}
+		return model;
+	}
+	
+	// 京东报表数据下载后的入库
+	@RequestMapping(value = "/reportJd2Db", method = RequestMethod.POST)
+	@ResponseBody
+	public Model reportJd2Db(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String gString = request.getParameter("gString");
+		System.out.println("reportJd2Db=="+gString);
+		List<TkOrderInputJd> tkOrderInputJdList = GsonUtil.fromJsonList(gString, TkOrderInputJd.class);
+		tkOrderInputJdService.truncateTkOrderInputJd();
+		for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
+			tkOrderInputJdService.insert(tkOrderInputJd);
+		}
 		return model;
 	}
 
