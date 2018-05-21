@@ -44,7 +44,7 @@ import com.google.gson.Gson;
 /**
  * 淘宝订单报表下载入库
  */
-@Component
+//@Component
 public class OrderFetchLocalTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchLocalTask.class);
 	

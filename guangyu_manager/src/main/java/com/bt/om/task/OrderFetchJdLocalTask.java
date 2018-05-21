@@ -39,7 +39,7 @@ import com.google.gson.Gson;
 /**
  * 京东订单报表下载入库
  */
-@Component
+//@Component
 public class OrderFetchJdLocalTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchJdLocalTask.class);
 	
