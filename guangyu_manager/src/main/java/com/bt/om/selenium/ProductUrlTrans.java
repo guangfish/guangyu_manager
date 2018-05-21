@@ -69,21 +69,23 @@ public class ProductUrlTrans {
 			new BlockingWaitStrategy());
 
 	static {
-		init();
-		scheduleTaobao();
-		scheduleJd();
-		System.setProperty(key, value);
-		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
-			driver = new ChromeDriver();
-			jdDriver = new ChromeDriver();
-		} else {
-			driver = new FirefoxDriver();
-			jdDriver = new FirefoxDriver();
+		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
+			init();
+			scheduleTaobao();
+			scheduleJd();
+			System.setProperty(key, value);
+			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+				driver = new ChromeDriver();
+				jdDriver = new ChromeDriver();
+			} else {
+				driver = new FirefoxDriver();
+				jdDriver = new FirefoxDriver();
+			}
+			driver.get(baseUrl);
+			jdDriver.get(jdBaseUrl);
+			driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
+			jdDriver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 		}
-		driver.get(baseUrl);
-		jdDriver.get(jdBaseUrl);
-		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
-		jdDriver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
 	public static void init() {
@@ -123,6 +125,11 @@ public class ProductUrlTrans {
 	public static void put(TkInfoTask tkInfoTask) {
 		logger.info("publish..");
 		queue.publish(tkInfoTask);
+	}
+	
+	public static Object get() {
+		logger.info("consumer..");
+		return queue.poll();
 	}
 
 	public static void setClipboardData(String string) {
@@ -405,7 +412,7 @@ public class ProductUrlTrans {
 			}
 		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
 	}
-	
+
 	private static void scheduleJd() {
 		// 延迟3-5分钟，间隔3-5分钟执行
 		scheduler.scheduleAtFixedRate(new Runnable() {

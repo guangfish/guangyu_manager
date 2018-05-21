@@ -47,6 +47,4 @@
 					</div>
 		</div>
 	</div>
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
 <@model.webendsearch />

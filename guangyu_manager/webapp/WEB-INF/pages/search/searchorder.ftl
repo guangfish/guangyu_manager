@@ -67,9 +67,14 @@
 		</div>
 
 	</div>
+	
+	<script>
+	  	var mobile = $.cookie('guangfishmobile');
+	  	if(mobile){
+	  	  $("#mobile").val(mobile);
+	  	}	  	
+	</script>
 
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
 	<script>	
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  

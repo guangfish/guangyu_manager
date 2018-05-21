@@ -93,9 +93,14 @@
 		  </div>
 		</div>
 	</div>
+	
+	<script>
+	  	var mobile = $.cookie('guangfishmobile');
+	  	if(mobile){
+	  	  $("#mobile").val(mobile);
+	  	}	
+	</script>
 
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
 	<script>	
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
@@ -146,7 +151,7 @@
 			  alert("短信验证码输入不正确！");
 			  return;
 			}
-	      }
+	      }	      
 	      
 	      save(mobile,alipay,vcode,smscode);	      	      	      	      
 	    }
@@ -171,8 +176,8 @@
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result.status=="0"){
 								    alert("提现申请成功,提现商品"+data.ret.result.productNums+"件,提现金额"+data.ret.result.money+"元,请注意支付宝查收！");
-								    $("#mobile").val("");
-								    $("#alipay").val("");
+								    //$("#mobile").val("");
+								    //$("#alipay").val("");
 								    $("#vcode").val("");
 								    $("#smscode").val("");
 								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
@@ -192,8 +197,8 @@
 								  }
 								  if(data.ret.result.status=="8"){
 								    alert("亲，已经没有可提现的订单了，赶紧去看看是否没有录入已完成购买商品的订单号！");
-								    $("#mobile").val("");
-								    $("#alipay").val("");
+								    //$("#mobile").val("");
+								    //$("#alipay").val("");
 								    $("#vcode").val("");
 								    $("#smscode").val("");
 								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();

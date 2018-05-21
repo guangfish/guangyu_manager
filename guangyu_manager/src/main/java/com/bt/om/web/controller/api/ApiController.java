@@ -3,13 +3,13 @@ package com.bt.om.web.controller.api;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.common.SysConst;
 import com.bt.om.entity.ProductInfo;
-//import com.bt.om.entity.SearchRecord;
+import com.bt.om.entity.SearchRecord;
 import com.bt.om.entity.TkInfoTask;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
 import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
-//import com.bt.om.service.ISearchRecordService;
+import com.bt.om.service.ISearchRecordService;
 import com.bt.om.service.ITkInfoTaskService;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
@@ -58,8 +58,8 @@ public class ApiController extends BasicController {
 	@Autowired
 	private ITkInfoTaskService tkInfoTaskService;
 	
-//	@Autowired
-//	private ISearchRecordService searchRecordService;
+	@Autowired
+	private ISearchRecordService searchRecordService;
 
 	// @Autowired
 	// private JedisService jedisService;
@@ -317,13 +317,13 @@ public class ApiController extends BasicController {
 				productInfoService.insertProductInfo(productInfo);
 				
 				//插入搜索记录
-//				SearchRecord searchRecord=new SearchRecord();
-//				searchRecord.setMobile(mobile);
-//				searchRecord.setStatus(1);
-//				searchRecord.setTitle(productName);
-//				searchRecord.setCreateTime(new Date());
-//				searchRecord.setUpdateTime(new Date());
-//				searchRecordService.insert(searchRecord);
+				SearchRecord searchRecord=new SearchRecord();
+				searchRecord.setMobile(mobile);
+				searchRecord.setStatus(1);
+				searchRecord.setTitle(productName);
+				searchRecord.setCreateTime(new Date());
+				searchRecord.setUpdateTime(new Date());
+				searchRecordService.insert(searchRecord);
 
 				// 组装msg
 				StringBuffer sb = new StringBuffer();
@@ -389,13 +389,13 @@ public class ApiController extends BasicController {
 			}
 		} else {
 			//插入搜索记录
-//			SearchRecord searchRecord=new SearchRecord();
-//			searchRecord.setMobile(mobile);
-//			searchRecord.setStatus(1);
-//			searchRecord.setTitle(productInfo.getProductName());
-//			searchRecord.setCreateTime(new Date());
-//			searchRecord.setUpdateTime(new Date());
-//			searchRecordService.insert(searchRecord);
+			SearchRecord searchRecord=new SearchRecord();
+			searchRecord.setMobile(mobile);
+			searchRecord.setStatus(1);
+			searchRecord.setTitle(productInfo.getProductName());
+			searchRecord.setCreateTime(new Date());
+			searchRecord.setUpdateTime(new Date());
+			searchRecordService.insert(searchRecord);
 			
 			// 组装msg
 			StringBuffer sb = new StringBuffer();
@@ -688,20 +688,20 @@ public class ApiController extends BasicController {
 		return model;
 	}
 	
-//	// 从队列中获取任务
-//	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
-//	@ResponseBody
-//	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
-//		TkInfoTask tkInfoTask=null;
-//		Object object =ProductUrlTrans.get();
-//		if(object!=null){
-//			tkInfoTask=(TkInfoTask)object;
-//			tkInfoTask.setCreateTime(null);
-//			tkInfoTask.setUpdateTime(null);
-//		}
-//		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
-//		return model;
-//	}
+	// 从队列中获取任务
+	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
+	@ResponseBody
+	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+		TkInfoTask tkInfoTask=null;
+		Object object =ProductUrlTrans.get();
+		if(object!=null){
+			tkInfoTask=(TkInfoTask)object;
+			tkInfoTask.setCreateTime(null);
+			tkInfoTask.setUpdateTime(null);
+		}
+		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
+		return model;
+	}
 
 	/**
 	 * 根据位数生成验证码

@@ -20,3 +20,7 @@
 
 </head>
 <body style="position: static; width: 300px; height: 600px;">
+
+<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
+<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>

@@ -72,9 +72,14 @@
 		</div>
 
 	</div>
-
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
+	
+	<script>
+	  	var mobile = $.cookie('guangfishmobile');
+	  	if(mobile){
+	  	  $("#mobile").val(mobile);
+	  	}
+	</script>
+	
 	<script>	
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
@@ -124,6 +129,11 @@
 		  //	}
 	      //}
 	      
+	      var mobile_cookie = $.cookie('guangfishmobile');
+	  	  if(!mobile_cookie){
+	  	    $.cookie('guangfishmobile', mobile, { expires: 365, path: '/',domain:'localhost'});
+	  	  }	      
+	      
 	      save(orderid,mobile,vcode);	      	      	      	      
 	    }
 
@@ -146,7 +156,7 @@
 								  if(data.ret.result=="0"){
 								    alert("提交成功，请在收货后，在淘宝/京东'确认收货'后方可提现");
 								    $("#orderid").val("");
-								    $("#mobile").val("");
+								    //$("#mobile").val("");
 								    //暂时屏蔽掉
 								    $("#vcode").val("");								    
 								  }

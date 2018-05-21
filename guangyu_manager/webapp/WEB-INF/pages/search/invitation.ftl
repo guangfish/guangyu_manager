@@ -60,9 +60,14 @@
 		</div>
 
 	</div>
+	
+	<script>
+	  	var mobile = $.cookie('guangfishmobile');
+	  	if(mobile){
+	  	  $("#mobile_me").val(mobile);
+	  	}	  	
+	</script>
 
-	<script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
-	<script type='text/javascript' src='/static/front/js/light7.js' charset='utf-8'></script>
 	<script>	
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
@@ -109,7 +114,7 @@
 	      if(mobile_me==mobile_friend){
 	        alert("不能自己邀请自己");
             return;
-	      }
+	      }	     
 	      
 	      save(mobile_me,mobile_friend);	      	      	      	      
 	    }
