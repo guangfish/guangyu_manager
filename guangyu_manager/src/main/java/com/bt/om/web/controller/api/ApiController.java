@@ -744,7 +744,7 @@ public class ApiController extends BasicController {
 	@ResponseBody
 	public Model reportJd2Db(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String gString = request.getParameter("gString");
-		System.out.println("reportJd2Db=="+gString);
+//		System.out.println("reportJd2Db=="+gString);
 		List<TkOrderInputJd> tkOrderInputJdList = GsonUtil.fromJsonList(gString, TkOrderInputJd.class);
 		tkOrderInputJdService.truncateTkOrderInputJd();
 		for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {

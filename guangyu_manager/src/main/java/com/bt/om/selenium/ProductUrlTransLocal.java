@@ -78,8 +78,8 @@ public class ProductUrlTransLocal {
 		}
 		driver.get(baseUrl);
 		jdDriver.get(jdBaseUrl);
-		driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
-		jdDriver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
+		jdDriver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
 	public static void init() {
@@ -107,7 +107,7 @@ public class ProductUrlTransLocal {
 						nvpList.add(new BasicNameValuePair("gString", gString));
 						// 发送结果数据
 						try {
-							HttpcomponentsUtil.postReq(nvpList, receiveApi);
+							HttpcomponentsUtil.sendHttps(nvpList, receiveApi);
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -286,7 +286,7 @@ public class ProductUrlTransLocal {
 			List<NameValuePair> nvpList = new ArrayList<>();
 			nvpList.add(new BasicNameValuePair("gString", gString));
 			// 发送结果数据
-			HttpcomponentsUtil.postReq(nvpList, receiveApi);
+			HttpcomponentsUtil.sendHttps(nvpList, receiveApi);
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
@@ -295,7 +295,7 @@ public class ProductUrlTransLocal {
 			List<NameValuePair> nvpList = new ArrayList<>();
 			nvpList.add(new BasicNameValuePair("gString", gString));
 			// 发送结果数据
-			HttpcomponentsUtil.postReq(nvpList, receiveApi);
+			HttpcomponentsUtil.sendHttps(nvpList, receiveApi);
 			driver.navigate().refresh();
 			return;
 		}
@@ -402,7 +402,7 @@ public class ProductUrlTransLocal {
 			List<NameValuePair> nvpList = new ArrayList<>();
 			nvpList.add(new BasicNameValuePair("gString", gString));
 			// 发送结果数据
-			HttpcomponentsUtil.postReq(nvpList, receiveApi);
+			HttpcomponentsUtil.sendHttps(nvpList, receiveApi);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -412,7 +412,7 @@ public class ProductUrlTransLocal {
 			List<NameValuePair> nvpList = new ArrayList<>();
 			nvpList.add(new BasicNameValuePair("gString", gString));
 			// 发送结果数据
-			HttpcomponentsUtil.postReq(nvpList, receiveApi);
+			HttpcomponentsUtil.sendHttps(nvpList, receiveApi);
 			jdDriver.navigate().refresh();
 			return;
 		}

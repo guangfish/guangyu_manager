@@ -39,7 +39,8 @@ public class GuangyuBooter {
 					+ ConfigUtil.getString("remote.task.fetch.url");
 		}
 		try {
-			ret = HttpcomponentsUtil.postReq(nvpList, remoteTaskUrl);
+			ret = HttpcomponentsUtil.sendHttps(nvpList, remoteTaskUrl);
+//			System.out.println(ret);
 			TkInfoTaskRet tkInfoTaskRet = GsonUtil.GsonToBean(ret, TkInfoTaskRet.class);
 			if (tkInfoTaskRet.getRet() != null) {
 				ProductUrlTransLocal.put(tkInfoTaskRet.getRet());
@@ -60,6 +61,6 @@ public class GuangyuBooter {
 					logger.error("获取远程查询任务 error:[{}]", e);
 				}
 			}
-		}, 60000, 300, TimeUnit.MILLISECONDS);
+		}, 20000, 300, TimeUnit.MILLISECONDS);
 	}
 }
