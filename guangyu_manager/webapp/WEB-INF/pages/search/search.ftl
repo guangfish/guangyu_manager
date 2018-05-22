@@ -72,10 +72,17 @@
 		  -->
 		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
 		</div>	
-
 	</div>
 			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
+	
+    <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
+    <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
+	
+	<script>
+       //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。');
+       Core.Dialog.note({'title':'通知','content':'朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效','callback':function(){}})
+    </script>
 
     <script>
 	  	var mobile = $.cookie('guangfishmobile');
