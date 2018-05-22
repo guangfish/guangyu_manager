@@ -380,7 +380,7 @@ public class ApiController extends BasicController {
 				sb.append(productName);
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-				sb.append(shopName);
+				sb.append(StringUtil.getSubString(shopName, 20));
 				sb.append("</span><span style='float:right;'>月销量：");
 				sb.append(sellNum);
 				sb.append(
@@ -452,7 +452,7 @@ public class ApiController extends BasicController {
 			}
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-			sb.append(productInfo.getShopName());
+			sb.append(StringUtil.getSubString(productInfo.getShopName(), 20));
 			sb.append("</span><span style='float:right;'>月销量：");
 			sb.append(productInfo.getMonthSales());
 			sb.append(
