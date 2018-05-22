@@ -3,11 +3,13 @@ package com.bt.om.web.controller.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bt.om.common.SysConst;
+import com.bt.om.entity.Notice;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
+import com.bt.om.service.INoticeService;
 import com.bt.om.util.RequestUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -29,13 +33,24 @@ import com.google.gson.JsonObject;
  */
 @Controller
 public class SearchController extends BasicController {
+	@Autowired
+	private INoticeService noticeService;
+	
 	@RequestMapping(value = "/search.html", method = RequestMethod.GET)
 	public String search(Model model, HttpServletRequest request) {
+		List<Notice> noticeList = noticeService.selectAll();
+		if(noticeList!=null && noticeList.size()>0){
+			model.addAttribute("notice", noticeList.get(0));
+		}
 		return "search/search";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search1(Model model, HttpServletRequest request) {
+		List<Notice> noticeList = noticeService.selectAll();
+		if(noticeList!=null && noticeList.size()>0){
+			model.addAttribute("notice", noticeList.get(0));
+		}
 		return "search/search";
 	}
 
