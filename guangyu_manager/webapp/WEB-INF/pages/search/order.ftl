@@ -131,7 +131,7 @@
 	      
 	      var mobile_cookie = $.cookie('guangfishmobile');
 	  	  if(!mobile_cookie){
-	  	    $.cookie('guangfishmobile', mobile, { expires: 365, path: '/',domain:'guangfish.com'});
+	  	    $.cookie('guangfishmobile', mobile, { expires: 365, path: '/',domain:'${cookieDomain?if_exists}'});
 	  	  }	      
 	      
 	      save(orderid,mobile,vcode);	      	      	      	      

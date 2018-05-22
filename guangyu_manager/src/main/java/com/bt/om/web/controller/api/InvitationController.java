@@ -21,6 +21,7 @@ import com.bt.om.common.SysConst;
 import com.bt.om.entity.Invitation;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IInvitationService;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
 import com.google.gson.Gson;
@@ -36,6 +37,8 @@ public class InvitationController extends BasicController {
 
 	@RequestMapping(value = "/api/invitation.html", method = RequestMethod.GET)
 	public String invitation(Model model, HttpServletRequest request) {
+		int reward=ConfigUtil.getInt("reward.money");
+		model.addAttribute("reward", reward);
 		return "search/invitation";
 	}
 

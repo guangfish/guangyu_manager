@@ -22,6 +22,7 @@ import com.bt.om.entity.UserOrder;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.enums.SessionKey;
 import com.bt.om.service.IUserOrderService;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
 import com.google.gson.Gson;
@@ -38,6 +39,8 @@ public class OrderController extends BasicController {
 
 	@RequestMapping(value = "/order.html", method = RequestMethod.GET)
 	public String search(Model model, HttpServletRequest request) {
+		String cookieDomain=ConfigUtil.getString("cookie.domain");
+		model.addAttribute("cookieDomain", cookieDomain);
 		return "search/order";
 	}
 

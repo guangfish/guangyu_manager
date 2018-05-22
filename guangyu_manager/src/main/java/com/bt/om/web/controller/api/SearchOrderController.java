@@ -3,7 +3,10 @@ package com.bt.om.web.controller.api;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,7 +98,7 @@ public class SearchOrderController extends BasicController {
 //			model.addAttribute(SysConst.RESULT_KEY, result);
 //			return model;
 //		}
-
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		String msg = "";
 		//判断是否可以提现 0：不可提现 1：可提现
 		String canDraw="0";
@@ -115,7 +118,7 @@ public class SearchOrderController extends BasicController {
 					}
 				}
 				friendNum = invitationList.size();
-				reward = 10 * friendNumValid;
+				reward = ConfigUtil.getInt("reward.money") * friendNumValid;
 			}
 			StringBuffer sb = new StringBuffer();
 			sb.append("<br/><div class='table'>");
@@ -123,7 +126,7 @@ public class SearchOrderController extends BasicController {
 				double totalCommission = 0;
 				int canDrawOrderNum=0;
 				int uncanDrawOrderNum=0;
-				for (UserOrder userOrder : userOrderList) {
+				for (UserOrder userOrder : userOrderList) {					
 					if("订单结算".equals(userOrder.getOrderStatus()) || "已结算".equals(userOrder.getOrderStatus())){
 						canDrawOrderNum=canDrawOrderNum+1;
 						totalCommission = totalCommission + userOrder.getCommission3();
@@ -152,6 +155,7 @@ public class SearchOrderController extends BasicController {
 			if (userOrderList != null && userOrderList.size() > 0) {
 				sb.append("<div class='table-row-group'>");
 				for (UserOrder userOrder : userOrderList) {
+					HashMap<String, String> map = new HashMap<>();
 					sb.append("<ul class='table-row'>");
 					// sb.append("<li class='table-cell'>").append("<img
 					// height='80' width='80' src='")
@@ -163,6 +167,12 @@ public class SearchOrderController extends BasicController {
 					sb.append("<li class='table-cell'>"
 							+ DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN) + "</li>");
 					sb.append("</ul>");
+					map.put("title", userOrder.getProductInfo());
+					map.put("commission", ((userOrder.getCommission3()==0)?"未知":"￥"+userOrder.getCommission3()));
+					map.put("status", userOrder.getOrderStatus());
+					map.put("time", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
+					
+					list.add(map);
 				}
 				sb.append("</div>");
 			}
@@ -173,8 +183,9 @@ public class SearchOrderController extends BasicController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		result.setResult(new UserOrderVo(msg, "0",canDraw));// 验证码验证成功
+		UserOrderVo userOrderVo=new UserOrderVo(msg, "0",canDraw);
+		userOrderVo.setMap(list);
+		result.setResult(userOrderVo);
 		model.addAttribute(SysConst.RESULT_KEY, result);
 		return model;
 	}
