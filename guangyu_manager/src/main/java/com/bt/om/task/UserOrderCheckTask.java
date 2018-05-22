@@ -19,7 +19,7 @@ import com.bt.om.util.ConfigUtil;
 /**
  * 淘宝订单核验
  */
-//@Component
+@Component
 public class UserOrderCheckTask {
 	private static final Logger logger = Logger.getLogger(UserOrderCheckTask.class);
 	@Autowired

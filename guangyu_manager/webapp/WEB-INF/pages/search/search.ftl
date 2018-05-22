@@ -10,7 +10,8 @@
 									<div class="item-inner">
 										<div class="item-input">
 											<input id="product_url" type="text" class="input_enter"
-												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">											
+												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">	
+											<input id="mobile" type="hidden" value="" name="mobile">										
 										</div>										
 									</div>
 								</div>
@@ -76,6 +77,13 @@
 			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 
+    <script>
+	  	var mobile = $.cookie('guangfishmobile');
+	  	if(mobile){
+	  	  $("#mobile").val(mobile);
+	  	}
+	</script>
+	
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
@@ -162,6 +170,7 @@
 		}
 
 		function fetch() {
+		    var mobile = $('#mobile').val();
 			var producturl = $('#product_url').val();
 			var reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
 			var regtkl=/￥.*￥/;
@@ -202,7 +211,8 @@
 							dataType : "json",// 返回json格式的数据
 							data : JSON.stringify({
 								"user_id" : "",
-								"product_url" : producturl
+								"product_url" : producturl,
+								"mobile" : mobile
 							}),
 							timeout : 30000, 
 							success : function(data) {
