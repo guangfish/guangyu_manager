@@ -80,8 +80,12 @@
     <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
 	
 	<script>
-       //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。');
-       Core.Dialog.note({'title':'通知','content':'朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效','callback':function(){}})
+       //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。');      
+      var notice = $.cookie('guangfishnotice');
+      if(!notice){
+	  	  Core.Dialog.note({'title':'通知','content':'朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效','callback':function(){}})
+	      $.cookie('guangfishnotice', 'notice', { expires: 1, path: '/',domain:'${cookieDomain?if_exists}'});
+	  }
     </script>
 
     <script>
