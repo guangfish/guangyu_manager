@@ -730,11 +730,12 @@ var Core = (function(){
 				});
 			},
 			note: function(opts){
-				var tit = opts.title || '提示', content = opts.content || '';
+				var tit = opts.title || '提示', content = opts.content || '', _btns = opts.btn || ['确定'];
 				var cbk = opts.callback || function(){};
 				layer.ready(function(){
 					var l_tip = layer.alert('<div style="font-size:12px;">'+content+'</div>', {
 						title: tit,
+						btn: _btns,
 						shade: 0.2
 					}, function(){
 						layer.close(l_tip);
@@ -742,9 +743,9 @@ var Core = (function(){
 					});
 				});
 			},
-			msg: function(str){
+			msg: function(str, _time){
 				layer.ready(function(){
-					layer.msg(str,{timer:1500});
+					layer.msg(str,{time: _time || 1500});
 				});
 			},
 			open: function(opts, backfun){
