@@ -47,9 +47,7 @@ public class UserOrderCheckTask {
 				String productInfo = "";
 				String orderStatus = "";
 				int productNum = 0;
-				double commission1 = 0;
-				double commission2 = 0;
-				double commission3 = 0;
+				double commission = 0;
 				int status1 = 1;
 				if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
 					for (TkOrderInput tkOrderInput : tkOrderInputList) {
@@ -59,9 +57,13 @@ public class UserOrderCheckTask {
 						productInfo = tkOrderInput.getProductInfo();
 						orderStatus = tkOrderInput.getOrderStatus();
 						productNum = productNum + tkOrderInput.getProductNum();
-						commission1 = commission1 + tkOrderInput.getCommissionMoney();
-						commission2 = commission2 + tkOrderInput.getCommissionMoney();
-						commission3 = commission3 + tkOrderInput.getCommissionMoney();
+						//订单结算时的实际佣金
+						if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
+							commission = commission + tkOrderInput.getCommissionMoney();
+						}else{
+							//订单未结算时的预估佣金
+							commission = commission + tkOrderInput.getEffectEstimate();
+						}						
 						if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
 							status1 = 2;
 						} else if ("订单失效".equals(tkOrderInput.getOrderStatus())) {
@@ -70,21 +72,37 @@ public class UserOrderCheckTask {
 					}
 					if (!orderStatus.equals(userOrder1.getOrderStatus())) {
 						logger.info("更新淘宝用户订单" + userOrder1.getOrderId() + "信息");
-						userOrder1.setPrice(payMoney);
+						userOrder1.setPrice(((double) (Math.round(payMoney * 100)) / 100));
 						userOrder1.setRate(commissionRate);
 						userOrder1.setShopName(shopName);
 						userOrder1.setProductNum(productNum);
 						userOrder1.setProductInfo(productInfo);
 						userOrder1.setOrderStatus(orderStatus);
-						userOrder1.setCommission1(((double) (Math.round(commission1 * 100)) / 100));
+						userOrder1.setCommission1(((double) (Math.round(commission * 100)) / 100));
 						// userOrder1.setCommission2(tkOrderInput.getCommissionMoney()
 						// * 0.8);
 						// 佣金的基础上去掉2层支付给阿里妈妈的服务费
-						userOrder1.setCommission2(((double) (Math.round(commission2 * 0.8 * 100)) / 100));
+						userOrder1.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
 						// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
-						userOrder1.setCommission3(
-								((double) (Math.round(commission3 * ConfigUtil.getFloat("commission.rate", 1) * 100))
-										/ 100));
+						userOrder1.setCommission3(((double) (Math.round(
+								commission * ConfigUtil.getFloat("commission.rate", 1) * 100))
+								/ 100));
+						if(commission<=1){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.1"));
+						}else if(commission>1 && commission<=5){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.1-5"));
+						}else if(commission>5 && commission<=10){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.5-10"));
+						}else if(commission>10 && commission<=50){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.10-50"));
+						}else if(commission>50 && commission<=100){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.50-100"));
+						}else if(commission>100 && commission<=500){
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.100-500"));
+						}else{
+							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.500"));
+						}
+						
 						userOrder1.setStatus1(status1);
 						userOrder1.setUpdateTime(new Date());
 						userOrderService.updateByPrimaryKey(userOrder1);

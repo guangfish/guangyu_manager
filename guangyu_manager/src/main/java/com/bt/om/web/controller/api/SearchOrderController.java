@@ -129,7 +129,7 @@ public class SearchOrderController extends BasicController {
 				for (UserOrder userOrder : userOrderList) {					
 					if("订单结算".equals(userOrder.getOrderStatus()) || "已结算".equals(userOrder.getOrderStatus())){
 						canDrawOrderNum=canDrawOrderNum+1;
-						totalCommission = totalCommission + userOrder.getCommission3();
+						totalCommission = totalCommission + userOrder.getCommission3()*userOrder.getFanliMultiple();
 					}else{
 						uncanDrawOrderNum=uncanDrawOrderNum+1;
 					}					
@@ -161,14 +161,14 @@ public class SearchOrderController extends BasicController {
 					// height='80' width='80' src='")
 					// .append(userOrder.getProductImgUrl()).append("'>").append("</li>");
 					sb.append("<li class='table-cell'>" + StringUtil.getSubString(userOrder.getProductInfo(), 15)+ "...</li>");
-					sb.append("<li class='table-cell'>" + ((userOrder.getCommission3()==0)?"未知":"￥"+userOrder.getCommission3())  + "</li>");
+					sb.append("<li class='table-cell'>" + ((!"订单结算".equals(userOrder.getOrderStatus()))?("预估￥"+userOrder.getCommission3()+" x "+userOrder.getFanliMultiple()+"倍"):"￥"+(userOrder.getCommission3()+" x "+userOrder.getFanliMultiple()+"倍"))  + "</li>");
 					sb.append("<li class='table-cell'>" + userOrder.getOrderStatus() + "</li>");
 //					sb.append("<li class='table-cell'>￥" + ((float) (Math.round((userOrder.getCommission1()- userOrder.getCommission3()) * 100)) / 100) + "</li>");
 					sb.append("<li class='table-cell'>"
 							+ DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN) + "</li>");
 					sb.append("</ul>");
 					map.put("title", userOrder.getProductInfo());
-					map.put("commission", ((userOrder.getCommission3()==0)?"未知":"￥"+userOrder.getCommission3()));
+					map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))?("预估￥"+userOrder.getCommission3()+" x "+userOrder.getFanliMultiple()+"倍"):"￥"+(userOrder.getCommission3()+" x "+userOrder.getFanliMultiple()+"倍")));
 					map.put("status", userOrder.getOrderStatus());
 					map.put("time", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
 					

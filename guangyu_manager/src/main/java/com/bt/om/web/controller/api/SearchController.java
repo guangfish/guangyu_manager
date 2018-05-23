@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,8 @@ public class SearchController extends BasicController {
 	public String search(Model model, HttpServletRequest request) {
 		List<Notice> noticeList = noticeService.selectAll();
 		if(noticeList!=null && noticeList.size()>0){
-			model.addAttribute("notice", noticeList.get(0));
+			Random r3 = new Random();
+			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
 		return "search/search";
 	}
@@ -49,7 +51,8 @@ public class SearchController extends BasicController {
 	public String search1(Model model, HttpServletRequest request) {
 		List<Notice> noticeList = noticeService.selectAll();
 		if(noticeList!=null && noticeList.size()>0){
-			model.addAttribute("notice", noticeList.get(0));
+			Random r3 = new Random();
+			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
 		return "search/search";
 	}

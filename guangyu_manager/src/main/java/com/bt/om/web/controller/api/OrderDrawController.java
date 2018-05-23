@@ -172,7 +172,7 @@ public class OrderDrawController extends BasicController {
 		double totalCommission = 0;
 		int productNums = userOrderList.size();
 		for (UserOrder userOrder : userOrderList) {
-			totalCommission = totalCommission + userOrder.getCommission3();
+			totalCommission = totalCommission + userOrder.getCommission3()*userOrder.getFanliMultiple();
 		}
 
 		DrawCash drawCash = new DrawCash();

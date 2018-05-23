@@ -81,11 +81,11 @@
 	
 	<script>
        //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。',9000);      
-      var notice = $.cookie('guangfishnotice');
+      var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
       if(!notice){
         <#if notice??>
 	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-	      $.cookie('guangfishnotice', 'notice', { expires: 1, path: '/',domain:'${cookieDomain?if_exists}'});
+	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: 1, path: '/',domain:'${cookieDomain?if_exists}'});
 	    </#if>
 	  }
 	  function noticeClick(){
