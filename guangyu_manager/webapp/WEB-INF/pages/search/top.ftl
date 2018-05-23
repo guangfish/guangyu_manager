@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="/static/front/css/app.css">
 
 </head>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1273766090'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/z_stat.php%3Fid%3D1273766090%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 <body style="position: static; width: 300px; height: 600px;">
 
 <script type='text/javascript' src='/static/front/js/jquery.min.js' charset='utf-8'></script>
