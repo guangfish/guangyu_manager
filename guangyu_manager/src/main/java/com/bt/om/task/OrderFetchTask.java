@@ -40,7 +40,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 淘宝订单报表下载入库
  */
-//@Component
+@Component
 public class OrderFetchTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchTask.class);
 	
