@@ -93,25 +93,25 @@ public class OrderDrawController extends BasicController {
 
 			// 手机号码必须验证
 			if (StringUtils.isEmpty(mobile)) {
-				result.setResult(new OrderDrawVo(0, "0", "1"));
+				result.setResult(new OrderDrawVo(0, "0", "0", "0", "1"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
 			// 支付宝必须验证
 			if (StringUtils.isEmpty(alipay)) {
-				result.setResult(new OrderDrawVo(0, "0", "2"));
+				result.setResult(new OrderDrawVo(0, "0", "0", "0", "2"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
 			// 验证码必须验证
 			if (StringUtils.isEmpty(vcode)) {
-				result.setResult(new OrderDrawVo(0, "0", "3"));
+				result.setResult(new OrderDrawVo(0, "0", "0", "0", "3"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
 			// 短信验证码必须验证
 			if (StringUtils.isEmpty(smscode)) {
-				result.setResult(new OrderDrawVo(0, "0", "4"));
+				result.setResult(new OrderDrawVo(0, "0", "0", "0", "4"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
@@ -126,7 +126,7 @@ public class OrderDrawController extends BasicController {
 				: request.getSession().getAttribute(SessionKey.SESSION_CODE.toString()).toString();
 		// 验证码有效验证
 		if (!vcode.equalsIgnoreCase(sessionCode)) {
-			result.setResult(new OrderDrawVo(0, "0", "5")); // 验证码不一致
+			result.setResult(new OrderDrawVo(0, "0", "0", "0", "5")); // 验证码不一致
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -134,14 +134,14 @@ public class OrderDrawController extends BasicController {
 		String vcodejds = jedisPool.getResource().get(mobile);
 		// 短信验证码已过期
 		if (StringUtils.isEmpty(vcodejds)) {
-			result.setResult(new OrderDrawVo(0, "0", "6"));
+			result.setResult(new OrderDrawVo(0, "0", "0", "0", "6"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
 
 		// 验证码有效验证
 		if (!smscode.equalsIgnoreCase(vcodejds)) {
-			result.setResult(new OrderDrawVo(0, "0", "7")); // 短信验证码不一致
+			result.setResult(new OrderDrawVo(0, "0", "0", "0", "7")); // 短信验证码不一致
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -166,7 +166,7 @@ public class OrderDrawController extends BasicController {
 
 		List<UserOrder> userOrderList = userOrderService.selectByMobile(mobile);
 		if (userOrderList == null || userOrderList.size() <= 0) {			
-			result.setResult(new OrderDrawVo(0, "0", "8")); // 无可提现商品或者商品处于核对中
+			result.setResult(new OrderDrawVo(0, "0", "0", "0", "8")); // 无可提现商品或者商品处于核对中
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -232,7 +232,7 @@ public class OrderDrawController extends BasicController {
 		    }
 		}).start();
 
-		result.setResult(new OrderDrawVo(productNums, String.valueOf(((float) (Math.round(totalCommission * 100)) / 100)), "0"));// 申请成功
+		result.setResult(new OrderDrawVo(productNums, String.valueOf(((float) (Math.round(totalCommission * 100)) / 100)), String.valueOf(((float) (Math.round(totalCommission * 100)) / 100)+reward),reward+"", "0"));// 申请成功
 		model.addAttribute(SysConst.RESULT_KEY, result);
 		return model;
 	}

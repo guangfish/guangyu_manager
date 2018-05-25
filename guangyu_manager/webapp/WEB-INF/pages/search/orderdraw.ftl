@@ -175,13 +175,13 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result.status=="0"){
-								    alert("提现申请成功,提现商品"+data.ret.result.productNums+"件,提现金额"+data.ret.result.money+"元,请注意支付宝查收！");
+								    alert("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！");
 								    //$("#mobile").val("");
 								    //$("#alipay").val("");
 								    $("#vcode").val("");
 								    $("#smscode").val("");
 								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
-								    $('#result').html("<br/><br/><font color='red'>提现申请成功了,提现商品"+data.ret.result.productNums+"件,提现金额"+data.ret.result.money+"元,请注意支付宝查收！</font>");
+								    $('#result').html("<br/><br/><font color='red'>提现申请成功了,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现金额"+data.ret.result.money+"元,请注意支付宝查收！</font>");
 								  }								  
 								  if(data.ret.result.status=="5"){
 								    alert("图形验证码验证失败!");
