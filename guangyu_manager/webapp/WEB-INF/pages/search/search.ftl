@@ -85,7 +85,7 @@
       if(!notice){
         <#if notice??>
 	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: 1, path: '/',domain:'${cookieDomain?if_exists}'});
+	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});
 	    </#if>
 	  }
 	  function noticeClick(){
