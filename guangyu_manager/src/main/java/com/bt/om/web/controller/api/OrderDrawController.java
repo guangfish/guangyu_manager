@@ -158,7 +158,8 @@ public class OrderDrawController extends BasicController {
 		if(invitationList!=null && invitationList.size()>0){
 			for(Invitation invitation:invitationList){
 				if(invitation.getStatus()==2 && invitation.getReward()==1){
-					reward=ConfigUtil.getInt("reward.money")*invitationList.size();
+					//reward=ConfigUtil.getInt("reward.money")*invitationList.size();
+					reward=reward+invitation.getMoney();
 				}
 			}			
 		}		

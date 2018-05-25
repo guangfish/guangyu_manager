@@ -15,6 +15,30 @@ import com.bt.om.web.BasicController;
 @Controller
 public class HelpController extends BasicController {
 
+	// 微信浏览器淘宝使用帮助
+	@RequestMapping(value = "/help.html", method = RequestMethod.GET)
+	public String help(Model model, HttpServletRequest request) {
+		return "search/help";
+	}
+
+	// 微信浏览器京东使用帮助
+	@RequestMapping(value = "/helpjd.html", method = RequestMethod.GET)
+	public String helpjd(Model model, HttpServletRequest request) {
+		return "search/helpjd";
+	}
+
+	// 订单录入帮助
+	@RequestMapping(value = "/helporder.html", method = RequestMethod.GET)
+	public String helporder(Model model, HttpServletRequest request) {
+		return "search/helporder";
+	}
+
+	// 提现帮助
+	@RequestMapping(value = "/helpdraw.html", method = RequestMethod.GET)
+	public String helpdraw(Model model, HttpServletRequest request) {
+		return "search/helpdraw";
+	}
+
 	// 苹果手机使用淘宝帮助
 	@RequestMapping(value = "/helptbios.html", method = RequestMethod.GET)
 	public String helpTbIos(Model model, HttpServletRequest request) {
@@ -39,9 +63,4 @@ public class HelpController extends BasicController {
 		return "search/helpjdandroid";
 	}
 
-	// 提现帮助
-	@RequestMapping(value = "/helpdraw.html", method = RequestMethod.GET)
-	public String helpDraw(Model model, HttpServletRequest request) {
-		return "search/helpdraw";
-	}
 }

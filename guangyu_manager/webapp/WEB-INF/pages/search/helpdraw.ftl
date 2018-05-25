@@ -10,6 +10,7 @@
 					      </p>
 					    </div>
 						<p class='text-center signup'>
+						        <font color="red">注意：为了完成提现，请确保已录入了订单号。<br/><a href="order.html">点击这里录入订单号</a></font><br/><br/>
 						        <font color="red">步骤一：进入"我要录入订单号"页面</font><br/><br/>
 								<img width="90%" src="http://help.guangfish.com/imgs/draw-0.png"><br/>
 								<br/><font color="red">步骤二：输入订单号（页面下方有寻找订单号图示），并填写您的手机号码</font><br/><br/>

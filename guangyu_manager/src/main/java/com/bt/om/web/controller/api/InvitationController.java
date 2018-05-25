@@ -84,6 +84,7 @@ public class InvitationController extends BasicController {
 		invitation.setBeInviterMobile(mobileFriend);
 		invitation.setStatus(1);
 		invitation.setReward(1);
+		invitation.setMoney(ConfigUtil.getInt("reward.money",0));
 		invitation.setCreateTime(new Date());
 		invitation.setUpdateTime(new Date());
 		

@@ -115,10 +115,11 @@ public class SearchOrderController extends BasicController {
 				for(Invitation invitation:invitationList){
 					if(invitation.getStatus()==2 && invitation.getReward()==1){
 						friendNumValid = friendNumValid + 1;
+						reward=reward+invitation.getMoney();
 					}
 				}
 				friendNum = invitationList.size();
-				reward = ConfigUtil.getInt("reward.money") * friendNumValid;
+				//reward = ConfigUtil.getInt("reward.money") * friendNumValid;
 			}
 			StringBuffer sb = new StringBuffer();
 			sb.append("<br/><div class='table'>");

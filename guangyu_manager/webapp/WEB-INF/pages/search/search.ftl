@@ -44,11 +44,11 @@
 						</p>
 						<p class='text-center signup'>                               
 								<a href="/order.html"
-								class='pull-left external' style="font-size: 0.8rem;">我要录入订单号</a>
-								<a href="/api/invitation.html"
+								class='pull-left external' style="font-size: 0.8rem;">录入订单号</a>
+								<!--<a href="/api/invitation.html"
 								class='pull-center external' style="font-size: 0.8rem;color:red">拿奖励</a>
-								&nbsp;&nbsp;&nbsp;
-								<a href="/helptbios.html"
+								&nbsp;&nbsp;&nbsp;-->
+								<a href="/help.html"
 								class='pull-center external' style="font-size: 0.8rem;color:red">操作指南</a>
 								<a href="/searchorder.html"
 								class='pull-right external' style="font-size: 0.8rem;">我要提现</a>
@@ -70,7 +70,8 @@
 		  <br/><font style="font-size: 0.6rem;color: red;">保存书签：请在手机浏览器打开本页面，并保存成书签</font>
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">	  
 		  -->
-		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
+		  <!--<br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">-->
+		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
 		</div>	
 	</div>
 			
@@ -81,13 +82,13 @@
 	
 	<script>
        //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。',9000);      
+      <#if notice??>
       var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
-      if(!notice){
-        <#if notice??>
+      if(!notice){       
 	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});
-	    </#if>
+	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});	    
 	  }
+	  </#if>
 	  function noticeClick(){
 	    $('.layui-layer-btn0').click();
 	  }
