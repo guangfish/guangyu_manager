@@ -412,7 +412,6 @@ public class ProductUrlTrans {
 				try {
 					logger.info("taobao refresh...");
 					driver.navigate().refresh();
-					jdDriver.navigate().refresh();
 				} catch (Exception e) {
 					logger.error("taobao refresh error:[{}]", e);
 				}
