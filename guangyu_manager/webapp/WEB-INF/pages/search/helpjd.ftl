@@ -38,8 +38,9 @@
 								<img width="90%" src="http://help.guangfish.com/imgs/help-jd04.png"><br/>
 								<br/><font color="red">步骤五：完成购买，然后在逛鱼搜索首页录入订单号（哪里找订单号，你懂的）</font><br/><br/>
 								<img width="90%" src="http://help.guangfish.com/imgs/help-jd05.png"><br/>
-								<br/><font color="red">步骤六：建议把逛鱼搜索页放到微信收藏夹中</font><br/><br/>
-								<img width="90%" src="http://help.guangfish.com/imgs/help-jd06.png">
+								<br/><font color="red">步骤六：建议把逛鱼搜索页放在聊天中置顶</font><br/><br/>
+								<img width="90%" src="http://help.guangfish.com/imgs/help-wx07.png"><br/>
+								<img width="90%" src="http://help.guangfish.com/imgs/help-wx08.png">
 						</p>
 					</div>
 		</div>
