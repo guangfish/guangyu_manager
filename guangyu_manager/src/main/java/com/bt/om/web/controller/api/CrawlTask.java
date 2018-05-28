@@ -8,6 +8,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.HttpcomponentsUtil;
@@ -72,7 +73,7 @@ public class CrawlTask {
 		int i = 0;
 		while (true) {
 			// 连续多少次查询后仍然查不到数据就退出
-			if (i >= ConfigUtil.getInt("task.info.check.num", 30)) {
+			if (i >= Integer.parseInt(GlobalVariable.resourceMap.get("task.info.check.num"))) {
 				break;
 			}
 			if (taskBeanRet.getRet().getSucc() == true) {

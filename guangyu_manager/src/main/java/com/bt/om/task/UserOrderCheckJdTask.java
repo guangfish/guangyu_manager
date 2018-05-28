@@ -14,7 +14,7 @@ import com.bt.om.entity.TkOrderInputJd;
 import com.bt.om.entity.UserOrder;
 import com.bt.om.service.ITkOrderInputJdService;
 import com.bt.om.service.IUserOrderService;
-import com.bt.om.util.ConfigUtil;
+import com.bt.om.system.GlobalVariable;
 
 /**
  * 京东订单核验
@@ -92,23 +92,23 @@ public class UserOrderCheckJdTask {
 						userOrder1.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
 						// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
 						userOrder1.setCommission3(((double) (Math.round(
-								commission * ConfigUtil.getFloat("commission.rate", 1) * 100))
+								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 								/ 100));
 
 						if(commission<=1){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.1"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
 						}else if(commission>1 && commission<=5){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.1-5"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
 						}else if(commission>5 && commission<=10){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.5-10"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
 						}else if(commission>10 && commission<=50){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.10-50"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
 						}else if(commission>50 && commission<=100){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.50-100"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
 						}else if(commission>100 && commission<=500){
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.100-500"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
 						}else{
-							userOrder1.setFanliMultiple(ConfigUtil.getFloat("fanli.multiple.500"));
+							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
 						}
 						
 						userOrder1.setStatus1(status1);

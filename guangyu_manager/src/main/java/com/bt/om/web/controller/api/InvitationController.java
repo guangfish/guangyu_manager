@@ -21,6 +21,7 @@ import com.bt.om.common.SysConst;
 import com.bt.om.entity.Invitation;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IInvitationService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -37,7 +38,7 @@ public class InvitationController extends BasicController {
 
 	@RequestMapping(value = "/api/invitation.html", method = RequestMethod.GET)
 	public String invitation(Model model, HttpServletRequest request) {
-		int reward=ConfigUtil.getInt("reward.money");
+		int reward=Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"));
 		model.addAttribute("reward", reward);
 		return "search/invitation";
 	}
@@ -84,7 +85,7 @@ public class InvitationController extends BasicController {
 		invitation.setBeInviterMobile(mobileFriend);
 		invitation.setStatus(1);
 		invitation.setReward(1);
-		invitation.setMoney(ConfigUtil.getInt("reward.money",0));
+		invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));		
 		invitation.setCreateTime(new Date());
 		invitation.setUpdateTime(new Date());
 		
