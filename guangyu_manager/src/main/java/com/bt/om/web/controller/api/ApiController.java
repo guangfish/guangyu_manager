@@ -388,14 +388,31 @@ public class ApiController extends BasicController {
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
 				sb.append(price);
 				sb.append("</span><span style='float: right;'>预估返现：￥");
-				sb.append(((float) (Math.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
+				float fanli=((float) (Math.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100);
+				float fanliMultiple=1;
+				sb.append(fanli);
+				if(fanli<=1){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
+				}else if(fanli>1 && fanli<=5){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
+				}else if(fanli>5 && fanli<=10){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
+				}else if(fanli>10 && fanli<=50){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
+				}else if(fanli>50 && fanli<=100){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
+				}else if(fanli>100 && fanli<=500){
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
+				}else{
+					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
+				}
 				sb.append("(");
 				sb.append(((float) (Math.round(incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
 				sb.append("%)");
 				sb.append(
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'>");
 				
-				sb.append("</div></div></div>");
+				sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
 				msg = sb.toString();
 			} else {
 				return model;
@@ -458,16 +475,32 @@ public class ApiController extends BasicController {
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
 			sb.append(productInfo.getPrice());
 			sb.append("</span><span style='float: right;'>预估返现：￥");
-			sb.append(
-					((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-							/ 100));
+			float fanli=((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+					/ 100);
+			float fanliMultiple=1;
+			sb.append(fanli);
+			if(fanli<=1){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
+			}else if(fanli>1 && fanli<=5){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
+			}else if(fanli>5 && fanli<=10){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
+			}else if(fanli>10 && fanli<=50){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
+			}else if(fanli>50 && fanli<=100){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
+			}else if(fanli>100 && fanli<=500){
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
+			}else{
+				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
+			}
 			sb.append("(");
 			sb.append(((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
 			sb.append("%)");
 			sb.append(
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
 			
-			sb.append("</div></div></div>");
+			sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
 			msg = sb.toString();
 						
 		}

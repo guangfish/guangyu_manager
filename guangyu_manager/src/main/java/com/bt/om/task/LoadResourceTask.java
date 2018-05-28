@@ -16,7 +16,7 @@ public class LoadResourceTask {
 	@Autowired
     private GlobalVariable globalVariable;
 	
-	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void getTask() {
 //		logger.info("定时加载资源表");
 //		logger.info(GlobalVariable.resourceMap.get("task.info.check.num"));
