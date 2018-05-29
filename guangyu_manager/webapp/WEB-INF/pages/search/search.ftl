@@ -138,6 +138,7 @@
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
+			alert('完成购买后记得回来录入订单号哦');
 			window.open(link);
 		  //if(isContains(link,"taobao.com")){
 			//if(isWeiXin()){
@@ -172,6 +173,7 @@
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
             alert('淘口令复制成功，去打开手机淘宝完成商品购买');
+            alert('完成购买后记得回来录入订单号哦');
             $('#copy').removeAttr('data-clipboard-text');
           });
           clipboard.on('error', function (e) {
