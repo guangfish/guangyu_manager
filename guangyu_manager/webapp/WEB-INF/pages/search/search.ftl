@@ -138,8 +138,7 @@
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
-			//alert('完成购买后记得回来录入订单号哦');
-			Core.Dialog.msg('页面即将跳转，完成购买后记得回来录入订单号哦！',9000);
+			alert('提示：完成购买后记得回来录入订单号哦');
 			window.open(link);
 		  //if(isContains(link,"taobao.com")){
 			//if(isWeiXin()){
