@@ -81,14 +81,47 @@
     <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
 	
 	<script>
-       //Core.Dialog.msg('通知：朋友您好，如果你通过逛鱼搜索购买商品后，还未提交订单号的话，那么请您尽快去提交订单号，订单号的有效期为1个月，过期将会失效。',9000);      
-      <#if notice??>
+	  var B = setInterval(function(){
+	    $
+						.ajax({
+							type : "post",
+							url : "/api/notice", 
+							contentType : "application/json",
+							dataType : "json",// 返回json格式的数据
+							timeout : 30000, 
+							success : function(data) {
+								console.log('请求到的数据为：', data)
+								if(JSON.stringify(data) != "{}"){
+								  var notice = $.cookie('guangfishnotice'+data.ret.id);
+                                  if(!notice){
+                                    if(data.ret.type==2){
+								      Core.Dialog.note({'title':data.ret.title,'content':data.ret.content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
+								    }else{
+								      Core.Dialog.msg(data.ret.content,data.ret.noticeTime);
+								    }
+								    $.cookie('guangfishnotice'+data.ret.id, 'notice', { expires: data.ret.expires, path: '/',domain:'${cookieDomain?if_exists}'});
+                                  }								  
+								}
+							},
+							error : function(XMLHttpRequest, textStatus,
+									errorThrown) {
+								console.log('请求失败')
+							}
+						});
+	  },10000);
+	  
+	  <#if notice??>
       var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
-      if(!notice){       
-	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-	      $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});	    
+      if(!notice){
+        if(${notice.type?if_exists}==2){
+	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})	      	    
+	    }else{
+	      Core.Dialog.msg('${notice.content?if_exists}',${notice.noticeTime?if_exists});
+	    }
+	    $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});
 	  }
 	  </#if>
+     
 	  function noticeClick(){
 	    $('.layui-layer-btn0').click();
 	  }

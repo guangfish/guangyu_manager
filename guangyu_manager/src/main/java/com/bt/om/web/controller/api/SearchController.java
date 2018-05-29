@@ -56,6 +56,19 @@ public class SearchController extends BasicController {
 		}
 		return "search/search";
 	}
+	
+	@RequestMapping(value = "/api/notice", method = RequestMethod.POST)
+	@ResponseBody
+	public Model notice(Model model, HttpServletRequest request, HttpServletResponse response) {
+		List<Notice> noticeList = noticeService.selectAll();
+		Notice notice=null;
+		if(noticeList!=null && noticeList.size()>0){
+			Random r3 = new Random();
+			notice=noticeList.get(r3.nextInt(noticeList.size()));
+		}
+		model.addAttribute(SysConst.RESULT_KEY, notice);
+		return model;
+	}
 
 	// 图形验证码验证
 	@RequestMapping(value = "/api/vcodevaild", method = RequestMethod.POST)
