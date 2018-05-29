@@ -138,7 +138,8 @@
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
-			alert('完成购买后记得回来录入订单号哦');
+			//alert('完成购买后记得回来录入订单号哦');
+			Core.Dialog.msg('页面即将跳转，完成购买后记得回来录入订单号哦！',9000);
 			window.open(link);
 		  //if(isContains(link,"taobao.com")){
 			//if(isWeiXin()){
@@ -172,8 +173,9 @@
 		  $('#copy').attr('data-clipboard-text', value);
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
-            alert('淘口令复制成功，去打开手机淘宝完成商品购买');
-            alert('完成购买后记得回来录入订单号哦');
+            //alert('淘口令复制成功，去打开手机淘宝完成商品购买');
+            //alert('完成购买后记得回来录入订单号哦');
+            Core.Dialog.msg('淘口令复制成功，去打开手机淘宝完成商品购买，完成购买后记得回来录入订单号哦！',9000);
             $('#copy').removeAttr('data-clipboard-text');
           });
           clipboard.on('error', function (e) {
