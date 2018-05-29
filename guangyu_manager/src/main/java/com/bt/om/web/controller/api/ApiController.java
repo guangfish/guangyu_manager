@@ -203,25 +203,49 @@ public class ApiController extends BasicController {
 		}
 		
 		//判断是否发送的是淘口令请求
-		String reg="￥.*￥";
-		String reg1="《.*《";		
-		Pattern pattern = Pattern.compile(reg);
-		Matcher matcher = pattern.matcher(product_url);
-		Pattern pattern1 = Pattern.compile(reg1);
-		Matcher matcher1 = pattern1.matcher(product_url);
-		if(matcher.find() || matcher1.find()){
-			product_url=TaoKouling.parserTkl(product_url);
-			logger.info("通过淘口令转换获得的商品链接==>"+product_url);
-			if(StringUtils.isEmpty(product_url)){
-				result.setCode(ResultCode.RESULT_FAILURE.getCode());
-				result.setResultDes("商品链接为空！");
-				result.setResult(new ProductInfoVo("","","","","2"));
-				model.addAttribute(SysConst.RESULT_KEY, result);
-				return model;
-			}else{
-				Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
-				product_url=urlMap0.get("puri")+"?id="+urlMap0.get("id");
-				logger.info("通过淘口令转换获得的商品缩短链接==>"+product_url);
+//		String reg="￥.*￥";
+//		String reg1="《.*《";		
+//		Pattern pattern = Pattern.compile(reg);
+//		Matcher matcher = pattern.matcher(product_url);
+//		Pattern pattern1 = Pattern.compile(reg1);
+//		Matcher matcher1 = pattern1.matcher(product_url);
+//		if(matcher.find() || matcher1.find()){
+//			product_url=TaoKouling.parserTkl(product_url);
+//			logger.info("通过淘口令转换获得的商品链接==>"+product_url);
+//			if(StringUtils.isEmpty(product_url)){
+//				result.setCode(ResultCode.RESULT_FAILURE.getCode());
+//				result.setResultDes("商品链接为空！");
+//				result.setResult(new ProductInfoVo("","","","","2"));
+//				model.addAttribute(SysConst.RESULT_KEY, result);
+//				return model;
+//			}else{
+//				Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
+//				product_url=urlMap0.get("puri")+"?id="+urlMap0.get("id");
+//				logger.info("通过淘口令转换获得的商品缩短链接==>"+product_url);
+//			}
+//		}
+		
+		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
+		String[] tklSymbols = tklSymbolsStr.split(";");
+		for (String symbol : tklSymbols) {
+			String reg0 = symbol + ".*" + symbol;
+			Pattern pattern0 = Pattern.compile(reg0);
+			Matcher matcher0 = pattern0.matcher(product_url);
+			if (matcher0.find()) {
+				product_url = TaoKouling.parserTkl(product_url);
+				logger.info("通过淘口令转换获得的商品链接==>" + product_url);
+				if (StringUtils.isEmpty(product_url)) {
+					result.setCode(ResultCode.RESULT_FAILURE.getCode());
+					result.setResultDes("商品链接为空！");
+					result.setResult(new ProductInfoVo("", "", "", "", "2"));
+					model.addAttribute(SysConst.RESULT_KEY, result);
+					return model;
+				} else {
+					Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
+					product_url = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
+					logger.info("通过淘口令转换获得的商品缩短链接==>" + product_url);
+				}
+				break;
 			}
 		}
 

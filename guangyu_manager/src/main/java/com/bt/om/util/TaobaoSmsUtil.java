@@ -26,8 +26,25 @@ public class TaobaoSmsUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void sendSmsCommon(String signName, String smsTemplateCode, String mobile) {
+		TaobaoClient client = new DefaultTaobaoClient(Url, AppKey, AppSecret);
+		AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
+		req.setExtend("");
+		req.setSmsType("normal");
+		req.setSmsFreeSignName(signName);
+		req.setRecNum(mobile);
+		req.setSmsTemplateCode(smsTemplateCode);
+		try {
+			AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
+			System.out.println(rsp.getBody());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
-		sendSms("逛鱼返利", "SMS_125955002", "vcode", "12345", "13732203065");
+//		sendSms("逛鱼返利", "SMS_125955002", "vcode", "12345", "13732203065");
+		sendSmsCommon("逛鱼返利", "SMS_135793100", "13732203065");
 	}
 }
