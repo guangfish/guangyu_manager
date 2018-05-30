@@ -77,9 +77,6 @@
 			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	
-    <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
-    <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
-	
 	<script>
 	  var B = setInterval(function(){
 	    $
@@ -275,7 +272,7 @@
 								if (JSON.stringify(data) == "{}") {
 									$('#result')
 											.html(
-													"<div id='e-c' align=center><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><h2 style='padding:5px;font-size:18px;'>该商品无佣金</h2></div></div>");
+													"<div id='e-c' align=center><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><h2 style='padding:5px;font-size:18px;'>该商品无返利</h2></div></div>");
 								} else {
 								    if(data.ret.code==101){
 								      if(data.ret.result.status=="4"){

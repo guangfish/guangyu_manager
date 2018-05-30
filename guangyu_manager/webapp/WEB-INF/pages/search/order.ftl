@@ -70,7 +70,6 @@
 		  <font style="font-size: 0.7rem;color:red">寻找订单号方法如下图所示</font><br/>
 		  <img width="90%" src="http://help.guangfish.com/imgs/getorderid.png">
 		</div>
-
 	</div>
 	
 	<script>
@@ -154,7 +153,12 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result=="0"){
-								    alert("提交成功，请在收货后，在淘宝/京东'确认收货'后方可提现");
+								    alert("订单号提交成功，请收货后，去淘宝/京东\"确认收货\"后方可提现");
+								    var orderSubmitNotice = $.cookie('ordersubmitnotice');
+								    if(!orderSubmitNotice){
+								      Core.Dialog.msg("提示：返回【搜索返利页 -> 我要提现】，输入您的手机号，查询订单信息（刚录入的订单号，最快1分钟、最迟次日可查）。<a href=\"searchorder.html\">点我查订单</a>",9000);
+								      $.cookie('ordersubmitnotice', 'ordersubmitnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
+								    }
 								    $("#orderid").val("");
 								    //$("#mobile").val("");
 								    //暂时屏蔽掉

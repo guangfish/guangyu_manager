@@ -28,6 +28,10 @@
 											<input id="alipay" maxlength="50" type="text" class="input_enter"
 												placeholder="请输入支付宝账号" name="alipay">
 										</div>
+										<div id="send" class="item-title label" style="width: 3rem;">
+											<a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="copyMobile()">复制</a>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -60,7 +64,7 @@
 										</div>
 										<div id="send" class="item-title label" style="width: 3rem;">
 											<a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="sendsmscode()">发送短信验证码</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="sendsmscode()">发送</a>
 										</div>
 										<div id="timer" class="item-title label"
 											style="width: 3rem; display: none; color: orangered; font-size: 0.8rem;"></div>
@@ -102,6 +106,11 @@
 	</script>
 
 	<script>	
+	    function copyMobile() {  
+          var mobile = $('#mobile').val();
+          $('#alipay').val(mobile);
+        }
+      
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
           if (!myreg.test(mobile)) {  
@@ -109,7 +118,7 @@
           } else {  
               return true;  
           }  
-      }
+        }
 	    
 	    function commit(){
 	      var mobile = $('#mobile').val();
