@@ -41,6 +41,7 @@ public class SearchController extends BasicController {
 	public String search(Model model, HttpServletRequest request) {
 		List<Notice> noticeList = noticeService.selectAll();
 		if(noticeList!=null && noticeList.size()>0){
+			model.addAttribute("noticelist", noticeList);
 			Random r3 = new Random();
 			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
@@ -51,6 +52,7 @@ public class SearchController extends BasicController {
 	public String search1(Model model, HttpServletRequest request) {
 		List<Notice> noticeList = noticeService.selectAll();
 		if(noticeList!=null && noticeList.size()>0){
+			model.addAttribute("noticelist", noticeList);
 			Random r3 = new Random();
 			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
@@ -63,10 +65,11 @@ public class SearchController extends BasicController {
 		List<Notice> noticeList = noticeService.selectAll();
 		Notice notice=null;
 		if(noticeList!=null && noticeList.size()>0){
+			model.addAttribute("noticelist", noticeList);
 			Random r3 = new Random();
 			notice=noticeList.get(r3.nextInt(noticeList.size()));
 		}
-		model.addAttribute(SysConst.RESULT_KEY, notice);
+		model.addAttribute(SysConst.RESULT_KEY, noticeList);
 		return model;
 	}
 

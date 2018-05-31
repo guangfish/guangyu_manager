@@ -89,35 +89,51 @@
 							success : function(data) {
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
-								  var notice = $.cookie('guangfishnotice'+data.ret.id);
-                                  if(!notice){
-                                    if(data.ret.type==2){
-								      Core.Dialog.note({'title':data.ret.title,'content':data.ret.content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-								    }else{
-								      Core.Dialog.msg(data.ret.content,data.ret.noticeTime);
-								    }
-								    $.cookie('guangfishnotice'+data.ret.id, 'notice', { expires: data.ret.expires, path: '/',domain:'${cookieDomain?if_exists}'});
-                                  }								  
+								  for(var i = 0; i < data.ret.length; i++){
+								    //alert(data.ret[i].type + " " + data.ret[i].content);
+								    var notice = $.cookie('guangfishnotice'+data.ret[i].id);
+								    if(!notice){
+								      if(data.ret[i].type==2){
+								        Core.Dialog.note({'title':data.ret[i].title,'content':data.ret[i].content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
+								      }else{
+								        Core.Dialog.msg(data.ret[i].content,data.ret[i].noticeTime);
+								      }
+								      $.cookie('guangfishnotice'+data.ret[i].id, 'notice', { expires: data.ret[i].expires, path: '/',domain:'${cookieDomain?if_exists}'});
+								      break;
+								    }								    
+								  }
 								}
+								
+//								if(JSON.stringify(data) != "{}"){
+//								  var notice = $.cookie('guangfishnotice'+data.ret.id);
+//                                  if(!notice){
+//                                    if(data.ret.type==2){
+//								      Core.Dialog.note({'title':data.ret.title,'content':data.ret.content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
+//								    }else{
+//								      Core.Dialog.msg(data.ret.content,data.ret.noticeTime);
+//								    }
+//								    $.cookie('guangfishnotice'+data.ret.id, 'notice', { expires: data.ret.expires, path: '/',domain:'${cookieDomain?if_exists}'});
+//                                  }								  
+//								}
 							},
 							error : function(XMLHttpRequest, textStatus,
 									errorThrown) {
 								console.log('请求失败')
 							}
 						});
-	  },30000);
+	  },15000);
 	  
-	  <#if notice??>
-      var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
-      if(!notice){
-        if(${notice.type?if_exists}==2){
-	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})	      	    
-	    }else{
-	      Core.Dialog.msg('${notice.content?if_exists}',${notice.noticeTime?if_exists});
-	    }
-	    $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});
-	  }
-	  </#if>
+//	  <#if notice??>
+//      var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
+//      if(!notice){
+//        if(${notice.type?if_exists}==2){
+//	  	  Core.Dialog.note({'title':'${notice.title?if_exists}','content':'${notice.content?if_exists}','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})	      	    
+//	    }else{
+//	      Core.Dialog.msg('${notice.content?if_exists}',${notice.noticeTime?if_exists});
+//	    }
+//	    $.cookie('guangfishnotice${notice.id?if_exists}', 'notice', { expires: ${notice.expires?if_exists}, path: '/',domain:'${cookieDomain?if_exists}'});
+//	  }
+//	  </#if>
      
 	  function noticeClick(){
 	    $('.layui-layer-btn0').click();

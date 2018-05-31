@@ -165,10 +165,14 @@ public class ProductUrlTrans {
 			String commision = "0";
 			String rate = "0";
 			String shopName = "";
+			String quanMianzhi="0";
 			shopName = driver.findElement(By.xpath("//*[@id='J_search_results']/div/div/div[3]/div[1]/span/a/span"))
 					.getText();
 			try {
 				// 存在优惠券的处理方式
+				quanMianzhi=driver
+						.findElement(By.xpath("//*[@id='J_search_results']/div/div/div[2]/div[2]/span[1]/span[2]/span"))
+						.getText();
 				price = driver
 						.findElement(By.xpath("//*[@id='J_search_results']/div/div/div[2]/div[3]/span[1]/span[2]"))
 						.getText()
@@ -232,6 +236,7 @@ public class ProductUrlTrans {
 			tkInfoTask.setCommision(Double.valueOf(commision));
 			tkInfoTask.setRate(Double.valueOf(rate));
 			tkInfoTask.setShopName(shopName);
+			tkInfoTask.setQuanMianzhi(Double.valueOf(quanMianzhi));
 
 			// 点击立即推广按钮
 			WebElement element1 = driver.findElement(By.linkText("立即推广"));

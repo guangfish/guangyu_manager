@@ -351,6 +351,8 @@ public class ApiController extends BasicController {
 				productInfo.setTkl(tkl);
 				String tklquan=taskBean.getMap().get("tklquan");
 				productInfo.setTklquan(tklquan);
+				String quanMianzhi=taskBean.getMap().get("quanMianzhi");
+				productInfo.setCouponMiane(quanMianzhi);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
 				productInfoService.insertProductInfo(productInfo);
@@ -406,8 +408,13 @@ public class ApiController extends BasicController {
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 				sb.append(StringUtil.getSubString(shopName, 20));
-				sb.append("</span><span style='float:right;'>月销量：");
-				sb.append(sellNum);
+				if("0.0".equals(quanMianzhi)){
+					sb.append("</span><span style='float:right;'>月销量：");
+					sb.append(sellNum);
+				}else{
+					sb.append("</span><span style='float:right;'>优惠券：￥");
+					sb.append(quanMianzhi);
+				}				
 				sb.append(
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
 				sb.append(price);
@@ -493,8 +500,13 @@ public class ApiController extends BasicController {
 			sb.append(productInfo.getProductName());
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
 			sb.append(StringUtil.getSubString(productInfo.getShopName(), 20));
-			sb.append("</span><span style='float:right;'>月销量：");
-			sb.append(productInfo.getMonthSales());
+			if("0.0".equals(productInfo.getCouponMiane())){
+				sb.append("</span><span style='float:right;'>月销量：");
+				sb.append(productInfo.getMonthSales());
+			}else{
+				sb.append("</span><span style='float:right;'>优惠券：￥");
+				sb.append(productInfo.getCouponMiane());
+			}			
 			sb.append(
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
 			sb.append(productInfo.getPrice());
@@ -715,6 +727,7 @@ public class ApiController extends BasicController {
 				map.put("goodUrl1", tkInfoTask.getTkurl());
 				map.put("tkl", tkInfoTask.getTcode());
 				map.put("tklquan", tkInfoTask.getQuanCode());
+				map.put("quanMianzhi", "" +tkInfoTask.getQuanMianzhi());
 
 				StringBuffer sb = new StringBuffer();
 				sb.append(
