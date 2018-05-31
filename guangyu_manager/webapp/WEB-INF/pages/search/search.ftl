@@ -78,6 +78,24 @@
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	
 	<script>
+	var helpnotice = $.cookie('helpnotice');
+	if(!helpnotice){
+	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 1 复制链接</div>','content':'<font style="color: red;font-size: 0.6rem;">▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">▽京东商品链接复制▽</font><img width="90%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext2()}});
+	  $.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
+	}
+	
+	function helpnext2(){
+	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','content':'<font style="color: red;font-size: 0.6rem;">▽搜索返利▽</font><img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext3()}});
+	}
+	function helpnext3(){
+	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 3 完成购物</div>','content':'<font style="color: red;font-size: 0.6rem;">▽完成购物▽</font><img width="100%" src="http://help.guangfish.com/imgs/3-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext4()}});
+	}
+	function helpnext4(){
+	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 4 提交订单号</div>','content':'<font style="color: red;font-size: 0.6rem;">▽提交订单号▽</font><img width="100%" src="http://help.guangfish.com/imgs/4-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext5()}});
+	}
+	function helpnext5(){
+	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 4 申请提现</div>','content':'<font style="color: red;font-size: 0.6rem;">▽申请提现▽</font><img width="100%" src="http://help.guangfish.com/imgs/5-1-1.jpg">','btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}});
+	}
 	  var B = setInterval(function(){
 	    $
 						.ajax({
@@ -135,7 +153,7 @@
 	<script>	    	    
 		function drump(link) {
 			//location.href=link;
-			alert('提示：【付款时不要用红包抵扣】，完成购买后记得回来录入订单号拿返利哦');
+			alert('提示：【付款时不要用红包抵扣】，完成购买后记得回来录入订单号拿返利哦！');
 			window.open(link);
 		  //if(isContains(link,"taobao.com")){
 			//if(isWeiXin()){
