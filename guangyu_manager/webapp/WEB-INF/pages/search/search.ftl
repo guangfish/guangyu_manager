@@ -81,21 +81,21 @@
 	
 	var helpnotice = $.cookie('helpnotice');
 	if(!helpnotice){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 1 复制链接</div>','width':'480px','height':'550px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽京东商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步：怎么搜索返利</div>'],'callback':function(){helpnext2()}});
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 1 复制链接</div>','width':'380px','height':'550px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽京东商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步：怎么搜索返利</div>'],'callback':function(){helpnext2()}});
 	  $.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
 	}
 	
 	function helpnext2(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','content':'<img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么完成购物</div>'],'callback':function(){helpnext3()}});
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','width':'380px','height':'450px','content':'<img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么完成购物</div>'],'callback':function(){helpnext3()}});
 	}
 	function helpnext3(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 3 完成购物</div>','content':'<img width="100%" src="http://help.guangfish.com/imgs/3-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么提交订单号</div>'],'callback':function(){helpnext4()}});
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 3 完成购物</div>','width':'380px','height':'450px','content':'<img width="100%" src="http://help.guangfish.com/imgs/3-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么提交订单号</div>'],'callback':function(){helpnext4()}});
 	}
 	function helpnext4(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 提交订单号</div>','content':'<img width="100%" src="http://help.guangfish.com/imgs/4-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么申请提现</div>'],'callback':function(){helpnext5()}});
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 提交订单号</div>','width':'380px','height':'450px','content':'<img width="100%" src="http://help.guangfish.com/imgs/4-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么申请提现</div>'],'callback':function(){helpnext5()}});
 	}
 	function helpnext5(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 申请提现</div>','content':'<img width="100%" src="http://help.guangfish.com/imgs/5-1-1.jpg">','btn':['<div style="font-size:12px;">我知道了</div>'],'callback':function(){}});
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 申请提现</div>','width':'380px','height':'450px','content':'<img width="100%" src="http://help.guangfish.com/imgs/5-1-1.jpg">','btn':['<div style="font-size:12px;">我知道了</div>'],'callback':function(){}});
 	}
 	  var B = setInterval(function(){
 	    $
