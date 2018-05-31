@@ -78,11 +78,11 @@
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	
 	<script>
-	var helpnotice = $.cookie('helpnotice');
-	if(!helpnotice){
-	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 1 复制链接</div>','content':'<font style="color: red;font-size: 0.6rem;">▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext2()}});
-	  $.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
-	}
+//	var helpnotice = $.cookie('helpnotice');
+//	if(!helpnotice){
+//	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 1 复制链接</div>','content':'<font style="color: red;font-size: 0.6rem;">▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext2()}});
+	  //$.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
+//	}
 	
 	function helpnext2(){
 	  Core.Dialog.note({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','content':'<font style="color: red;font-size: 0.6rem;">▽搜索返利▽</font><img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步</div>'],'callback':function(){helpnext3()}});
