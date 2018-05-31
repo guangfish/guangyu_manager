@@ -751,8 +751,9 @@ var Core = (function(){
 			open: function(opts, backfun){
 				var t = this;
 				var tit = opts.title || '信息', url = opts.url || false;
-				var w = opts.width || '580px', h = opts.height || '450px';
-				var cont = opts.content || '';
+				var w = opts.width || '480px', h = opts.height || '450px';
+				var cont = opts.content || '', _btns = opts.btn || ['确定'];
+				var cbk = opts.callback || function(){};
 
 				if(!url && cont==''){return};
 
@@ -764,6 +765,7 @@ var Core = (function(){
 								type: 1,
 								title: tit,
 								area: [w, h],
+								btn: _btns,
 								shade: 0.2,
 								content: htmls
 							});
@@ -772,8 +774,15 @@ var Core = (function(){
 								type: 1,
 								title: tit,
 								area: [w, h],
+								btn: _btns,
+								btnAlign: 'c',
+								moveType: 1,
 								shade: 0.2,
-								content: htmls
+								content: htmls,
+								yes:function(index){
+									layer.close(index);
+									cbk && cbk();
+								}
 							});
 						}
 						if(backfun instanceof Function){
