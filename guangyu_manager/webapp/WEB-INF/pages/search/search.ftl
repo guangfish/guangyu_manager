@@ -77,30 +77,7 @@
 			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	
-	<script>
-	
-	var helpnotice = $.cookie('helpnotice');
-	if(!helpnotice){
-	  Core.Dialog.confirm({'title':'<div style="font-size:14px;">您是否需要查看使用帮助？</div>','btn':['<div style="font-size:12px;">需要帮助</div>','<div style="font-size:12px;">不需要</div>'],'callback':function(){helpnext1()}});
-	  $.cookie('helpnotice', 'helpnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
-	}
-	
-	function helpnext1(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 1 复制链接</div>','width':'380px','height':'550px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽京东商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步：怎么搜索返利</div>'],'callback':function(){helpnext2()}});
-	}
-	
-	function helpnext2(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开逛鱼搜索页，粘贴复制的链接地址</font><img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么完成购物</div>'],'callback':function(){helpnext3()}});
-	}
-	function helpnext3(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 3 完成购物</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开手机淘宝，自动跳出商品提示页面</font><img width="100%" src="http://help.guangfish.com/imgs/3-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么提交订单号</div>'],'callback':function(){helpnext4()}});
-	}
-	function helpnext4(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 提交订单号</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开【逛鱼搜索->录入订单号】页面</font><img width="100%" src="http://help.guangfish.com/imgs/4-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么申请提现</div>'],'callback':function(){helpnext5()}});
-	}
-	function helpnext5(){
-	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 申请提现</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开【逛鱼搜索->我要提现】页面</font><img width="100%" src="http://help.guangfish.com/imgs/5-1-1.jpg">','btn':['<div style="font-size:12px;">我知道了</div>'],'callback':function(){}});
-	}
+	<script>		
 	  var B = setInterval(function(){
 	    $
 						.ajax({
@@ -128,7 +105,7 @@
 								console.log('请求失败')
 							}
 						});
-	  },10000);
+	  },30000);
 	  
 	  <#if notice??>
       var notice = $.cookie('guangfishnotice${notice.id?if_exists}');
@@ -146,6 +123,29 @@
 	    $('.layui-layer-btn0').click();
 	  }
 	  
+    </script>
+   
+    <script>
+    var helpnotice = $.cookie('helpnotice');
+	if(!helpnotice){
+	  Core.Dialog.confirm({'title':'<div style="font-size:14px;">您是否需要查看使用帮助？</div>','btn':['<div style="font-size:12px;">需要帮助</div>','<div style="font-size:12px;">不需要</div>'],'callback':function(){helpnext1()}});
+	  $.cookie('helpnotice', 'helpnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
+	}	
+	function helpnext1(){
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 1 复制链接</div>','width':'380px','height':'550px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽京东商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步：怎么搜索返利</div>'],'callback':function(){helpnext2()}});
+	}	
+	function helpnext2(){
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 2 搜索返利</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开逛鱼搜索页，粘贴复制的链接地址</font><img width="100%" src="http://help.guangfish.com/imgs/2-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么完成购物</div>'],'callback':function(){helpnext3()}});
+	}
+	function helpnext3(){
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 3 完成购物</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开手机淘宝，自动跳出商品提示页面</font><img width="100%" src="http://help.guangfish.com/imgs/3-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么提交订单号</div>'],'callback':function(){helpnext4()}});
+	}
+	function helpnext4(){
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 提交订单号</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开【逛鱼搜索->录入订单号】页面</font><img width="100%" src="http://help.guangfish.com/imgs/4-1-1.jpg">','btn':['<div style="font-size:12px;">下一步：怎么申请提现</div>'],'callback':function(){helpnext5()}});
+	}
+	function helpnext5(){
+	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 4 申请提现</div>','width':'380px','height':'380px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;打开【逛鱼搜索->我要提现】页面</font><img width="100%" src="http://help.guangfish.com/imgs/5-1-1.jpg">','btn':['<div style="font-size:12px;">我知道了</div>'],'callback':function(){}});
+	}
     </script>
 
     <script>

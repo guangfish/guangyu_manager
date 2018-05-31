@@ -722,6 +722,7 @@ var Core = (function(){
 						title: tit,
 						btn: _btns //按钮
 					}, function(){
+						layer.close(c_layer);
 						cbk && cbk();
 						//opts.ok && opts.ok(function(){
 							//layer.close(c_layer);
