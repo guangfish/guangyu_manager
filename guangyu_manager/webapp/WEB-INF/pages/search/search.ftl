@@ -82,7 +82,7 @@
 	var helpnotice = $.cookie('helpnotice');
 	if(!helpnotice){
 	  Core.Dialog.confirm({'title':'<div style="font-size:14px;">您是否需要查看使用帮助？</div>','btn':['<div style="font-size:12px;">需要帮助</div>','<div style="font-size:12px;">不需要</div>'],'callback':function(){helpnext1()}});
-	  //$.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
+	  $.cookie('helpnotice', 'helpnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
 	}
 	
 	function helpnext1(){
