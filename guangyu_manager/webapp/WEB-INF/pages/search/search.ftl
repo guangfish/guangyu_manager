@@ -81,8 +81,12 @@
 	
 	var helpnotice = $.cookie('helpnotice');
 	if(!helpnotice){
+	  Core.Dialog.confirm({'title':'<div style="font-size:14px;">您是否需要查看使用帮助？</div>','btn':['<div style="font-size:12px;">需要帮助</div>','<div style="font-size:12px;">不需要</div>'],'callback':function(){helpnext1()}});
+	  //$.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
+	}
+	
+	function helpnext1(){
 	  Core.Dialog.open({'title':'<div style="font-size:14px;">step 1 复制链接</div>','width':'380px','height':'550px','content':'<font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽淘宝商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/1-1-1.jpg"><font style="color: red;font-size: 0.6rem;">&nbsp;&nbsp;▽京东商品链接复制▽</font><img width="100%" src="http://help.guangfish.com/imgs/ios-jd.png">','btn':['<div style="font-size:12px;">下一步：怎么搜索返利</div>'],'callback':function(){helpnext2()}});
-	  $.cookie('helpnotice', 'helpnotice', { expires: 30, path: '/',domain:'${cookieDomain?if_exists}'});
 	}
 	
 	function helpnext2(){

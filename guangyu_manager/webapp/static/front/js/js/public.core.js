@@ -715,15 +715,17 @@ var Core = (function(){
 				area: ['40%','30%']
 			},
 			confirm: function(opts){
-				var tit = opts.title || '询问框', content = opts.content || '';
+				var tit = opts.title || '询问框', content = opts.content || '',_btns = opts.btn || ['确定'];
+				var cbk = opts.callback || function(){};
 				layer.ready(function(){
 					var c_layer = layer.confirm('<div style="font-size:12px;">'+content+'</div>', {
 						title: tit,
-						btn: ['确定','取消'] //按钮
+						btn: _btns //按钮
 					}, function(){
-						opts.ok && opts.ok(function(){
-							layer.close(c_layer);
-						});
+						cbk && cbk();
+						//opts.ok && opts.ok(function(){
+							//layer.close(c_layer);
+						//});
 					}, function(){
 						opts.cancel && opts.cancel();
 					});
