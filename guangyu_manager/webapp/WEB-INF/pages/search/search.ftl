@@ -1,14 +1,3 @@
-<style type="text/css">  
- <!--  
-.hr0{ height:1px;border:none;border-top:1px dashed #000;}  
-.hr1{ height:1px;border:none;border-top:1px solid #000;}  
-.hr2{ height:3px;border:none;border-top:3px double #6B8E23;}  
-.hr3{ height:5px;border:none;border-top:5px ridge #45D6D8;}  
-.hr4{ height:10px;border:none;border-top:10px groove #FF8C00;}  
-.hr5{ height:10px;border:none;border-top:10px groove #FF8C00;}  
- -->  
- </style> 
-
 <@model.webheadsearch />
 	<div class="page">
 		<div class="content">
@@ -89,7 +78,7 @@
 		  <br/>
 		</div>	
 
-		<footer align="center">
+		<footer align="center" >
           <div style="font-size: 0.6rem;background:#e2e2e9; color:#000;height:210px;">
             <div>
               <br/>
