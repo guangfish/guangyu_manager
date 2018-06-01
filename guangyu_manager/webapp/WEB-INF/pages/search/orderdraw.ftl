@@ -82,8 +82,8 @@
 								<!--<a href="searchorder.html" class='pull-left external'
 								style="font-size: 0.8rem;">订单查询</a>
 								-->								
-								<a href="/search.html"
-								class='pull-center external' style="font-size: 0.8rem;">继续搜返利</a>								
+								<a href="/searchorder.html"
+								class='pull-center external' style="font-size: 0.8rem;">返回</a>								
 						</p>
 					</div>
 			</form>
@@ -126,38 +126,38 @@
 	      var vcode = $('#vcode').val();
 	      var smscode = $('#smscode').val();	   
 	      if(!mobile){
-	        alert("请务必输入正确的手机号码，用于接收短信验证码！");
+	        Core.Dialog.msg("请务必输入正确的手机号码，用于接收短信验证码！",5000);
 	        return;
 	      }else{
 	        if(mobile.toString().length!=11){
-			  alert("手机号位数不正确！");
+			  Core.Dialog.msg("手机号位数不正确！");
 			  return;
 			}
 	        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/; 
 	        if (!myreg.test(mobile)) {  
-	          alert("请务必输入正确的手机号码，用于接收短息验证码！");
+	          Core.Dialog.msg("请务必输入正确的手机号码，用于接收短息验证码！",5000);
               return;  
             } 	        
 	      }
 	      if(!alipay){
-	        alert("请务必输入正确的支付宝账号，用于收款！");
+	        Core.Dialog.msg("请务必输入正确的支付宝账号，用于收款！");
 	        return;
 	      }
 	      if(!vcode){
-	        alert("请输入图形验证码！");
+	        Core.Dialog.msg("请输入图形验证码！");
 	        return;
 	      }else{
 	        if(vcode.toString().length!=5){
-			  alert("图形验证码输入不正确！");
+			  Core.Dialog.msg("图形验证码输入不正确！");
 			  return;
 			}
 	      }
 	      if(!smscode){
-	        alert("请输入短信验证码！");
+	        Core.Dialog.msg("请输入短信验证码！");
 	        return;
 	      }else{
 	        if(smscode.toString().length!=5){
-			  alert("短信验证码输入不正确！");
+			  Core.Dialog.msg("短信验证码输入不正确！");
 			  return;
 			}
 	      }	      
@@ -184,7 +184,7 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result.status=="0"){
-								    alert("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！");
+								    Core.Dialog.msg("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！",10000);
 								    //$("#mobile").val("");
 								    //$("#alipay").val("");
 								    $("#vcode").val("");
@@ -193,19 +193,19 @@
 								    $('#result').html("<br/><br/><font color='red'>提现申请成功了,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现金额"+data.ret.result.money+"元,请注意支付宝查收！</font>");
 								  }								  
 								  if(data.ret.result.status=="5"){
-								    alert("图形验证码验证失败!");
+								    Core.Dialog.msg("图形验证码验证失败!");
 								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
 								  }								  
 								  if(data.ret.result.status=="6"){
-								    alert("短信验证码已失效，请重新发送!");
+								    Core.Dialog.msg("短信验证码已失效，请重新发送!");
 								    $("#smscode").val("");
 								  }
 								  if(data.ret.result.status=="7"){
-								    alert("短信验证码验证失败!");
+								    Core.Dialog.msg("短信验证码验证失败!");
 								    $("#smscode").val("");
 								  }
 								  if(data.ret.result.status=="8"){
-								    alert("亲，已经没有可提现的订单了，赶紧去看看是否没有录入已完成购买商品的订单号！");
+								    Core.Dialog.msg("亲，已经没有可提现的订单了，赶紧去看看是否没有录入已完成购买商品的订单号！",5000);
 								    //$("#mobile").val("");
 								    //$("#alipay").val("");
 								    $("#vcode").val("");
@@ -226,11 +226,11 @@
 			var mobile = $('#mobile').val();
 			var vcode = $('#vcode').val();
 			if (!mobile) {
-				alert("请输入手机号码！");
+				Core.Dialog.msg("请输入手机号码！");
 				return;
 			}
 			if (!vcode) {
-				alert("请输入图形验证码！");
+				Core.Dialog.msg("请输入图形验证码！");
 				return;
 			}
 				$
@@ -248,14 +248,14 @@
 							success : function(data) {
 								console.log('请求到的数据为：', data);
 								if(data.ret.result.status=="3"){
-								    alert("图形验证码不正确");
+								    Core.Dialog.msg("图形验证码不正确");
 								    $("#vcode").val("");								    
 								}
 								if(data.ret.result.status=="4"){
-								    alert("请等待2分钟后再次发送短信验证码");							    
+								    Core.Dialog.msg("请等待2分钟后再次发送短信验证码");							    
 								}
 								if(data.ret.result.status=="0"){
-								    alert("短息验证码发送成功，短信验证码2分钟之内有效，过期后请重新发送！");
+								    Core.Dialog.msg("短息验证码发送成功，短信验证码2分钟之内有效，过期后请重新发送！",5000);
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

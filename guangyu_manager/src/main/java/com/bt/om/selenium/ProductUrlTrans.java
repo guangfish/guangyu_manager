@@ -333,6 +333,7 @@ public class ProductUrlTrans {
 			String commision = "0";
 			String rate = "0";
 			String shopName = "";
+			String quanMianzhi="0";
 			price = jdDriver
 					.findElement(By
 							.xpath("//*[@id='goodsQueryForm']/div[2]/div/div/div/div[2]/ul/li/div[1]/div[2]/div[2]/span[2]/span"))
@@ -364,6 +365,7 @@ public class ProductUrlTrans {
 			tkInfoTask.setCommision(Double.valueOf(commision));
 			tkInfoTask.setRate(Double.valueOf(rate));
 			tkInfoTask.setShopName(shopName);
+			tkInfoTask.setQuanMianzhi(Double.valueOf(quanMianzhi));
 
 			// 点击我要推广按钮
 			WebElement element1 = jdDriver

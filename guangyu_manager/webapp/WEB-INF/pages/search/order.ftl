@@ -58,17 +58,15 @@
 						        <!--<a href="searchorder.html" class='pull-left external'
 								style="font-size: 0.8rem;">查订单</a>
 								-->
-								<a href="/search.html"
-								class='pull-center external' style="font-size: 0.8rem;">继续搜返利</a>								
+								<!--<a href="/search.html"
+								class='pull-center external' style="font-size: 0.8rem;">继续搜返利</a>-->							
 						</p>
 					</div>
 			</form>
 		</div>
 
 		<div id="result" align="center">
-		  <font style="font-size: 0.7rem;color:red">提示：在淘宝或京东完成交易后，为了不影响<br/>您的提现，请您尽快录入订单号</font><br/><br/>
-		  <font style="font-size: 0.7rem;color:red">寻找订单号方法如下图所示</font><br/>
-		  <img width="90%" src="http://help.guangfish.com/imgs/getorderid.png">
+		  <font style="font-size: 0.7rem;color:red">提示：返回【搜索返利页 -> 我要提现】，输入您的手机号，查询订单信息（刚录入的订单号，最快1分钟、最迟次日可查）。</font>
 		</div>
 	</div>
 	
@@ -94,26 +92,26 @@
 	      var mobile = $('#mobile').val();
 	      var vcode = $('#vcode').val();
 	      if (!orderid) {
-	        alert("请粘贴或输入订单号！");
+	        Core.Dialog.msg("请粘贴或输入订单号！");
 	        return;
 	      }else{
 	        if(orderid.toString().length==18 || orderid.toString().length==11){			  
 			}else{ 
-			  alert("订单号位数不正确！");
+			  Core.Dialog.msg("订单号位数不正确！");
 			  return; 
 			}
 	      }
 	      if(!mobile){
-	        alert("请输入手机号！");
+	        Core.Dialog.msg("请输入手机号！");
 	        return;
 	      }else{
 	        if(mobile.toString().length!=11){
-			  alert("手机号位数不正确！");
+			  Core.Dialog.msg("手机号位数不正确！");
 			  return;
 			}
 	        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/; 
 	        if (!myreg.test(mobile)) {  
-	          alert("请输入正确的手机号码");
+	          Core.Dialog.msg("请输入正确的手机号码");
               return;  
             } 	        
 	      }  
@@ -153,7 +151,7 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result=="0"){
-								    alert("订单号提交成功，请收货后，去淘宝/京东\"确认收货\"后方可提现");
+								    Core.Dialog.msg("订单号提交成功，请收货后，去淘宝/京东\"确认收货\"后方可提现",5000);								    
 								    var orderSubmitNotice = $.cookie('ordersubmitnotice');
 								    if(!orderSubmitNotice){
 								      Core.Dialog.msg("提示：返回【搜索返利页 -> 我要提现】，输入您的手机号，查询订单信息（刚录入的订单号，最快1分钟、最迟次日可查）。<a href=\"searchorder.html\">点我查订单</a>",9000);
@@ -166,7 +164,8 @@
 								  }
 								  
 								  if(data.ret.result=="-1"){
-								    alert("该订单号已存在，请勿重复提交!");
+								    Core.Dialog.msg("该订单号已存在，请勿重复提交!",3000);
+								    //alert("该订单号已存在，请勿重复提交!");
 								    $("#orderid").val("");
 								    //暂时屏蔽掉
 								    $("#vcode").val("");

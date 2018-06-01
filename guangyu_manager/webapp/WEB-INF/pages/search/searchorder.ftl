@@ -44,26 +44,26 @@
 							<a class="button button-big button-fill external"
 								data-transition='fade' id="submitlogin" onclick="commit();">订单查询</a>
 						</p>
-						<p class='text-center signup'>
-						        <p id="candraw"><a href="/helpdraw.html"
-								class='pull-left external' style="font-size: 0.8rem;">提现帮助</a></p>						        					
-								<a href="/search.html"
-								class='pull-right external' style="font-size: 0.8rem;">继续搜返利</a>								
+						<p class='text-center signup' id="candraw">
+						        <!--<p id="candraw">
+						          <a href="/helpdraw.html" class='pull-left external' style="font-size: 0.8rem;">提现帮助</a>
+						        </p>						        					
+							    <a href="/search.html" class='pull-right external' style="font-size: 0.8rem;">继续搜返利</a>	-->				
 						</p>
 					</div>
 			</form>
 		</div>
 
 		<div id="result" align="center">
-		  <div style="color: red;font-size: 0.7rem;">
+		  <!--<div style="color: red;font-size: 0.7rem;">
 		    <br/>FAQ:<br/>
 		    <br/>问："逛鱼搜索使用安全吗？" <br/>答："安全，因为不需要您输入任何密码。"<br/>
 		    <br/>问："逛鱼搜索适合哪些人使用？" <br/>答："经常通过网络购物者、希望购物获得优惠者。"<br/>
 		    <br/>问："什么情况下可以申请提现？" <br/>答："您的订单状态处于'订单结算'状态就可提现。"<br/>
 		    <br/>问："什么时候订单才会处于'订单结算'？" <br/>答："只要您确认收货后，一天左右就进入该状态。"<br/>
 		    <br/>问："提现什么时候能到账？" <br/>答："2小时之内到账。"<br/>
-		    <!--<br/>问："平台收取费用吗？" <br/>答："收，淘宝平台对每单成交收取20%技术服务费。"<br/>-->
 		  </div>
+		  -->
 		</div>
 
 	</div>
@@ -89,16 +89,16 @@
 	      var mobile = $('#mobile').val();
 	      var vcode = $('#vcode').val();
 	      if(!mobile){
-	        alert("请输入手机号！");
+	        Core.Dialog.msg("请输入手机号！");
 	        return;
 	      }else{
 	        if(mobile.toString().length!=11){
-			  alert("手机号位数不正确！");
+			  Core.Dialog.msg("手机号位数不正确！");
 			  return;
 			}
 	        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/; 
 	        if (!myreg.test(mobile)) {  
-	          alert("请输入正确的手机号码");
+	          Core.Dialog.msg("请输入正确的手机号码");
               return;  
             } 	        
 	      }    
@@ -133,17 +133,17 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){								  		  
 								  if(data.ret.result.status=="3"){
-								    alert("验证码错误");
+								    Core.Dialog.msg("验证码错误");
 								    //暂时屏蔽掉
 								    //$("#vcode").val("");								    
 								  }
 								  if(data.ret.result.status=="0"){
 								    $('#result').html(data.ret.result.msg);
 								    if(data.ret.result.canDraw=="1"){
-								      $('#candraw').html("<a href='orderdraw.html' class='pull-left external' style='font-size: 0.8rem;'>申请提现</a>");
+								      $('#candraw').html("<a href='orderdraw.html' class='pull-center external' style='font-size: 0.8rem;'>申请提现</a>");
 								    }else{
 								      $("#candraw").html("");
-								      $('#candraw').html("<a href='/helpdraw.html' class='pull-left external' style='font-size: 0.8rem;'>提现帮助</a>");
+								      <!--$('#candraw').html("<a href='/helpdraw.html' class='pull-center external' style='font-size: 0.8rem;'>提现帮助</a>");-->
 								    }
 								    //暂时屏蔽掉
 								    //$("#vcode").val("");
