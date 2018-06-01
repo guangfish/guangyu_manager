@@ -12,7 +12,11 @@
 											<input id="product_url" type="text" class="input_enter"
 												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">	
 											<input id="mobile" type="hidden" value="" name="mobile">										
-										</div>										
+										</div>
+										<div id="send" class="item-title label" style="width: 0.5rem;">
+										    <a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del()">x</a>
+										</div>								
 									</div>
 								</div>
 							</li>
@@ -95,10 +99,14 @@
 							shade: 0.2,
 							content: '/searchorder.html'
 						});
-        }
+        }                
 	</script>
 	
-	<script>		
+	<script>	
+	  function del() {
+          $('#product_url').val("");
+      }
+			
 	  var B = setInterval(function(){
 	    $
 						.ajax({

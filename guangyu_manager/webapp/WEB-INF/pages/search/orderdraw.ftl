@@ -15,6 +15,10 @@
 											<input id="mobile" maxlength="11" type="text" class="input_enter"
 												placeholder="请输入手机号码" name="mobile">
 										</div>
+										<div id="send" class="item-title label" style="width: 0.5rem;">
+										    <a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">x</a>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -28,7 +32,7 @@
 											<input id="alipay" maxlength="50" type="text" class="input_enter"
 												placeholder="请输入支付宝账号" name="alipay">
 										</div>
-										<div id="send" class="item-title label" style="width: 3rem;">
+										<div id="alipayopt" class="item-title label" style="width: 2rem;">										    
 											<a href="javascript:void(0);" id="send_btn"
 												style="color: #a0a0a0; font-size: 0.8rem;" onclick="copyMobile()">复制</a>
 										</div>
@@ -62,7 +66,7 @@
 											<input id="smscode" class="input_enter" type="text" placeholder="输入短信验证码"
 												name="smscode">																																				
 										</div>
-										<div id="send" class="item-title label" style="width: 3rem;">
+										<div id="send" class="item-title label" style="width: 2rem;">
 											<a href="javascript:void(0);" id="send_btn"
 												style="color: #a0a0a0; font-size: 0.8rem;" onclick="sendsmscode()">发送</a>
 										</div>
@@ -103,13 +107,24 @@
 	  	if(mobile){
 	  	  $("#mobile").val(mobile);
 	  	}	
+	  	
+	  	function del(id) {
+          $('#'+id).val("");
+          $("#alipayopt").css("width","2rem");
+          $('#alipayopt').html('<a href="javascript:void(0);" id="send_btn" style="color: #a0a0a0; font-size: 0.8rem;" onclick="copyMobile()">复制</a>');
+        }	
 	</script>
 
 	<script>	
 	    function copyMobile() {  
           var mobile = $('#mobile').val();
-          $('#alipay').val(mobile);
+          if(mobile){
+            $('#alipay').val(mobile);
+            $("#alipayopt").css("width","0.5rem");
+            $('#alipayopt').html("<a href='javascript:void(0);' id='send_btn' style='color: #a0a0a0; font-size: 0.8rem;' onclick='del(\"alipay\")'>x</a>");
+          }        
         }
+        
       
 	    function isPoneAvailable(mobile) {  
           var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  

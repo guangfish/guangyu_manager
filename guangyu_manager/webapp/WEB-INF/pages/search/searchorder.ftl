@@ -16,6 +16,10 @@
 											<input id="mobile" maxlength="11" type="text" class="input_enter"
 												placeholder="请输入您的手机号码" name="mobile">
 										</div>
+										<div id="send" class="item-title label" style="width: 0.5rem;">
+										    <a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">x</a>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -72,7 +76,15 @@
 	  	var mobile = $.cookie('guangfishmobile');
 	  	if(mobile){
 	  	  $("#mobile").val(mobile);
-	  	}	  	
+	  	}
+	  	  
+	  	function del(id) {
+          $('#'+id).val("");
+        }
+        
+        function nonedraw() {
+          Core.Dialog.msg("没有可提现的订单！");
+        }
 	</script>
 
 	<script>	
@@ -142,7 +154,7 @@
 								    if(data.ret.result.canDraw=="1"){
 								      $('#candraw').html("<a href='orderdraw.html' class='pull-center external' style='font-size: 0.8rem;'>申请提现</a>");
 								    }else{
-								      $("#candraw").html("");
+								      $("#candraw").html("<a href='javascript:void(0);' class='pull-center external' style='font-size: 0.8rem;' onclick='nonedraw()'>申请提现</a>");
 								      <!--$('#candraw').html("<a href='/helpdraw.html' class='pull-center external' style='font-size: 0.8rem;'>提现帮助</a>");-->
 								    }
 								    //暂时屏蔽掉
