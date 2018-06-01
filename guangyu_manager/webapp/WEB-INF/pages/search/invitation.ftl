@@ -94,37 +94,37 @@
 	      var mobile_me = $('#mobile_me').val();
 	      var mobile_friend = $('#mobile_friend').val();
 	      if(!mobile_me){
-	        alert("请输入我的手机号！");
+	        Core.Dialog.msg("请输入我的手机号！");
 	        return;
 	      }else{
 	        if(mobile_me.toString().length!=11){
-			  alert("我的手机号位数不正确！");
+			  Core.Dialog.msg("我的手机号位数不正确！");
 			  return;
 			}
 	        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/; 
 	        if (!myreg.test(mobile_me)) {  
-	          alert("我的手机号格式不正确");
+	          Core.Dialog.msg("我的手机号格式不正确");
               return;  
             } 	        
 	      }
 	      
 	      if(!mobile_friend){
-	        alert("请输入朋友的手机号！");
+	        Core.Dialog.msg("请输入朋友的手机号！");
 	        return;
 	      }else{
 	        if(mobile_friend.toString().length!=11){
-			  alert("朋友的手机号位数不正确！");
+			  Core.Dialog.msg("朋友的手机号位数不正确！");
 			  return;
 			}
 	        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/; 
 	        if (!myreg.test(mobile_friend)) {  
-	          alert("朋友的手机号格式不正确");
+	          Core.Dialog.msg("朋友的手机号格式不正确");
               return;  
             } 	        
 	      }
 	      
 	      if(mobile_me==mobile_friend){
-	        alert("不能自己邀请自己");
+	        Core.Dialog.msg("不能自己邀请自己");
             return;
 	      }	     
 	      
@@ -147,10 +147,10 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){								  		  
                                    if(data.ret.result == "3"){
-                                     alert("邀请的用户已经在使用逛鱼搜索或已被邀请或已邀请过别人");
+                                     Core.Dialog.msg("邀请的用户已经在使用逛鱼搜索或已被邀请或已邀请过别人"，5000);
                                    }                               
                                    if(data.ret.result == "0"){
-                                     alert("邀请好友成功，请细心帮助好友使用逛鱼搜索，当好友通过逛鱼搜索完成购买任务时，您才可以得到奖励哦！");
+                                     Core.Dialog.msg("邀请好友成功，请细心帮助好友使用逛鱼搜索，当好友通过逛鱼搜索完成购买任务时，您才可以得到奖励哦！"，6000);
                                    }
 								}				
 							},
