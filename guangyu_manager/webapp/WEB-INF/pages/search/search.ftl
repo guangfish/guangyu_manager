@@ -77,7 +77,7 @@
 		  <!--<br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">-->
 		  <br/>
 		</div>	
-
+        <br/>
 		<footer align="center" >
           <div style="font-size: 0.6rem;background:#e2e2e9; color:#000;height:210px;">
             <div>
