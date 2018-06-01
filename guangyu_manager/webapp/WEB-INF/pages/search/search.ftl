@@ -63,7 +63,7 @@
 		</div> 
 
 		<div id="result" align="center">
-		  <a href="/api/invitation.html"><img id="search" width="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
+		  <a href="javascript:void(0);" onclick="invitation();"><img id="search" width="90%" src="http://help.guangfish.com/imgs/invitation.png"></a>
 		  <!--<br/><font style="color: red;">【花钱也能赚钱、让逛鱼带你飞】</font> -->
 		  <br/><font style="color: red;font-size: 0.7rem;">复制商品链接地址请看下面图示</font>
 		  <br/><font style="color: red;font-size: 1.0rem;">▽</font>
@@ -75,9 +75,20 @@
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">	  
 		  -->
 		  <!--<br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">-->
-		  <br/><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">
+		  <br/><img width="25%" src="http://help.guangfish.com/imgs/wx-kefu.png">
 		</div>	
+
+		<footer align="center">
+          <div>
+            <div style="font-size: 0.6rem;background:#ccccff; color:#000;">
+                <span>Copyright © 2018 杭州特为网络科技有限公司</span>
+            </div>
+          </div>
+        </footer>
 	</div>
+	
+
+	
 			
 	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 	
@@ -99,7 +110,16 @@
 							shade: 0.2,
 							content: '/searchorder.html'
 						});
-        }                
+        }   
+        function invitation(){
+	  	  window.parent.layer.open({
+							type: 2,
+							title: '<div style="font-size:18px;">邀请有奖</div>',
+							area: ['85%', '600px'],
+							shade: 0.2,
+							content: '/api/invitation.html'
+						});
+        }             
 	</script>
 	
 	<script>	

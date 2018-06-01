@@ -16,6 +16,10 @@
 											<input id="mobile_me" maxlength="11" type="text" class="input_enter"
 												placeholder="我的手机号码" name="mobile_me">
 										</div>
+										<div id="send" class="item-title label" style="width: 0.5rem;">
+										    <a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile_me')">X</a>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -29,6 +33,10 @@
 											<input id="mobile_friend" maxlength="11" type="text" class="input_enter"
 												placeholder="我朋友的手机号码" name="mobile_friend">
 										</div>
+										<div id="send" class="item-title label" style="width: 0.5rem;">
+										    <a href="javascript:void(0);" id="send_btn"
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile_friend')">X</a>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -39,10 +47,10 @@
 							<a class="button button-big button-fill external"
 								data-transition='fade' id="submitlogin" onclick="commit();">提交邀请</a>
 						</p>
-						<p class='text-center signup'>				        					
+						<!--<p class='text-center signup'>				        					
 								<a href="/search.html"
 								class='pull-center external' style="font-size: 0.8rem;">返回</a>								
-						</p>
+						</p>-->
 					</div>
 			</form>
 		</div>
@@ -65,7 +73,11 @@
 	  	var mobile = $.cookie('guangfishmobile');
 	  	if(mobile){
 	  	  $("#mobile_me").val(mobile);
-	  	}	  	
+	  	}	  
+	  	
+	  	function del(id) {
+          $('#'+id).val("");
+        }	
 	</script>
 
 	<script>	
