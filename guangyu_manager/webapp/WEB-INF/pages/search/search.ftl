@@ -81,8 +81,8 @@
 	  	function orderinput(){
 	  	  window.parent.layer.open({
 							type: 2,
-							title: '录入订单号',
-							area: ['80%', '400px'],
+							title: '<div style="font-size:18px;">录入订单号</div>',
+							area: ['85%', '400px'],
 							shade: 0.2,
 							content: '/order.html'
 						});
@@ -90,8 +90,8 @@
 		function ordersearch(){
 	  	  window.parent.layer.open({
 							type: 2,
-							title: '订单查提',
-							area: ['80%', '600px'],
+							title: '<div style="font-size:18px;">订单查提</div>',
+							area: ['85%', '600px'],
 							shade: 0.2,
 							content: '/searchorder.html'
 						});
