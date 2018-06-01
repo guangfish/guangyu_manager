@@ -1,3 +1,14 @@
+<style type="text/css">  
+ <!--  
+.hr0{ height:1px;border:none;border-top:1px dashed #000;}  
+.hr1{ height:1px;border:none;border-top:1px solid #000;}  
+.hr2{ height:3px;border:none;border-top:3px double #6B8E23;}  
+.hr3{ height:5px;border:none;border-top:5px ridge #45D6D8;}  
+.hr4{ height:10px;border:none;border-top:10px groove #FF8C00;}  
+.hr5{ height:10px;border:none;border-top:10px groove #FF8C00;}  
+ -->  
+ </style> 
+
 <@model.webheadsearch />
 	<div class="page">
 		<div class="content">
@@ -75,13 +86,18 @@
 		  <br/><img width="90%" src="http://help.guangfish.com/imgs/bookmark.png">	  
 		  -->
 		  <!--<br/><img width="45%" src="http://help.guangfish.com/imgs/wx-qun.png"><img width="45%" src="http://help.guangfish.com/imgs/wx-kefu.png">-->
-		  <br/><img width="25%" src="http://help.guangfish.com/imgs/wx-kefu.png">
+		  <br/>
 		</div>	
 
 		<footer align="center">
-          <div>
-            <div style="font-size: 0.6rem;background:#ccccff; color:#000;">
-                <span>Copyright © 2018 杭州特为网络科技有限公司</span>
+          <div style="font-size: 0.6rem;background:#e2e2e9; color:#000;height:210px;">
+            <div>
+              <br/>
+              <img width="25%" src="http://help.guangfish.com/imgs/wx-kefu.png">
+              <br/>
+            </div>
+            <div>
+                <span>Copyright © 2018 杭州特为网络科技有限公司<br/>All Rights Reserved</span>
             </div>
           </div>
         </footer>
