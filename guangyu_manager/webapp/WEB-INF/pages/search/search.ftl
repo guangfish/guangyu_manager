@@ -15,7 +15,7 @@
 										</div>
 										<div id="send" class="item-title label" style="width: 0.5rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del()">x</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del()">X</a>
 										</div>								
 									</div>
 								</div>

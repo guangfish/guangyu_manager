@@ -17,7 +17,7 @@
 										</div>
 										<div id="send" class="item-title label" style="width: 0.5rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">x</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">X</a>
 										</div>
 									</div>
 								</div>
@@ -121,7 +121,7 @@
           if(mobile){
             $('#alipay').val(mobile);
             $("#alipayopt").css("width","0.5rem");
-            $('#alipayopt').html("<a href='javascript:void(0);' id='send_btn' style='color: #a0a0a0; font-size: 0.8rem;' onclick='del(\"alipay\")'>x</a>");
+            $('#alipayopt').html("<a href='javascript:void(0);' id='send_btn' style='color: #a0a0a0; font-size: 0.8rem;' onclick='del(\"alipay\")'>X</a>");
           }        
         }
         

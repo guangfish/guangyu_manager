@@ -10,11 +10,11 @@
 									<div class="item-inner">
 										<div class="item-input">
 											<input id="orderid" maxlength="18" type="text" class="input_enter"
-												placeholder="请粘贴从淘宝或京东复制的商品订单号" name="order_id">
+												placeholder="请粘贴购买的商品订单号" name="order_id">
 										</div>
 										<div id="send" class="item-title label" style="width: 0.5rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('orderid')">x</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('orderid')">X</a>
 										</div>
 									</div>
 								</div>
@@ -31,7 +31,7 @@
 										</div>
 										<div id="send" class="item-title label" style="width: 0.5rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">x</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">X</a>
 										</div>
 									</div>
 								</div>
