@@ -13,7 +13,7 @@
 												placeholder="请粘贴从淘宝或京东复制的商品链接" name="product_url">	
 											<input id="mobile" type="hidden" value="" name="mobile">										
 										</div>
-										<div id="send" class="item-title label" style="width: 1rem;">
+										<div id="send" class="item-title label" style="width: 1.2rem;">
 										    <a href="javascript:void(0);" id="send_btn"
 												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del()"><img src="/static/front/img/close.gif"></a>
 										</div>								

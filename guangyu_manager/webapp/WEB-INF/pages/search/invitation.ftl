@@ -16,7 +16,7 @@
 											<input id="mobile_me" maxlength="11" type="text" class="input_enter"
 												placeholder="我的手机号码" name="mobile_me">
 										</div>
-										<div id="send" class="item-title label" style="width: 1.1rem;">
+										<div id="send" class="item-title label" style="width: 1.2rem;">
 										    <a href="javascript:void(0);" id="send_btn"
 												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile_me')"><img src="/static/front/img/close.gif"></a>
 										</div>
@@ -33,7 +33,7 @@
 											<input id="mobile_friend" maxlength="11" type="text" class="input_enter"
 												placeholder="我朋友的手机号码" name="mobile_friend">
 										</div>
-										<div id="send" class="item-title label" style="width: 1.1rem;">
+										<div id="send" class="item-title label" style="width: 1.2rem;">
 										    <a href="javascript:void(0);" id="send_btn"
 												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile_friend')"><img src="/static/front/img/close.gif"></a>
 										</div>
