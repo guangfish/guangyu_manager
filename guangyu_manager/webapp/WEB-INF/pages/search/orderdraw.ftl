@@ -15,9 +15,9 @@
 											<input id="mobile" maxlength="11" type="text" class="input_enter"
 												placeholder="请输入手机号码" name="mobile">
 										</div>
-										<div id="send" class="item-title label" style="width: 0.5rem;">
+										<div id="send" class="item-title label" style="width: 2rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">X</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')"><img src="/static/front/img/close.gif"></a>
 										</div>
 									</div>
 								</div>
@@ -120,8 +120,8 @@
           var mobile = $('#mobile').val();
           if(mobile){
             $('#alipay').val(mobile);
-            $("#alipayopt").css("width","0.5rem");
-            $('#alipayopt').html("<a href='javascript:void(0);' id='send_btn' style='color: #a0a0a0; font-size: 0.8rem;' onclick='del(\"alipay\")'>X</a>");
+            $("#alipayopt").css("width","2rem");
+            $('#alipayopt').html("<a href='javascript:void(0);' id='send_btn' style='color: #a0a0a0; font-size: 0.8rem;' onclick='del(\"alipay\")'><img src='/static/front/img/close.gif'></a>");
           }        
         }
         

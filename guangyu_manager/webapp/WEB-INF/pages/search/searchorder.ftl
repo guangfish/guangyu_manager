@@ -16,9 +16,9 @@
 											<input id="mobile" maxlength="11" type="text" class="input_enter"
 												placeholder="请输入您的手机号码" name="mobile">
 										</div>
-										<div id="send" class="item-title label" style="width: 0.5rem;">
+										<div id="send" class="item-title label" style="width: 1.1rem;">
 										    <a href="javascript:void(0);" id="send_btn"
-												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')">X</a>
+												style="color: #a0a0a0; font-size: 0.8rem;" onclick="del('mobile')"><img src="/static/front/img/close.gif"></a>
 										</div>
 									</div>
 								</div>
