@@ -200,30 +200,7 @@ public class ApiController extends BasicController {
 			result.setResult(new ProductInfoVo("","","","","2"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
-		}
-		
-		//判断是否发送的是淘口令请求
-//		String reg="￥.*￥";
-//		String reg1="《.*《";		
-//		Pattern pattern = Pattern.compile(reg);
-//		Matcher matcher = pattern.matcher(product_url);
-//		Pattern pattern1 = Pattern.compile(reg1);
-//		Matcher matcher1 = pattern1.matcher(product_url);
-//		if(matcher.find() || matcher1.find()){
-//			product_url=TaoKouling.parserTkl(product_url);
-//			logger.info("通过淘口令转换获得的商品链接==>"+product_url);
-//			if(StringUtils.isEmpty(product_url)){
-//				result.setCode(ResultCode.RESULT_FAILURE.getCode());
-//				result.setResultDes("商品链接为空！");
-//				result.setResult(new ProductInfoVo("","","","","2"));
-//				model.addAttribute(SysConst.RESULT_KEY, result);
-//				return model;
-//			}else{
-//				Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
-//				product_url=urlMap0.get("puri")+"?id="+urlMap0.get("id");
-//				logger.info("通过淘口令转换获得的商品缩短链接==>"+product_url);
-//			}
-//		}
+		}		
 		
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 		String[] tklSymbols = tklSymbolsStr.split(";");
@@ -296,6 +273,8 @@ public class ApiController extends BasicController {
 			productInfo = productInfoService.getByProductId(uriProductId);
 		}
 
+		Map<String, String> map = new HashMap<>();
+		
 		String msg = "";
 		if (productInfo == null) {
 			productInfo = new ProductInfo();
@@ -355,7 +334,7 @@ public class ApiController extends BasicController {
 				productInfo.setCouponMiane(quanMianzhi);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
-				productInfoService.insertProductInfo(productInfo);
+				productInfoService.insertProductInfo(productInfo);								
 				
 				//插入搜索记录
 				SearchRecord searchRecord=new SearchRecord();
@@ -365,6 +344,23 @@ public class ApiController extends BasicController {
 				searchRecord.setCreateTime(new Date());
 				searchRecord.setUpdateTime(new Date());
 				searchRecordService.insert(searchRecord);
+				
+				map.put("img", productImgUrl);
+				map.put("shop", shopName);
+				map.put("title", productName);
+				map.put("url", product_url);
+				map.put("quanUrl", couponLink);
+				map.put("money", "￥" + ((float) (Math.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
+				map.put("tagNum", "");
+				map.put("price", "￥" + price);
+				map.put("tklquan", tklquan);
+				map.put("tag", "");
+				map.put("per", ((float) (Math.round(incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
+				map.put("sellNum", sellNum + "");
+				map.put("goodUrl", tkLink);
+				map.put("tkl", tkl);
+				map.put("tklquan", tklquan);
+				map.put("quanMianzhi", "" +quanMianzhi);
 
 				// 组装msg
 				StringBuffer sb = new StringBuffer();
@@ -458,6 +454,24 @@ public class ApiController extends BasicController {
 			searchRecord.setUpdateTime(new Date());
 			searchRecordService.insert(searchRecord);
 			
+			map.put("img", productInfo.getProductImgUrl());
+			map.put("shop", productInfo.getShopName());
+			map.put("title", productInfo.getProductName());
+			map.put("url", productInfo.getProductInfoUrl());
+			map.put("quanUrl", productInfo.getCouponLink());
+			map.put("money", "￥" + ((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+					/ 100));
+			map.put("tagNum", "");
+			map.put("price", "￥" + productInfo.getPrice());
+			map.put("tklquan", productInfo.getTklquan());
+			map.put("tag", "");
+			map.put("per", ((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
+			map.put("sellNum", productInfo.getMonthSales() + "");
+			map.put("goodUrl", productInfo.getTkLink());
+			map.put("tkl", productInfo.getTkl());
+			map.put("tklquan", productInfo.getTklquan());
+			map.put("quanMianzhi", "" +productInfo.getCouponMiane());
+			
 			// 组装msg
 			StringBuffer sb = new StringBuffer();
 			sb.append(
@@ -541,7 +555,9 @@ public class ApiController extends BasicController {
 						
 		}
         //查询成功
-		result.setResult(new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,"0"));
+		ProductInfoVo productInfoVo=new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,"0");
+		productInfoVo.setMap(map);
+		result.setResult(productInfoVo);
 		model.addAttribute(SysConst.RESULT_KEY, result);
 		// response.getHeaders().add("Access-Control-Allow-Credentials","true");
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));

@@ -1,6 +1,7 @@
 package com.bt.om.vo.api;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class ProductInfoVo implements Serializable {
 
@@ -10,6 +11,7 @@ public class ProductInfoVo implements Serializable {
 	private String couponLink="";
 	private String msg="";
 	private String status="";
+	private Map<String, String> map;
 
 	public ProductInfoVo(String shortLinkUrl,String couponName,String couponLink,String msg,String status) {
 		this.shortLinkUrl = shortLinkUrl;
@@ -57,6 +59,14 @@ public class ProductInfoVo implements Serializable {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public Map<String, String> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<String, String> map) {
+		this.map = map;
 	}
 
 }
