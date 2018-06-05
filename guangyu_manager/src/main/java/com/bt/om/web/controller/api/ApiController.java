@@ -393,7 +393,7 @@ public class ApiController extends BasicController {
 						} else {
 							sb.append(tkLink);
 						}
-					}
+					} 
 				}
 				if("yes".equals(ifWeixinBrower)){
 					if("taobao".equals(platform)){
