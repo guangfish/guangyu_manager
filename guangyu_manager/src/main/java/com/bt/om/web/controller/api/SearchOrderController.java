@@ -105,6 +105,15 @@ public class SearchOrderController extends BasicController {
 		String msg = "";
 		// 判断是否可以提现 0：不可提现 1：可提现
 		String canDraw = "0";
+		int friendNum = 0;
+		int friendNumValid = 0;
+		int friendNumNoValid = 0;
+		int rewardAll = 0;
+		int reward = 0;
+		
+		double totalCommission = 0;
+		int canDrawOrderNum = 0;
+		int uncanDrawOrderNum = 0;
 		try {
 			// List<UserOrder> userOrderList =
 			// userOrderService.selectByMobile(mobile);
@@ -112,11 +121,7 @@ public class SearchOrderController extends BasicController {
 			Invitation invitationVo = new Invitation();
 			invitationVo.setInviterMobile(mobile);
 			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
-			int friendNum = 0;
-			int friendNumValid = 0;
-			int friendNumNoValid = 0;
-			int rewardAll = 0;
-			int reward = 0;
+			
 			if (invitationList != null && invitationList.size() > 0) {
 				for (Invitation invitation : invitationList) {
 					// 邀请已激活获得奖励
@@ -135,9 +140,7 @@ public class SearchOrderController extends BasicController {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<br/><div class='table'>");
 			if (userOrderList != null && userOrderList.size() > 0) {
-				double totalCommission = 0;
-				int canDrawOrderNum = 0;
-				int uncanDrawOrderNum = 0;
+				
 				for (UserOrder userOrder : userOrderList) {
 					if ("订单结算".equals(userOrder.getOrderStatus()) || "已结算".equals(userOrder.getOrderStatus())) {
 						canDrawOrderNum = canDrawOrderNum + 1;
@@ -209,6 +212,14 @@ public class SearchOrderController extends BasicController {
 			e.printStackTrace();
 		}
 		UserOrderVo userOrderVo = new UserOrderVo(msg, "0", canDraw);
+		userOrderVo.setCanDrawOrderNum(canDrawOrderNum);
+		userOrderVo.setUncanDrawOrderNum(uncanDrawOrderNum);
+		userOrderVo.setFriendNum(friendNum);
+		userOrderVo.setFriendNumNoValid(friendNumNoValid);
+		userOrderVo.setFriendNumValid(friendNumValid);
+		userOrderVo.setReward(reward);
+		userOrderVo.setRewardAll(rewardAll);
+		userOrderVo.setTotalCommission((float) (Math.round(totalCommission * 100)) / 100);
 		userOrderVo.setMap(list);
 		result.setResult(userOrderVo);
 		model.addAttribute(SysConst.RESULT_KEY, result);
