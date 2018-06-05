@@ -120,7 +120,7 @@
 	  	  window.parent.layer.open({
 							type: 2,
 							title: '<div style="font-size:18px;">邀请有奖</div>',
-							area: ['85%', '500px'],
+							area: ['85%', '450px'],
 							shade: 0.2,
 							content: '/api/invitation.html'
 						});
