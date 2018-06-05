@@ -88,7 +88,7 @@ public class SearchOrderController extends BasicController {
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
-
+ 
 		// 暂时屏蔽掉，需要时开启
 		// String sessionCode =
 		// request.getSession().getAttribute(SessionKey.SESSION_CODE.toString())
