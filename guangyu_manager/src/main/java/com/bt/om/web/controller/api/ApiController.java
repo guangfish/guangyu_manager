@@ -24,7 +24,7 @@ import com.bt.om.util.TaobaoSmsUtil;
 import com.bt.om.vo.api.GetSmsCodeVo;
 import com.bt.om.vo.api.ProductCommissionVo;
 import com.bt.om.vo.api.ProductInfoVo;
-import com.bt.om.vo.api.UserOrderVo;
+//import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
 import com.google.gson.Gson;
@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.crypto.hash.Md5Hash;
+//import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -252,7 +252,7 @@ public class ApiController extends BasicController {
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
-			productInfo = productInfoService.getByProductId(urlMap.get("id"));
+			uriProductId=urlMap.get("id");
 		}else if("jd".equals(platform)){
 			String puri=urlMap.get("puri");
 			//截取京东商品ID
@@ -269,14 +269,14 @@ public class ApiController extends BasicController {
 				result.setResult(new ProductInfoVo("","","","","3"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
-			}			
-			productInfo = productInfoService.getByProductId(uriProductId);
+			}
 		}
-
+//		从数据库中查询是否已查询过改商品
+//		productInfo = productInfoService.getByProductId(uriProductId);
 		Map<String, String> map = new HashMap<>();
 		
 		String msg = "";
-		if (productInfo == null) {
+//		if (productInfo == null) {
 			productInfo = new ProductInfo();
 			CrawlTask crawlTask = new CrawlTask();
 			TaskBean taskBean = null;
@@ -439,121 +439,121 @@ public class ApiController extends BasicController {
 				sb.append(
 						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'>");
 				
-				sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
+				sb.append("</div><div style='color:red;'>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
 				msg = sb.toString();
 			} else {
 				return model;
 			}
-		} else {
-			//插入搜索记录
-			SearchRecord searchRecord=new SearchRecord();
-			searchRecord.setMobile(mobile);
-			searchRecord.setStatus(1);
-			searchRecord.setTitle(productInfo.getProductName());
-			searchRecord.setCreateTime(new Date());
-			searchRecord.setUpdateTime(new Date());
-			searchRecordService.insert(searchRecord);
-			
-			map.put("img", productInfo.getProductImgUrl());
-			map.put("shop", productInfo.getShopName());
-			map.put("title", productInfo.getProductName());
-			map.put("url", productInfo.getProductInfoUrl());
-			map.put("quanUrl", productInfo.getCouponLink());
-			map.put("money", "￥" + ((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-					/ 100));
-			map.put("tagNum", "");
-			map.put("price", "￥" + productInfo.getPrice());
-			map.put("tklquan", productInfo.getTklquan());
-			map.put("tag", "");
-			map.put("per", ((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
-			map.put("sellNum", productInfo.getMonthSales() + "");
-			map.put("goodUrl", productInfo.getTkLink());
-			map.put("tkl", productInfo.getTkl());
-			map.put("tklquan", productInfo.getTklquan());
-			map.put("quanMianzhi", "" +productInfo.getCouponMiane());
-			
-			// 组装msg
-			StringBuffer sb = new StringBuffer();
-			sb.append(
-					"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
-			sb.append(productInfo.getProductImgUrl());
-			
-			if ("no".equals(ifWeixinBrower)) {
-				sb.append("' height='220' width='220' onclick=drump('");
-				if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-					sb.append(productInfo.getCouponLink());
-				} else {
-					sb.append(productInfo.getTkLink());
-				}
-			}else{
-				if("taobao".equals(platform)){
-					sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
-					if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
-						sb.append("tklquan");
-					} else {
-						sb.append("tkl");
-					}
-				}else{
-					sb.append("' height='220' width='220' onclick=drump('");
-					if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-						sb.append(productInfo.getCouponLink());
-					} else {
-						sb.append(productInfo.getTkLink());
-					}
-				}				
-			}
-			if("yes".equals(ifWeixinBrower)){
-				if("taobao".equals(platform)){
-					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
-				}else{
-					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
-				}
-			}else{
-			  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
-			}
-			sb.append(productInfo.getProductName());
-			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-			sb.append(StringUtil.getSubString(productInfo.getShopName(), 20));
-			if("0.0".equals(productInfo.getCouponMiane())){
-				sb.append("</span><span style='float:right;'>月销量：");
-				sb.append(productInfo.getMonthSales());
-			}else{
-				sb.append("</span><span style='float:right;'>优惠券：￥");
-				sb.append(productInfo.getCouponMiane());
-			}			
-			sb.append(
-					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
-			sb.append(productInfo.getPrice());
-			sb.append("</span><span style='float: right;'>预估返现：￥");
-			float fanli=((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-					/ 100);
-			float fanliMultiple=1;
-			sb.append(fanli);
-			if(fanli<=1){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
-			}else if(fanli>1 && fanli<=5){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
-			}else if(fanli>5 && fanli<=10){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
-			}else if(fanli>10 && fanli<=50){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
-			}else if(fanli>50 && fanli<=100){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
-			}else if(fanli>100 && fanli<=500){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
-			}else{
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
-			}
-			sb.append("(");
-			sb.append(((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
-			sb.append("%)");
-			sb.append(
-					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
-			
-			sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
-			msg = sb.toString();
-						
-		}
+//		} else {
+//			//插入搜索记录
+//			SearchRecord searchRecord=new SearchRecord();
+//			searchRecord.setMobile(mobile);
+//			searchRecord.setStatus(1);
+//			searchRecord.setTitle(productInfo.getProductName());
+//			searchRecord.setCreateTime(new Date());
+//			searchRecord.setUpdateTime(new Date());
+//			searchRecordService.insert(searchRecord);
+//			
+//			map.put("img", productInfo.getProductImgUrl());
+//			map.put("shop", productInfo.getShopName());
+//			map.put("title", productInfo.getProductName());
+//			map.put("url", productInfo.getProductInfoUrl());
+//			map.put("quanUrl", productInfo.getCouponLink());
+//			map.put("money", "￥" + ((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+//					/ 100));
+//			map.put("tagNum", "");
+//			map.put("price", "￥" + productInfo.getPrice());
+//			map.put("tklquan", productInfo.getTklquan());
+//			map.put("tag", "");
+//			map.put("per", ((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
+//			map.put("sellNum", productInfo.getMonthSales() + "");
+//			map.put("goodUrl", productInfo.getTkLink());
+//			map.put("tkl", productInfo.getTkl());
+//			map.put("tklquan", productInfo.getTklquan());
+//			map.put("quanMianzhi", "" +productInfo.getCouponMiane());
+//			
+//			// 组装msg
+//			StringBuffer sb = new StringBuffer();
+//			sb.append(
+//					"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
+//			sb.append(productInfo.getProductImgUrl());
+//			
+//			if ("no".equals(ifWeixinBrower)) {
+//				sb.append("' height='220' width='220' onclick=drump('");
+//				if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
+//					sb.append(productInfo.getCouponLink());
+//				} else {
+//					sb.append(productInfo.getTkLink());
+//				}
+//			}else{
+//				if("taobao".equals(platform)){
+//					sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
+//					if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
+//						sb.append("tklquan");
+//					} else {
+//						sb.append("tkl");
+//					}
+//				}else{
+//					sb.append("' height='220' width='220' onclick=drump('");
+//					if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
+//						sb.append(productInfo.getCouponLink());
+//					} else {
+//						sb.append(productInfo.getTkLink());
+//					}
+//				}				
+//			}
+//			if("yes".equals(ifWeixinBrower)){
+//				if("taobao".equals(platform)){
+//					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
+//				}else{
+//					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
+//				}
+//			}else{
+//			  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+//			}
+//			sb.append(productInfo.getProductName());
+//			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
+//			sb.append(StringUtil.getSubString(productInfo.getShopName(), 20));
+//			if("0.0".equals(productInfo.getCouponMiane())){
+//				sb.append("</span><span style='float:right;'>月销量：");
+//				sb.append(productInfo.getMonthSales());
+//			}else{
+//				sb.append("</span><span style='float:right;'>优惠券：￥");
+//				sb.append(productInfo.getCouponMiane());
+//			}			
+//			sb.append(
+//					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
+//			sb.append(productInfo.getPrice());
+//			sb.append("</span><span style='float: right;'>预估返现：￥");
+//			float fanli=((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+//					/ 100);
+//			float fanliMultiple=1;
+//			sb.append(fanli);
+//			if(fanli<=1){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
+//			}else if(fanli>1 && fanli<=5){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
+//			}else if(fanli>5 && fanli<=10){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
+//			}else if(fanli>10 && fanli<=50){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
+//			}else if(fanli>50 && fanli<=100){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
+//			}else if(fanli>100 && fanli<=500){
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
+//			}else{
+//				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
+//			}
+//			sb.append("(");
+//			sb.append(((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
+//			sb.append("%)");
+//			sb.append(
+//					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
+//			
+//			sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
+//			msg = sb.toString();
+//						
+//		}
         //查询成功
 		ProductInfoVo productInfoVo=new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,"0");
 		productInfoVo.setMap(map);

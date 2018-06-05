@@ -59,7 +59,7 @@ public class OrderFetchJdTask {
 	}
 
 	private static WebDriver driver;
-	private static String baseUrl = "https://media.jd.com/rest/report/detail";
+	private static String baseUrl = "https://media.jd.com";
 
 	private static int sleepTimeBegin = 1000;
 	private static int sleepTimeEnd = 2000;

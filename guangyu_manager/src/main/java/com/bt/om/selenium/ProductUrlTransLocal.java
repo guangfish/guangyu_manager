@@ -55,7 +55,7 @@ public class ProductUrlTransLocal {
 	private static WebDriver driver;
 	private static WebDriver jdDriver;
 	private static String baseUrl = "https://pub.alimama.com/promo/search/index.htm";
-	private static String jdBaseUrl = "https://media.jd.com/gotoadv/goods";
+	private static String jdBaseUrl = "https://media.jd.com";
 
 	private static int sleepTimeBegin = 100;
 	private static int sleepTimeEnd = 500;

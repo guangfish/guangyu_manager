@@ -94,18 +94,21 @@ public class UserOrderCheckJdTask {
 						userOrder1.setCommission3(((double) (Math.round(
 								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 								/ 100));
+						double commission3=((double) (Math.round(
+								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+								/ 100);
 
-						if(commission<=1){
+						if(commission3<=1){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
-						}else if(commission>1 && commission<=5){
+						}else if(commission3>1 && commission3<=5){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
-						}else if(commission>5 && commission<=10){
+						}else if(commission3>5 && commission3<=10){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
-						}else if(commission>10 && commission<=50){
+						}else if(commission3>10 && commission3<=50){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
-						}else if(commission>50 && commission<=100){
+						}else if(commission3>50 && commission3<=100){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
-						}else if(commission>100 && commission<=500){
+						}else if(commission3>100 && commission3<=500){
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
 						}else{
 							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
