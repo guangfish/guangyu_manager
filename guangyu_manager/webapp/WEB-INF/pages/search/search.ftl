@@ -82,7 +82,7 @@
           <div style="font-size: 0.6rem;background:#e2e2e9; color:#000;height:210px;">
             <div>
               <br/>
-              <img width="25%" src="http://help.guangfish.com/imgs/wx-kefu.png">
+              <img width="25%" src="http://help.guangfish.com/imgs/gzh.jpg">
               <br/>
             </div>
             <div>
