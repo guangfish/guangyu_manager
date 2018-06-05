@@ -334,7 +334,11 @@ public class ApiController extends BasicController {
 				productInfo.setCouponMiane(quanMianzhi);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
-				productInfoService.insertProductInfo(productInfo);								
+				try{
+				    productInfoService.insertProductInfo(productInfo);		
+				}catch(Exception e){
+					logger.error(e.getMessage());
+				}
 				
 				//插入搜索记录
 				SearchRecord searchRecord=new SearchRecord();
@@ -403,7 +407,7 @@ public class ApiController extends BasicController {
 				sb.append(productName);
 				sb.append(
 						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-				sb.append(StringUtil.getSubString(shopName, 20));
+				sb.append(StringUtil.getSubString(shopName, 16));
 				if("0.0".equals(quanMianzhi)){
 					sb.append("</span><span style='float:right;'>月销量：");
 					sb.append(sellNum);
