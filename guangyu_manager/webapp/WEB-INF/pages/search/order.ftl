@@ -74,7 +74,7 @@
 		</div>
 
 		<div id="result" align="center">
-		  <font style="font-size: 0.7rem;color:red">提示：返回【搜索返利页 -> 我要提现】，输入您的手机号，查询订单信息（刚录入的订单号，最快1分钟、最迟次日可查）。</font>
+		  <font style="font-size: 0.7rem;color:red">提示：刚录入的订单号，最快1分钟、最迟次日可查</font>
 		</div>
 	</div>
 	
@@ -163,10 +163,10 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result=="0"){
-								    Core.Dialog.msg("订单号提交成功，请收货后，去淘宝/京东\"确认收货\"后方可提现",5000);								    
+								    Core.Dialog.msg("订单号提交成功，请收货后，去淘宝/京东【确认收货】后方可提现",8000);								    
 								    var orderSubmitNotice = $.cookie('ordersubmitnotice');
 								    if(!orderSubmitNotice){
-								      Core.Dialog.msg("提示：返回【搜索返利页 -> 我要提现】，输入您的手机号，查询订单信息（刚录入的订单号，最快1分钟、最迟次日可查）。<a href=\"searchorder.html\">点我查订单</a>",9000);
+								      Core.Dialog.msg("订单号提交成功，刚录入的订单号，最快1分钟、最迟次日可查<a href=\"searchorder.html\">点我查订单</a>",9000);
 								      $.cookie('ordersubmitnotice', 'ordersubmitnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
 								    }
 								    $("#orderid").val("");

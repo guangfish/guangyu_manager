@@ -26,7 +26,6 @@ import com.bt.om.entity.DrawCashOrder;
 import com.bt.om.entity.Invitation;
 import com.bt.om.entity.UserOrder;
 import com.bt.om.enums.ResultCode;
-import com.bt.om.enums.SessionKey;
 import com.bt.om.service.IDrawCashOrderService;
 import com.bt.om.service.IDrawCashService;
 import com.bt.om.service.IInvitationService;
@@ -34,7 +33,6 @@ import com.bt.om.service.IUserOrderService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.MailUtil;
-import com.bt.om.util.TaobaoSmsUtil;
 import com.bt.om.vo.api.OrderDrawVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -79,7 +77,6 @@ public class OrderDrawController extends BasicController {
 		model = new ExtendedModelMap();
 		String mobile = "";
 		String alipay = "";
-		String vcode = "";
 		String smscode = "";
 
 		try {
@@ -88,7 +85,6 @@ public class OrderDrawController extends BasicController {
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			mobile = obj.get("mobile").getAsString();
 			alipay = obj.get("alipay").getAsString();
-			vcode = obj.get("vcode").getAsString();
 			smscode = obj.get("smscode").getAsString();
 
 			// 手机号码必须验证
@@ -103,12 +99,6 @@ public class OrderDrawController extends BasicController {
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
-			// 验证码必须验证
-			if (StringUtils.isEmpty(vcode)) {
-				result.setResult(new OrderDrawVo(0, "0", "0", "0", "3"));
-				model.addAttribute(SysConst.RESULT_KEY, result);
-				return model;
-			}
 			// 短信验证码必须验证
 			if (StringUtils.isEmpty(smscode)) {
 				result.setResult(new OrderDrawVo(0, "0", "0", "0", "4"));
@@ -118,15 +108,6 @@ public class OrderDrawController extends BasicController {
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
-		}
-
-		String sessionCode = request.getSession().getAttribute(SessionKey.SESSION_CODE.toString()) == null ? ""
-				: request.getSession().getAttribute(SessionKey.SESSION_CODE.toString()).toString();
-		// 验证码有效验证
-		if (!vcode.equalsIgnoreCase(sessionCode)) {
-			result.setResult(new OrderDrawVo(0, "0", "0", "0", "5")); // 验证码不一致
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -208,11 +189,6 @@ public class OrderDrawController extends BasicController {
 				invitationService.updateByPrimaryKeySelective(invitation);
 			}
 		}
-
-		// 发送短信通知有客户申请提现
-//		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
-//			TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_133960015", "user", mobile, "13732203065");
-//		}
 		
 		new Thread(new Runnable() {			  
 		    @Override

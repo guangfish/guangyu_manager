@@ -44,23 +44,6 @@
 									<div class="item-media">
 										<i class="icon icon-form-email"></i>
 									</div>
-									<div class="item-inner" style="padding:0">
-										<div class="item-input">
-											<input id="vcode" maxlength="5" class="input_enter" type="text" placeholder="输入验证码"
-												name="codeimage">
-										</div>
-										<div class="item-title label" style="width:100px;height:35px;">
-											 <img id="num" height="35" src="/getCode?%27+(new%20Date()).getTime()" onclick="document.getElementById('num').src='/getCode?'+(new Date()).getTime()"  alt="换一换" title="换一换" class="codeimage">
-										</div>
-										
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="item-content">
-									<div class="item-media">
-										<i class="icon icon-form-email"></i>
-									</div>
 									<div class="item-inner">
 										<div class="item-input">
 											<input id="smscode" class="input_enter" type="text" placeholder="输入短信验证码"
@@ -138,7 +121,6 @@
 	    function commit(){
 	      var mobile = $('#mobile').val();
 	      var alipay = $('#alipay').val();
-	      var vcode = $('#vcode').val();
 	      var smscode = $('#smscode').val();	   
 	      if(!mobile){
 	        Core.Dialog.msg("请务必输入正确的手机号码，用于接收短信验证码！",5000);
@@ -158,15 +140,7 @@
 	        Core.Dialog.msg("请务必输入正确的支付宝账号，用于收款！");
 	        return;
 	      }
-	      if(!vcode){
-	        Core.Dialog.msg("请输入图形验证码！");
-	        return;
-	      }else{
-	        if(vcode.toString().length!=5){
-			  Core.Dialog.msg("图形验证码输入不正确！");
-			  return;
-			}
-	      }
+
 	      if(!smscode){
 	        Core.Dialog.msg("请输入短信验证码！");
 	        return;
@@ -177,10 +151,10 @@
 			}
 	      }	      
 	      
-	      save(mobile,alipay,vcode,smscode);	      	      	      	      
+	      save(mobile,alipay,smscode);	      	      	      	      
 	    }
 
-		function save(mobile,alipay,vcode,smscode) {
+		function save(mobile,alipay,smscode) {
 		        $('#submitlogin').removeAttr('onclick');
 				$
 						.ajax({
@@ -191,7 +165,6 @@
 							data : JSON.stringify({
 								"mobile" : ""+mobile,
 								"alipay" : ""+alipay,
-								"vcode" : ""+vcode,
 								"smscode" : ""+smscode
 							}),
 							timeout : 30000,
@@ -202,15 +175,10 @@
 								    Core.Dialog.msg("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！",10000);
 								    //$("#mobile").val("");
 								    //$("#alipay").val("");
-								    $("#vcode").val("");
 								    $("#smscode").val("");
-								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
-								    $('#result').html("<br/><br/><font color='red'>提现申请成功了,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现金额"+data.ret.result.money+"元,请注意支付宝查收！</font>");
-								  }								  
-								  if(data.ret.result.status=="5"){
-								    Core.Dialog.msg("图形验证码验证失败!");
-								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
-								  }								  
+//								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
+//								    $('#result').html("<br/><br/><font color='red'>提现申请成功了,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现金额"+data.ret.result.money+"元,请注意支付宝查收！</font>");
+								  }					  
 								  if(data.ret.result.status=="6"){
 								    Core.Dialog.msg("短信验证码已失效，请重新发送!");
 								    $("#smscode").val("");
@@ -223,9 +191,7 @@
 								    Core.Dialog.msg("亲，已经没有可提现的订单了，赶紧去看看是否没有录入已完成购买商品的订单号！",5000);
 								    //$("#mobile").val("");
 								    //$("#alipay").val("");
-								    $("#vcode").val("");
 								    $("#smscode").val("");
-								    document.getElementById('num').src='/getCode?'+(new Date()).getTime();
 								  }
 								}
 								$('#submitlogin').attr('onclick','commit();');
@@ -239,13 +205,8 @@
 		
 		function sendsmscode() {
 			var mobile = $('#mobile').val();
-			var vcode = $('#vcode').val();
 			if (!mobile) {
 				Core.Dialog.msg("请输入手机号码！");
-				return;
-			}
-			if (!vcode) {
-				Core.Dialog.msg("请输入图形验证码！");
 				return;
 			}
 				$
@@ -256,16 +217,11 @@
 							dataType : "json",// 返回json格式的数据
 							async:false,
 							data : JSON.stringify({
-								"mobile" : mobile,
-								"vcode" : vcode
+								"mobile" : mobile
 							}),
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data);
-								if(data.ret.result.status=="3"){
-								    Core.Dialog.msg("图形验证码不正确");
-								    $("#vcode").val("");								    
-								}
 								if(data.ret.result.status=="4"){
 								    Core.Dialog.msg("请等待2分钟后再次发送短信验证码");							    
 								}

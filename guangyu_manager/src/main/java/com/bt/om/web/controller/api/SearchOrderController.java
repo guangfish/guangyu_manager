@@ -138,7 +138,7 @@ public class SearchOrderController extends BasicController {
 				friendNum = invitationList.size();
 			}
 			StringBuffer sb = new StringBuffer();
-			sb.append("<br/><div class='table'>");
+			sb.append("<div class='table'>");
 			if (userOrderList != null && userOrderList.size() > 0) {
 				
 				for (UserOrder userOrder : userOrderList) {
@@ -149,21 +149,21 @@ public class SearchOrderController extends BasicController {
 						uncanDrawOrderNum = uncanDrawOrderNum + 1;
 					}
 				}
-				sb.append("<h2 class='table-caption'><font color='red'>" + canDrawOrderNum
+				sb.append("<h4 class='table-caption'><font color='red'>" + canDrawOrderNum
 						+ "</font>条可提现，<font color='red'>" + uncanDrawOrderNum
 						+ "</font>条未达提现要求，可提金额<font color='red'>￥" + ((float) (Math.round(totalCommission * 100)) / 100)
-						+ "</font></h2>");
+						+ "</font></h4>");
 				if (totalCommission > 0) {
 					canDraw = "1";
 				}
 			} else {
-				sb.append("<h2 class='table-caption'>无可提现订单或订单处于校验中</h2>");
+				sb.append("<h4 class='table-caption'>无可提现订单或订单处于校验中</h4>");
 			}
-			sb.append("<h2 class='table-caption'>共邀请<font color='red'>" + friendNum
+			sb.append("<h4 class='table-caption'>共邀请<font color='red'>" + friendNum
 					+ "</font>个好友，尚有激活邀请<font color='red'>" + friendNumValid + "</font>个，未激活邀请<font color='red'>"
 					+ friendNumNoValid + "</font>个，可提现奖励<font color='red'>￥" + reward
-					+ "</font>，未达提现要求奖励<font color='red'>￥" + rewardAll + "</font></h2>");
-			sb.append("<h2 class='table-caption'><font color='red'>提现须知：收到商品后请尽快去淘宝/京东确认收货，方可快速提现</font></h2>");
+					+ "</font>，未达提现要求奖励<font color='red'>￥" + rewardAll + "</font></h4>");
+			sb.append("<h4 class='table-caption'><font color='red'>提现须知：收到商品后请尽快去淘宝/京东确认收货，方可快速提现</font></h4>");
 			sb.append(
 					"<div class='table-column-group'><div class='table-column'></div><div class='table-column'></div><div class='table-column'></div><div class='table-column'></div></div>");
 			sb.append(

@@ -88,13 +88,11 @@ public class ApiController extends BasicController {
 		result.setResultDes("获取验证码成功");
 		model = new ExtendedModelMap();
 		String mobile = null;
-		String code = "";
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			mobile = obj.get("mobile").getAsString();
-			code = obj.get("vcode").getAsString();
+			mobile = obj.get("mobile").getAsString();			
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
@@ -107,26 +105,6 @@ public class ApiController extends BasicController {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("手机号为必填！");
 			result.setResult(new GetSmsCodeVo("","1"));
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
-		}
-		// 验证码验证
-		if (StringUtils.isEmpty(code)) {
-			result.setCode(ResultCode.RESULT_FAILURE.getCode());
-			result.setResultDes("验证码为必填！");
-			result.setResult(new GetSmsCodeVo("","2"));
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
-		}
-
-		String sessionCode = request.getSession().getAttribute(SessionKey.SESSION_CODE.toString()) == null ? ""
-				: request.getSession().getAttribute(SessionKey.SESSION_CODE.toString()).toString();
-
-		// 验证码有效验证
-		if (!code.equalsIgnoreCase(sessionCode)) {
-			result.setCode(ResultCode.RESULT_FAILURE.getCode());
-			result.setResultDes("验证码验证失败！");
-			result.setResult(new GetSmsCodeVo("","3"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
