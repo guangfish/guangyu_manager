@@ -166,11 +166,10 @@ public class SearchOrderController extends BasicController {
 			sb.append("<h4 class='table-caption'><font color='red'>提现须知：收到商品后请尽快去淘宝/京东确认收货，方可快速提现</font></h4>");
 			sb.append(
 					"<div class='table-column-group'><div class='table-column'></div><div class='table-column'></div><div class='table-column'></div><div class='table-column'></div></div>");
-			sb.append(
-					"<div class='table-header-group'><ul class='table-row'><li class='table-cell' style='font-size: 0.6rem;'>商品</li><li class='table-cell' style='font-size: 0.6rem;'>返利</li><li class='table-cell' style='font-size: 0.6rem;'>状态</li><li class='table-cell' style='font-size: 0.6rem;'>时间</li></ul></div>");
-
-			// <li class='table-cell' style='font-size: 0.6rem;'>给淘宝的</li>
-
+			if (userOrderList != null && userOrderList.size() > 0) {
+				sb.append(
+						"<div class='table-header-group'><ul class='table-row'><li class='table-cell' style='font-size: 0.6rem;'>商品</li><li class='table-cell' style='font-size: 0.6rem;'>返利</li><li class='table-cell' style='font-size: 0.6rem;'>状态</li><li class='table-cell' style='font-size: 0.6rem;'>时间</li></ul></div>");
+			}
 			if (userOrderList != null && userOrderList.size() > 0) {
 				sb.append("<div class='table-row-group'>");
 				for (UserOrder userOrder : userOrderList) {
