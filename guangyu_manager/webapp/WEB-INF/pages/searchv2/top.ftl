@@ -13,7 +13,9 @@
 	<link rel="stylesheet" type="text/css" href="/static/frontv2/css/swiper.min.css">
 	<link rel="stylesheet" type="text/css" href="/static/frontv2/css/index.css">
 	<script type="text/javascript" src="/static/frontv2/js/jquery-1.8.3.min.js"></script>
-	<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible.js"></script>
+	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
+	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
+    <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
 	<title>逛鱼搜索 | 一个搜索拿返利的工具，支持淘宝、京东</title>
 </head>
 <body>
