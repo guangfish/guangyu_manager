@@ -114,7 +114,21 @@
 			<a href="javascript:void(0)"></a>
 		</div>
 	</div>	
-	
+	<!-- 底部菜单栏 -->
+	<nav class="mui-bar mui-bar-tab new-bar">
+		<a class="mui-tab-item mui-active" href="searchv2">
+			<span class="mui-icon mui-icon-index "></span>
+			<span class="mui-tab-label">首页</span>
+		</a>
+		<a class="mui-tab-item" href="orderv2">
+			<span class="mui-icon mui-icon-new"></span>
+			<span class="mui-tab-label">订单</span>
+		</a>
+		<a class="mui-tab-item" href="searchorderv2">
+			<span class="mui-icon mui-icon-old"></span>
+			<span class="mui-tab-label">提现</span>
+		</a>
+	</nav>
 	
 <script type="text/html" id="searchResult">
 <div id="search-page" class="search-page">

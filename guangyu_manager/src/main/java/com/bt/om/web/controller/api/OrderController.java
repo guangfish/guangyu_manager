@@ -43,6 +43,15 @@ public class OrderController extends BasicController {
 		model.addAttribute("cookieDomain", cookieDomain);
 		return "search/order";
 	}
+	
+	@RequestMapping(value = "/orderv2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String orderv2(Model model, HttpServletRequest request) {
+		String cookieDomain=ConfigUtil.getString("cookie.domain");
+		model.addAttribute("cookieDomain", cookieDomain);
+		return "searchv2/order";
+	}
+	
+
 
 	// 订单保存
 	@RequestMapping(value = "/api/ordersave", method = RequestMethod.POST)

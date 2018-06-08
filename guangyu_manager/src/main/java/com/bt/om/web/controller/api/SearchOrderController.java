@@ -50,6 +50,11 @@ public class SearchOrderController extends BasicController {
 	public String search(Model model, HttpServletRequest request) {
 		return "search/searchorder";
 	}
+	
+	@RequestMapping(value = "/searchorderv2", method = RequestMethod.GET)
+	public String searchorderv2(Model model, HttpServletRequest request) {
+		return "searchv2/searchorder";
+	}
 
 	// 查询订单列表
 	@RequestMapping(value = "/api/searchorder", method = RequestMethod.POST)
