@@ -1,0 +1,121 @@
+// 菜单栏
+@import "../common/nav.css";
+// 公共样式
+@import "../common/common.css";
+.mui-content.mui-login-setting{
+	box-sizing: border-box;
+	padding-top: 42px;
+	.login-setting-item{
+		height: 1.2rem;
+		line-height: 1.2rem;
+		background-color: #fff;
+		padding: 0 .45rem 0 .75rem;
+		border-bottom:1px solid #ececec;
+		a{
+			display: block;
+			font-size:.34rem;
+			color: #010101;
+			i{
+				display: inline-block;
+			    width: .52rem;
+			    height: .28rem;
+			    background: url(../../img/report/repot_ic.png) no-repeat;
+			    background-size: 100%;
+			    margin-top: .4rem;
+			    transform-origin: center center;
+			    transform: rotate(90deg);
+			    -webkit-transform: rotate(90deg);
+			    -moz-transform: rotate(90deg);
+			    -ms-transform: rotate(90deg);
+			    -o-transform: rotate(90deg);
+
+			}
+		}
+	}
+	.nickname-box{
+		box-sizing: border-box;
+	    padding-left: .8rem;
+	    background-color: #fff;
+		input.nickname{
+			margin: 0;
+		    border: 0;
+		    font-size: .4rem;
+		    height: 1.14666rem;
+		    line-height: .37rem;
+		    border-bottom: 1px solid #e9e9e9;
+		}
+		.selectSex{
+			margin-top: .3rem;
+			font-size: .34rem;
+			.label-box{
+				display: inline-block;
+			}
+			label{
+				display: inline-block;
+				vertical-align: middle;
+				margin-left: 1.2rem;
+			}
+			.mui-sex{
+				vertical-align: middle;
+				margin-right: .1rem;
+			    margin-left: 1.25rem;
+				margin-top: .1rem;
+			}
+			
+			input[type="radio"] + label::before {
+			    content: "\a0"; /*不换行空格*/
+			    display: inline-block;
+			    vertical-align: middle;
+			    width: .2rem;
+			    height: .2rem;
+			    border-radius: 50%;
+			    border: 1px solid #ff6402;
+			    padding: .1rem;
+			    margin-bottom: .1rem;
+			    margin-right: .1rem;
+			}
+			input[type="radio"]:checked + label::before {
+			    background-color: #ff6402 !important;
+			    background-clip: content-box;
+			    padding: .1rem;
+			}
+			input[type="radio"] {
+			    position: absolute;
+			    clip: rect(0, 0, 0, 0);
+			}
+		}
+		.login-setting-btn{
+			font-size: 0;
+			margin-top: 1rem;
+			margin-left: .3rem;
+			button.mui-btn-warning{
+				width: 3.65rem ;
+				height: 1.13rem;
+				background-color: #ff6402;
+				color:#fff;
+				text-align: center;
+				font-size: .36rem;
+				border-radius: .19rem;
+				border:1px solid #ff6402;
+				margin:0 .4rem 1rem 0;
+			}
+			button.mui-btn-outlined{
+				background-color: #fff;
+				color:#ff6402;
+			}
+
+		}
+	}
+}
+
+
+.mui-popup-inner{
+    padding:20px;
+    .mui-popup-text{
+    	font-size: .42rem;
+    }
+}
+.mui-popup-button{
+	color:#ff6402;
+
+}

@@ -1,0 +1,99 @@
+@import "../common/nav.css";
+@import "../common/common.css";
+body {
+  background-color: #fff;
+}
+.mui-content.mui-self-infor {
+  padding-top: 42px;
+  background-color: #fff;
+}
+.mui-content.mui-self-infor .self-infor-box {
+  padding-bottom: 50px;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item {
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+  padding: .35rem .42rem .3rem .7rem;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item .self-infor-tit {
+  position: relative;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item .self-infor-tit h2 {
+  display: inline-block;
+  max-width: 7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .42rem;
+  color: #090909;
+  margin: 0 0 .1rem 0;
+  vertical-align: middle;
+  font-weight: normal;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item .self-infor-tit em {
+  display: inline-block;
+  width: .78rem;
+  height: .37rem;
+  background: url(../../img/self_infor.png) no-repeat;
+  background-size: 100%;
+  margin-left: .15em;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item .self-infor-tit span.inforTime {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #aaaaaa;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item .self-infor-text {
+  display: inline-block;
+  width: 8.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .3rem;
+  color: #595959;
+  margin: 0;
+}
+.mui-content.mui-self-infor .self-infor-box .self-infor-item:nth-child(2n) {
+  background-color: #f9fbfe;
+}
+.mui-content.mui-self-infor .self-infor-detail {
+  padding: .3rem .56rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-tit {
+  border-bottom: 1px solid #eaeaea;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-tit h2 {
+  font-size: .47rem;
+  color: #000;
+  line-height: .65rem;
+  font-weight: normal;
+  margin-top: 0;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-tit p {
+  margin: 0 0 .2rem 0;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-tit p span {
+  font-size: .3rem;
+  color: #9a9a9a;
+  margin-right: .2rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-tit p span i.browse {
+  font-style: normal;
+  margin-left: .1rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-cont {
+  margin-top: .3rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-cont p {
+  margin-bottom: .2rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-cont a {
+  display: inline-block;
+  width: 8.82rem;
+}
+.mui-content.mui-self-infor .self-infor-detail .infor-detail-cont a img {
+  display: block;
+  max-width: 8.82rem;
+  margin: 0 auto;
+}

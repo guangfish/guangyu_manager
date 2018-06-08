@@ -25,6 +25,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -142,6 +143,31 @@ public final class HttpcomponentsUtil {
 		return result;
 	}
 
+	public static String getReq(String requestUrl) throws Exception {
+		String result = "ok";
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			HttpGet httpGet = new HttpGet(requestUrl);
+			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(DEFAULT_SOCKET_TIMEOUT)
+					.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
+					.setConnectionRequestTimeout(DEFAULT_CONNECTION_REQUEST_TIMEOUT).build();
+			httpGet.setConfig(requestConfig);
+			CloseableHttpResponse response = httpclient.execute(httpGet);
+			try {
+				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+					result = "true";
+				} else {
+					result = "false";
+				}
+			} finally {
+				response.close();
+			}
+		} finally {
+			httpclient.close();
+		}
+		return result;
+	}
+
 	/**
 	 * send post request return <tt>String</tt>
 	 */
@@ -208,8 +234,7 @@ public final class HttpcomponentsUtil {
 	 * @throws ParseException
 	 * @throws IOException
 	 */
-	public static String sendHttp(List<NameValuePair> nvps,String url)
-			throws ParseException, IOException {
+	public static String sendHttp(List<NameValuePair> nvps, String url) throws ParseException, IOException {
 		String body = "";
 
 		// 创建httpclient对象
@@ -224,8 +249,8 @@ public final class HttpcomponentsUtil {
 		// 设置参数到请求对象中
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps, DEFAULT_ENCODE));
 
-//		System.out.println("请求地址：" + url);
-//		System.out.println("请求参数：" + nvps.toString());
+		// System.out.println("请求地址：" + url);
+		// System.out.println("请求参数：" + nvps.toString());
 
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】
@@ -292,9 +317,9 @@ public final class HttpcomponentsUtil {
 	 * @throws KeyManagementException
 	 * @throws IOException
 	 * @throws ClientProtocolException
-	 * 参考：https://www.cnblogs.com/Mr-Rocker/p/6229652.html
+	 *             参考：https://www.cnblogs.com/Mr-Rocker/p/6229652.html
 	 */
-	public static String sendHttps(List<NameValuePair> nvps,String url)
+	public static String sendHttps(List<NameValuePair> nvps, String url)
 			throws KeyManagementException, NoSuchAlgorithmException, ClientProtocolException, IOException {
 		String body = "";
 		// 采用绕过验证的方式处理https请求
@@ -321,8 +346,8 @@ public final class HttpcomponentsUtil {
 		// 设置参数到请求对象中
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps, DEFAULT_ENCODE));
 
-//		System.out.println("请求地址：" + url);
-//		System.out.println("请求参数：" + nvps.toString());
+		// System.out.println("请求地址：" + url);
+		// System.out.println("请求参数：" + nvps.toString());
 
 		// 设置header信息
 		// 指定报文头【Content-type】、【User-Agent】

@@ -1,0 +1,70 @@
+@import "../common/nav.css";
+@import "../common/pop.css";
+body {
+  background-color: #fff;
+}
+.ans_mt {
+  margin-top: 3.4rem;
+  padding-bottom: 52px;
+}
+.mui-content.mui-answer {
+  background-color: #fff;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-title {
+  position: relative;
+  padding: 0 .42rem;
+  margin-top: .6rem;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-title h2 {
+  font-size: .38rem;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-title h2 em {
+  display: inline-block;
+  width: .71rem;
+  height: .71rem;
+  line-height: .71rem;
+  text-align: center;
+  color: #fff;
+  border-radius: 2px;
+  font-size: .34rem;
+  font-style: normal;
+  margin-right: .45rem;
+  background-color: #0098d8;
+  vertical-align: middle;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-title h2 span {
+  width: 8rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-title a.answer-btn {
+  position: absolute;
+  right: .42rem;
+  bottom: -0.8rem;
+  width: 2.19rem;
+  height: .69rem;
+  line-height: .69rem;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  color: #ff6402;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-cont .main-answer-item {
+  border-bottom: 1px solid #eaeaea;
+  padding: .3rem .42rem .1rem .42rem;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-cont .main-answer-item p {
+  position: relative;
+  color: #000;
+  margin: 0 0 .3rem 0;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-cont .main-answer-item p span {
+  position: absolute;
+  color: #8f8f94;
+  right: 0;
+  top: 0;
+}
+.mui-content.mui-answer .mui-main-answer .main-answer-cont .main-answer-item p span i {
+  font-style: normal;
+  margin-left: .3rem;
+}

@@ -1,0 +1,649 @@
+// 菜单栏
+@import "../common/nav.css";
+// 新车列表
+@import "../common/car_list.css";
+// 公共样式
+@import "../common/common.css";
+
+
+.mui-price-color{
+	color:#fd521d;
+	font-style: normal;
+}
+body .current-style{
+	color:#fd521d !important;
+}
+
+.mui-search-box.new-car-box{
+	background-color:#f3f3f5;
+	box-shadow: none;
+	.mui-search{
+		&:before{
+			left: 2.06rem;
+			top: .39rem;
+		}
+		.mui-search-tit{
+			position: absolute;
+			font-size:.35rem; 
+			margin:.14rem 0 .15rem .39rem;
+			padding:.07rem .31rem .08rem 0;
+			line-height: .37rem;
+			z-index: 2;
+			border-right: 1px solid #f3f3f5;
+			
+			i{
+				display: inline-block;
+				width:.2rem;
+				height: .12rem;
+				background: url(../../img/select.png) no-repeat;
+				background-size: cover;
+				margin-left: .16rem;
+				vertical-align: middle;
+
+			}
+
+			
+		}
+		.mui-placeholder{
+			font-size:.31rem; 
+			padding-left: 2.06rem;
+
+			.mui-icon-search{
+				padding:0 .1rem 0 0; 
+				margin: 0;
+				// vertical-align: middle;
+			}
+		}
+		.mui-input-clear{
+			display: inline-block;
+			padding-left: 2.56rem;
+			background-color:#fff;
+		}
+	}
+	.mui-search.select-style{
+		overflow: visible;
+		.search-tit-select{
+			position: absolute;
+			top:1rem;
+			left: -.35rem;
+			width: 2.4rem;
+			background-color: rgba(26, 39, 61, 0.9);
+			border-radius: 5px;
+			div{
+				height: 0px;
+				width: 0px;
+				border-left: 10px solid  transparent;
+				border-right: 10px solid transparent;
+				border-bottom: 12px solid rgba(26, 39, 61, 0.9);
+				position: absolute;
+				top: -.29rem;
+				left: .93rem;
+			}
+			a{
+				display: block;
+				margin:.32rem;
+				color:#fff;
+				padding: .2rem 0;
+			}
+
+		}
+	}
+}
+// select
+.select-mask{
+	position: fixed;
+	background-color: rgba(0, 0, 0, .5);
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 11;
+}
+.mui-content.new-content-box{
+	padding-top: 1.3rem;
+	.new-main-cont{
+		.mui-table-view{
+			width: 100%;
+			display: inline-block;
+			margin-top: 0;
+			background-color:#fff;
+			position: relative;
+			border-bottom:1px solid #e9e9e9;
+			.mui-table-view-cell.mui-collapse{
+				float: left;
+				margin: .38rem .15rem;
+				padding:0;
+				overflow: inherit;
+				&:after{
+					display: none;
+				}
+				.mui-navigate-right{
+					max-width: 2.3rem;
+				    min-width: 2.1rem;
+				    text-align: center;
+				    vertical-align: middle;
+				    font-size: .34rem;
+				    margin:0;
+				    padding:0;
+					&:after{
+						right: 0;
+					}
+				}	
+			}
+			.mui-panel-content{
+				position: absolute;
+				width: 100%;
+				top:1.29rem;
+				z-index: 2;
+				background-color: #fff;
+				.mui-collapse-content{
+					.mui-ranking{
+						padding-left:0.93rem; 
+						a{
+							display: block;
+							height: 1.06rem;
+							line-height: 1.06rem;
+							color:#000;
+							border-bottom:1px solid #e9e9e9;
+							position: relative;
+							&.mui-current{
+								color:#fd521d;
+							}
+							&.mui-current:after{
+								display:inline-block;
+								content: '';
+								width: .43rem;
+								height: .28rem;
+								background: url(../../img/right.png) no-repeat;
+								background-size: cover;
+								position: absolute;
+								right: .83rem;
+								top: .35rem;
+							}
+						}
+					}
+					.mui-price{
+						font-size: 0;
+						padding:.46rem 0 0 .39rem; 
+						a{
+							display: inline-block;
+							width: 2.8rem;
+							height: .93rem;
+							line-height: .93rem;
+							border-radius: 5px;
+							text-align: center;
+							font-size: .315rem;
+							margin-right: .37rem;
+							margin-bottom: .42rem;
+							color:#000;
+							border:1px solid #e9e9e9;
+							&.mui-current{
+								background-color: #fd521d;
+								color:#fff;
+								border-color: #fd521d;
+							}
+						}
+					}
+					// 二手车
+					.custom-price{
+						position: relative;
+						margin-bottom: .5rem;
+						padding: 0 .39rem;
+						span{
+							display: inline-block;
+							font-size: .37rem;
+							vertical-align: middle;
+						}
+						.custom-min,.custom-max{
+							display: inline-block;
+							margin-left: .08rem;
+							input{
+								width: 1.5rem;
+								height: .8rem;
+								margin:0 .2rem 0 0;
+								padding:.2rem .27rem;
+								text-align: center;
+								vertical-align: middle;
+							}
+						}
+						em{
+							display: inline-block;
+							width: .4375rem;
+							height: .0625rem;
+							background-color: #c8c7cc;
+							vertical-align: middle;
+						}
+						.price-customBtn{
+							display: inline-block;
+							width: 2rem;
+							height: .8rem;
+							line-height: .8rem;
+							border: 1px solid #f3f3f3;
+						    background: #f3f3f3;
+							vertical-align: middle;
+							font-size: .37rem;
+							color:#fff;
+							text-align: center;
+							border-radius: 5px;
+							margin-left: .1rem;
+						}
+						.price-customBtn.active{
+							background: #ff651b;
+							border: 1px solid #ff651b;
+
+						}
+					}
+				}
+			}
+			.mui-table-view-cell.mui-active{
+				background-color: #fff;
+				// margin-top: .38rem;
+				.mui-navigate-right{
+					color:#fd521d;
+					&:after{
+						color: #fd521d;
+					}
+				}
+
+			}
+			.mui-table-view-cell>a:not(.mui-btn).mui-active{
+				background-color: #fff;
+			}
+			.mui-media-box{
+				position: relative;
+				vertical-align: top;
+				a{
+					display: inline-block;
+					vertical-align: top;
+				}
+			}
+			//车列表
+			.mui-media-body{
+				display: inline-block;
+				.mui-new-price{
+					margin:.38rem 0;
+					span{
+						font-size: .3rem;
+						color:#aeaeae;
+					}
+					em{
+						font-size: .46rem;
+						margin-left: .1rem;
+					}
+				}
+				.mui-text-box{
+					margin-top: 0;
+					bottom:.26rem;
+					.mui-new-des{
+						display: inline-block;
+						font-size: .32rem;
+						color:#595959;
+						line-height: .55rem;
+						max-width: 3.5rem;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						vertical-align: middle;
+					}
+					.mui-new-type{
+						display: inline-block;
+						width:1.5rem;
+						height: .55rem;
+						line-height: .55rem;
+						text-align: center; 
+						background-color: #fff5f5;
+						border-radius: 0.09rem;
+						border: solid 1px #ffae95;
+						color:#fd521d;
+						font-size: .32rem;
+
+					} 
+				}
+			}
+
+			
+		}
+		.mui-cont-box {
+		    .mui-new-list{
+		    	//具体内容
+		    	.mui-table-view-cell{
+		    		padding-left: 0;
+		    		padding-right: 0;
+
+		    		.mui-new-panel{
+		    			color:#f3f5f8;
+		    			.mui-panel-box{
+		    				h2{
+		    					font-size: .36rem;
+		    					color:#010101;
+		    					background-color: #fafbfd;
+		    					padding-left: .41rem;
+		    					line-height: .78rem;
+		    					margin:0;
+		    					font-weight: normal;
+		    				}
+		    				.mui-panel-cont{
+		    					font-size: .32rem;
+		    					padding-left: 0;
+		    					color:#666a72;
+		    					li{
+		    						border-bottom:1px solid #ececec;
+		    						line-height:.55rem; 
+		    						position: relative;
+		    						padding:.24rem 0;
+		    						a{
+		    							display: block;
+		    							padding: 0;
+		    							padding-left: .95rem;
+		    							color:#666a72;
+		    							span.panel-price{
+		    								position: absolute;
+		    								right: .42rem;
+		    								color:#fd521d;
+		    								font-size: .34rem;
+		    							}
+		    						}
+
+		    					}
+		    					li:last-child{
+		    						border:none;
+		    					}
+		    				}
+		    			}
+		    		}
+		    	}
+		    	
+		    }
+		}
+	}
+	.mui-view-pos{
+		.mui-nav-view{
+			position: fixed;
+			z-index: 13;
+		}
+		.mui-cont-box{
+			 padding-top: 2.58rem;
+			 padding-bottom: 1.1rem;
+		}
+		
+	}
+	
+}
+
+// 选择品牌
+.mui-mask-head{
+	.mui-bar-nav{
+		background-color: #fff;
+		box-shadow:none;
+		height: 1rem;
+		line-height: 1rem;
+		border-bottom:1px solid #e9e9e9;
+		.mui-pull-left{
+			padding-top: 7px;
+			color:#000
+		}
+		h1{
+			line-height: 1rem;
+		}
+	}
+	.mui-content{
+		padding-top: 1rem;
+		.mui-indexed-list{
+			border-top:none;
+			.mui-indexed-list-bar{
+				background-color:rgba(255,255,255,0);
+				padding-bottom:1.5rem;
+				a{
+					color:#fd521d;
+				}
+			}
+			.mui-indexed-list-inner{
+				.mui-table-view{
+					padding-bottom: 30px;
+					.mui-list-box{
+						.mui-indexed-list-group{
+							height: 1.19rem;
+							line-height: 1.19rem;
+							padding-left: .7rem;
+							font-size: .37rem;
+							&:after,&:before{
+								-webkit-transform: none;
+								transform: none;
+								background-color:#e9e9e9;
+							}
+						}
+						ul{
+							margin:0;
+							padding-left: .3rem;
+							.mui-indexed-list-item{
+								font-size: .37rem;
+								color: #000;
+							}
+							.mui-current{
+								color:#fd521d;
+							}
+							
+						}
+						
+						#mui-hot{
+							font-size: .37rem;
+							color:#000;
+							background-color:#fff;
+							&:before{
+								left: .7rem;
+							}
+							&:after{
+								height: 0;
+							}
+						}
+						.mui-hot-brand{
+							margin-top: .1rem;
+							padding-left: .6rem;
+							a{
+								display: inline-block;
+								width:2.66rem;
+								height: 0.92rem;
+								line-height: .92rem;
+								text-align: center;
+								border:1px solid #e9e9e9;
+								color:#000;
+								margin-right: .35rem;
+								margin-bottom:.39rem; 
+								border-radius: 8px;
+								font-size: .31rem;
+							}
+							.mui-current{
+								color:#fff;
+								background-color: #fd521d;
+							}
+						}
+						.mui-unlimited{
+							font-size: .37rem;
+							color:#000;
+							margin: .39rem 0;
+							padding-left: .7rem;
+						}
+						.mui-unlimited.mui-current{
+							color:#fd521d;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+// 更多筛选
+.mui-more-screening.mui-scroll-wrapper{
+	position: fixed;
+	z-index: 12;
+	padding-top: 1.3rem;
+	background-color: #fff;
+	height: 100%;
+}
+.mui-more-screening{
+	.mui-content{
+		background-color: #fff;
+		.mui-arg-box{
+			.mui-screen-box{
+				.mui-screen-tit{
+					font-size: .37rem;
+					height: .8rem;
+					line-height: .8rem;
+					background-color:#fff;
+					padding-left: .4rem;
+					padding-top: .1rem;
+				}
+				ul{
+					padding-left: .4rem;
+					font-size: 0;
+					margin-top: .28rem;
+					li{
+						display: inline-block;
+						a{
+							&.mui-screen-list{
+								display: inline-block;
+								width: 2.8rem;
+								height: .93rem;
+								line-height: .93rem;
+								border-radius: 5px;
+								text-align: center;
+								font-size: .315rem;
+								margin-right: .4rem;
+								margin-bottom: .42rem;
+								color: #000;
+								border: 1px solid #e9e9e9;
+								
+								}
+							&.mui-current{
+							    background-color: #fd521d;
+							    color: #fff;
+							    border-color: #fd521d;
+							}
+						}
+
+					}
+				} 
+			}
+
+			.mui-screen-box.mui-color-box{
+				ul{
+					li{
+						a{
+							text-align: left;
+							i{
+								display: inline-block;
+								width: .41rem;
+								height: .41rem;
+								vertical-align: middle;
+								margin:0 .18rem .04rem .37rem;
+								&.black{
+									background-color: #061414;
+								}
+								&.white{
+									background-color: #ffffff;
+									border: solid 0.01rem #bfc5cf;
+								}
+								&.silver{
+									background-color: #f0f0f0;
+								}
+								&.gray{
+									background-color: #616262;
+								}
+								&.red{
+									background-color: #ff4646;
+								}
+								&.orange{
+									background-color: #f58915;
+								}
+								&.green{
+									background-color: #6cbf3f;
+								}
+								&.blue{
+									background-color: #18a3e4;
+								}
+								&.coffee{
+									background-color: #87380d;
+								}
+								&.purple{
+									background-color: #723fbf;
+								}
+								&.champagne{
+									background-color: #efd49b;
+								}
+								&.colours{
+									background-image: linear-gradient(-48deg, 
+											#0a00b2 0%, 
+											#ff0000 50%, 
+											#fffc00 100%), 
+										linear-gradient(
+											#efd49b, 
+											#efd49b);
+										background-blend-mode: normal, 
+											normal;
+								}
+								&.yellow{
+									background-color: #fcde15;
+								}
+								&.other{
+									background-color: #ffffff;
+									border: solid 0.01rem #bfc5cf;
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		}
+		
+		
+	}
+}
+
+.mui-screen-btn{
+	width: 100%;
+	padding: 0 .4rem;
+	}
+.mui-btn-class{
+	width: 2.8rem;
+	height: .93rem;
+	border-radius: 5px;
+	font-size: .315rem;
+	margin-bottom: .42rem;
+}
+.mui-indexed-list-inner{
+	.mui-screen-btn{
+		position: fixed;
+		width: 100%;
+		margin-top: .5rem;
+		bottom:0;
+	}
+}
+.mui-more-screening.mui-backdrop{
+	overflow: auto;
+	top:0rem;
+}
+
+
+.mui-navigate-right:after, .mui-push-left:after, .mui-push-right:after{
+	top: 53%;
+}
+
+.mui-range{
+	padding: .25rem .42rem;
+	position: relative;
+	.range-tit{
+		color:#010101;
+		font-size: .37rem;
+		span{
+			color:#aeaeae;
+			margin-left: .2rem;
+			font-size: .28rem;
+		}
+	}
+	.tip-content{
+		color:#fd521d;
+	}
+}
+.grid-text-style{
+	visibility: visible!important;
+}

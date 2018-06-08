@@ -1,0 +1,291 @@
+
+// 公共样式
+@import "../common/common.css";
+// 菜单栏
+@import "../common/nav.css";
+body{
+	background-color: #fff;
+}
+.compare-box{
+	height: 100%;
+}
+.mui-content{
+	background-color: #fff;
+	.mui-compare{
+		a.mui-compare-add{
+			display: block;
+			width: .9rem;
+			height: .9rem;
+			line-height: .9rem;
+			color:#fd521d;
+			border:1px solid #fd521d;
+			border-radius: 8px;
+			text-align: center;
+			margin:0 auto;
+			i{
+				display: inline-block;
+				width: .31rem;
+				height: .31rem;
+				background: url(../../img/add.png) no-repeat;
+				background-size: 100%;
+				vertical-align: middle;
+				margin-bottom: .04rem;
+			}
+		}
+		
+		.mui-compare-cont{
+			li.mui-compare-item{
+				display: inline-block;
+				width: 100%;
+				min-height: 1.5rem;
+				padding:.3rem .42rem .3rem .54rem;
+				border-bottom: 1px solid #e9e9e9;
+				position: relative;
+				span{
+					display: inline-block;
+					line-height: .7rem;
+				    margin-top: .15rem;
+				}
+				font-size: .36rem;
+				i.com_close{
+					display: inline-block;
+					width: .41rem;
+					height: .41rem;
+					background: url(../../img/detail/m_close.png) no-repeat;
+					background-size: 100%;
+					vertical-align: middle;
+					position: absolute;
+					bottom:.5rem;
+					right: .42rem;
+				}
+			}
+			
+
+		}
+	}
+	.compareBtn{
+		display: block;
+		width: 6rem;
+		height:1.3rem;
+		line-height: 1.3rem;
+		color:#fff;
+		text-align: center;
+		font-size:.51rem;
+		background-color: #ff6402; 
+		margin:1rem auto 0;
+		border-radius: 5px;
+		// position: absolute;
+		// bottom:0;
+	}
+}
+
+// 选择车型
+.mui-car-type{
+	padding-top: 44px;
+	.car-type-box{
+		padding: .42rem;
+		.mui-segmented-control{
+			border:1px solid #ff6402;
+			.mui-control-item{
+				line-height: .9rem;
+			    border-left-color:#ff6402;
+			    color:#ff6402;
+				&.mui-active{
+					background-color: #ff6402;
+					color:#fff;
+				}
+			}
+		}
+	}
+	.car-type-main{
+		.mui-navigate-right{
+			text-align: center;
+			font-size: .45rem;
+		}
+		.mui-collapse-content{
+			padding: 0;
+			p{
+				line-height: 1rem;
+				border-bottom:1px solid #c8c7cc;
+				text-indent: .5rem;
+				font-size: .38rem;
+			}
+			p:last-child{
+				border:none;
+			}
+		}
+		p.typeSelected{
+			color:#ff6402;
+		}
+		.mui-control-content{
+			font-size: .34rem;
+			.mui-indexed-list{
+				.mui-indexed-list-bar{
+					background-color: rgba(255,255,255,0);
+					a{
+						color: #fd521d;
+					}
+				}
+				.mui-indexed-list-inner{
+					.mui-table-view{
+						.mui-list-box{
+							h2{
+								margin:0;
+							}
+							.mui-indexed-list-group{
+								height: 1.19rem;
+								line-height: 1.19rem;
+								padding-left: .7rem;
+								font-size: .37rem;
+								&:after,&:before{
+									-webkit-transform: none;
+									transform: none;
+									background-color:#e9e9e9;
+								}
+							}
+							ul{
+								margin:0;
+								padding-left: .3rem;
+								.mui-indexed-list-item{
+									font-size: .37rem;
+									color: #000;
+								}
+								.mui-current{
+									color:#fd521d;
+								}
+								
+							}
+							
+							#mui-hot{
+								font-size: .37rem;
+								color:#000;
+								background-color:#fff;
+								&:before{
+									left: .7rem;
+								}
+								&:after{
+									height: 0;
+								}
+							}
+							.mui-hot-brand{
+								margin-top: .1rem;
+								padding-left: .6rem;
+								a{
+									display: inline-block;
+									width:2.66rem;
+									height: 0.92rem;
+									line-height: .92rem;
+									text-align: center;
+									border:1px solid #e9e9e9;
+									color:#000;
+									margin-right: .35rem;
+									margin-bottom:.39rem; 
+									border-radius: 8px;
+									font-size: .34rem;
+								}
+								.mui-current{
+									color:#fff;
+									background-color: #fd521d;
+								}
+							}
+							.mui-unlimited{
+								font-size: .37rem;
+								color:#000;
+								padding: .39rem 0;
+								padding-left: .7rem;
+							}
+							.mui-unlimited.mui-current{
+								color:#fd521d;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.mui-table-view-cell:after{
+		left: 0;
+	}
+	
+}
+.mui-canvas-box{
+	.mui-off-canvas-right{
+		width: 100%;
+	    background-color: #fff;
+	}
+}
+
+// 品牌查找
+.mask-cartypePop{
+	position: fixed;
+	z-index: 11;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	transition: background 350ms cubic-bezier(.165,.84,.44,1);
+	background: rgba(0,0,0,.4);
+	box-shadow: -4px 0 4px rgba(0,0,0,.5), 4px 0 4px rgba(0,0,0,.5);
+	-webkit-tap-highlight-color: transparent;
+}
+.mui-cartypePop,.mui-cartypePop2{
+	position: fixed;
+	background-color: #fff;
+	top:0;
+	right: 0;
+	z-index: 12;
+	width: 70%;
+	height: 100%;
+	.mui-scroll-wrapper{
+		top: 44px;
+	}
+	.cartypePop-title{
+		height: 44px;
+		border-bottom: 1px solid #eaeaea;
+		.mui-pull-left{
+			color:#000;
+			margin-top: .2rem;
+		}
+		.mui-title{
+			margin:0;
+			display: inline-block;
+			text-align: left;
+			margin-left: .2rem;
+		}
+	}
+	.cartypePop-cont{
+		.cartypePop-list-box{
+			.cartypePop-list-title{
+				height: .8rem;
+				line-height: .8rem;
+				padding-left: .3rem;
+				font-size: .37rem;
+			    background-color: #f7f7f7;
+			    border-bottom: 1px solid #eaeaea;
+			}
+			ul{
+				li.cartypePop-item{
+					padding:.32rem 0.32rem .3rem ;
+					border-bottom: 1px solid #eaeaea;
+					font-size: .34rem;
+					span{
+						display: inline-block;
+						font-size: .32rem;
+						font-size: .4rem;
+					}
+					.cartypePop-price{
+						font-style: normal;
+						margin-top: .15rem;
+						margin-bottom: 0;
+						span{
+							color:#ff6402;
+							font-size: .42rem;
+							margin-left: .2rem
+						}
+					}
+
+				}
+			}
+		}
+	}
+}

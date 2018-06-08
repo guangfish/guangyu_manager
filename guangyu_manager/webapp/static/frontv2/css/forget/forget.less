@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+}
+
+.mui-title{
+    top: 3px;
+}
+.main {
+    margin-top: 1.3rem;
+    background: #fff;
+    .bkfff {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: -1;
+    }
+    &>form {
+        padding-left: 0.8rem;
+    }
+    &>form>div {
+        height: 1.185rem;
+        border-bottom: 1px solid #e9e9e9;
+        position: relative;
+        input {
+            margin: 0;
+            border: 0;
+            font-size: 0.37rem;
+            height:1.14666rem;
+            line-height: 0.37rem;
+            color: #bfc5cf;
+        }
+        &.code {
+            div {
+                color: #ff6402;
+                font-size: 0.37rem;
+                position: absolute;
+                right: 0.546rem;
+                top: ~'calc(50% - 0.56rem/2)';
+            }
+        }
+        &.imgCode {
+            &>div {
+                position: absolute;
+                right: 0.546rem;
+                top: 0;
+                div {
+                    float: left;
+                    padding-top: 0.2rem;
+                    text-align: center;
+                    line-height: normal;
+                    b {
+                        display: block;
+                        color: #9a9a9a;
+                        font-size: 0.222rem;
+                        text-align: center;
+                        font-weight: normal;
+                    }
+                    span {
+                        font-size: 0.196rem;
+                        color: #cbcbcb;
+                        text-align: center;
+                    }
+                }
+            }
+            .imged {
+                float: left;
+                width: 2rem;
+                height: 0.85rem;
+                margin-top: 0.1rem;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    &>span {
+        display: block;
+        font-size: 0.278rem;
+        color: #6b6b6b;
+        text-align: center;
+        margin-top:0.5rem;
+    }
+    .btn {
+        display: block;
+    }
+    .btn-submit {
+        width: 9.074rem;
+        height: 1.13rem;
+        line-height: 1.13rem;
+        background-color: #ff6402;
+        border-radius: 0.185rem;
+        font-size: 0.37rem;
+        color: #ffffff;
+        text-align: center;
+        margin: 0.63rem auto 0;
+    }
+}
+// 提示样式
+.mui-toast-message {
+    background-color:#fd521d;
+    color: #FFFFFF; /*toast中字体颜色*/
+    font-size: .28rem;
+}
+input::-webkit-input-placeholder {
+    color: r#bfc5cf;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #bfc5cf;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #bfc5cf;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #bfc5cf;
+}

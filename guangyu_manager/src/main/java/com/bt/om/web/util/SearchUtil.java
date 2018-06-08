@@ -29,6 +29,19 @@ public class SearchUtil {
             RequestUtil.getIntParameter(request, "start", 0),
             RequestUtil.getIntParameter(request, "size", 20));
     }
+    
+    /**
+     * 得到搜索类
+     * 
+     * @return
+     */
+    public static SearchDataVo getVoForList() {
+        HttpServletRequest request = ServletAttributes.getRequest();
+        return new SearchDataVo(RequestUtil.getParameter(request, "orderField"),
+            RequestUtil.getParameter(request, "orderBy"),
+            RequestUtil.getIntParameter(request, "pageNo", 1),
+            RequestUtil.getIntParameter(request, "size", 20));
+    }
 
     /**
      * 得到搜索类

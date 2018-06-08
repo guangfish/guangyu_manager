@@ -1,0 +1,177 @@
+// 菜单栏
+@import "../common/nav.css";
+// 列表
+@import "../common/car_list.css";
+
+.disn{
+	display: none;
+}
+.mui-content.self-content-box{
+	padding-top: 1.13rem;
+	padding-bottom: 50px;
+	.mui-self-top{
+		position: relative;
+		background-color: #fff;
+		padding: .41rem .34rem .41rem .58rem;
+		.mui-head-img{
+			display: inline-block;
+			margin-right: .36rem;
+			img{
+				display: inline-block;
+				width: 1.3rem;
+				height: 1.3rem;
+				vertical-align: middle;
+			}
+		}
+		.mui-self-infor{
+			display: inline-block;
+			vertical-align: middle;
+			h2{
+				font-size: .46rem;
+				color:#010101;
+				line-height: .65rem;
+			}
+			p{
+				font-size: .37rem;
+				color:#fd521d;
+				line-height: .56rem;
+				margin:0;
+				padding:0;
+			}
+		}
+		.mui-change{
+			display: inline-block;
+			position: absolute;
+			right: .34rem;
+			top: 50%;
+			margin-top: -.3rem;
+			border:1px solid #e4e5e9;
+			border-radius: .29rem;
+			text-align: center;
+			width: 2.2rem;
+			height: .6rem;
+			line-height: .6rem;
+			
+			.ic_account{
+				display: inline-block;
+				width: .3rem;
+				height: .28rem;
+				background: url(../../img/m_icon1.png) no-repeat;
+				background-size: 100%;
+				margin-right: .09rem;
+			}
+			span{
+				color:#6c6c6c;
+				font-size: .28rem;
+
+			}
+		}
+	}
+	.self-center{
+		.mui-table-view{
+			margin-top: .19rem;
+			.mui-table-view-cell{
+				padding:0;
+				font-size: .38rem;
+				.ic_mycollect,.ic_mybrowse,.ic_pricerecord,.ic_carrecord,
+				.ic_calculator,.ic_compare,.ic_setting,.ic_drive{
+					display: inline-block;
+					width: .4rem;
+					height: .39rem;
+					background-size: cover;
+					background-image:url(../../img/m_icon3.png);
+					vertical-align: middle;
+					margin:0 .23rem .06rem 0;
+					background-repeat: no-repeat;
+				}
+				.ic_mybrowse{
+					background-image:url(../../img/m_icon2.png);
+					width: .44rem;
+					height: .28rem;
+				}
+				.ic_pricerecord{
+					background-image:url(../../img/m_icon4.png);
+					width: .37rem;
+					height: .39rem;
+				}
+				.ic_carrecord{
+					background-image:url(../../img/m_icon6.png);
+					width: .37rem;
+					height: .31rem;
+				}
+				.ic_drive{
+					background-image:url(../../img/m_icon5.png);
+					width: .37rem;
+					height: .37rem;
+				}
+				.ic_calculator{
+					background-image:url(../../img/m_icon7.png);
+					width: .37rem;
+					height: .37rem;
+				}
+				.ic_compare{
+					background-image:url(../../img/m_icon8.png);
+					width: .37rem;
+					height: .37rem;
+				}
+				.ic_setting{
+					background-image:url(../../img/m_icon9.png);
+					width: .37rem;
+					height: .37rem;
+				}
+				.mui-login{
+				    padding: .38rem 0;
+				    text-align: center;
+				    font-size: .38rem;
+				    a{
+				    	display: block;
+				    	color:#ff5a37;
+				    }
+				}
+			}
+			.mui-table-view-cell>a:not(.mui-btn){
+				margin:0;
+				padding:11px 15px;
+			}
+			.mui-table-view-cell:after{
+				left: 0;
+			}
+		}
+		.mui-table-view:after,.mui-table-view:before{
+			height: 0;
+		}
+	}
+}
+
+/*公共页面*/
+.mui-content{
+	.mui-main-common{
+		.mui-common-tit{
+			width: 100%;
+			text-align: center;
+			background-color: #fff;
+			position: fixed;
+			z-index: 3;
+			top: 1.13rem;
+			left: 0;
+			border-bottom:1px solid #eaeaea;
+			a{
+				display: inline-block;
+				padding:.36rem .37rem;
+				margin:0 1.2rem;
+				color:#aeaeae;
+				font-size: .37rem;
+				&.active{
+					border-bottom: .06rem solid #ff6402;
+					color:#010101;
+				}
+			}
+		}
+		.mui-common-cont{
+			padding-top: 2.4rem;
+			padding-bottom: 50px;
+		}
+		
+	}
+
+}

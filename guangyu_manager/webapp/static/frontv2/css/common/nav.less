@@ -1,0 +1,214 @@
+
+// 搜索
+body{
+    background-color: #efeff4;
+}
+.mui-bar.mui-search-box{
+	width: 100%;
+	height: 1.3rem;
+	background-color: #fff;
+	padding: .24rem 0 0 0;
+	font-size: 0;
+	box-shadow: none;
+	border-bottom: 1px solid #f3f3f5;
+	.mui-logo2{
+		display: inline-block;
+		width:1.62rem;
+		height: 0.61rem;
+		vertical-align: top; 
+		margin:.1rem 0.54rem .34rem .5rem;
+	}
+	.mui-search{
+		display: inline-block;
+		text-align: center;
+		.mui-input-clear{
+			width: 6.02rem;
+			height: .8rem;
+			border-radius: 14px;
+			padding:0 .5rem 0 .89rem;
+			background-color: #f3f5f8;
+			margin: 0;
+		}
+		.mui-placeholder{
+			text-align: left;
+			padding-left: .4rem;
+			color:#bfc5cf;
+			line-height: .85rem;
+			.mui-icon-search{
+				padding-top: 0;
+			}
+			
+		}
+		.mui-icon-clear{
+			width: .5rem;
+			height: .5rem;
+			padding: 0;
+			top: .13rem;
+			right: .45rem;
+		}
+	}
+	.mui-pull-right{
+		margin:0;
+		padding: 0;
+		right: .31rem;
+		top: .13rem;
+		color:#fd521d;
+	}
+	.mui-active:before{
+		left: .4rem;
+	}
+}
+// 菜单栏
+.new-bar.mui-bar-tab{
+	-webkit-box-shadow: 0 0 1px rgba(0,0,0,.25);
+	box-shadow: 0 0 1px rgba(0,0,0,.25);
+	.mui-tab-item{
+		.mui-icon{
+			width: 20px;
+			height: 20px;
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+		.mui-icon:active{
+			background-size:100%;
+		}
+		.mui-tab-label{
+			color:#595959;
+		}
+		.mui-icon-index{
+			background-image:url(../../img/icon_index.png)!important ; 
+		}
+		.mui-icon-new{
+			width: 24px;
+			height: 19px;
+			background-image:url(../../img/icon_new.png) !important;
+		}
+		.mui-icon-old{
+			width: 24px;
+			height: 19px;
+			background-image:url(../../img/icon_old.png) !important;
+		}
+		.mui-icon-activity{
+			background-image:url(../../img/icon_activity.png)!important;
+		}
+		.mui-icon-self{
+			background-image:url(../../img/icon_self.png)!important;
+		}
+
+
+	}
+	.mui-active{
+		.mui-icon-index{
+			background-image:url(../../img/icon_index_ac.png)!important;
+		}
+		.mui-icon-new{
+			background-image:url(../../img/icon_new_ac.png)!important;
+		}
+		.mui-icon-old{
+			background-image:url(../../img/icon_old_ac.png)!important ;
+		}
+		.mui-icon-activity{
+			background-image:url(../../img/icon_activity_ac.png)!important;
+		}
+		.mui-icon-self{
+			background-image:url(../../img/icon_self_ac.png)!important;
+		}
+		.mui-tab-label{
+			color:#fd521d;
+		}
+	}
+	
+}
+
+//头部样式2
+.mui-bar-nav.mui-setting-tit{
+	height: 1.13rem;
+	box-shadow: none;
+	background-color: #fff;
+	border-bottom: 1px solid #f3f5f8;
+	a{
+		color:#000;
+	}
+	.mui-title{
+		font-size: .4rem;
+		color:#000;
+	}
+	.mui-infor{
+		display: inline-block;
+		background: url(../../img/infor.png) no-repeat;
+		background-size: 100%;
+		width: .44rem;
+		height: .54rem;
+		margin:.31rem .24rem 0 0;
+		position: relative;
+		.infor-num{
+			position: absolute;
+			display: inline-block;
+			font-size: .26rem;
+			width: .35rem;
+			height: .35rem;
+			line-height: .35rem;
+			border-radius: 50%;
+			text-align: center;
+			background-color: #ff0000;
+			color:#feffff;
+			left: .28rem;
+			top:-.1rem;
+		}
+	}
+	
+}
+
+// 头部样式3
+header.mui-bar-nav{
+	background: #fff;
+	border-bottom: 1px solid #eaeaea;
+	.mui-pull-left{
+		color:#000;
+	}
+	.mui-pull-right{
+		img{
+			width: 15px;
+		}
+	}
+} 
+
+//底部样式
+.mui-bar {
+    background: #fff;
+    box-shadow: 0 1px 6px #ccc;
+    a.mui-tab-item {
+    	width: 1.4%;
+        color: #5f6670;
+    }
+    a.btn-why {
+        width: 2.6%;
+        background-color: #ff6402;
+        font-size: 0.371rem;
+        color: #ffffff !important;
+    }
+}
+.mui-bar-tab .mui-tab-item.mui-active {
+    color: #5f6670;
+}
+
+.mui-bar-tab .mui-icon-collect {
+    background: url(../../img/county-collect.png) no-repeat center !important;
+    background-size: 100% !important;
+}
+
+.mui-bar-tab .mui-icon-message,
+.mui-bar-tab .mui-active .mui-icon-message {
+    background: url(../../img/county-message.png) no-repeat center !important;
+    background-size: 100% !important;
+}
+
+.mui-bar-tab .mui-icon-subscribe,
+.mui-bar-tab .mui-active .mui-icon-subscribe {
+    background: url(../../img/county-subscribe.png) no-repeat center !important;
+    background-size: 100% !important;
+}
+.mui-bar-tab .collected .mui-icon-collect{
+	background: url(../../img/county-collected.png) no-repeat center !important;
+    background-size: 100% !important;
+}

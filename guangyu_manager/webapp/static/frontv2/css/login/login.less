@@ -1,0 +1,198 @@
+
+
+* {
+    box-sizing: border-box;
+}
+
+.main {
+    margin-top: 1.3rem;
+    background: #fff;
+    .bkfff {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        z-index: -1;
+    }
+    &>form {
+        padding-left: 0.8rem;
+    }
+    &>form>div {
+        height: 1.185rem;
+        border-bottom: 1px solid #e9e9e9;
+        position: relative;
+        input {
+            margin: 0;
+            border: 0;
+            font-size: 0.37rem;
+            height:1.14666rem;
+            line-height: 0.37rem;
+            color: #bfc5cf;
+        }
+        &.code {
+            div {
+                color: #ff6402;
+                font-size: 0.37rem;
+                position: absolute;
+                right: 0.546rem;
+                top: ~'calc(50% - 0.56rem/2)';
+            }
+        }
+        &.imgCode {
+            &>div {
+                position: absolute;
+                right: 0.546rem;
+                top: 0;
+                div {
+                    float: left;
+                    padding-top: 0.2rem;
+                    text-align: center;
+                    line-height: normal;
+                    b {
+                        display: block;
+                        color: #9a9a9a;
+                        font-size: 0.222rem;
+                        text-align: center;
+                        font-weight: normal;
+                    }
+                    span {
+                        font-size: 0.196rem;
+                        color: #cbcbcb;
+                        text-align: center;
+                    }
+                }
+            }
+            .imged {
+                float: left;
+                width: 2rem;
+                height: 0.85rem;
+                margin-top: 0.1rem;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    .btn {
+        display: block;
+    }
+    .btn-submit {
+        width: 9.074rem;
+        height: 1.13rem;
+        line-height: 1.13rem;
+        background-color: #ff6402;
+        border-radius: 0.185rem;
+        font-size: 0.37rem;
+        color: #ffffff;
+        text-align: center;
+        margin: 1.824rem auto 0;
+    }
+    .btn-forget {
+        color: #000000;
+        font-size: 0.37rem;
+        text-align: center;
+        margin-top: 0.63rem;
+    }
+}
+// 提示样式
+.mui-toast-message {
+    background-color:#fd521d;
+    color: #FFFFFF; /*toast中字体颜色*/
+    font-size: .28rem;
+}
+
+input::-webkit-input-placeholder {
+    color: r#bfc5cf;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #bfc5cf;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #bfc5cf;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #bfc5cf;
+}
+
+// 账号密码登录
+.main{
+    .btn-submit{
+        margin-top: 1.11rem;
+    }
+    .login_p{
+        margin-top: .6rem;
+        text-align: center;
+        a{
+            display: inline-block;
+            color: #000000;
+            font-size: 0.37rem;
+        }
+        .tel_login{
+            border-right: 1px solid #e9e9e9;
+            padding-right: .32rem;
+            margin-right: .32rem;
+        }
+    }
+}
+
+// 注册
+.main{
+
+   .agreement {
+        height: .8rem;
+        line-height: .8rem;
+       border-bottom: none;
+       margin-top: .6rem;
+   }
+   .agreement span {
+        position: relative;
+        font-size: .37rem;
+        vertical-align: middle;
+        a{
+            color:#009cff;
+        }
+   }
+   .agreement .input_check {
+        width: .46rem;
+        height: .46rem;
+        line-height: .46rem;
+       position: absolute;
+       visibility: hidden;
+   }
+   .agreement .input_check+label {
+       display: inline-block;
+       width: .46rem;
+       height: .46rem;
+       border: 1px solid #abe896;
+        vertical-align: middle;
+        margin-bottom: .1rem;
+        margin-right: .1rem;
+   } 
+   .agreement .input_check:checked+label:after {
+       content: "";
+       position: absolute;
+       left: .05rem;
+       bottom: .16rem;
+       width: .25rem;
+       height: .1rem;
+        border: 2px solid #abe896;
+        border-top-color: transparent;
+        border-right-color: transparent; 
+        -ms-transform: rotate(-60deg); 
+        -moz-transform: rotate(-60deg); -
+        webkit-transform: rotate(-60deg);
+         transform: rotate(-45deg);
+     } 
+
+}
+

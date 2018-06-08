@@ -1,0 +1,150 @@
+
+.mui-tit{
+	background-color: #fff;
+	position: relative;
+	margin:.28rem 0 0 0;
+	p{
+		display: inline-block;
+		margin:.39rem 0;
+		padding-left: .21rem;
+		margin-left: .43rem;
+		border-left:.07rem solid #0076b6;
+		color:#191919;
+		font-size: .4rem;
+		font-family: 'Microsoft YaHei';
+	}
+	a{
+		position: absolute;
+		right: .41rem;
+		top: .4rem;
+		color:#0076b6;
+		font-size: .32rem;
+	}	
+}
+// 热销新车
+.mui-new-list{
+	.mui-table-view{
+		&:before{
+			background-color:#e9e9e9;
+		}
+		.mui-table-view-cell{
+			padding: 0;
+			&:after{
+				left: 0;
+				background-color:#e9e9e9;
+			}
+		}
+		.mui-media>a,.mui-media-box{
+			display: inline-block;
+			width: 100%;
+			text-decoration: none;
+			text-overflow:clip;
+			white-space:normal;
+			margin:0;
+			padding:.32rem .3rem .32rem .31rem;
+
+			.mui-media-object{
+				display: block;
+				width: 3.2rem;
+				max-width: 3.2rem;
+				height: 3.2rem;
+				line-height: 3.2rem;
+				margin-right: .3rem;
+			}
+			.mui-media-body{
+				h2{
+					max-width: 7rem;
+					font-size: .4rem;
+					line-height: .5rem;
+					color:#010101;
+					font-weight: normal;
+					margin: 0;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+				p{
+					font-size: .29rem;
+					color:#595959;
+					line-height: .5rem;
+					span{
+						margin-right: .2rem;
+					}
+				}
+				div{
+					line-height: .3rem;
+					font-size: 0;
+					margin-top: .05rem;
+					span{
+						font-size: .27rem;
+						color:#aeaeae;
+						margin-right: .1rem;
+						em{
+							font-style: normal;
+							&.mui-first-payment{
+								font-size: .46rem;
+								color:#fd521d;
+								
+							}
+						}
+						
+					}
+				}
+				.mui-buy-gift{
+					display: block;
+					position: absolute;
+					bottom:.32rem;
+					left: auto;
+					height: .49rem;
+					max-width: 5.9rem;
+					line-height: .49rem;
+					font-size: 11px;
+					color:#33a6ff;
+					background-color: #f4faff;
+					overflow:hidden;
+					text-overflow: ellipsis;
+					white-space:nowrap;
+					padding:0 .1rem;
+				}
+				.mui-body-text{
+					position: relative;
+					line-height: .4rem;
+
+					span{
+						font-size: .34rem;
+						color:#595959;
+						margin-right: .4rem;
+						display: inline-block;
+						vertical-align: middle;
+					}
+					p{
+						position: absolute;
+						right: 0;
+						top: 0;
+						i{
+							display: inline-block;
+							width: .22rem;
+							height: .3rem;
+							background: url(../../img/place_tb.png) no-repeat;
+							background-size: cover;
+							margin-right: .1rem;
+							margin-top: .08rem;
+							vertical-align: top;
+						}
+					}
+				}
+				.mui-text-box{
+					position: absolute;
+					bottom:.32rem;
+					left:auto;
+					span{
+						display: inline-block;
+						margin-right: .35rem;
+						font-size: .34rem;
+					}
+				}
+			}
+		}
+		
+	}
+}
