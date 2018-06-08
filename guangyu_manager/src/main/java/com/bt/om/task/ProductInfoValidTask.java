@@ -20,7 +20,7 @@ public class ProductInfoValidTask {
 	private IProductInfoService productInfoService;
 
 	@Scheduled(cron = "0/30 * * * * ?")
-	public void valid() {
+	public void valid() { 
 		logger.info("定时验证商品信息是否完整");
 		List<ProductInfo> productInfoList = productInfoService.selectAllList();
 		if(productInfoList==null || productInfoList.size()<=0){
