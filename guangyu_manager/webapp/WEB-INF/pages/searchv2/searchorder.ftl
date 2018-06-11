@@ -76,7 +76,7 @@
 	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
 		<a class="mui-tab-item" href="<#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>/v2/orderdraw<#else>javascript:void(0);</#if>">
-			<span class="mui-icon mui-icon-index "></span>
+			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">申请提现</span>
 		</a>
 	</nav>
