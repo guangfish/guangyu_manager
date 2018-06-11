@@ -13,7 +13,7 @@ import com.bt.om.entity.ProductInfo;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.util.HttpcomponentsUtil;
 
-//@Component
+@Component
 public class ProductInfoValidTask {
 	private static final Logger logger = Logger.getLogger(ProductInfoValidTask.class);
 	@Autowired

@@ -422,7 +422,7 @@
 									<p>现价:<span class="mui-bodycolor">'+list.price+'</span>月销量:<span class="mui-adorn">'+list.monthSales+'</span></p>\
 									<p>券:<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
-										<span>预估返现:<em class="mui-first-payment">'+list.actualCommission+'</em></span>\
+										<span>预估返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\
 									<p class="mui-buy-gift">购买该商品预估可额外获得'+list.fanli+'倍返现奖励</p>\
 								</div>\
