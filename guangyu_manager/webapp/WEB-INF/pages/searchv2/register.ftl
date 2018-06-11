@@ -163,7 +163,7 @@
 								console.log('请求到的数据为：', data)
 								if(data.ret.result=="0"){
 								   mui.toast('注册成功');
-								   $.cookie('mobile', mobile, { expires: 9999999, path: '/',domain:'${cookieDomain?if_exists}'});
+								   $.cookie('mobile', mobile, { expires: 365, path: '/',domain:'${cookieDomain?if_exists}'});
 								   location.href="${toUrl?if_exists}";
 								}else if(data.ret.result=="2"){
 								   mui.toast('短信验证码已过期');
