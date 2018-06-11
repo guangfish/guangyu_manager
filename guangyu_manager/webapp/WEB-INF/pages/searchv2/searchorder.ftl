@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/self_index/self_index.css">
 
 <header class="mui-bar mui-bar-nav mui-setting-tit">
-		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="/v2/search"></a>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 		<h1 class="mui-title">我的订单</h1>
 
 	</header>
@@ -75,8 +75,8 @@
 	</div>
 	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item" href="<#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>/v2/orderdraw<#else>javascript:void(0);</#if>">
-			<span class="mui-icon mui-icon-self"></span>
+		<a class="mui-tab-item mui-active" href="<#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>/v2/orderdraw<#else>javascript:void(0);</#if>">
+			<span class="mui-icon mui-icon-index"></span>
 			<span class="mui-tab-label">申请提现</span>
 		</a>
 	</nav>
