@@ -33,6 +33,7 @@ import com.bt.om.util.StringUtil;
 import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -50,10 +51,27 @@ public class SearchOrderController extends BasicController {
 	public String search(Model model, HttpServletRequest request) {
 		return "search/searchorder";
 	}
-	
-	@RequestMapping(value = "/searchorderv2", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/v2/searchorder", method = RequestMethod.GET)
 	public String searchorderv2(Model model, HttpServletRequest request) {
-		return "searchv2/searchorder";
+		String mobile = CookieHelper.getCookie("mobile");
+		if (StringUtil.isEmpty(mobile)) {
+			return "redirect:/v2/login?toUrl=/v2/searchorder";
+		} else {
+			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(mobile);
+			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+			List<UserOrder> userOrderNotCanDrawList = new ArrayList<>();
+			for(UserOrder userOrder:userOrderList){
+				if("订单结算".equals(userOrder.getOrderStatus())){
+					userOrderCanDrawList.add(userOrder);
+				}else{
+					userOrderNotCanDrawList.add(userOrder);
+				}
+			}
+			model.addAttribute("userOrderCanDrawList", userOrderCanDrawList);
+			model.addAttribute("userOrderNotCanDrawList", userOrderNotCanDrawList);
+			return "searchv2/searchorder";
+		}
 	}
 
 	// 查询订单列表
@@ -93,7 +111,7 @@ public class SearchOrderController extends BasicController {
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
- 
+
 		// 暂时屏蔽掉，需要时开启
 		// String sessionCode =
 		// request.getSession().getAttribute(SessionKey.SESSION_CODE.toString())
@@ -115,7 +133,7 @@ public class SearchOrderController extends BasicController {
 		int friendNumNoValid = 0;
 		int rewardAll = 0;
 		int reward = 0;
-		
+
 		double totalCommission = 0;
 		int canDrawOrderNum = 0;
 		int uncanDrawOrderNum = 0;
@@ -126,7 +144,7 @@ public class SearchOrderController extends BasicController {
 			Invitation invitationVo = new Invitation();
 			invitationVo.setInviterMobile(mobile);
 			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
-			
+
 			if (invitationList != null && invitationList.size() > 0) {
 				for (Invitation invitation : invitationList) {
 					// 邀请已激活获得奖励
@@ -145,7 +163,7 @@ public class SearchOrderController extends BasicController {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<div class='table'>");
 			if (userOrderList != null && userOrderList.size() > 0) {
-				
+
 				for (UserOrder userOrder : userOrderList) {
 					if ("订单结算".equals(userOrder.getOrderStatus()) || "已结算".equals(userOrder.getOrderStatus())) {
 						canDrawOrderNum = canDrawOrderNum + 1;

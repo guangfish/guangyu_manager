@@ -24,18 +24,22 @@ import com.bt.om.common.SysConst;
 import com.bt.om.entity.DrawCash;
 import com.bt.om.entity.DrawCashOrder;
 import com.bt.om.entity.Invitation;
+import com.bt.om.entity.User;
 import com.bt.om.entity.UserOrder;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IDrawCashOrderService;
 import com.bt.om.service.IDrawCashService;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserOrderService;
+import com.bt.om.service.IUserService;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.MailUtil;
+import com.bt.om.util.StringUtil;
 import com.bt.om.vo.api.OrderDrawVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -52,6 +56,8 @@ public class OrderDrawController extends BasicController {
 	private IUserOrderService userOrderService;
 	@Autowired
 	private IInvitationService invitationService;
+	@Autowired
+	private IUserService userService;
 	
 	@Autowired
 	private JedisPool jedisPool;
@@ -67,14 +73,21 @@ public class OrderDrawController extends BasicController {
 		}
 	}
 	
-	@RequestMapping(value = "/orderdrawv2", method = RequestMethod.GET)
+	@RequestMapping(value = "/v2/orderdraw", method = RequestMethod.GET)
 	public String orderdrawv2(Model model, HttpServletRequest request) {
-		String weekday = DateUtil.getWeekOfDate(new Date());
-		if ("2".equals(weekday) || "5".equals(weekday)) {
-			return "searchv2/orderdraw";
+		String mobile = CookieHelper.getCookie("mobile");
+		if (StringUtil.isEmpty(mobile)) {
+			return "redirect:/v2/login?toUrl=/v2/orderdraw";
 		} else {
-			return "searchv2/orderdraw";
-		}
+			User user=userService.selectByMobile(mobile);
+			model.addAttribute("user", user);
+			String weekday = DateUtil.getWeekOfDate(new Date());
+			if ("2".equals(weekday) || "5".equals(weekday)) {
+				return "searchv2/orderdraw";
+			} else {
+				return "searchv2/orderdraw";
+			}
+		}		
 	}
 
 	// 申请提现

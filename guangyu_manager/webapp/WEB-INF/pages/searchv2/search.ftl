@@ -2,7 +2,7 @@
 <!-- 头部 -->
 	<div class=" mui-bar mui-bar-nav mui-search-box">
 	    <a class="backToIndex mui-icon mui-icon-back"></a>
-		<a href="searchv2" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
+		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
 			<input type="search" class="mui-input-clear" placeholder="请粘贴从淘宝或京东复制的商品链接">
 		</div>
@@ -15,20 +15,20 @@
 				<#assign listsize = bannerList?size>
 				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[1].link}">
+					<a href="${bannerList[1].link}" target="_blank">
 						<img src="${bannerList[1].imgUrl}">
 					</a>
 				</div>
 			    <#list bannerList as banner>
 			    <div class="mui-slider-item">
-					<a href="${banner.link?if_exists}">
+					<a href="${banner.link?if_exists}" target="_blank">
 						<img src="${banner.imgUrl?if_exists}">
 					</a>
 				</div>
 			    </#list>
 			    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[listsize-1].link}">
+					<a href="${bannerList[listsize-1].link}" target="_blank">
 						<img src="${bannerList[listsize-1].imgUrl}">
 					</a>
 				</div>
@@ -47,15 +47,14 @@
 		<div class="mui-cont-box">
 			<div class="mui-tit">
 				<p>热门活动</p>
-				<a href="event_index.html">更多>></a>
+				<a href="javascript:void(0);">更多>></a>
 			</div>
 			<div class="mui-swiper">
 				<div class="swiper-container">
 				    <div class="swiper-wrapper">
-				      <div class="swiper-slide"><img src="/static/frontv2/img/s_slide1.jpg" alt=""></div>
-				      <div class="swiper-slide"><img src="/static/frontv2/img/s_slide2.jpg" alt=""></div>
-				      <div class="swiper-slide"><img src="/static/frontv2/img/s_slide1.jpg" alt=""></div>
-				      <div class="swiper-slide"><img src="/static/frontv2/img/s_slide2.jpg" alt=""></div>
+				      <#list bannerList as banner>
+				      <div class="swiper-slide"><a href="${banner.link?if_exists}" target="_blank"><img src="${banner.imgUrl?if_exists}" alt=""></a></div>
+				      </#list>
 				    </div>
 				  </div>
 			</div>
@@ -116,17 +115,21 @@
 	</div>	
 	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item mui-active" href="searchv2">
+		<a class="mui-tab-item mui-active" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
-		<a class="mui-tab-item" href="orderv2">
+		<a class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-new"></span>
 			<span class="mui-tab-label">订单</span>
 		</a>
-		<a class="mui-tab-item" href="searchorderv2">
+		<a class="mui-tab-item" href="/v2/searchorder">
 			<span class="mui-icon mui-icon-old"></span>
 			<span class="mui-tab-label">提现</span>
+		</a>
+		<a class="mui-tab-item" href="javascript:void(0);">
+			<span class="mui-icon mui-icon-activity"></span>
+			<span class="mui-tab-label">帮助</span>
 		</a>
 	</nav>
 	
@@ -297,8 +300,11 @@
 					var table = document.getElementById("search-page").querySelector('.mui-table-view');
 					var li = document.createElement('li');
 					li.className = 'mui-table-view-cell mui-media pos';
-					if (JSON.stringify(data) == "{}") {					  
-					  var myInner = '<div class="mui-media-body"><h2 class="mui-body-tit">该商品无返利</h2></div>';
+					var myInner ="";
+					if (JSON.stringify(data) == "{}") {
+					  $("#pullTips").remove();
+					  myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">该商品无返利</div></div>';
+					  $(".search-page").append(myInner);
 					}else{
 					  var status=data.ret.result.status;
 					  if(status=="1"){
@@ -346,7 +352,7 @@
 					  }else{
 					    func="drump('"+url+"')";
 					  }
-					  var myInner = '<a id="copy" onclick="'+func+'" href="javascript:void(0);">\
+					  myInner = '<a id="copy" onclick="'+func+'" href="javascript:void(0);">\
 							<img class="mui-media-object mui-pull-left" src="'+img+'">\
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
@@ -388,7 +394,7 @@
 		//加载内容
 		clearTimeout(setLoading);
 		setLoading = setTimeout(function() {
-			mui.ajax('/api/more',{
+			mui.ajax('/v2/api/more',{
 				data:{product_url:_v,pageNo:curPage},
 				dataType:'json',//服务器返回json格式数据
 				type:'post',//HTTP请求类型

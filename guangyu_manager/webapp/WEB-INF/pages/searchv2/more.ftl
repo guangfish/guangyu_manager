@@ -2,7 +2,7 @@
 <!-- 头部 -->
 	<div class=" mui-bar mui-bar-nav mui-search-box">
 	    <a class="backToIndex"><span>&lt;</span>返回</a>
-		<a href="searchv2" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
+		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
 			<input type="search" class="mui-input-clear" placeholder="请粘贴从淘宝或京东复制的商品链接">
 		</div>

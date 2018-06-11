@@ -16,7 +16,7 @@
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
-	<title>逛鱼搜索 | 一个搜索拿返利的工具，支持淘宝、京东</title>
+	<title>逛鱼搜索 | 一个搜索拿返利的网站，支持淘宝、京东</title>
 </head>
 <body>
 
@@ -26,3 +26,5 @@
 
 <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
 <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
+
+<script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>

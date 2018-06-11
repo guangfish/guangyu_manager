@@ -1,31 +1,32 @@
 <@model.webheadsearchv2 />
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/login/login.css">
-<script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
 
 <div class=" mui-bar mui-bar-nav mui-search-box">
 			<a href="/v2/search"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-			<h1 class="mui-title" style="top:3px">提现申请</h1>
+			<h1 class="mui-title" style="top:3px">手机登录</h1>
 		</div>
 		<div class="main">
 			<div class="bkfff"></div>
 			<form>
 				<div>
-					<input type="text" placeholder="请输入您的手机号" value="${user.mobile?if_exists}" name="phone" id="phone"/>
-				</div>
-				<div>
-					<input type="text" placeholder="请输入您的支付宝账号" value="${user.alipay?if_exists}" name="alipay" id="alipay"/>
-				</div>		
+					<input type="text" placeholder="请输入手机号" name="phone" id="phone"/>
+				</div>				
 				<div class="code">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
 						获取验证码
 					</div>
 				</div>
+
 			</form>
-			<span class="btn btn-submit">提现</span>
+			<span class="btn btn-submit">登录</span>
+			<div class="login_p">
+				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn tel_login">密码登录</a>
+				<a href="/v2/register?toUrl=${toUrl?if_exists}" class="btn">轻松注册</a>
+			</div>
 		</div>
 		<!-- 底部菜单栏 -->
-	<nav class="mui-bar mui-bar-tab new-bar">
+		<nav class="mui-bar mui-bar-tab new-bar">
 		<a class="mui-tab-item" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
@@ -38,21 +39,10 @@
 			<span class="mui-icon mui-icon-old"></span>
 			<span class="mui-tab-label">提现</span>
 		</a>
-		<a class="mui-tab-item" href="javascript:void(0);">
-			<span class="mui-icon mui-icon-activity"></span>
-			<span class="mui-tab-label">帮助</span>
-		</a>
-	</nav>
-		
+	    </nav>
+	    
 		<script>
-	  	  var mobile = $.cookie('mobile');
-	  	  if(mobile){
-	  	    $("#phone").val(mobile);
-	  	  }
-	    </script>
-		
-		<script>
-		    var countdown = 120;
+			var countdown = 120;
 			var timer;
 			function invokeSettime(obj) {
 				clearTimeout(timer);
@@ -81,15 +71,15 @@
 			    }else{				  	
 				}	
 			})
-			
-			$('.btn-submit').on('click',function(){	
+
+			$('.btn-submit').on('click',function(){
 				var status=1;
 				var _k=$('form').serializeArray();
 				var _p={};
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)||!counter.rule('*',_p.alipay)){
+				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)){
 					mui.toast('请将信息填写完整');
 					status=0;
 				}else if(!counter.rule('phone',_p.phone)){
@@ -97,41 +87,32 @@
 					status=0;
 				}
 				if(status){
-				   var mobile = $('#phone').val();
-	               var alipay = $('#alipay').val();
-	               var smscode = $('#code').val();
-	                                  
-				   $
+				    var mobile = $('#phone').val();
+					var code = $('#code').val();
+
+					$
 						.ajax({
 							type : "post",
-							url : "/api/orderdraw",
+							url : "/v2/api/login",
 							contentType : "application/json",
 							dataType : "json",// 返回json格式的数据
 							data : JSON.stringify({
-								"mobile" : ""+mobile,
-								"alipay" : ""+alipay,
-								"smscode" : ""+smscode
+								"mobile" : mobile,
+								"code" : code
 							}),
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data)
-								if(JSON.stringify(data) != "{}"){
-								  if(data.ret.result.status=="0"){
-								    Core.Dialog.msg("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！",10000);	
-								    $("#code").val("");		  
-								  }					  
-								  if(data.ret.result.status=="6"){
-								    mui.toast("短信验证码已失效，请重新发送!");
-								    $("#code").val("");
-								  }
-								  if(data.ret.result.status=="7"){
-								    mui.toast("短信验证码验证失败!");
-								    $("#code").val("");
-								  }
-								  if(data.ret.result.status=="8"){
-								    Core.Dialog.msg("亲，已经没有可提现的订单了，赶紧去看看是否没有录入已完成购买商品的订单号！",5000);
-								    $("#code").val("");
-								  }
+								if(data.ret.result=="0"){
+								   mui.toast('登陆成功');
+								   $.cookie('mobile', mobile, { expires: 9999999, path: '/',domain:'${cookieDomain?if_exists}'});
+								   location.href="${toUrl?if_exists}";
+								}else if(data.ret.result=="1"){
+								   mui.toast('短信验证码已过期');
+								}else if(data.ret.result=="2"){
+								   mui.toast('短信验证码不正确');
+								}else if(data.ret.result=="3"){
+								   mui.toast('该手机号未注册');
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

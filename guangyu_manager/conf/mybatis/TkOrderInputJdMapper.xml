@@ -465,4 +465,11 @@
   <update id="truncateTkOrderInputJd">
         truncate table tk_order_input_jd
   </update>
+  
+  <select id="selectByMap" parameterType="map" resultMap="BaseResultMap">
+	  select
+		<include refid="Base_Column_List" />
+		from tk_order_input_jd
+		where product_id = #{productId,jdbcType=VARCHAR} and order_id= #{orderId,jdbcType=VARCHAR}
+	</select>
 </mapper>

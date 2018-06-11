@@ -1,65 +1,82 @@
 <@model.webheadsearchv2 />
-<link rel="stylesheet" type="text/css" href="/static/frontv2/css/login/login.css">
-<script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
+<link rel="stylesheet" type="text/css" href="/static/frontv2/css/self_index/self_index.css">
 
-<div class=" mui-bar mui-bar-nav mui-search-box">
-			<a href="index.html"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-			<h1 class="mui-title" style="top:3px">订单查询</h1>
-		</div>
-		<div class="main">
-			<div class="bkfff"></div>
-			<form>
-				<div>
-					<input type="text" placeholder="请输入您的手机号" name="phone" id="mobile"/>
-				</div>				
-			</form>
-			<span class="btn btn-submit">订单查询</span>
-			<div class="login_p">
-				<a href="orderdrawv2">提现申请</a>
+<header class="mui-bar mui-bar-nav mui-setting-tit">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">我的订单</h1>
+
+	</header>
+	<div class="mui-content self-content-box">
+		<div class="mui-main-common">
+			<div class="mui-common-tit tab_links">
+				<a data-id="#mnewcar" class="mui-event-tap active">可提现</a>
+				<a data-id="#moldcar" class="mui-event-tap">不可提现</a>
+			</div>
+			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
+				<div class="mui-scroll">
+					<div id="mnewcar" class="mui-common-cont">
+						<!-- 热销新车 -->
+						<div class="mui-cont-box ">
+							<div class="mui-new-list">
+								<ul class="mui-table-view ">	
+								  <#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>	
+								  <#list userOrderCanDrawList as userOrder>																																											
+									<li class="mui-table-view-cell mui-media pos">
+										<a href="new_detail.html">
+											<img class="mui-media-object mui-pull-left" src="${userOrder.productImgUrl?if_exists}">
+											<div class="mui-media-body">
+												<h2 class="mui-body-tit">${userOrder.productInfo?if_exists}</h2>
+												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
+												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
+												<div>
+													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+												</div>
+												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+											</div>											
+										</a>
+									</li>
+								  </#list>	
+								  </#if>								  	
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="moldcar" class="mui-common-cont disn">
+						<div class="mui-cont-box">
+							<div class="mui-new-list">
+								<ul class="mui-table-view">		
+								  <#if (userOrderNotCanDrawList?exists && userOrderNotCanDrawList?size > 0)>	
+								  <#list userOrderNotCanDrawList as userOrder>																										
+									<li class="mui-table-view-cell mui-media pos">
+										<a href="new_detail.html">
+											<img class="mui-media-object mui-pull-left" src="${userOrder.productImgUrl?if_exists}">
+											<div class="mui-media-body">
+												<h2 class="mui-body-tit">${userOrder.productInfo?if_exists}</h2>
+												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
+												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
+												<div>
+													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+												</div>
+												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+											</div>											
+										</a>
+									</li>
+								  </#list>	
+								  </#if>	
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-    <!-- 底部菜单栏 -->
+	</div>
+	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item" href="searchv2">
+		<a class="mui-tab-item mui-active" href="<#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>/v2/orderdraw<#else>javascript:void(0);</#if>">
 			<span class="mui-icon mui-icon-index "></span>
-			<span class="mui-tab-label">首页</span>
-		</a>
-		<a class="mui-tab-item" href="orderv2">
-			<span class="mui-icon mui-icon-new"></span>
-			<span class="mui-tab-label">订单</span>
-		</a>
-		<a class="mui-tab-item mui-active" href="searchorderv2">
-			<span class="mui-icon mui-icon-old"></span>
-			<span class="mui-tab-label">提现</span>
+			<span class="mui-tab-label">申请提现</span>
 		</a>
 	</nav>
-	
-		<script>
-	  	  var mobile = $.cookie('guangfishmobile');
-	  	  if(mobile){
-	  	    $("#mobile").val(mobile);
-	  	  }
-	    </script>
-		
-		<script>
-			$('.btn-submit').on('click',function(){
-				var status=1;
-				var _k=$('form').serializeArray();
-				var _p={};
-				for(var i in _k){
-					_p[_k[i].name]=_k[i].value;
-				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)){
-					mui.toast('请将信息填写完整');
-					status=0;
-				}else if(!counter.rule('phone',_p.phone)){
-					mui.toast('请填写正确的手机号码');
-					status=0;
-				}
-				if(status){
-                  //ajax
-				}
-			})
-		</script>
 
 <@model.webendsearchv2 />

@@ -1,6 +1,7 @@
 package com.bt.om.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,11 @@ public class TkOrderInputJdService implements ITkOrderInputJdService {
 	@Override
 	public List<TkOrderInputJd> selectByOrderId(String sign) {
 		return tkOrderInputJdMapper.selectByOrderId(sign);
+	}
+	
+	@Override
+	public TkOrderInputJd selectByMap(Map<String,Object> map){
+		return tkOrderInputJdMapper.selectByMap(map);
 	}
 	
 	@Override

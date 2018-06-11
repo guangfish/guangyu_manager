@@ -59,6 +59,7 @@
                 /accountSetup*=anon
 				/site* = anon
 				/api/** = anon
+				/v2/** = anon
 				/throwThree*= anon
 				/throwThree/*= anon
 				<!-- /index*=roles[ADMIN]

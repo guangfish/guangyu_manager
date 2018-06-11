@@ -313,6 +313,8 @@ public class ApiController extends BasicController {
 				productInfo.setTklquan(tklquan);
 				String quanMianzhi=taskBean.getMap().get("quanMianzhi");
 				productInfo.setCouponMiane(quanMianzhi);
+				productInfo.setIfvalid(2);
+				productInfo.setSourcefrom(2);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
 				try{

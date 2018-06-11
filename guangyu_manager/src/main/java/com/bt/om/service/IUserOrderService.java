@@ -14,7 +14,7 @@ public interface IUserOrderService {
     public void updateStatus2(UserOrder userOrder);
     public List<UserOrder> selectUnCheckOrderTaobao(UserOrder userOrder);
     public List<UserOrder> selectUnCheckOrderJd(UserOrder userOrder);
-    public void updateByPrimaryKey(UserOrder userOrder);
+    public void updateByPrimaryKey(UserOrder userOrder);    
     
     int getAllListCount(Map<String, Object> searchMap);
     List<Map<String, Object>> getAllList(SearchDataVo vo);

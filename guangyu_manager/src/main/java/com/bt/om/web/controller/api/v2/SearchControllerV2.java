@@ -3,7 +3,6 @@ package com.bt.om.web.controller.api.v2;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +25,7 @@ import com.bt.om.web.util.SearchUtil;
  * 逛鱼搜索Controller
  */
 @Controller
+@RequestMapping(value = "/v2")
 public class SearchControllerV2 extends BasicController {
 	@Autowired
 	IProductInfoService productInfoService;
@@ -33,7 +33,7 @@ public class SearchControllerV2 extends BasicController {
 	@Autowired
 	private IBannerService bannerService;
 	
-	@RequestMapping(value = "/searchv2", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "/search", method = { RequestMethod.GET, RequestMethod.POST })
 	public String search(Model model, HttpServletRequest request) {
 		String ua=request.getHeader("User-Agent");
 		String ifWeixinBrower="no";

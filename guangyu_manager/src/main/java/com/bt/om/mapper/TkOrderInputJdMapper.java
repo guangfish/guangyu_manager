@@ -1,6 +1,7 @@
 package com.bt.om.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bt.om.entity.TkOrderInputJd;
 
@@ -44,4 +45,6 @@ public interface TkOrderInputJdMapper {
 	List<TkOrderInputJd> selectByOrderId(String orderId);
     
     void truncateTkOrderInputJd();
+    
+    TkOrderInputJd selectByMap(Map<String,Object> map);
 }

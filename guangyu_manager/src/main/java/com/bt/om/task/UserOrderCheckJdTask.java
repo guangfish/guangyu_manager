@@ -1,7 +1,9 @@
 package com.bt.om.task;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +38,15 @@ public class UserOrderCheckJdTask {
 		userOrder.setStatus1(1);
 		userOrder.setStatus2(1);
 		userOrder.setStatus3(1);
+		userOrder.setBelong(2);
 		List<UserOrder> userOrderList = userOrderService.selectUnCheckOrderJd(userOrder);
 		if (userOrderList != null && userOrderList.size() > 0) {
-			logger.info("京东共有" + userOrderList.size() + "件商品未校验");
+			logger.info("京东共有" + userOrderList.size() + "件商品为非订单结算状态");
 			for (UserOrder userOrder1 : userOrderList) {
-				List<TkOrderInputJd> tkOrderInputJdList = tkOrderInputJdService
-						.selectByOrderId(userOrder1.getOrderId());
+				Map<String, Object> map = new HashMap<>();
+				map.put("productId", userOrder1.getProductId());
+				map.put("orderId", userOrder1.getOrderId());
+				TkOrderInputJd tkOrderInputJd = tkOrderInputJdService.selectByMap(map);
 				double payMoney = 0;
 				double commissionRate = 0;
 				String productInfo = "";
@@ -49,30 +54,31 @@ public class UserOrderCheckJdTask {
 				int productNum = 0;
 				double commission = 0;
 				int status1 = 1;
-				if (tkOrderInputJdList != null && tkOrderInputJdList.size() > 0) {
-					for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
-						payMoney = payMoney + tkOrderInputJd.getActualMoney();
-						commissionRate = tkOrderInputJd.getCommissionRate();
-						productInfo = tkOrderInputJd.getProductName();
-						orderStatus = tkOrderInputJd.getOrderStatus();
-						productNum = productNum + tkOrderInputJd.getProductNum();
-						//订单结算时的实际佣金
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())||"已完成".equals(tkOrderInputJd.getOrderStatus())) {
-							commission = commission + tkOrderInputJd.getActualCommission();
-						}else{
-							//订单未结算时的预估佣金
-							commission = commission + tkOrderInputJd.getEstimateCommission();
-						}
-						
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())||"已完成".equals(tkOrderInputJd.getOrderStatus())) {
-							status1 = 2;
-						} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
-							status1 = 3;
-						}
+				if (tkOrderInputJd != null) {
+					payMoney = tkOrderInputJd.getActualMoney();
+					commissionRate = tkOrderInputJd.getCommissionRate();
+					productInfo = tkOrderInputJd.getProductName();
+					orderStatus = tkOrderInputJd.getOrderStatus();
+					productNum = tkOrderInputJd.getProductNum();
+					// 订单结算时的实际佣金
+					if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+							|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+						commission = tkOrderInputJd.getActualCommission();
+					} else {
+						// 订单未结算时的预估佣金
+						commission = tkOrderInputJd.getEstimateCommission();
 					}
+
+					if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+							|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+						status1 = 2;
+					} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
+						status1 = 3;
+					}
+
 					if ("已付款".equals(orderStatus)) {
 						orderStatus = "订单付款";
-					} else if ("已结算".equals(orderStatus)||"已完成".equals(orderStatus)) {
+					} else if ("已结算".equals(orderStatus) || "已完成".equals(orderStatus)) {
 						orderStatus = "订单结算";
 					} else if ("无效".equals(orderStatus)) {
 						orderStatus = "订单失效";
@@ -94,26 +100,33 @@ public class UserOrderCheckJdTask {
 						userOrder1.setCommission3(((double) (Math.round(
 								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 								/ 100));
-						double commission3=((double) (Math.round(
+						double commission3 = ((double) (Math.round(
 								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 								/ 100);
 
-						if(commission3<=1){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
-						}else if(commission3>1 && commission3<=5){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
-						}else if(commission3>5 && commission3<=10){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
-						}else if(commission3>10 && commission3<=50){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
-						}else if(commission3>50 && commission3<=100){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
-						}else if(commission3>100 && commission3<=500){
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
-						}else{
-							userOrder1.setFanliMultiple(Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
+						if (commission3 <= 1) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
+						} else if (commission3 > 1 && commission3 <= 5) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
+						} else if (commission3 > 5 && commission3 <= 10) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
+						} else if (commission3 > 10 && commission3 <= 50) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
+						} else if (commission3 > 50 && commission3 <= 100) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
+						} else if (commission3 > 100 && commission3 <= 500) {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
+						} else {
+							userOrder1.setFanliMultiple(
+									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
 						}
-						
+
 						userOrder1.setStatus1(status1);
 						userOrder1.setUpdateTime(new Date());
 						userOrderService.updateByPrimaryKey(userOrder1);

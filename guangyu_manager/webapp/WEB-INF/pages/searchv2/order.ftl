@@ -3,46 +3,48 @@
 <script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
 
 <div class=" mui-bar mui-bar-nav mui-search-box">
-			<a href="index.html"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
+			<a href="/v2/search"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 			<h1 class="mui-title" style="top:3px">录入订单号</h1>
 		</div>
 		<div class="main">
 			<div class="bkfff"></div>
 			<form>
+			    <!--
 				<div>
 					<input type="text" placeholder="请输入您的手机号" name="phone" id="mobile"/>
-				</div>				
+				</div>	
+				-->			
 				<div class="code">
-					<input type="text" placeholder="请录入订单号" name="code" id="orderid"/>
+					<input type="text" placeholder="请粘贴从淘宝或京东复制的订单号" name="code" id="orderid"/>
 				</div>
 			</form>
 			<span class="btn btn-submit">提交</span>
+			<!--
 			<div class="login_p">
 				<a href="javascript:void(0);" style="color:red;">刚录入的订单号，最快1分钟、最迟次日可查</a>
 			</div>
+			-->
 		</div>
 		<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item" href="searchv2">
+		<a class="mui-tab-item" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
-		<a class="mui-tab-item mui-active" href="orderv2">
+		<a class="mui-tab-item mui-active" href="/v2/order">
 			<span class="mui-icon mui-icon-new"></span>
 			<span class="mui-tab-label">订单</span>
 		</a>
-		<a class="mui-tab-item" href="searchorderv2">
+		<a class="mui-tab-item" href="/v2/searchorder">
 			<span class="mui-icon mui-icon-old"></span>
 			<span class="mui-tab-label">提现</span>
 		</a>
+		<a class="mui-tab-item" href="javascript:void(0);">
+			<span class="mui-icon mui-icon-activity"></span>
+			<span class="mui-tab-label">帮助</span>
+		</a>
 	</nav>
 	
-		<script>
-	  	  var mobile = $.cookie('guangfishmobile');
-	  	  if(mobile){
-	  	    $("#mobile").val(mobile);
-	  	  }
-	    </script>
 		
 		<script>
 			$('.btn-submit').on('click',function(){
@@ -52,16 +54,13 @@
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)){
+				if(!counter.rule('*',_p.phone)){
 					mui.toast('请将信息填写完整');
-					status=0;
-				}else if(!counter.rule('phone',_p.phone)){
-					mui.toast('请填写正确的手机号码');
 					status=0;
 				}
 				if(status){
 				  var orderid = $('#orderid').val();
-	              var mobile = $('#mobile').val();
+	              var mobile = $.cookie('mobile');
 					$
 						.ajax({
 							type : "post",
