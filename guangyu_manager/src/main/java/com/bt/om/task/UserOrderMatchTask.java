@@ -43,195 +43,201 @@ public class UserOrderMatchTask {
 	// @Scheduled(cron = "0 0 */1 * * ?")
 	@Scheduled(cron = "0/30 * * * * ?")
 	public void userOrderCheck() {
-		logger.info("用户订单定时匹配");
-		
-		//for 淘宝
-		List<UserOrderTmp> userOrderTmpList = userOrderTmpService.selectUnCheckOrder(1);
-		if (userOrderTmpList != null && userOrderTmpList.size() > 0) {
-			for (UserOrderTmp userOrderTmp : userOrderTmpList) {
-				List<TkOrderInput> tkOrderInputList = tkOrderInputService.selectByOrderId(userOrderTmp.getOrderId());
-				if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
-					double commission = 0;
-					double commission3 = 0;
-					int status1 = 1;
-					for (TkOrderInput tkOrderInput : tkOrderInputList) {
-						UserOrder userOrder = new UserOrder();
-						userOrder.setBelong(1);
-						userOrder.setMobile(userOrderTmp.getMobile());
-						userOrder.setProductId(tkOrderInput.getProductId());
-						userOrder.setOrderId(userOrderTmp.getOrderId());
-						userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
-						userOrder.setRate(tkOrderInput.getCommissionRate());
-						userOrder.setShopName(tkOrderInput.getShopName());
-						userOrder.setProductNum(tkOrderInput.getProductNum());
-						userOrder.setProductInfo(tkOrderInput.getProductInfo());
-						userOrder.setOrderStatus(tkOrderInput.getOrderStatus());
-						// 订单结算时的实际佣金
-						if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
-							commission = tkOrderInput.getCommissionMoney();
-						} else {
-							// 订单未结算时的预估佣金
-							commission = tkOrderInput.getEffectEstimate();
-						}
-						userOrder.setCommission1(((double) (Math.round(commission * 100)) / 100));
-						// 佣金的基础上去掉2层支付给阿里妈妈的服务费
-						userOrder.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
-						// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
-						userOrder.setCommission3(((double) (Math.round(
-								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-								/ 100));
-						commission3 = ((double) (Math.round(
-								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-								/ 100);
-						if (commission3 <= 1) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
-						} else if (commission3 > 1 && commission3 <= 5) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
-						} else if (commission3 > 5 && commission3 <= 10) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
-						} else if (commission3 > 10 && commission3 <= 50) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
-						} else if (commission3 > 50 && commission3 <= 100) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
-						} else if (commission3 > 100 && commission3 <= 500) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
-						} else {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
-						}
+		String ifRun = GlobalVariable.resourceMap.get("UserOrderMatchTask");
+		if ("1".equals(ifRun)) {
+			logger.info("用户订单定时匹配");
+			// for 淘宝
+			List<UserOrderTmp> userOrderTmpList = userOrderTmpService.selectUnCheckOrder(1);
+			if (userOrderTmpList != null && userOrderTmpList.size() > 0) {
+				for (UserOrderTmp userOrderTmp : userOrderTmpList) {
+					List<TkOrderInput> tkOrderInputList = tkOrderInputService
+							.selectByOrderId(userOrderTmp.getOrderId());
+					if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
+						double commission = 0;
+						double commission3 = 0;
+						int status1 = 1;
+						for (TkOrderInput tkOrderInput : tkOrderInputList) {
+							UserOrder userOrder = new UserOrder();
+							userOrder.setBelong(1);
+							userOrder.setMobile(userOrderTmp.getMobile());
+							userOrder.setProductId(tkOrderInput.getProductId());
+							userOrder.setOrderId(userOrderTmp.getOrderId());
+							userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
+							userOrder.setRate(tkOrderInput.getCommissionRate());
+							userOrder.setShopName(tkOrderInput.getShopName());
+							userOrder.setProductNum(tkOrderInput.getProductNum());
+							userOrder.setProductInfo(tkOrderInput.getProductInfo());
+							userOrder.setOrderStatus(tkOrderInput.getOrderStatus());
+							// 订单结算时的实际佣金
+							if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
+								commission = tkOrderInput.getCommissionMoney();
+							} else {
+								// 订单未结算时的预估佣金
+								commission = tkOrderInput.getEffectEstimate();
+							}
+							userOrder.setCommission1(((double) (Math.round(commission * 100)) / 100));
+							// 佣金的基础上去掉2层支付给阿里妈妈的服务费
+							userOrder.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
+							// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
+							userOrder.setCommission3(((double) (Math.round(commission
+									* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+									/ 100));
+							commission3 = ((double) (Math.round(commission
+									* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+									/ 100);
+							if (commission3 <= 1) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
+							} else if (commission3 > 1 && commission3 <= 5) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
+							} else if (commission3 > 5 && commission3 <= 10) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
+							} else if (commission3 > 10 && commission3 <= 50) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
+							} else if (commission3 > 50 && commission3 <= 100) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
+							} else if (commission3 > 100 && commission3 <= 500) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
+							} else {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
+							}
 
-						if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
-							status1 = 2;
-						} else if ("订单失效".equals(tkOrderInput.getOrderStatus())) {
-							status1 = 3;
-						}
-						userOrder.setStatus1(status1);
-						userOrder.setStatus2(1);
-						userOrder.setStatus3(1);
-						userOrder.setCreateTime(new Date());
-						userOrder.setUpdateTime(new Date());
+							if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
+								status1 = 2;
+							} else if ("订单失效".equals(tkOrderInput.getOrderStatus())) {
+								status1 = 3;
+							}
+							userOrder.setStatus1(status1);
+							userOrder.setStatus2(1);
+							userOrder.setStatus3(1);
+							userOrder.setCreateTime(new Date());
+							userOrder.setUpdateTime(new Date());
 
-						ProductInfo productInfo = productInfoService.getByProductId(tkOrderInput.getProductId());
-						if (productInfo != null) {
-							userOrder.setProductImgUrl(productInfo.getProductImgUrl());
+							ProductInfo productInfo = productInfoService.getByProductId(tkOrderInput.getProductId());
+							if (productInfo != null) {
+								userOrder.setProductImgUrl(productInfo.getProductImgUrl());
+							}
+							userOrderService.insert(userOrder);
+
+							// 更新状态
+							userOrderTmp.setStatus(2);
+							userOrderTmpService.update(userOrderTmp);
 						}
-						userOrderService.insert(userOrder);
-						
-						//更新状态
-						userOrderTmp.setStatus(2);
-						userOrderTmpService.update(userOrderTmp);
+					} else {
+						logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");
 					}
-				} else {
-					logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");
 				}
+			} else {
+				logger.info("淘宝所有商品已匹配");
 			}
-		} else {
-			logger.info("淘宝所有商品已匹配");
-		}
-		
-		//for 京东
-		userOrderTmpList = userOrderTmpService.selectUnCheckOrder(2);
-		if (userOrderTmpList != null && userOrderTmpList.size() > 0) {
-			for (UserOrderTmp userOrderTmp : userOrderTmpList) {
-				List<TkOrderInputJd> tkOrderInputJdList = tkOrderInputJdService.selectByOrderId(userOrderTmp.getOrderId());
-				if (tkOrderInputJdList != null && tkOrderInputJdList.size() > 0) {
-					double commission = 0;
-					double commission3 = 0;
-					int status1 = 1;
-					for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
-						UserOrder userOrder = new UserOrder();
-						userOrder.setBelong(2);
-						userOrder.setMobile(userOrderTmp.getMobile());
-						userOrder.setProductId(tkOrderInputJd.getProductId());
-						userOrder.setOrderId(userOrderTmp.getOrderId());
-						userOrder.setPrice(((double) (Math.round(tkOrderInputJd.getActualMoney() * 100)) / 100));
-						userOrder.setRate(tkOrderInputJd.getCommissionRate());
-						userOrder.setShopName("");
-						userOrder.setProductNum(tkOrderInputJd.getProductNum());
-						userOrder.setProductInfo(tkOrderInputJd.getProductName());
-						String orderStatus=tkOrderInputJd.getOrderStatus();
-						if ("已付款".equals(orderStatus)) {
-							orderStatus = "订单付款";
-						} else if ("已结算".equals(orderStatus)||"已完成".equals(orderStatus)) {
-							orderStatus = "订单结算";
-						} else if ("无效".equals(orderStatus)) {
-							orderStatus = "订单失效";
-						}
-						userOrder.setOrderStatus(orderStatus);
-						
-						//订单结算时的实际佣金
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())||"已完成".equals(tkOrderInputJd.getOrderStatus())) {
-							commission = tkOrderInputJd.getActualCommission();
-						}else{
-							//订单未结算时的预估佣金
-							commission = tkOrderInputJd.getEstimateCommission();
-						}
-						userOrder.setCommission1(((double) (Math.round(commission * 100)) / 100));
-						// 佣金的基础上去掉2层支付给阿里妈妈的服务费
-						userOrder.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
-						// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
-						userOrder.setCommission3(((double) (Math.round(
-								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-								/ 100));
-						commission3 = ((double) (Math.round(
-								commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-								/ 100);
-						if (commission3 <= 1) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
-						} else if (commission3 > 1 && commission3 <= 5) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
-						} else if (commission3 > 5 && commission3 <= 10) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
-						} else if (commission3 > 10 && commission3 <= 50) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
-						} else if (commission3 > 50 && commission3 <= 100) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
-						} else if (commission3 > 100 && commission3 <= 500) {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
-						} else {
-							userOrder.setFanliMultiple(
-									Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
-						}
 
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())||"已完成".equals(tkOrderInputJd.getOrderStatus())) {
-							status1 = 2;
-						} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
-							status1 = 3;
-						}
-						userOrder.setStatus1(status1);
-						userOrder.setStatus2(1);
-						userOrder.setStatus3(1);
-						userOrder.setCreateTime(new Date());
-						userOrder.setUpdateTime(new Date());
+			// for 京东
+			userOrderTmpList = userOrderTmpService.selectUnCheckOrder(2);
+			if (userOrderTmpList != null && userOrderTmpList.size() > 0) {
+				for (UserOrderTmp userOrderTmp : userOrderTmpList) {
+					List<TkOrderInputJd> tkOrderInputJdList = tkOrderInputJdService
+							.selectByOrderId(userOrderTmp.getOrderId());
+					if (tkOrderInputJdList != null && tkOrderInputJdList.size() > 0) {
+						double commission = 0;
+						double commission3 = 0;
+						int status1 = 1;
+						for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
+							UserOrder userOrder = new UserOrder();
+							userOrder.setBelong(2);
+							userOrder.setMobile(userOrderTmp.getMobile());
+							userOrder.setProductId(tkOrderInputJd.getProductId());
+							userOrder.setOrderId(userOrderTmp.getOrderId());
+							userOrder.setPrice(((double) (Math.round(tkOrderInputJd.getActualMoney() * 100)) / 100));
+							userOrder.setRate(tkOrderInputJd.getCommissionRate());
+							userOrder.setShopName("");
+							userOrder.setProductNum(tkOrderInputJd.getProductNum());
+							userOrder.setProductInfo(tkOrderInputJd.getProductName());
+							String orderStatus = tkOrderInputJd.getOrderStatus();
+							if ("已付款".equals(orderStatus)) {
+								orderStatus = "订单付款";
+							} else if ("已结算".equals(orderStatus) || "已完成".equals(orderStatus)) {
+								orderStatus = "订单结算";
+							} else if ("无效".equals(orderStatus)) {
+								orderStatus = "订单失效";
+							}
+							userOrder.setOrderStatus(orderStatus);
 
-						ProductInfo productInfo = productInfoService.getByProductId(tkOrderInputJd.getProductId());
-						if (productInfo != null) {
-							userOrder.setProductImgUrl(productInfo.getProductImgUrl());
+							// 订单结算时的实际佣金
+							if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+									|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+								commission = tkOrderInputJd.getActualCommission();
+							} else {
+								// 订单未结算时的预估佣金
+								commission = tkOrderInputJd.getEstimateCommission();
+							}
+							userOrder.setCommission1(((double) (Math.round(commission * 100)) / 100));
+							// 佣金的基础上去掉2层支付给阿里妈妈的服务费
+							userOrder.setCommission2(((double) (Math.round(commission * 0.8 * 100)) / 100));
+							// 基本佣金的基础上计算反给客户的佣金，比例应该填小于0.8，不然亏钱
+							userOrder.setCommission3(((double) (Math.round(commission
+									* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+									/ 100));
+							commission3 = ((double) (Math.round(commission
+									* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+									/ 100);
+							if (commission3 <= 1) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
+							} else if (commission3 > 1 && commission3 <= 5) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
+							} else if (commission3 > 5 && commission3 <= 10) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
+							} else if (commission3 > 10 && commission3 <= 50) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50")));
+							} else if (commission3 > 50 && commission3 <= 100) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100")));
+							} else if (commission3 > 100 && commission3 <= 500) {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500")));
+							} else {
+								userOrder.setFanliMultiple(
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500")));
+							}
+
+							if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+									|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+								status1 = 2;
+							} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
+								status1 = 3;
+							}
+							userOrder.setStatus1(status1);
+							userOrder.setStatus2(1);
+							userOrder.setStatus3(1);
+							userOrder.setCreateTime(new Date());
+							userOrder.setUpdateTime(new Date());
+
+							ProductInfo productInfo = productInfoService.getByProductId(tkOrderInputJd.getProductId());
+							if (productInfo != null) {
+								userOrder.setProductImgUrl(productInfo.getProductImgUrl());
+							}
+							userOrderService.insert(userOrder);
+
+							// 更新状态
+							userOrderTmp.setStatus(2);
+							userOrderTmpService.update(userOrderTmp);
 						}
-						userOrderService.insert(userOrder);
-						
-						//更新状态
-						userOrderTmp.setStatus(2);
-						userOrderTmpService.update(userOrderTmp);
+					} else {
+						logger.info("订单" + userOrderTmp.getOrderId() + "未从京东联盟导入、或订单不存在");
 					}
-				} else {
-					logger.info("订单" + userOrderTmp.getOrderId() + "未从京东联盟导入、或订单不存在");
 				}
+			} else {
+				logger.info("京东所有商品已匹配");
 			}
-		} else {
-			logger.info("京东所有商品已匹配");
 		}
 
 	}

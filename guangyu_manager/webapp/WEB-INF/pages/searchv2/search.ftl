@@ -4,7 +4,7 @@
 	    <a class="backToIndex mui-icon mui-icon-back"></a>
 		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
-			<input type="search" class="mui-input-clear" placeholder="请粘贴从淘宝或京东复制的商品链接">
+			<input type="search" class="mui-input-clear" placeholder="请粘贴淘宝或京东的商品链接">
 		</div>
 		<a class=" mui-icon mui-icon-search mui-self-search"></a>
 	</div>
