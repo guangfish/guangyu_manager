@@ -47,7 +47,7 @@
 		<div class="mui-cont-box">
 			<div class="mui-tit">
 				<p>热门活动</p>
-				<!--<a href="javascript:void(0);">更多>></a>-->
+				<a href="/v2/campaign">更多>></a>
 			</div>
 			<div class="mui-swiper">
 				<div class="swiper-container">
@@ -76,11 +76,11 @@
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
-								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
-								<p>现价:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
-								<p>券:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
+								<p>商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
+								<p>现价:&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>月销量:&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
+								<p>券:&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
 								<div>
-									<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em>&nbsp;&nbsp;&nbsp;领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em></span>
+									<span>领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em></span>
 								</div>
 								<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>
 							</div>
@@ -362,10 +362,10 @@
 							<img class="mui-media-object mui-pull-left" src="'+img+'">\
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
-								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
+								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
 								<div>\
-									<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
+									<span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
 								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
@@ -375,10 +375,10 @@
 							<img class="mui-media-object mui-pull-left" src="'+img+'">\
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
-								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
+								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
 								<div>\
-									<span>预估返现:&nbsp;&nbsp;<em class="mui-first-payment">'+money+'</em>&nbsp;领券省:&nbsp;&nbsp;<em class="mui-first-payment">￥'+quanMianzhi+'</em></span>\
+									<span>领券省:<em class="mui-first-payment">￥'+quanMianzhi+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
 								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
@@ -438,11 +438,11 @@
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
-									<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+list.price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+list.monthSales+'</span></p>\
-									<p>券:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
+									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">'+list.price+'</span>月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'</span></p>\
+									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
-										<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥'+list.actualCommission+'</em>&nbsp;&nbsp;&nbsp;领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em></span>\
+										<span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\
 									<p class="mui-buy-gift">购买该商品预估可额外获得'+list.fanli+'倍返现奖励</p>\
 								</div>\

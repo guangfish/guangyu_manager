@@ -64,8 +64,8 @@
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .eventImg img {
   display: block;
-  max-height: 3.02rem;
-  max-width: 9.24rem;
+  max-height: 100%;
+  max-width: 100%;
   margin: 0 auto;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit {
