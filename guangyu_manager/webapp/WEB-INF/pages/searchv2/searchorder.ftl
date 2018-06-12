@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/self_index/self_index.css">
 
 <header class="mui-bar mui-bar-nav mui-setting-tit">
-		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
 		<h1 class="mui-title">我的订单</h1>
 
 	</header>
