@@ -363,7 +363,7 @@
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">￥'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
 									<span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
@@ -376,7 +376,7 @@
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">￥'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
 									<span>领券省:<em class="mui-first-payment">￥'+quanMianzhi+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
@@ -439,7 +439,7 @@
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
 									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;<span class="mui-bodycolor">'+list.price+'</span>月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.price+'</span>月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
 									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
 										<span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
