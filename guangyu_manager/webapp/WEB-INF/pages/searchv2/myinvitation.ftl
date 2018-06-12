@@ -12,8 +12,8 @@
 					  <#if (invitationList?exists && invitationList?size > 0)>
 			          <#list invitationList as invitation>
 						<div class="main-answer-item">
-							<p>${invitation.beInviterMobile?if_exists}<span>${(invitation.createTime)?string('yyyy-MM-dd')}</i></span></p>
-							<p><#if (invitation.status==1)>未激活，激活后奖励金额￥${invitation.money?if_exists}<#else>已激活，奖励金额￥${invitation.money?if_exists}，<#if (invitation.reward==1)>未领取奖励<#else>已领取奖励</#if></#if></p>
+							<p><font color="red">${invitation.beInviterMobile?if_exists}</font><span>${(invitation.createTime)?string('yyyy-MM-dd')}</i></span></p>
+							<p><#if (invitation.status==1)>未激活，激活后奖励金额<font color="red">￥${invitation.money?if_exists}</font><#else>已激活，奖励金额<font color="red">￥${invitation.money?if_exists}</font>，<#if (invitation.reward==1)>未领取奖励<#else>已领取奖励</#if></#if></p>
 						</div>	
 					  </#list>
 			          </#if>					
