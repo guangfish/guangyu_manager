@@ -312,7 +312,7 @@ public class ApiController extends BasicController {
 				String tklquan=taskBean.getMap().get("tklquan");
 				productInfo.setTklquan(tklquan);
 				String quanMianzhi=taskBean.getMap().get("quanMianzhi");
-				productInfo.setCouponMiane(quanMianzhi);
+				productInfo.setCouponQuan(quanMianzhi);
 				productInfo.setIfvalid(2);
 				productInfo.setSourcefrom(2);
 				productInfo.setCreateTime(new Date());
@@ -458,7 +458,7 @@ public class ApiController extends BasicController {
 			map.put("goodUrl", productInfo.getTkLink());
 			map.put("tkl", productInfo.getTkl());
 			map.put("tklquan", productInfo.getTklquan());
-			map.put("quanMianzhi", "" +productInfo.getCouponMiane());
+			map.put("quanMianzhi", "" +productInfo.getCouponQuan());
 			
 			// 组装msg
 			StringBuffer sb = new StringBuffer();

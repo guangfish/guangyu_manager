@@ -5,5 +5,5 @@ import java.util.List;
 import com.bt.om.entity.Banner;
 
 public interface IBannerService {
-	public List<Banner> selectAll();
+	public List<Banner> selectAll(Integer type);
 }

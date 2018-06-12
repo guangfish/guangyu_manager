@@ -28,7 +28,7 @@ public class BannerController extends BasicController {
 	@RequestMapping(value = "/api/banner", method = RequestMethod.POST)
 	@ResponseBody
 	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {		
-		List<Banner> bannerList = bannerService.selectAll();
+		List<Banner> bannerList = bannerService.selectAll(1);
 		if(bannerList!=null && bannerList.size()>0){
 			model.addAttribute(SysConst.RESULT_KEY, bannerList);
 		}			

@@ -15,20 +15,20 @@
 				<#assign listsize = bannerList?size>
 				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[1].link}" target="_blank">
+					<a href="${bannerList[1].link}" <#if (bannerList[1].target==2)>target="_blank"</#if>>
 						<img src="${bannerList[1].imgUrl}">
 					</a>
 				</div>
 			    <#list bannerList as banner>
 			    <div class="mui-slider-item">
-					<a href="${banner.link?if_exists}" target="_blank">
+					<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
 						<img src="${banner.imgUrl?if_exists}">
 					</a>
 				</div>
 			    </#list>
 			    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[listsize-1].link}" target="_blank">
+					<a href="${bannerList[listsize-1].link}" <#if (bannerList[1].target==2)>target="_blank"</#if>>
 						<img src="${bannerList[listsize-1].imgUrl}">
 					</a>
 				</div>
@@ -47,13 +47,13 @@
 		<div class="mui-cont-box">
 			<div class="mui-tit">
 				<p>热门活动</p>
-				<a href="javascript:void(0);">更多>></a>
+				<!--<a href="javascript:void(0);">更多>></a>-->
 			</div>
 			<div class="mui-swiper">
 				<div class="swiper-container">
 				    <div class="swiper-wrapper">
-				      <#list bannerList as banner>
-				      <div class="swiper-slide"><a href="${banner.link?if_exists}" target="_blank"><img src="${banner.imgUrl?if_exists}" alt=""></a></div>
+				      <#list campaignList as banner>
+				      <div class="swiper-slide"><a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>><img src="${banner.imgUrl?if_exists}" alt=""></a></div>
 				      </#list>
 				    </div>
 				  </div>
@@ -76,11 +76,11 @@
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
-								<p>商店名:<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
-								<p>现价:<span class="mui-inventory">￥${productInfo.price?if_exists}</span>月销量:<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
-								<p>券:<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
+								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
+								<p>现价:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
+								<p>券:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
 								<div>
-									<span>预估返现:<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em></span>
+									<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em>&nbsp;&nbsp;&nbsp;领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em></span>
 								</div>
 								<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>
 							</div>
@@ -130,6 +130,10 @@
 		<a class="mui-tab-item" href="javascript:void(0);">
 			<span class="mui-icon mui-icon-activity"></span>
 			<span class="mui-tab-label">帮助</span>
+		</a>
+		<a class="mui-tab-item" href="/v2/my">
+			<span class="mui-icon mui-icon-self"></span>
+			<span class="mui-tab-label">我的</span>
 		</a>
 	</nav>
 	
@@ -334,6 +338,7 @@
 					  var tklquan=data.ret.result.map.tklquan;
 					  var tkl0;
 					  var fanliMultiple=data.ret.result.map.fanliMultiple;
+					  var quanMianzhi=data.ret.result.map.quanMianzhi;
 					  if(quanUrl!=""){
 					    url=quanUrl;
 					    tkl0=tklquan;
@@ -352,18 +357,33 @@
 					  }else{
 					    func="drump('"+url+"')";
 					  }
+					  if(quanUrl==""){
 					  myInner = '<a id="copy" onclick="'+func+'" href="javascript:void(0);">\
 							<img class="mui-media-object mui-pull-left" src="'+img+'">\
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
-								<p>商店名:<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:<span class="mui-bodycolor">'+price+'</span>月销量:<span class="mui-adorn">'+sellNum+'</span></p>\
+								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
+								<p>价格:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
 								<div>\
-									<span>预估返现:<em class="mui-first-payment">'+money+'('+per+')</em></span>\
+									<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
 								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
 						</a>';
+						}else{
+						myInner = '<a id="copy" onclick="'+func+'" href="javascript:void(0);">\
+							<img class="mui-media-object mui-pull-left" src="'+img+'">\
+							<div class="mui-media-body">\
+								<h2 class="mui-body-tit">'+title+'</h2>\
+								<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
+								<p>价格:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+sellNum+'</span></p>\
+								<div>\
+									<span>预估返现:&nbsp;&nbsp;<em class="mui-first-payment">'+money+'</em>&nbsp;领券省:&nbsp;&nbsp;<em class="mui-first-payment">￥'+quanMianzhi+'</em></span>\
+								</div>\
+								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
+							</div>\
+						</a>';
+						}
 					}
 					li.innerHTML = myInner;
 					table.appendChild(li);
@@ -418,11 +438,11 @@
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
-									<p>商店名:<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:<span class="mui-bodycolor">'+list.price+'</span>月销量:<span class="mui-adorn">'+list.monthSales+'</span></p>\
-									<p>券:<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
+									<p>商店名:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
+									<p>现价:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">'+list.price+'</span>月销量:&nbsp;&nbsp;&nbsp;<span class="mui-adorn">'+list.monthSales+'</span></p>\
+									<p>券:&nbsp;&nbsp;&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
-										<span>预估返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
+										<span>预估返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥'+list.actualCommission+'</em>&nbsp;&nbsp;&nbsp;领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em></span>\
 									</div>\
 									<p class="mui-buy-gift">购买该商品预估可额外获得'+list.fanli+'倍返现奖励</p>\
 								</div>\

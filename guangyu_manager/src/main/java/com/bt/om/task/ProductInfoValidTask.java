@@ -1,6 +1,8 @@
 package com.bt.om.task;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +39,21 @@ public class ProductInfoValidTask {
 						productInfoService.deleteByPrimaryKey(productInfo.getId());
 					} else {
 						productInfo.setIfvalid(2);
+						Pattern p = Pattern.compile("减(\\d+)元");
+						Matcher m = p.matcher(productInfo.getCouponMiane());
+						if (m.find()) {
+							productInfo.setCouponQuan(m.group(1));
+						}
+						p = Pattern.compile("(\\d+)元无条件券");
+						m = p.matcher(productInfo.getCouponMiane());
+						if (m.find()) {
+							productInfo.setCouponQuan(m.group(1));
+						}
 						productInfoService.updateByPrimaryKey(productInfo);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
+					productInfoService.deleteByPrimaryKey(productInfo.getId());
 				}
 			}
 		}

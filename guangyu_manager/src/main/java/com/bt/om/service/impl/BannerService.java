@@ -15,7 +15,7 @@ public class BannerService implements IBannerService {
 	private BannerMapper bannerMapper;
 
 	@Override
-	public List<Banner> selectAll() {
-		return bannerMapper.selectAll();
+	public List<Banner> selectAll(Integer type) {
+		return bannerMapper.selectAll(type);
 	}
 }

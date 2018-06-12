@@ -42,8 +42,11 @@ public class SearchControllerV2 extends BasicController {
 		}
 		model.addAttribute("ifWeixinBrower", ifWeixinBrower);
 		
-		List<Banner> bannerList = bannerService.selectAll();
+		List<Banner> bannerList = bannerService.selectAll(1);
 		model.addAttribute("bannerList", bannerList);
+		
+		List<Banner> campaignList = bannerService.selectAll(2);
+		model.addAttribute("campaignList", campaignList);
 		
 		float rate=Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate"));
 		model.addAttribute("rate", rate);

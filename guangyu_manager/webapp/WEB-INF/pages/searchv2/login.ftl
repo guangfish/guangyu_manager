@@ -43,6 +43,10 @@
 			<span class="mui-icon mui-icon-activity"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
+		<a class="mui-tab-item" href="/v2/my">
+			<span class="mui-icon mui-icon-self"></span>
+			<span class="mui-tab-label">我的</span>
+		</a>
 	    </nav>
 	    
 		<script>

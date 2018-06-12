@@ -36,7 +36,7 @@
 	<!-- 配置shiro的过滤工厂类，id-shiroFilter要和web.xml中配置的一致 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/v2/search" />
+		<property name="loginUrl" value="/search" />
 		<property name="successUrl" value="/index" />
 		<!-- 用户无权限访问时访问的路径 -->
 		<property name="unauthorizedUrl" value="/noAuthority" />

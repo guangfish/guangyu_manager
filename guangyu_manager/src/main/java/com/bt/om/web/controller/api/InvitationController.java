@@ -23,8 +23,10 @@ import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
+import com.bt.om.util.StringUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -41,6 +43,18 @@ public class InvitationController extends BasicController {
 		int reward=Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"));
 		model.addAttribute("reward", reward);
 		return "search/invitation";
+	}
+	
+	@RequestMapping(value = "/v2/invitation", method = RequestMethod.GET)
+	public String invitationv2(Model model, HttpServletRequest request) {
+		String mobile = CookieHelper.getCookie("mobile");
+		if (StringUtil.isEmpty(mobile)) {
+			return "redirect:/v2/login?toUrl=/v2/invitation";
+		}else{
+			int reward=Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"));
+			model.addAttribute("reward", reward);
+			return "searchv2/invitation";
+		}		
 	}
 
 	// 保存邀请信息

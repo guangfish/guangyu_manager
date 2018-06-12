@@ -1,37 +1,29 @@
 <@model.webheadsearchv2 />
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/login/login.css">
-<script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
 
 <div class=" mui-bar mui-bar-nav mui-search-box">
 			<a href="/v2/search"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-			<h1 class="mui-title" style="top:3px">录入订单号</h1>
+			<h1 class="mui-title" style="top:3px">邀请好友</h1>
 		</div>
 		<div class="main">
 			<div class="bkfff"></div>
 			<form>
-			    <!--
 				<div>
-					<input type="text" placeholder="请输入您的手机号" name="phone" id="mobile"/>
-				</div>	
-				-->			
-				<div class="code">
-					<input type="text" placeholder="请粘贴从淘宝或京东复制的订单号" name="code" id="orderid"/>
-				</div>
+					<input type="text" placeholder="请输入好友手机号" name="phone" id="phone"/>
+				</div>							
 			</form>
 			<span class="btn btn-submit">提交</span>
-			<!--
 			<div class="login_p">
-				<a href="javascript:void(0);" style="color:red;">刚录入的订单号，最快1分钟、最迟次日可查</a>
+				每邀请一个朋友并通过逛鱼搜索完成一单购买任务后即可得到<font color="red">${reward?if_exists}</font>元奖励
 			</div>
-			-->
 		</div>
 		<!-- 底部菜单栏 -->
-	<nav class="mui-bar mui-bar-tab new-bar">
+		<nav class="mui-bar mui-bar-tab new-bar">
 		<a class="mui-tab-item" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
-		<a class="mui-tab-item mui-active" href="/v2/order">
+		<a class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-new"></span>
 			<span class="mui-tab-label">订单</span>
 		</a>
@@ -47,9 +39,8 @@
 			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">我的</span>
 		</a>
-	</nav>
-	
-		
+	    </nav>
+	    
 		<script>
 			$('.btn-submit').on('click',function(){
 				var status=1;
@@ -61,40 +52,35 @@
 				if(!counter.rule('*',_p.phone)){
 					mui.toast('请将信息填写完整');
 					status=0;
+				}else if(!counter.rule('phone',_p.phone)){
+					mui.toast('请填写正确的手机号码');
+					status=0;
 				}
 				if(status){
-				  var orderid = $('#orderid').val();
-	              var mobile = $.cookie('mobile');
+				    var mobile_me = $.cookie('mobile');
+				    var mobile_friend = $('#phone').val();
+
 					$
 						.ajax({
 							type : "post",
-							url : "/api/ordersave",
+							url : "/api/saveinvitation",
 							contentType : "application/json",
 							dataType : "json",// 返回json格式的数据
 							data : JSON.stringify({
-								"orderid" : ""+orderid,
-								"mobile" : ""+mobile,
-								"vcode" : ""
+								"mobileme" : ""+mobile_me,
+								"mobilefriend" : ""+mobile_friend
 							}),
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data)
-								if(JSON.stringify(data) != "{}"){
-								  if(data.ret.result=="0"){
-								    mui.toast("订单号提交成功，请收货后，去淘宝/京东【确认收货】后方可提现");								    
-								    var orderSubmitNotice = $.cookie('ordersubmitnotice');
-								    if(!orderSubmitNotice){
-								      mui.toast("订单号提交成功，刚录入的订单号，最快1分钟、最迟次日可查");
-								      //$.cookie('ordersubmitnotice', 'ordersubmitnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
-								    }
-								    $("#orderid").val("");							    
-								  }
-								  
-								  if(data.ret.result=="-1"){
-								    mui.toast("该订单号已存在，请勿重复提交!");
-								    $("#orderid").val("");
-								  }								  
-								}						
+								if(JSON.stringify(data) != "{}"){								  		  
+                                   if(data.ret.result == "3"){
+                                     Core.Dialog.msg("邀请的用户已经在使用逛鱼搜索或已被邀请或已邀请过别人",5000);
+                                   }                               
+                                   if(data.ret.result == "0"){
+                                     Core.Dialog.msg("邀请好友成功，请细心帮助好友使用逛鱼搜索，当好友通过逛鱼搜索完成购买任务时，您才可以得到奖励哦！",6000);
+                                   }
+								}
 							},
 							error : function(XMLHttpRequest, textStatus,
 									errorThrown) {
@@ -102,7 +88,7 @@
 							}
 						});
 				}
-			})
+			})						
 		</script>
 
 <@model.webendsearchv2 />
