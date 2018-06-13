@@ -76,7 +76,7 @@
 				    <#if (productInfoList?exists && productInfoList?size > 0)>
 			        <#list productInfoList as productInfo>
 					<li class="mui-table-view-cell mui-media pos">
-						<a target="_blank" href="${productInfo.couponPromoLink?if_exists}">
+						<a target="_blank" onclick="drump('${productInfo.couponPromoLink?if_exists}')" href="javascript:void(0);">
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
@@ -172,6 +172,9 @@
         }
 
   function drump(link) {
+    <#if ifWeixinBrower=="yes">
+      alert("微信屏蔽淘宝链接，建议用手机浏览器访问逛鱼网！");
+    </#if>
 	window.open(link);
   }
   
