@@ -76,7 +76,7 @@
 				    <#if (productInfoList?exists && productInfoList?size > 0)>
 			        <#list productInfoList as productInfo>
 					<li class="mui-table-view-cell mui-media pos">
-						<a target="_blank" onclick="<#if ifWeixinBrower=="yes">jsCopy('${productInfo.tklquan?if_exists}')<#else>drump('${productInfo.couponPromoLink?if_exists}')</#if>" href="javascript:void(0);">
+						<a target="_blank" href="${productInfo.couponPromoLink?if_exists}">
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
