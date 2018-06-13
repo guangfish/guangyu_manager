@@ -11,10 +11,13 @@
 			<form>
 				<div>
 					<input type="text" placeholder="请输入您的手机号" value="${user.mobile?if_exists}" name="phone" id="phone"/>
+					<input type="hiden" value="${user.alipay?if_exists}" name="alipay" id="alipay"/>
 				</div>
+				<!--
 				<div>
 					<input type="text" placeholder="请输入您的支付宝账号" value="${user.alipay?if_exists}" name="alipay" id="alipay"/>
-				</div>		
+				</div>	
+				-->	
 				<div class="code">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
@@ -93,7 +96,7 @@
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)||!counter.rule('*',_p.alipay)){
+				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.code)){
 					mui.toast('请将信息填写完整');
 					status=0;
 				}else if(!counter.rule('phone',_p.phone)){
