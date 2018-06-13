@@ -10,6 +10,8 @@
 			<div class="mui-event-title tab_links">
 				<a data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
 				<a data-id="#jd" class="mui-event-tap">京东使用</a>
+				<a data-id="#orderid" class="mui-event-tap">找订单号</a>
+				<a data-id="#faq" class="mui-event-tap">常见提问</a>
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
@@ -41,9 +43,9 @@
 						<div class="mui-cont-box">
 							<a href="#">
 							    <div class="mui-cont-tit ">
-									<h2>Step-4 提现</h2>
+									<h2>Step-4 提现（完成提现后，注意支付宝查收）</h2>
 								</div>
-								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/draw.png" alt=""></div>								
 							</a>
 						</div>																
 					</div>
@@ -75,11 +77,51 @@
 						<div class="mui-cont-box">
 							<a href="#">
 							    <div class="mui-cont-tit ">
-									<h2>Step-4 提现</h2>
+									<h2>Step-4 提现（完成提现后，注意支付宝查收）</h2>
 								</div>
-								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/draw.png" alt=""></div>								
 							</a>
 						</div>	
+					</div>
+					<div id="orderid" class="mui-event-cont disn">
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>寻找复制订单号</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/orderid.png" alt=""></div>								
+							</a>
+						</div>							
+					</div>
+					<div id="faq" class="mui-event-cont disn">
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>问题1：逛鱼搜索是否安全？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：网站通过HTTPS加密传输，信息安全有保障；逛鱼搜索不需要您输入任何密码，无隐私泄露问题。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题2：申请提现后，什么时候能到账？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：工作日2小时内到账，节假日暂不处理转账。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题3：经常找不到逛鱼网站</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：如果用手机浏览器访问，建议保存成书签；如果在微信打开网站，建议把网站“置顶”或设置成“浮窗”。
+								</div>	
+								<div class="mui-cont-tit ">
+									<h2>问题4：为什么没有电脑端的网站？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：逛鱼网目前只有移动端；安卓版APP即将推出，苹果APP正在开发中。
+								</div>									
+							</a>
+						</div>							
 					</div>
 				</div>
 			</div>
