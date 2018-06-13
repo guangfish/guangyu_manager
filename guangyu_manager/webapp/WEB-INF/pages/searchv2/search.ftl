@@ -441,7 +441,7 @@
 							if(!couponRest){
 							  couponRest=999;
 							}
-							var myInner = '<a target="_blank" href="'+list.couponPromoLink+'">\
+							var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
