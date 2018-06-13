@@ -26,7 +26,5 @@
 
 <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
 <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
-//支持.webp格式的图显示
-<script type="text/javascript" src="/static/frontv2/js/WebP.js"></script>
 
 <script type='text/javascript' src='/static/front/js/jquery.cookie.js' charset='utf-8'></script>
