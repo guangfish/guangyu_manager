@@ -128,7 +128,7 @@
 			<span class="mui-tab-label">提现</span>
 		</a>
 		<a class="mui-tab-item" href="javascript:void(0);">
-			<span class="mui-icon mui-icon-activity"></span>
+			<span class="mui-icon mui-icon-help"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
 		<a class="mui-tab-item" href="/v2/my">

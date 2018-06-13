@@ -14,13 +14,13 @@
 				<div class="code" id="copyalipay">
 					<input type="text" placeholder="请输入支付宝账号" name="alipay" id="alipay"/>
 					<div>
-						从手机号复制
+						复制手机号
 					</div>
 				</div>
 				<div class="code" id="copyweixin">
 					<input type="text" placeholder="请输入微信账号" name="weixin" id="weixin"/>
 					<div>
-						从手机号复制
+						复制手机号
 					</div>
 				</div>
 				<!--
@@ -57,6 +57,9 @@
 				-->
 			</form>
 			<span class="btn btn-submit">注册</span>
+			<div class="login_p">
+				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn">密码登录</a>
+			</div>
 		</div>
 		<!-- 底部菜单栏 -->
 		<nav class="mui-bar mui-bar-tab new-bar">
