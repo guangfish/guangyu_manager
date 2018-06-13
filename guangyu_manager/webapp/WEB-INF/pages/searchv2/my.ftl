@@ -60,7 +60,7 @@
 	</nav>
 	<script>
 	  function logout() {
-	    $.cookie('mobile', '', { expires: -1, path: '/',domain:'${cookieDomain?if_exists}'}); 
+	    $.cookie('mobile', '', { expires: -1, path: '/'}); 
 	    location.href="/v2/search";
 	  }
 	</script>

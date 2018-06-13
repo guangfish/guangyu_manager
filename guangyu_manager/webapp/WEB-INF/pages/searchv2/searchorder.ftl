@@ -18,7 +18,15 @@
 						<!-- 热销新车 -->
 						<div class="mui-cont-box ">
 							<div class="mui-new-list">
-							  <br/><div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">${canDrawOrderNum?if_exists}</font>条可提现，可提现金额<font color="red">￥${tCommission?if_exists}</font>，共邀请<font color="red">${friendNum?if_exists}</font>个好友，尚有激活邀请<font color="red">${friendNumValid?if_exists}</font>个，未激活邀请<font color="red">${friendNumNoValid?if_exists}</font>个，可提现奖励<font color="red">￥${reward?if_exists}</font>，未达提现要求奖励<font color="red">￥${rewardAll?if_exists}</font></div></div><br/><br/>
+							  <#if (canDrawOrderNum>0)>
+							    <br/><div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">${canDrawOrderNum?if_exists}</font>条可提现，可提现金额<font color="red">￥${tCommission?if_exists}</font>
+							  <#if (friendNum>0)>
+							         ，共邀请<font color="red">${friendNum?if_exists}</font>个好友，尚有激活邀请<font color="red">${friendNumValid?if_exists}</font>个，未激活邀请<font color="red">${friendNumNoValid?if_exists}</font>个，可提现奖励<font color="red">￥${reward?if_exists}</font>，未达提现要求奖励<font color="red">￥${rewardAll?if_exists}</font></div></div><br/><br/>
+							  <#else>
+							    </div></div><br/>
+							  </#if>							      
+							  </#if>
+							  
 								<ul class="mui-table-view ">	
 								  <#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>	
 								  <#list userOrderCanDrawList as userOrder>																																											
@@ -45,7 +53,7 @@
 					<div id="moldcar" class="mui-common-cont disn">
 						<div class="mui-cont-box">
 							<div class="mui-new-list">
-							  <br/><div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">${uncanDrawOrderNum?if_exists}</font>条暂不可提现，预估暂不可提现金额<font color="red">￥${tUCommission?if_exists}</font></div></div><br/>
+							  <#if (uncanDrawOrderNum>0)><br/><div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">${uncanDrawOrderNum?if_exists}</font>条暂不可提现，预估暂不可提现金额<font color="red">￥${tUCommission?if_exists}</font></div></div><br/></#if>
 								<ul class="mui-table-view">		
 								  <#if (userOrderNotCanDrawList?exists && userOrderNotCanDrawList?size > 0)>	
 								  <#list userOrderNotCanDrawList as userOrder>																										

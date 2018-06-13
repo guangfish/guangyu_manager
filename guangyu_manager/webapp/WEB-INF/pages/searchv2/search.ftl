@@ -376,7 +376,7 @@
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;<span class="mui-bodycolor">￥'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
 									<span>领券省:<em class="mui-first-payment">'+quanMianzhi+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
