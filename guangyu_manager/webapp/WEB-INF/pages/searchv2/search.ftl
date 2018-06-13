@@ -13,12 +13,14 @@
 			<div class="mui-slider-group mui-slider-loop">				
 				<#if (bannerList?exists && bannerList?size > 0)>
 				<#assign listsize = bannerList?size>
+				<#if (listsize > 1)>
 				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[1].link}" <#if (bannerList[1].target==2)>target="_blank"</#if>>
-						<img src="${bannerList[1].imgUrl}">
+					<a href="${bannerList[listsize-1].link}" <#if (bannerList[listsize-1].target==2)>target="_blank"</#if>>
+						<img src="${bannerList[listsize-1].imgUrl}">
 					</a>
 				</div>
+				</#if>
 			    <#list bannerList as banner>
 			    <div class="mui-slider-item">
 					<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
@@ -26,12 +28,14 @@
 					</a>
 				</div>
 			    </#list>
+			    <#if (bannerList?exists && bannerList?size > 1)>
 			    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
 				<div class="mui-slider-item mui-slider-item-duplicate">
-					<a href="${bannerList[listsize-1].link}" <#if (bannerList[1].target==2)>target="_blank"</#if>>
-						<img src="${bannerList[listsize-1].imgUrl}">
+					<a href="${bannerList[0].link}" <#if (bannerList[0].target==2)>target="_blank"</#if>>
+						<img src="${bannerList[0].imgUrl}">
 					</a>
 				</div>
+				</#if>
 			    </#if>								
 			</div>
 			<div class="mui-slider-indicator">
