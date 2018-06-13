@@ -172,9 +172,13 @@
         }
 
   function drump(link) {
-    <#if ifWeixinBrower=="yes">
-      alert("微信屏蔽淘宝链接，建议用手机浏览器访问逛鱼网！");
-    </#if>
+    var producturl = $('.mui-input-clear').val();
+    if(producturl.indexOf("jd.com") != -1){
+    }else{
+      <#if ifWeixinBrower=="yes">
+        alert("微信屏蔽淘宝链接，建议用手机浏览器访问逛鱼网！");
+      </#if>
+    }
 	window.open(link);
   }
   

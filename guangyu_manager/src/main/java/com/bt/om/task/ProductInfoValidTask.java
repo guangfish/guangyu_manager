@@ -11,8 +11,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.bt.om.entity.ProductInfo;
-import com.bt.om.service.IProductInfoService;
+import com.bt.om.entity.ProductInfoMid;
+import com.bt.om.service.IProductInfoMidService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.HttpcomponentsUtil;
 
@@ -20,23 +20,23 @@ import com.bt.om.util.HttpcomponentsUtil;
 public class ProductInfoValidTask {
 	private static final Logger logger = Logger.getLogger(ProductInfoValidTask.class);
 	@Autowired
-	private IProductInfoService productInfoService;
+	private IProductInfoMidService productInfoMidService;
 
 	@Scheduled(cron = "0/30 * * * * ?")
 	public void valid() {
 		String ifRun = GlobalVariable.resourceMap.get("ProductInfoValidTask");
 		if ("1".equals(ifRun)) {
 			logger.info("定时验证商品信息是否完整");
-			List<ProductInfo> productInfoList = productInfoService.selectAllList();
+			List<ProductInfoMid> productInfoList = productInfoMidService.selectAllList();
 			if (productInfoList == null || productInfoList.size() <= 0) {
 				return;
 			}
 
-			for (ProductInfo productInfo : productInfoList) {
+			for (ProductInfoMid productInfo : productInfoList) {
 				try {
 					String ret = HttpcomponentsUtil.getReq(productInfo.getProductImgUrl());
 					if ("false".equals(ret)) {
-						productInfoService.deleteByPrimaryKey(productInfo.getId());
+						productInfoMidService.deleteByPrimaryKey(productInfo.getId());
 					} else {
 						productInfo.setIfvalid(2);
 						Pattern p = Pattern.compile("减(\\d+)元");
@@ -49,11 +49,11 @@ public class ProductInfoValidTask {
 						if (m.find()) {
 							productInfo.setCouponQuan(m.group(1));
 						}
-						productInfoService.updateByPrimaryKey(productInfo);
+						productInfoMidService.updateByPrimaryKey(productInfo);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					productInfoService.deleteByPrimaryKey(productInfo.getId());
+					productInfoMidService.deleteByPrimaryKey(productInfo.getId());
 				}
 			}
 		}
