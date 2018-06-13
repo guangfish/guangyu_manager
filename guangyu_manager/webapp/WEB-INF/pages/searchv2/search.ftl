@@ -2,7 +2,7 @@
 <!-- 头部 -->
 	<div class=" mui-bar mui-bar-nav mui-search-box">
 	    <a class="backToIndex mui-icon mui-icon-back"></a>
-		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
+		<a href="/v2/search" class="index-logo"><img src="https://img.alicdn.com/bao/uploaded/i4/2733273299/TB1aqIrftrJ8KJjSspaXXXuKpXa_!!0-item_pic.jpg_220x220_.webp" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
 			<input type="search" class="mui-input-clear" placeholder="请粘贴淘宝或京东的商品链接">
 		</div>

@@ -89,19 +89,5 @@
 		</a>
 	</nav>
 	
-	<script>
-	  checkWebp();
-	  
-	  function checkWebp() {
-      try{
-        alert(1);
-        return (document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0);
-      }catch(err) {
-        alert(2);
-        return  false;
-      }
-      }
-	</script>
-	
 
 <@model.webendsearchv2 />
