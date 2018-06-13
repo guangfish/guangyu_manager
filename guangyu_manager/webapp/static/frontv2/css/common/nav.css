@@ -109,10 +109,10 @@ body {
   color: #fd521d;
 }
 .new-bar.mui-bar-tab .mui-tab-item .mui-icon-help {
-  background-image: url(../../img/icon_help.gif) !important;
+  background-image: url(../../img/icon_help.png) !important;
 }
 .new-bar.mui-bar-tab .mui-active .mui-icon-help {
-  background-image: url(../../img/icon_help_ac.gif) !important;
+  background-image: url(../../img/icon_help_ac.png) !important;
 }
 
 .mui-bar-nav.mui-setting-tit {
