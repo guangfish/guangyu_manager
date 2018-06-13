@@ -105,14 +105,27 @@ body {
 .new-bar.mui-bar-tab .mui-active .mui-icon-self {
   background-image: url(../../img/icon_self_ac.png) !important;
 }
-.new-bar.mui-bar-tab .mui-active .mui-tab-label {
-  color: #fd521d;
+.new-bar.mui-bar-tab .mui-tab-item .mui-icon-order {
+  background-image: url(../../img/icon_order.png) !important;
 }
-.new-bar.mui-bar-tab .mui-tab-item .mui-icon-help {
+.new-bar.mui-bar-tab .mui-active .mui-icon-order {
+  background-image: url(../../img/icon_order_ac.png) !important;
+}
+.new-bar.mui-bar-tab .mui-tab-item .mui-icon-draw {
+  background-image: url(../../img/icon_draw.png) !important;
+}
+.new-bar.mui-bar-tab .mui-active .mui-icon-draw {
+  background-image: url(../../img/icon_draw_ac.png) !important;
+}
+.new-bar.mui-bar-tab .mui-tab-item .mui-icon-help1 {
   background-image: url(../../img/icon_help.png) !important;
 }
-.new-bar.mui-bar-tab .mui-active .mui-icon-help {
+.new-bar.mui-bar-tab .mui-active .mui-icon-help1 {
   background-image: url(../../img/icon_help_ac.png) !important;
+}
+
+.new-bar.mui-bar-tab .mui-active .mui-tab-label {
+  color: #fd521d;
 }
 
 .mui-bar-nav.mui-setting-tit {
