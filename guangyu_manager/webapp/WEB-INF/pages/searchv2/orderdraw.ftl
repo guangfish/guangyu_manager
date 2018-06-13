@@ -7,11 +7,10 @@
 			<h1 class="mui-title" style="top:3px">提现申请</h1>
 		</div>
 		<div class="main">
-			<div class="bkfff"></div>
+			<div class="bkfff"><input type="hiden" value="${user.alipay?if_exists}" name="alipay" id="alipay"/></div>
 			<form>
 				<div>
-					<input type="text" placeholder="请输入您的手机号" value="${user.mobile?if_exists}" name="phone" id="phone"/>
-					<input type="hiden" value="${user.alipay?if_exists}" name="alipay" id="alipay"/>
+					<input type="text" placeholder="请输入您的手机号" value="${user.mobile?if_exists}" name="phone" id="phone"/>				
 				</div>
 				<!--
 				<div>
