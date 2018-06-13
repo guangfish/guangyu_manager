@@ -37,20 +37,49 @@
 								</div>
 								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
 							</a>
-						</div>															
+						</div>
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>Step-4 提现</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
+							</a>
+						</div>																
 					</div>
 					<div id="jd" class="mui-event-cont disn">
 						<div class="mui-cont-box">
 							<a href="#">
-								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/eimg.jpg" alt=""></div>
-								<div class="mui-cont-tit ">
-									<h2>农行&amp;浙江车市网汽车节</h2>
+							    <div class="mui-cont-tit ">
+									<h2>Step-1 京东商品链接拷贝</h2>
 								</div>
-								<div class="mui-cont-text limit_text">
-									国内领先的汽车互联网企业易车将于今年3月初推出业内首个“SUV购 车节”，集结国内外众多一线SUV品牌，共同打造2017年首场国内领先的汽车互联网企业易车将于今年3月初推出业内首个“SUV购 车节”，集结国内外众多一线SUV品牌，共同打造2017年首场
-								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/jd-link-copy.png" alt=""></div>								
 							</a>
-						</div>					
+						</div>	
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>Step-2 把链接贴贴到逛鱼搜索框，并搜索</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/search-jd.png" alt=""></div>								
+							</a>
+						</div>	
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>Step-3 够买完成后，回来录入订单号</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
+							</a>
+						</div>	
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>Step-4 提现</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="/static/frontv2/img/guangfish/order.png" alt=""></div>								
+							</a>
+						</div>	
 					</div>
 				</div>
 			</div>

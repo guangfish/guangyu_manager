@@ -31,7 +31,7 @@
 								  <#if (userOrderCanDrawList?exists && userOrderCanDrawList?size > 0)>	
 								  <#list userOrderCanDrawList as userOrder>																																											
 									<li class="mui-table-view-cell mui-media pos">
-										<a href="new_detail.html">
+										<a href="javascript:void(0);">
 											<img class="mui-media-object mui-pull-left" src="${userOrder.productImgUrl?if_exists}">
 											<div class="mui-media-body">
 												<h2 class="mui-body-tit">${userOrder.productInfo?if_exists}</h2>
@@ -88,6 +88,20 @@
 			<span class="mui-tab-label">申请提现</span>
 		</a>
 	</nav>
+	
+	<script>
+	  checkWebp();
+	  
+	  function checkWebp() {
+      try{
+        alert(1);
+        return (document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0);
+      }catch(err) {
+        alert(2);
+        return  false;
+      }
+      }
+	</script>
 	
 
 <@model.webendsearchv2 />
