@@ -106,7 +106,7 @@
 			<span class="mui-icon mui-icon-draw"></span>
 			<span class="mui-tab-label">提现</span>
 		</a>
-		<a class="mui-tab-item" href="javascript:void(0);">
+		<a class="mui-tab-item" href="/v2/help">
 			<span class="mui-icon mui-icon-help1"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
