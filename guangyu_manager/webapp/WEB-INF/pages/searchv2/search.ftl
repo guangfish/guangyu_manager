@@ -81,10 +81,10 @@
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
 								<p>商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
-								<p>现价:&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>月销量:&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
-								<p>券:&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
+								<p>现价:&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
+								<p>券:&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">&nbsp;&nbsp;余${productInfo.couponRest?if_exists}张</span></p>
 								<div>
-									<span>领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em></span>
+									<span>领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em>&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em></span>
 								</div>
 								<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>
 							</div>
