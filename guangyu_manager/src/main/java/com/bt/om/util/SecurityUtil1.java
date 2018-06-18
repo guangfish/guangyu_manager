@@ -106,6 +106,6 @@ public class SecurityUtil1 {
     }
 
     public static void main(String[] args) {
-        System.out.println(SecurityUtil.decrypt(args[0]));
+        System.out.println(SecurityUtil1.encrypts("13732203065"));
     }
 }

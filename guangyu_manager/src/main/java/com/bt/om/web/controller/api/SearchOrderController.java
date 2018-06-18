@@ -52,78 +52,78 @@ public class SearchOrderController extends BasicController {
 		return "search/searchorder";
 	}
 
-	@RequestMapping(value = "/v2/searchorder", method = RequestMethod.GET)
-	public String searchorderv2(Model model, HttpServletRequest request) {
-		String mobile = CookieHelper.getCookie("mobile");
-		if (StringUtil.isEmpty(mobile)) {
-			return "redirect:/v2/login?toUrl=/v2/searchorder";
-		} else {
-			
-			
-			int friendNum = 0;
-			int friendNumValid = 0;
-			int friendNumNoValid = 0;
-			int rewardAll = 0;
-			int reward = 0;
-			double totalCommission = 0;
-			float tCommission=0;
-			double totalUCommission = 0;
-			float tUCommission=0;
-			int canDrawOrderNum = 0;
-			int uncanDrawOrderNum = 0;
-			Invitation invitationVo = new Invitation();
-			invitationVo.setInviterMobile(mobile);
-			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
-
-			if (invitationList != null && invitationList.size() > 0) {
-				for (Invitation invitation : invitationList) {
-					// 邀请已激活获得奖励
-					if (invitation.getStatus() == 2 && invitation.getReward() == 1) {
-						friendNumValid = friendNumValid + 1;
-						reward = reward + invitation.getMoney();
-					}
-					// 邀请未激活，预计可获得奖励
-					if (invitation.getStatus() == 1) {
-						friendNumNoValid = friendNumNoValid + 1;
-						rewardAll = rewardAll + invitation.getMoney();
-					}
-				}
-				friendNum = invitationList.size();
-			}
-			
-			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(mobile);
-			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
-			List<UserOrder> userOrderNotCanDrawList = new ArrayList<>();
-			for(UserOrder userOrder:userOrderList){
-				if("订单结算".equals(userOrder.getOrderStatus())){
-					canDrawOrderNum = canDrawOrderNum + 1;
-					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					userOrderCanDrawList.add(userOrder);
-				}else{
-					uncanDrawOrderNum = uncanDrawOrderNum + 1;
-					totalUCommission = totalUCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					userOrderNotCanDrawList.add(userOrder);
-				}
-			}
-			
-			tCommission=((float) (Math.round(totalCommission * 100)) / 100);
-			tUCommission=((float) (Math.round(totalUCommission * 100)) / 100);
-			
-			model.addAttribute("friendNum",friendNum);
-			model.addAttribute("friendNumValid",friendNumValid);
-			model.addAttribute("friendNumNoValid",friendNumNoValid);
-			model.addAttribute("rewardAll",rewardAll);
-			model.addAttribute("reward",reward);
-			model.addAttribute("tCommission",tCommission);
-			model.addAttribute("tUCommission",tUCommission);
-			model.addAttribute("canDrawOrderNum",canDrawOrderNum);
-			model.addAttribute("uncanDrawOrderNum",uncanDrawOrderNum);
-			
-			model.addAttribute("userOrderCanDrawList", userOrderCanDrawList);
-			model.addAttribute("userOrderNotCanDrawList", userOrderNotCanDrawList);
-			return "searchv2/searchorder";
-		}
-	}
+//	@RequestMapping(value = "/v2/searchorder", method = RequestMethod.GET)
+//	public String searchorderv2(Model model, HttpServletRequest request) {
+//		String mobile = CookieHelper.getCookie("mobile");
+//		if (StringUtil.isEmpty(mobile)) {
+//			return "redirect:/v2/login?toUrl=/v2/searchorder";
+//		} else {
+//			
+//			
+//			int friendNum = 0;
+//			int friendNumValid = 0;
+//			int friendNumNoValid = 0;
+//			int rewardAll = 0;
+//			int reward = 0;
+//			double totalCommission = 0;
+//			float tCommission=0;
+//			double totalUCommission = 0;
+//			float tUCommission=0;
+//			int canDrawOrderNum = 0;
+//			int uncanDrawOrderNum = 0;
+//			Invitation invitationVo = new Invitation();
+//			invitationVo.setInviterMobile(mobile);
+//			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
+//
+//			if (invitationList != null && invitationList.size() > 0) {
+//				for (Invitation invitation : invitationList) {
+//					// 邀请已激活获得奖励
+//					if (invitation.getStatus() == 2 && invitation.getReward() == 1) {
+//						friendNumValid = friendNumValid + 1;
+//						reward = reward + invitation.getMoney();
+//					}
+//					// 邀请未激活，预计可获得奖励
+//					if (invitation.getStatus() == 1) {
+//						friendNumNoValid = friendNumNoValid + 1;
+//						rewardAll = rewardAll + invitation.getMoney();
+//					}
+//				}
+//				friendNum = invitationList.size();
+//			}
+//			
+//			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(mobile);
+//			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+//			List<UserOrder> userOrderNotCanDrawList = new ArrayList<>();
+//			for(UserOrder userOrder:userOrderList){
+//				if("订单结算".equals(userOrder.getOrderStatus())){
+//					canDrawOrderNum = canDrawOrderNum + 1;
+//					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+//					userOrderCanDrawList.add(userOrder);
+//				}else{
+//					uncanDrawOrderNum = uncanDrawOrderNum + 1;
+//					totalUCommission = totalUCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+//					userOrderNotCanDrawList.add(userOrder);
+//				}
+//			}
+//			
+//			tCommission=((float) (Math.round(totalCommission * 100)) / 100);
+//			tUCommission=((float) (Math.round(totalUCommission * 100)) / 100);
+//			
+//			model.addAttribute("friendNum",friendNum);
+//			model.addAttribute("friendNumValid",friendNumValid);
+//			model.addAttribute("friendNumNoValid",friendNumNoValid);
+//			model.addAttribute("rewardAll",rewardAll);
+//			model.addAttribute("reward",reward);
+//			model.addAttribute("tCommission",tCommission);
+//			model.addAttribute("tUCommission",tUCommission);
+//			model.addAttribute("canDrawOrderNum",canDrawOrderNum);
+//			model.addAttribute("uncanDrawOrderNum",uncanDrawOrderNum);
+//			
+//			model.addAttribute("userOrderCanDrawList", userOrderCanDrawList);
+//			model.addAttribute("userOrderNotCanDrawList", userOrderNotCanDrawList);
+//			return "searchv2/searchorder";
+//		}
+//	}
 
 	// 查询订单列表
 	@RequestMapping(value = "/api/searchorder", method = RequestMethod.POST)

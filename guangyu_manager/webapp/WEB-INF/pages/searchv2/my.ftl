@@ -13,6 +13,7 @@
 				<div class="mui-self-top">
 					<a class="mui-head-img"><img src="/static/frontv2/img/icon_head.png" alt=""></a>
 					<div class="mui-self-infor">
+					    <h2><#if (user.accountType == 1)>逛鱼会员<#else>超级会员</#if></h2>
 						<p>${user.mobile?if_exists}</p>
 					</div>
 				</div>
@@ -23,7 +24,15 @@
 							<a class="mui-navigate-right" href="/v2/myinvitation">
 								<i class="ic_mycollect"></i>我的邀请
 							</a>
-						</li>					
+						</li>
+						<#if (user.accountType == 2)>
+						<li class="mui-table-view-cell">
+							<a class="" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
+							    <input type="hidden" name="myInviteCode" id="myInviteCode" value="${user.myInviteCode?if_exists}"/>
+								<i class="ic_mybrowse"></i>我的邀请码
+							</a>
+						</li>
+						</#if>
 					</ul>										
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
@@ -58,10 +67,25 @@
 			<span class="mui-tab-label">我的</span>
 		</a>
 	</nav>
+	<script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
+	
 	<script>
 	  function logout() {
 	    $.cookie('mobile', '', { expires: -1, path: '/'}); 
 	    location.href="/v2/search";
+	  }
+	  
+	  function copyInviteCode() {
+	    var value = $('#myInviteCode').val();
+		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索宝淘、京东优惠券，拿返利！先领券，再购物，更划算！邀请码【'+value+'】');
+		  var clipboard = new Clipboard('#copy');
+          clipboard.on('success', function (e) {
+            Core.Dialog.msg('我的邀请码复制成功，赶紧去邀请好友吧！',9000);
+            $('#copy').removeAttr('data-clipboard-text');
+          });
+          clipboard.on('error', function (e) {
+            Core.Dialog.msg('复制失败');
+          });
 	  }
 	</script>
 <@model.webendsearchv2 />

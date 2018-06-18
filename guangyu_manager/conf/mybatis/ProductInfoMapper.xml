@@ -471,13 +471,23 @@
 	<select id="selectProductInfoListCount" parameterType="map" resultType="int">
 		select
 		count(*)
-		from product_info WHERE 1=1	and ifvalid=2 and sourcefrom=1	
+		from product_info WHERE 1=1	
+		<if test="productName != null">
+			and product_name like
+			concat(concat("%",#{productName,jdbcType=VARCHAR}),"%")
+		</if>
+		and ifvalid=2 and sourcefrom=1	
 	</select>
 
 	<select id="selectProductInfoList" parameterType="map" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from product_info WHERE 1=1 and ifvalid=2 and sourcefrom=1
+		from product_info WHERE 1=1
+		<if test="productName != null">
+			and product_name like
+			concat(concat("%",#{productName,jdbcType=VARCHAR}),"%")
+		</if>
+		and ifvalid=2 and sourcefrom=1
 		order by id desc
 	</select>
 	

@@ -83,10 +83,11 @@
 								<p>商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
 								<p>现价:&nbsp;<span class="mui-inventory">￥${productInfo.price?if_exists}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">${productInfo.monthSales?if_exists}件</span></p>
 								<p>券:&nbsp;<span class="mui-inventory">${productInfo.couponMiane?if_exists}</span><span class="mui-inventory">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余${productInfo.couponRest?if_exists}张</span></p>
+								</br>
 								<div>
 									<span>领券省:<em class="mui-first-payment">￥${productInfo.couponQuan?if_exists}</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if></em></span>
-								</div>
-								<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>
+								</div>								
+								<!--<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>-->
 							</div>
 						</a>
 					</li>
@@ -215,13 +216,7 @@
  	var curPage = 0;
  	
  	//打开搜索页面
- 	$('.mui-self-search').on('tap',function(){
-// 	    var producturl = $('.mui-input-clear').val();
-// 	    if (!producturl) {
-// 	      Core.Dialog.msg("请粘贴从淘宝或京东复制的商品链接",5000);
-// 	      return;
-// 	    }
- 	    
+ 	$('.mui-self-search').on('tap',function(){	    
  		var start = 0;
  		_val=$(this).parents('.mui-search-box').find('.mui-input-clear').val();
  		resetsch();
@@ -292,7 +287,7 @@
 	
 	function wrapLoad(v) {
 	  var _v = v;
-	  if(_v){
+	  if(_v && _v.indexOf("http") != -1){
 		curPage++;
 		if($("#pullTips").length > 0) {
 			$("#pullTips").remove();
@@ -374,7 +369,7 @@
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
 									<span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
@@ -387,9 +382,9 @@
 							<div class="mui-media-body">\
 								<h2 class="mui-body-tit">'+title+'</h2>\
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
-								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
+								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
-									<span>领券省:<em class="mui-first-payment">'+quanMianzhi+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
+									<span>领券省:<em class="mui-first-payment">'+quanMianzhi+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
 								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
@@ -450,10 +445,10 @@
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
 									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.price+'</span>月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
-									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>余<span class="mui-inventory">'+couponRest+'张</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
+									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
-										<span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
+										<span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\
 									<p class="mui-buy-gift">购买该商品预估可额外获得'+list.fanli+'倍返现奖励</p>\
 								</div>\

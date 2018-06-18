@@ -18,6 +18,7 @@ import com.bt.om.entity.ProductInfo;
 import com.bt.om.service.IBannerService;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.StringUtil;
 import com.bt.om.vo.web.SearchDataVo;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.vo.JsonResult;
@@ -86,6 +87,7 @@ public class SearchControllerV2 extends BasicController {
 	@ResponseBody
 	@RequestMapping(value = "/api/more", method = { RequestMethod.GET, RequestMethod.POST })
 	public JsonResult apiMore(Model model, HttpServletRequest request) {
+		String key=request.getParameter("product_url");
 		JsonResult result = new JsonResult();
 		String ua = request.getHeader("User-Agent");
 		String ifWeixinBrower = "no";
@@ -95,6 +97,9 @@ public class SearchControllerV2 extends BasicController {
 		model.addAttribute("ifWeixinBrower", ifWeixinBrower);
 		float rate = Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate"));
 		SearchDataVo vo = SearchUtil.getVoForList();
+		if(StringUtil.isNotEmpty(key)){
+			vo.putSearchParam("productName", key, key);
+		}
 		productInfoService.selectProductInfoList(vo);
 		model.addAttribute("rate", rate);
 		@SuppressWarnings("unchecked")

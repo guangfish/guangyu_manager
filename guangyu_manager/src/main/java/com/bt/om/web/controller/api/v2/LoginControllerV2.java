@@ -22,8 +22,11 @@ import com.bt.om.common.SysConst;
 import com.bt.om.entity.User;
 import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IUserService;
+import com.bt.om.util.SecurityUtil1;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.controller.api.v2.vo.CommonVo;
+import com.bt.om.web.controller.api.v2.vo.RegisterVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -41,18 +44,15 @@ public class LoginControllerV2 extends BasicController {
 
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpServletRequest request) {
-		String toUrl=request.getParameter("toUrl");
+		String toUrl = request.getParameter("toUrl");
 		model.addAttribute("toUrl", toUrl);
 		return "searchv2/login";
 	}
 
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
 	@ResponseBody
-	public Model loginApi(Model model, HttpServletRequest request, HttpServletResponse response) {
-		ResultVo<String> result = new ResultVo<>();
-		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
-		result.setResultDes("");
-		model = new ExtendedModelMap();
+	public CommonVo loginApi(Model model, HttpServletRequest request, HttpServletResponse response) {
+		RegisterVo registerVo = new RegisterVo();
 		String mobile = "";
 		String code = "";
 		InputStream is;
@@ -61,51 +61,50 @@ public class LoginControllerV2 extends BasicController {
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			mobile = obj.get("mobile").getAsString();
-			code=obj.get("code").getAsString();
+			code = obj.get("code").getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		String smscode = jedisPool.getResource().get(mobile);
-		if(StringUtil.isEmpty(smscode)){
-			result.setResult("1");// 短信验证码已过期
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+		if (StringUtil.isEmpty(smscode)) {
+			registerVo.setStatus("1");
+			registerVo.setDesc("短信验证码已过期");
+			return registerVo;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
-			result.setResult("2");// 短信验证码不正确
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+			registerVo.setStatus("2");
+			registerVo.setDesc("短信验证码不正确");
+			return registerVo;
 		} else {
 			jedisPool.getResource().del(mobile);
 		}
-		
-		User user=userService.selectByMobile(mobile);
-		if(user!=null){
-			result.setResult("0");// 登陆成功
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
-		}else{
-			result.setResult("3");// 该手机号未注册
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+
+		User user = userService.selectByMobile(mobile);
+		if (user != null) {
+			registerVo.setUserId(SecurityUtil1.encrypts(mobile));
+			registerVo.setStatus("0");
+			registerVo.setDesc("登陆成功");
+			return registerVo;
+		} else {
+			registerVo.setStatus("3");
+			registerVo.setDesc("该手机号未注册");
+			return registerVo;
 		}
 	}
 
 	@RequestMapping(value = "/register", method = { RequestMethod.GET, RequestMethod.POST })
 	public String register(Model model, HttpServletRequest request) {
-		String toUrl=request.getParameter("toUrl");
+		String toUrl = request.getParameter("toUrl");
 		model.addAttribute("toUrl", toUrl);
 		return "searchv2/register";
 	}
 
 	@RequestMapping(value = "/api/register", method = RequestMethod.POST)
 	@ResponseBody
-	public Model registerApi(Model model, HttpServletRequest request, HttpServletResponse response) {
-		ResultVo<String> result = new ResultVo<>();
-		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
-		result.setResultDes("");
-		model = new ExtendedModelMap();
+	public CommonVo registerApi(Model model, HttpServletRequest request, HttpServletResponse response) {
+		RegisterVo registerVo = new RegisterVo();
+		String inviteCode="";
 		String mobile = "";
 		String alipay = "";
 		String weixin = "";
@@ -116,6 +115,9 @@ public class LoginControllerV2 extends BasicController {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if(obj.get("inviteCode")!=null){
+				inviteCode=obj.get("inviteCode").getAsString();
+			}
 			mobile = obj.get("mobile").getAsString();
 			alipay = obj.get("alipay").getAsString();
 			weixin = obj.get("weixin").getAsString();
@@ -126,15 +128,15 @@ public class LoginControllerV2 extends BasicController {
 		}
 
 		String smscode = jedisPool.getResource().get(mobile);
-		if(StringUtil.isEmpty(smscode)){
-			result.setResult("2");// 短信验证码已过期
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+		if (StringUtil.isEmpty(smscode)) {
+			registerVo.setStatus("1");
+			registerVo.setDesc("短信验证码已过期");
+			return registerVo;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
-			result.setResult("3");// 短信验证码不正确
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+			registerVo.setStatus("2");
+			registerVo.setDesc("短信验证码不正确");
+			return registerVo;
 		} else {
 			jedisPool.getResource().del(mobile);
 		}
@@ -146,16 +148,21 @@ public class LoginControllerV2 extends BasicController {
 		user.setWeixin(weixin);
 		user.setCreateTime(new Date());
 		user.setUpdateTime(new Date());
+		String myInviteCode = String.valueOf(((mobile + newpass).hashCode()));
+		user.setTaInviteCode(inviteCode);
+		user.setMyInviteCode(myInviteCode);
+		user.setAccountType(1);
 		try {
 			userService.insert(user);
 		} catch (Exception e) {
-			result.setResult("4");// 用户已注册
-			model.addAttribute(SysConst.RESULT_KEY, result);
-			return model;
+			registerVo.setStatus("3");
+			registerVo.setDesc("用户已注册");
+			return registerVo;
 		}
 
-		result.setResult("0");// 注册成功
-		model.addAttribute(SysConst.RESULT_KEY, result);
-		return model;
+		registerVo.setUserId(SecurityUtil1.encrypts(mobile));
+		registerVo.setStatus("0");
+		registerVo.setDesc("注册成功");
+		return registerVo;
 	}
 }

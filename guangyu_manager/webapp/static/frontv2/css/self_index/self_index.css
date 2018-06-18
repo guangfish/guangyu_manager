@@ -155,10 +155,17 @@
 }
 .mui-content .mui-main-common .mui-common-tit a {
   display: inline-block;
-  padding: .36rem .37rem;
-  margin: 0 1.2rem;
-  color: #aeaeae;
+  margin-left: .72rem;
+  padding: .4rem .1rem;
   font-size: .37rem;
+  color: #aeaeae;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1          
+			   flex: 1;
+  text-align: center;
+  margin: 0 .3rem;
 }
 .mui-content .mui-main-common .mui-common-tit a.active {
   border-bottom: .06rem solid #ff6402;

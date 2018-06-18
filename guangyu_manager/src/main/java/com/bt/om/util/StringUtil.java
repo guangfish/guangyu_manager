@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.codec.binary.Base64;
@@ -1189,4 +1190,15 @@ public class StringUtil {
         }
         return "";
     }
+    
+    public static String getNumber(int size) {
+		String retNum = "";
+		// 定义验证码的范围
+		String codeStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+		Random r = new Random();
+		for (int i = 0; i < size; i++) {
+			retNum += codeStr.charAt(r.nextInt(codeStr.length()));
+		}
+		return retNum;
+	}
 }

@@ -73,22 +73,22 @@ public class OrderDrawController extends BasicController {
 		}
 	}
 	
-	@RequestMapping(value = "/v2/orderdraw", method = RequestMethod.GET)
-	public String orderdrawv2(Model model, HttpServletRequest request) {
-		String mobile = CookieHelper.getCookie("mobile");
-		if (StringUtil.isEmpty(mobile)) {
-			return "redirect:/v2/login?toUrl=/v2/orderdraw";
-		} else {
-			User user=userService.selectByMobile(mobile);
-			model.addAttribute("user", user);
-			String weekday = DateUtil.getWeekOfDate(new Date());
-			if ("2".equals(weekday) || "5".equals(weekday)) {
-				return "searchv2/orderdraw";
-			} else {
-				return "searchv2/orderdraw";
-			}
-		}		
-	}
+//	@RequestMapping(value = "/v2/orderdraw", method = RequestMethod.GET)
+//	public String orderdrawv2(Model model, HttpServletRequest request) {
+//		String mobile = CookieHelper.getCookie("mobile");
+//		if (StringUtil.isEmpty(mobile)) {
+//			return "redirect:/v2/login?toUrl=/v2/orderdraw";
+//		} else {
+//			User user=userService.selectByMobile(mobile);
+//			model.addAttribute("user", user);
+//			String weekday = DateUtil.getWeekOfDate(new Date());
+//			if ("2".equals(weekday) || "5".equals(weekday)) {
+//				return "searchv2/orderdraw";
+//			} else {
+//				return "searchv2/orderdraw";
+//			}
+//		}		
+//	}
 
 	// 申请提现
 	@RequestMapping(value = "/api/orderdraw", method = RequestMethod.POST)

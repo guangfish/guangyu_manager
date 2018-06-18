@@ -111,16 +111,12 @@
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data)
-								if(data.ret.result=="0"){
-								   mui.toast('登陆成功');
+								if(data.status=="0"){
+								   mui.toast(data.desc);
 								   $.cookie('mobile', mobile, { expires: 365, path: '/',domain:'${cookieDomain?if_exists}'});
 								   location.href="${toUrl?if_exists}";
-								}else if(data.ret.result=="1"){
-								   mui.toast('短信验证码已过期');
-								}else if(data.ret.result=="2"){
-								   mui.toast('短信验证码不正确');
-								}else if(data.ret.result=="3"){
-								   mui.toast('该手机号未注册');
+								}else{
+								   mui.toast(data.desc);
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

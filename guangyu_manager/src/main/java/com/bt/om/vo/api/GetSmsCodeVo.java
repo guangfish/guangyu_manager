@@ -7,7 +7,11 @@ public class GetSmsCodeVo implements Serializable {
 	private static final long serialVersionUID = 5774873558751018950L;
 	private String vcode;
 	private String status;
-
+	private String desc;
+	
+	public GetSmsCodeVo(){		
+	}
+	
 	public GetSmsCodeVo(String vcode,String status) {
 		this.vcode = vcode;
 		this.status=status;
@@ -28,5 +32,15 @@ public class GetSmsCodeVo implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	
+	
 
 }

@@ -8,6 +8,9 @@
 		<div class="main">
 			<div class="bkfff"></div>
 			<form>
+			    <div>
+					<input type="text" placeholder="请输入邀请码(非必填项)" name="invitecode" id="invitecode"/>
+				</div>
 				<div>
 					<input type="text" placeholder="请输入手机号" name="phone" id="phone"/>
 				</div>
@@ -145,6 +148,7 @@
 					var status=0;
 				}
 				if(status){
+				    var invitecode = $('#invitecode').val();
 					var mobile = $('#phone').val();
 					var alipay = $('#alipay').val();
 					var weixin = $('#weixin').val();
@@ -159,6 +163,7 @@
 							contentType : "application/json",
 							dataType : "json",// 返回json格式的数据
 							data : JSON.stringify({
+							    "inviteCode" : invitecode,
 								"mobile" : mobile,
 								"alipay" : alipay,
 								"weixin" : weixin,
@@ -168,16 +173,12 @@
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data)
-								if(data.ret.result=="0"){
-								   mui.toast('注册成功');
+								if(data.status=="0"){
+								   mui.toast(data.desc);
 								   $.cookie('mobile', mobile, { expires: 365, path: '/',domain:'${cookieDomain?if_exists}'});
 								   location.href="${toUrl?if_exists}";
-								}else if(data.ret.result=="2"){
-								   mui.toast('短信验证码已过期');
-								}else if(data.ret.result=="3"){
-								   mui.toast('短信验证码不正确');
-								}else if(data.ret.result=="4"){
-								   mui.toast('该手机号已注册');
+								}else {
+								   mui.toast(data.desc);
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

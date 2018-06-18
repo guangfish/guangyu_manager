@@ -46,17 +46,17 @@ public class OrderController extends BasicController {
 		return "search/order";
 	}
 
-	@RequestMapping(value = "/v2/order", method = { RequestMethod.GET, RequestMethod.POST })
-	public String orderv2(Model model, HttpServletRequest request) {
-		String cookieDomain = ConfigUtil.getString("cookie.domain");
-		model.addAttribute("cookieDomain", cookieDomain);
-		String mobile = CookieHelper.getCookie("mobile");
-		if (StringUtil.isEmpty(mobile)) {
-			return "redirect:/v2/login?toUrl=/v2/order";
-		} else {
-			return "searchv2/order";
-		}
-	}
+//	@RequestMapping(value = "/v2/order", method = { RequestMethod.GET, RequestMethod.POST })
+//	public String orderv2(Model model, HttpServletRequest request) {
+//		String cookieDomain = ConfigUtil.getString("cookie.domain");
+//		model.addAttribute("cookieDomain", cookieDomain);
+//		String mobile = CookieHelper.getCookie("mobile");
+//		if (StringUtil.isEmpty(mobile)) {
+//			return "redirect:/v2/login?toUrl=/v2/order";
+//		} else {
+//			return "searchv2/order";
+//		}
+//	}
 
 	// 订单保存
 	@RequestMapping(value = "/api/ordersave", method = RequestMethod.POST)
