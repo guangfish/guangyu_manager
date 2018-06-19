@@ -18,6 +18,7 @@ import com.bt.om.entity.ProductInfo;
 import com.bt.om.service.IBannerService;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.DateUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.vo.web.SearchDataVo;
 import com.bt.om.web.BasicController;
@@ -76,6 +77,9 @@ public class SearchControllerV2 extends BasicController {
 			}
 		}
 		model.addAttribute("productInfoList", productInfoList);
+		
+		model.addAttribute("saveMoney",GlobalVariable.resourceMap.get(DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN)));
+		
 		return "searchv2/search";
 	}
 

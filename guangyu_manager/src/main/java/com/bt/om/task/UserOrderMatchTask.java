@@ -116,6 +116,10 @@ public class UserOrderMatchTask {
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
+							userOrder.setCommissionReward((double) (Math.round(commission3
+									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
+									/ 100);
+							userOrder.setRewardStatus(1);
 							userOrder.setCreateTime(new Date());
 							userOrder.setUpdateTime(new Date());
 

@@ -47,6 +47,8 @@
 			</div>
 		</div>
 		
+		<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">今日已为用户节省${saveMoney?if_exists}元</font></div></div>
+		
 		<!-- 热门活动 -->
 		<div class="mui-cont-box">
 			<div class="mui-tit">
@@ -159,6 +161,47 @@
 </script>
 
 <script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
+
+<script>
+  setTimeout("clear()", 10000);
+  
+  function clear(){
+    $("#pullTips").remove();
+  }
+
+  var B = setInterval(function(){
+	    $
+						.ajax({
+							type : "post",
+							url : "/api/notice", 
+							contentType : "application/json",
+							dataType : "json",// 返回json格式的数据
+							timeout : 30000, 
+							success : function(data) {
+								console.log('请求到的数据为：', data)
+								if(JSON.stringify(data) != "{}"){
+								  for(var i = 0; i < data.ret.length; i++){
+								    //alert(data.ret[i].type + " " + data.ret[i].content);
+								    var notice = $.cookie('guangfishnotice'+data.ret[i].id);
+								    if(!notice){
+								      if(data.ret[i].type==2){
+								        Core.Dialog.note({'title':data.ret[i].title,'content':data.ret[i].content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
+								      }else{
+								        Core.Dialog.msg(data.ret[i].content,data.ret[i].noticeTime);
+								      }
+								      $.cookie('guangfishnotice'+data.ret[i].id, 'notice', { expires: data.ret[i].expires, path: '/',domain:'${cookieDomain?if_exists}'});
+								      break;
+								    }								    
+								  }
+								}
+							},
+							error : function(XMLHttpRequest, textStatus,
+									errorThrown) {
+								console.log('请求失败')
+							}
+						});
+	  },15000);
+</script>
 
 <script>
   function isWeiXin(){

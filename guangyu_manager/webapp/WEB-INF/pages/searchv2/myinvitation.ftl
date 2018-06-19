@@ -7,6 +7,7 @@
 	<div class="mui-content mui-answer">
 		<div class="mui-main-answer">
 			<div class="mui-scroll-wrapper ans_mt">
+			<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">新激活<font color="red">${activeFriend?if_exists}</font>个朋友，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
 				<div class="mui-scoll">
 					<div class="main-answer-cont">
 					  <#if (invitationList?exists && invitationList?size > 0)>
@@ -22,5 +23,12 @@
 			</div>			
 		</div>
 	</div>
+	<!-- 底部菜单栏 -->
+	<nav class="mui-bar mui-bar-tab new-bar">
+		<a class="mui-tab-item mui-active" href="<#if (reward>0)>/v2/rewarddraw<#else>javascript:void(0);</#if>">
+			<span class="mui-icon mui-icon-draw"></span>
+			<span class="mui-tab-label">提取邀请奖励</span>
+		</a>
+	</nav>
 	
 <@model.webendsearchv2 />

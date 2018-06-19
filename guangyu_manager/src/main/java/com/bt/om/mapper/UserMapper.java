@@ -40,4 +40,6 @@ public interface UserMapper {
 	int updateByPrimaryKey(User record);
 
 	User selectByMobile(String mobile);
+	
+	User selectByTaInviteCode(String taInviteCode);
 }

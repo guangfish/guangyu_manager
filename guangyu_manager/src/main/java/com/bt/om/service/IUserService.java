@@ -6,4 +6,6 @@ public interface IUserService {
 	public User selectByMobile(String mobile);
 	
 	public void insert(User user);
+	
+	public User selectByTaInviteCode(String taInviteCode);
 }

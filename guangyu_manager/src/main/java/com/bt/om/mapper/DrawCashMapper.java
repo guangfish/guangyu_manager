@@ -57,4 +57,6 @@ public interface DrawCashMapper {
 	List<Map<String,Object>> getUserOrderByDrawId(@Param("id") Integer id, RowBounds rowBounds);
 	
 	int updateUserOrderStatus2AndStatus3(@Param("id") Integer id, @Param("sysDate") Date sysDate);
+	
+	double getSumByMobile(Map<String, Object> searchMap);
 }

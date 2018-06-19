@@ -19,26 +19,42 @@
 				</div>
 				
 				<div class="self-center">
-					<ul class="mui-table-view">
+				    <ul class="mui-table-view">						
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="/v2/myinvitation">
-								<i class="ic_mycollect"></i>我的邀请
+							<a class="" href="javascript:void(0);">
+								<i class="ic_compare"></i>累计购物已省<font color="red">${cash?if_exists}</font>元
 							</a>
 						</li>
 						<#if (user.accountType == 2)>
 						<li class="mui-table-view-cell">
 							<a class="" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
 							    <input type="hidden" name="myInviteCode" id="myInviteCode" value="${user.myInviteCode?if_exists}"/>
-								<i class="ic_mybrowse"></i>我的邀请码
+								<i class="ic_mybrowse"></i>复制我的邀请码
 							</a>
 						</li>
 						</#if>
-					</ul>										
+					</ul>
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="/v2/myinvitation">
+								<i class="ic_mycollect"></i>我的会员
+							</a>
+						</li>
+						<#if (user.accountType == 2)>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="/v2/agencyreward">
+								<i class="ic_mycollect"></i>订单奖励(我的会员每订单佣金<font color="red">${agencyRewardRate?if_exists}%</font>)
+							</a>
+						</li>
+						</#if>
+					</ul>	
+								
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<div class="mui-login"><a href="javascript:void(0);" onclick="logout()">退出登录</a></div>
 						</li>
 					</ul>
+
 				</div>
 			</div>
 		</div>
@@ -77,10 +93,10 @@
 	  
 	  function copyInviteCode() {
 	    var value = $('#myInviteCode').val();
-		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索宝淘、京东优惠券，拿返利！先领券，再购物，更划算！邀请码【'+value+'】');
+		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索宝淘、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【'+value+'】');
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
-            Core.Dialog.msg('我的邀请码复制成功，赶紧去邀请好友吧！',9000);
+            Core.Dialog.msg('我的邀请码复制成功，赶紧去微信粘贴邀请好友吧！',9000);
             $('#copy').removeAttr('data-clipboard-text');
           });
           clipboard.on('error', function (e) {

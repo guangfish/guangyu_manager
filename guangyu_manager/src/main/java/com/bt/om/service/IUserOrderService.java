@@ -14,7 +14,8 @@ public interface IUserOrderService {
     public void updateStatus2(UserOrder userOrder);
     public List<UserOrder> selectUnCheckOrderTaobao(UserOrder userOrder);
     public List<UserOrder> selectUnCheckOrderJd(UserOrder userOrder);
-    public void updateByPrimaryKey(UserOrder userOrder);    
+    public void updateByPrimaryKey(UserOrder userOrder);   
+    public void updateRewardStatus(UserOrder userOrder);  
     
     int getAllListCount(Map<String, Object> searchMap);
     List<Map<String, Object>> getAllList(SearchDataVo vo);
@@ -23,4 +24,6 @@ public interface IUserOrderService {
     public int updateOrderStatus(Integer id, Integer orderStatus, Integer putForwardStatus, Integer paymentStatus);
     
     int deleteOrder(Integer id);
+    
+    public List<UserOrder> selectByInviteCode(String taInviteCode);
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
@@ -19,9 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.adtime.common.lang.StringUtil;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.common.SysConst;
+import com.bt.om.entity.Invitation;
 import com.bt.om.entity.User;
 import com.bt.om.enums.ResultCode;
+import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -41,6 +45,8 @@ public class LoginControllerV2 extends BasicController {
 
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IInvitationService invitationService;
 
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpServletRequest request) {
@@ -154,6 +160,23 @@ public class LoginControllerV2 extends BasicController {
 		user.setAccountType(1);
 		try {
 			userService.insert(user);
+			if(StringUtil.isNotEmpty(inviteCode)){
+				User user1=userService.selectByTaInviteCode(inviteCode);
+				Invitation invitation = new Invitation();
+				invitation.setInviterMobile(user1.getMobile());
+				invitation.setBeInviterMobile(mobile);
+				invitation.setStatus(1);
+				invitation.setReward(1);
+				invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));		
+				invitation.setCreateTime(new Date());
+				invitation.setUpdateTime(new Date());
+				
+				String mobile1=invitationService.haveInvitation(invitation);
+				if (StringUtils.isEmpty(mobile1)) {
+					invitationService.insert(invitation);
+				}
+			}			
+			
 		} catch (Exception e) {
 			registerVo.setStatus("3");
 			registerVo.setDesc("用户已注册");

@@ -21,4 +21,9 @@ public class UserService implements IUserService {
 	public void insert(User user) {
 		userMapper.insert(user);
 	}
+
+	@Override
+	public User selectByTaInviteCode(String taInviteCode) {
+		return userMapper.selectByTaInviteCode(taInviteCode);
+	}
 }

@@ -71,4 +71,9 @@ public class DrawCashService implements IDrawCashService {
 			throw new Exception("update userorder failed");
 		}
 	}
+	
+	@Override
+	public double getSumByMobile(Map<String, Object> searchMap) {
+		return drawCashMapper.getSumByMobile(searchMap);
+	}
 }

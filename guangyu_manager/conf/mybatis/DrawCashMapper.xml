@@ -282,4 +282,19 @@
           ON t2.`id` = t3.`draw_cach_id`
       WHERE t2.id = #{id, jdbcType=INTEGER})
   </update>
+  
+  <select id="getSumByMobile" parameterType="map" resultType="double">
+		SELECT
+		IFNULL(SUM(cash),0) cash
+		FROM
+		draw_cash t1
+		<where>
+			<if test="mobile != null and mobile != ''">
+				and t1.`mobile` = #{mobile, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND t1.`status` = #{status, jdbcType=INTEGER}
+			</if>			
+		</where>
+	</select>
 </mapper>

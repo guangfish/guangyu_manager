@@ -51,6 +51,11 @@ public class UserOrderService implements IUserOrderService {
 	public void updateByPrimaryKey(UserOrder userOrder) {
 		userOrderMapper.updateByPrimaryKey(userOrder);
 	}
+	
+	@Override
+	public void updateRewardStatus(UserOrder userOrder) {
+		userOrderMapper.updateRewardStatus(userOrder);
+	}
 
 	@Override
 	public List<Map<String, Object>> getAllList(SearchDataVo vo) {
@@ -83,5 +88,10 @@ public class UserOrderService implements IUserOrderService {
 	@Override
 	public int deleteOrder(Integer id) {
 		return userOrderMapper.deleteByPrimaryKey(id);
+	}
+	
+	@Override
+	public List<UserOrder> selectByInviteCode(String taInviteCode) {
+		return userOrderMapper.selectByInviteCode(taInviteCode);
 	}
 }

@@ -197,4 +197,11 @@
     from user
     where mobile = #{mobile,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectByTaInviteCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where my_invite_code = #{taInviteCode,jdbcType=VARCHAR}
+  </select>
 </mapper>

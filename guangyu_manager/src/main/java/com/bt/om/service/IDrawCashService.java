@@ -20,4 +20,6 @@ public interface IDrawCashService {
 	int deleteByPrimaryKey(Integer id);
 	
 	void confimPayment(Integer id) throws Exception;
+	
+	double getSumByMobile(Map<String, Object> searchMap);
 }

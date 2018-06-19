@@ -82,11 +82,14 @@ public class SearchOrderControllerV2 extends BasicController {
 			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(mobile);
 			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 			List<UserOrder> userOrderNotCanDrawList = new ArrayList<>();
+			List<UserOrder> userOrderNoValidDrawList = new ArrayList<>();
 			for (UserOrder userOrder : userOrderList) {
 				if ("订单结算".equals(userOrder.getOrderStatus())) {
 					canDrawOrderNum = canDrawOrderNum + 1;
 					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
 					userOrderCanDrawList.add(userOrder);
+				} else if ("订单失效".equals(userOrder.getOrderStatus())) {
+					userOrderNoValidDrawList.add(userOrder);
 				} else {
 					uncanDrawOrderNum = uncanDrawOrderNum + 1;
 					totalUCommission = totalUCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
@@ -107,8 +110,10 @@ public class SearchOrderControllerV2 extends BasicController {
 			model.addAttribute("canDrawOrderNum", canDrawOrderNum);
 			model.addAttribute("uncanDrawOrderNum", uncanDrawOrderNum);
 
+			model.addAttribute("userOrderList", userOrderList);
 			model.addAttribute("userOrderCanDrawList", userOrderCanDrawList);
 			model.addAttribute("userOrderNotCanDrawList", userOrderNotCanDrawList);
+			model.addAttribute("userOrderNoValidDrawList", userOrderNoValidDrawList);
 			return "searchv2/searchorder";
 		}
 	}
@@ -191,7 +196,7 @@ public class SearchOrderControllerV2 extends BasicController {
 			if (userOrderList != null && userOrderList.size() > 0) {
 				for (UserOrder userOrder : userOrderList) {
 					HashMap<String, String> map = new HashMap<>();
-					map.put("imgUrl", userOrder.getProductImgUrl()==null?"":userOrder.getProductImgUrl());
+					map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
 					map.put("productName", userOrder.getProductInfo());
 					map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
 							? ("预估￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));

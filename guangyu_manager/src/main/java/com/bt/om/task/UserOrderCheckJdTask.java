@@ -130,6 +130,10 @@ public class UserOrderCheckJdTask {
 							}
 
 							userOrder1.setStatus1(status1);
+							userOrder1.setCommissionReward((double) (Math.round(commission3
+									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
+									/ 100);
+							userOrder1.setRewardStatus(1);
 							userOrder1.setUpdateTime(new Date());
 							userOrderService.updateByPrimaryKey(userOrder1);
 						}
