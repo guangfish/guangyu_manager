@@ -462,6 +462,10 @@
 		$(".search-page").append(onloadTips);
 		//加载内容
 		clearTimeout(setLoading);
+		if(_v){
+		}else{
+		  _v="";
+		}
 		setLoading = setTimeout(function() {
 			mui.ajax('/v2/api/more',{
 				data:{product_url:_v,pageNo:curPage},
