@@ -14,7 +14,7 @@
 				<div class="code">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
-						获取验证码
+						<a href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
 					</div>
 				</div>
 			</form>
@@ -66,14 +66,24 @@
 					}, 1000)
 				}
 			}
-			$('.code').on('click', 'div', function() {
-				if(sendsmscode()==1){
+			
+			function send() {
+			  if(sendsmscode()==1){
 			      if(countdown == 120){					
-					invokeSettime(this)
+					invokeSettime($('#aaa'))
 				  }	
 			    }else{				  	
 				}	
-			})
+			}
+			
+//			$('.code').on('click', 'div', function() {
+//				if(sendsmscode()==1){
+//			      if(countdown == 120){					
+//					invokeSettime(this)
+//				  }	
+//			    }else{				  	
+//				}	
+//			})
 			
 			$('.btn-submit').on('click',function(){	
 				var status=1;

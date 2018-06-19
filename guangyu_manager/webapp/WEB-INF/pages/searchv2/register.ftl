@@ -42,7 +42,7 @@
 				<div class="code" id="codesend">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
-						获取验证码
+						<a href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
 					</div>
 				</div>
 				<div>
@@ -61,7 +61,7 @@
 			</form>
 			<span class="btn btn-submit">注册</span>
 			<div class="login_p">
-				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn">密码登录</a>
+				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn">短信登录</a>
 			</div>
 		</div>
 		<!-- 底部菜单栏 -->
@@ -109,14 +109,24 @@
 					}, 1000)
 				}
 			}
-			$('#codesend').on('click', 'div', function() {
-			    if(sendsmscode()==1){
+			
+			function send() {
+			  if(sendsmscode()==1){
 			      if(countdown == 120){					
-					invokeSettime(this)
+					invokeSettime($('#aaa'))
 				  }	
 			    }else{				  	
-				}		
-			})
+				}	
+			}
+			
+//			$('#codesend').on('click', 'div', function() {
+//			    if(sendsmscode()==1){
+//			      if(countdown == 120){					
+//					invokeSettime(this)
+//				  }	
+//			    }else{				  	
+//				}		
+//			})
 			
 			$('#copyalipay').on('click', 'div', function() {
 			    var mobile = $('#phone').val();

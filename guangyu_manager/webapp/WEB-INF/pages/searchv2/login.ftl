@@ -14,14 +14,14 @@
 				<div class="code">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
-						<a href="javascript:void(0);" onclick="send()">获取验证码</a>
+						<a href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
 					</div>
 				</div>
 
 			</form>
 			<span class="btn btn-submit">登录</span>
 			<div class="login_p">
-				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn tel_login">密码登录</a>
+				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn tel_login">短信登录</a>
 				<a href="/v2/register?toUrl=${toUrl?if_exists}" class="btn">轻松注册</a>
 			</div>
 		</div>
@@ -74,13 +74,20 @@
 			function send() {
 			  if(sendsmscode()==1){
 			      if(countdown == 120){					
-					invokeSettime(this)
+					invokeSettime($('#aaa'))
 				  }	
 			    }else{				  	
 				}	
 			}
 			
-
+//			$('.code').on('click', 'div', function() {
+//				if(sendsmscode()==1){
+//			      if(countdown == 120){					
+//					invokeSettime(this)
+//				  }	
+//			    }else{				  	
+//				}	
+//			})
 
 			$('.btn-submit').on('click',function(){
 				var status=1;
