@@ -14,7 +14,7 @@
 				<div class="code">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
-						获取验证码
+						<a>获取验证码</a>
 					</div>
 				</div>
 
