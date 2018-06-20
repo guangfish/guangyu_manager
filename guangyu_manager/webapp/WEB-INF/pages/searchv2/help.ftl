@@ -128,7 +128,7 @@
 						<div class="mui-cont-box">
 							<a href="#">
 							    <div class="mui-cont-tit ">
-									<h2 align="center">邀请规则</h2><br/>
+									<h2>邀请规则</h2><br/>
 								</div>
 								<div class="mui-cont-text limit_text">
 									1. 底部菜单栏"我的->复制我的邀请码"，粘贴发送给朋友；
