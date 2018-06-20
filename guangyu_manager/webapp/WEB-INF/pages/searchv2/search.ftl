@@ -414,9 +414,8 @@
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
 								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
-									<span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
+									</br><span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
-								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
 						</a>';
 						}else{
@@ -427,9 +426,8 @@
 								<p>商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
 								<p>价格:&nbsp;<span class="mui-bodycolor">'+price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件</span></p>\
 								<div>\
-									<span>领券省:<em class="mui-first-payment">'+quanMianzhi+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
+									</br><span>领券省:<em class="mui-first-payment">'+quanMianzhi+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">'+money+'</em></span>\
 								</div>\
-								<p class="mui-buy-gift">购买该商品预估可额外获得'+fanliMultiple+'倍返现奖励</p>\
 							</div>\
 						</a>';
 						}
@@ -495,9 +493,8 @@
 									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
 									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
-										<span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
+										</br><span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\
-									<p class="mui-buy-gift">购买该商品预估可额外获得'+list.fanli+'倍返现奖励</p>\
 								</div>\
 							</a>';
 							li.innerHTML = myInner;
