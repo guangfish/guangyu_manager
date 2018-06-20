@@ -280,7 +280,7 @@ public class MyControllerV2 extends BasicController {
 		}).start();
 
 		orderDrawVo.setStatus("0");
-		orderDrawVo.setDesc("奖励提取成功，请注意支付宝查收！");
+		orderDrawVo.setDesc("提取成功，2小时内到账，请注意支付宝查收！");
 		Map<String, String> map = new HashMap<>();
 		map.put("reward", reward + "");
 		orderDrawVo.setData(map);
@@ -399,7 +399,7 @@ public class MyControllerV2 extends BasicController {
 		}).start();
 
 		orderDrawVo.setStatus("0");
-		orderDrawVo.setDesc("奖励提取成功，请注意支付宝查收！");
+		orderDrawVo.setDesc("提取成功，2小时内到账，请注意支付宝查收！");
 		Map<String, String> map = new HashMap<>();
 		map.put("reward", reward + "");
 		orderDrawVo.setData(map);

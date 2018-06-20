@@ -149,7 +149,7 @@
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.alipay)||!counter.rule('*',_p.imgCode)||!counter.rule('*',_p.code)){
+				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.alipay)||!counter.rule('*',_p.weixin)||!counter.rule('*',_p.code)){
 					mui.toast('请将信息填写完整');
 					status=0;
 				}else if(!counter.rule('phone',_p.phone)){
