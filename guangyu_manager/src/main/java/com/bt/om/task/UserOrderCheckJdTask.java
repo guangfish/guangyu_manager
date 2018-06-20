@@ -74,7 +74,7 @@ public class UserOrderCheckJdTask {
 						if ("已结算".equals(tkOrderInputJd.getOrderStatus())
 								|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
 							status1 = 2;
-						} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
+						} else if ((tkOrderInputJd.getOrderStatus()).contains("无效")) {
 							status1 = 3;
 						}
 
@@ -82,7 +82,7 @@ public class UserOrderCheckJdTask {
 							orderStatus = "订单付款";
 						} else if ("已结算".equals(orderStatus) || "已完成".equals(orderStatus)) {
 							orderStatus = "订单结算";
-						} else if ("无效".equals(orderStatus)) {
+						} else if (orderStatus.contains("无效")) {
 							orderStatus = "订单失效";
 						}
 
