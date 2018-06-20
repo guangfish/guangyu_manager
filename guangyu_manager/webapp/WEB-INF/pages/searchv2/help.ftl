@@ -11,8 +11,8 @@
 				<a data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
 				<a data-id="#jd" class="mui-event-tap">京东使用</a>
 				<!--<a data-id="#orderid" class="mui-event-tap">找订单号</a>-->
-				<a data-id="#faq" class="mui-event-tap">常见提问</a>
 				<a data-id="#cjhy" class="mui-event-tap">超级会员</a>
+				<a data-id="#faq" class="mui-event-tap">常见提问</a>				
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
@@ -128,7 +128,7 @@
 						<div class="mui-cont-box">
 							<a href="#">
 							    <div class="mui-cont-tit ">
-									<h2>邀请规则</h2><br/>
+									<h2 align="center">邀请规则</h2><br/>
 								</div>
 								<div class="mui-cont-text limit_text">
 									1. 底部菜单栏"我的->复制我的邀请码"，粘贴发送给朋友；
