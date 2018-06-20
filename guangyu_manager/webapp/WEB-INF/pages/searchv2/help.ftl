@@ -131,7 +131,7 @@
 									<h2>邀请规则</h2><br/>
 								</div>
 								<div class="mui-cont-text limit_text">
-									1. 底部菜单栏"我的->复制我的邀请码"，粘贴发送给朋友；
+									1. 底部菜单栏"我的->我的邀请码"，粘贴发送给朋友；
 								</div>
 								<div class="mui-cont-text limit_text">
 									2. 好友通过您的邀请码注册后，Ta即永久成为你的会员；
