@@ -82,7 +82,7 @@ public class OrderDrawControllerV2 extends BasicController {
 	// 申请提现
 	@RequestMapping(value = "/api/orderdraw", method = RequestMethod.POST)
 	@ResponseBody
-	public OrderDrawVo orderDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model orderDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
 		String userId = "";
 		String smscode = "";
@@ -102,20 +102,23 @@ public class OrderDrawControllerV2 extends BasicController {
 		} catch (IOException e) {
 			orderDrawVo.setStatus("1");
 			orderDrawVo.setDesc("系统繁忙，请稍后再试");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
 			orderDrawVo.setStatus("2");
 			orderDrawVo.setDesc("请求参数中缺少用户ID");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 		// 短信验证码必须验证
 		if (StringUtils.isEmpty(smscode)) {
 			orderDrawVo.setStatus("3");
 			orderDrawVo.setDesc("请求参数中缺少短信验证码");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		String vcodejds = jedisPool.getResource().get(userId);
@@ -123,14 +126,16 @@ public class OrderDrawControllerV2 extends BasicController {
 		if (StringUtils.isEmpty(vcodejds)) {
 			orderDrawVo.setStatus("4");
 			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 验证码有效验证
 		if (!smscode.equalsIgnoreCase(vcodejds)) {
 			orderDrawVo.setStatus("5");
 			orderDrawVo.setDesc("短信验证码验证失败");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		jedisPool.getResource().del(userId);
@@ -154,7 +159,8 @@ public class OrderDrawControllerV2 extends BasicController {
 		if (userOrderList == null || userOrderList.size() <= 0) {
 			orderDrawVo.setStatus("6");
 			orderDrawVo.setDesc("无可提现商品或者商品处于核对中");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 		double totalCommission = 0;
 		int productNums = userOrderList.size();
@@ -218,7 +224,8 @@ public class OrderDrawControllerV2 extends BasicController {
 		map.put("fanli", String.valueOf(((float) (Math.round(totalCommission * 100)) / 100)));
 		map.put("reward", reward + "");
 		map.put("total", String.valueOf(((float) (Math.round(totalCommission * 100)) / 100) + reward));
-		orderDrawVo.setMap(map);
-		return orderDrawVo;
+		orderDrawVo.setData(map);
+		model.addAttribute("response", orderDrawVo);
+		return model;
 	}
 }

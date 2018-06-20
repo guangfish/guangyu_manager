@@ -1,14 +1,16 @@
 package com.bt.om.web.controller.api.v2.vo;
 
-public class RegisterVo extends CommonVo {
-	private String userId="";
+import java.util.Map;
 
-	public String getUserId() {
-		return userId;
+public class RegisterVo extends CommonVo {
+	private Map<String, String> data;
+
+	public Map<String, String> getData() {
+		return data;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setData(Map<String, String> data) {
+		this.data = data;
 	}
 
 }

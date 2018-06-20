@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 public class BannerVo extends CommonVo {
-	private List<Map<String, String>> map=new ArrayList<>();
+	private List<Map<String, String>> data=new ArrayList<>();
 
-	public List<Map<String, String>> getMap() {
-		return map;
+	public List<Map<String, String>> getData() {
+		return data;
 	}
 
-	public void setMap(List<Map<String, String>> map) {
-		this.map = map;
+	public void setData(List<Map<String, String>> data) {
+		this.data = data;
 	}
+
 
 }

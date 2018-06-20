@@ -52,7 +52,7 @@ public class OrderControllerV2 extends BasicController {
 	// 订单保存
 	@RequestMapping(value = "/api/ordersave", method = RequestMethod.POST)
 	@ResponseBody
-	public CommonVo orderSave(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model orderSave(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
 		String userId = "";
 		String orderId = "";
@@ -72,18 +72,21 @@ public class OrderControllerV2 extends BasicController {
 			if (StringUtils.isEmpty(userId)) {
 				commonVo.setStatus("1");
 				commonVo.setDesc("请提交用户ID");
-				return commonVo;
+				model.addAttribute("response", commonVo);
+				return model;
 			}
 			// 订单号必须验证
 			if (StringUtils.isEmpty(orderId)) {
 				commonVo.setStatus("2");
 				commonVo.setDesc("请输入订单号");
-				return commonVo;
+				model.addAttribute("response", commonVo);
+				return model;
 			}
 		} catch (Exception e) {
 			commonVo.setStatus("3");
 			commonVo.setDesc("系统繁忙，请稍后再试");
-			return commonVo;
+			model.addAttribute("response", commonVo);
+			return model;
 		}
 
 		UserOrderTmp userOrderTmp = new UserOrderTmp();
@@ -106,6 +109,7 @@ public class OrderControllerV2 extends BasicController {
 			commonVo.setStatus("4");
 			commonVo.setDesc("请勿重复提交订单号");
 		}
-		return commonVo;
+		model.addAttribute("response", commonVo);
+		return model;
 	}
 }

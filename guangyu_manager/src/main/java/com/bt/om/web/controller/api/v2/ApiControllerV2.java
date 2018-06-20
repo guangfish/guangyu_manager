@@ -23,6 +23,7 @@ import com.bt.om.util.StringUtil;
 import com.bt.om.util.TaobaoSmsUtil;
 import com.bt.om.vo.api.GetSmsCodeVo;
 import com.bt.om.vo.api.ProductCommissionVo;
+import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.api.v2.vo.ProductInfoVo;
 //import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
@@ -81,9 +82,8 @@ public class ApiControllerV2 extends BasicController {
 	// 获取验证码
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
-	public GetSmsCodeVo getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
-		GetSmsCodeVo getSmsCodeVo=new GetSmsCodeVo();
-		getSmsCodeVo.setVcode("");
+	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
+		CommonVo commonVo=new CommonVo();
 		String mobile = "";
 		String userId="";
 		try {
@@ -98,22 +98,25 @@ public class ApiControllerV2 extends BasicController {
 				mobile = obj.get("mobile").getAsString();
 			}			
 		} catch (IOException e) {
-			getSmsCodeVo.setStatus("1");
-			getSmsCodeVo.setDesc("系统繁忙，请稍后再试");
-			return getSmsCodeVo;
+			commonVo.setStatus("1");
+			commonVo.setDesc("系统繁忙，请稍后再试");
+			model.addAttribute("response", commonVo);
+			return model;
 		}
 
 		// 手机号验证
 		if (StringUtils.isEmpty(mobile)) {
-			getSmsCodeVo.setStatus("2");
-			getSmsCodeVo.setDesc("手机号为必填");
-			return getSmsCodeVo;
+			commonVo.setStatus("2");
+			commonVo.setDesc("手机号为必填");
+			model.addAttribute("response", commonVo);
+			return model;
 		}
 		
 		if(jedisPool.getResource().exists(mobile)){
-			getSmsCodeVo.setStatus("3");
-			getSmsCodeVo.setDesc("请等待2分钟后再次发送短信验证码");
-			return getSmsCodeVo;
+			commonVo.setStatus("3");
+			commonVo.setDesc("请等待2分钟后再次发送短信验证码");
+			model.addAttribute("response", commonVo);
+			return model;
 		}
 
 		String vcode = getVcode(5);
@@ -125,18 +128,19 @@ public class ApiControllerV2 extends BasicController {
 			TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
 		}
 
-		getSmsCodeVo.setStatus("0");
-		getSmsCodeVo.setDesc("验证码发送成功");
+		commonVo.setStatus("0");
+		commonVo.setDesc("验证码发送成功");
 		
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		return getSmsCodeVo;
+		model.addAttribute("response", commonVo);
+		return model;
 	}
 
 	// 获取商品详情
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
 	@ResponseBody
-	public ProductInfoVo productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo=new ProductInfoVo();
 		String userId="";
 		@SuppressWarnings("unused")
@@ -159,14 +163,16 @@ public class ApiControllerV2 extends BasicController {
 		} catch (IOException e) {
 			productInfoVo.setStatus("1");
 			productInfoVo.setDesc("系统繁忙，请稍后再试");
-			return productInfoVo;
+			model.addAttribute("response", productInfoVo);
+			return model;
 		}
 
 		// 商品链接验证
 		if (StringUtils.isEmpty(productUrl)) {
 			productInfoVo.setStatus("2");
 			productInfoVo.setDesc("商品链接为空");
-			return productInfoVo;
+			model.addAttribute("response", productInfoVo);
+			return model;
 		}		
 		
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
@@ -181,7 +187,8 @@ public class ApiControllerV2 extends BasicController {
 				if (StringUtils.isEmpty(productUrl)) {
 					productInfoVo.setStatus("3");
 					productInfoVo.setDesc("商品链接解析失败");
-					return productInfoVo;
+					model.addAttribute("response", productInfoVo);
+					return model;
 				} else {
 					Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
 					productUrl = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
@@ -201,7 +208,8 @@ public class ApiControllerV2 extends BasicController {
 		}else{
 			productInfoVo.setStatus("4");
 			productInfoVo.setDesc("不支持的商品链接地址");
-			return productInfoVo;
+			model.addAttribute("response", productInfoVo);
+			return model;
 		}
         
 		ProductInfo productInfo = null;
@@ -211,7 +219,8 @@ public class ApiControllerV2 extends BasicController {
 			if (StringUtils.isEmpty(urlMap.get("id"))) {
 				productInfoVo.setStatus("5");
 				productInfoVo.setDesc("商品ID为空");				
-				return productInfoVo;
+				model.addAttribute("response", productInfoVo);
+				return model;
 			}
 			uriProductId=urlMap.get("id");
 		}else if("jd".equals(platform)){
@@ -226,7 +235,8 @@ public class ApiControllerV2 extends BasicController {
 			if (StringUtils.isEmpty(uriProductId)) {
 				productInfoVo.setStatus("5");
 				productInfoVo.setDesc("商品ID为空");				
-				return productInfoVo;
+				model.addAttribute("response", productInfoVo);
+				return model;
 			}
 		}
 //		从数据库中查询是否已查询过改商品
@@ -343,7 +353,8 @@ public class ApiControllerV2 extends BasicController {
 				}
 				map.put("fanliMultiple", fanliMultiple+"");			
 			} else {
-				return productInfoVo;
+				model.addAttribute("response", productInfoVo);
+				return model;
 			}
 		} else {
 			//插入搜索记录
@@ -396,11 +407,12 @@ public class ApiControllerV2 extends BasicController {
 		productInfoVo.setStatus("0");
 		productInfoVo.setDesc("查询成功");
 		productInfoVo.setMall(platform);
-		productInfoVo.setMap(map);
+		productInfoVo.setData(map);
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
-		return productInfoVo;
+		model.addAttribute("response", productInfoVo);
+		return model;
 	}
 
 	// 佣金信息获取请求

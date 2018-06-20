@@ -118,7 +118,7 @@
 							success : function(data) {
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){	
-								    mui.toast(data.desc);					  
+								    mui.toast(data.response.desc);					  
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

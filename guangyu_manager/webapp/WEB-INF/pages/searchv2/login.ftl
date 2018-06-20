@@ -120,12 +120,12 @@
 							timeout : 30000,
 							success : function(data) {
 								console.log('请求到的数据为：', data)
-								if(data.status=="0"){
-								   mui.toast(data.desc);
+								if(data.response.status=="0"){
+								   mui.toast(data.response.desc);
 								   $.cookie('mobile', mobile, { expires: 365, path: '/',domain:'${cookieDomain?if_exists}'});
 								   location.href="${toUrl?if_exists}";
 								}else{
-								   mui.toast(data.desc);
+								   mui.toast(data.response.desc);
 								}
 							},
 							error : function(XMLHttpRequest, textStatus,

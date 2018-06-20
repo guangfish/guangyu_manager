@@ -13,7 +13,7 @@ public class UserOrderVo extends CommonVo {
 	private int friendNumNoValid = 0;
 	private int reward = 0;
 	private int rewardAll = 0;
-	private List<HashMap<String, String>> map;
+	private List<HashMap<String, String>> data;
 
 	public String getCanDraw() {
 		return canDraw;
@@ -87,12 +87,13 @@ public class UserOrderVo extends CommonVo {
 		this.rewardAll = rewardAll;
 	}
 
-	public List<HashMap<String, String>> getMap() {
-		return map;
+	public List<HashMap<String, String>> getData() {
+		return data;
 	}
 
-	public void setMap(List<HashMap<String, String>> map) {
-		this.map = map;
+	public void setData(List<HashMap<String, String>> data) {
+		this.data = data;
 	}
+
 
 }

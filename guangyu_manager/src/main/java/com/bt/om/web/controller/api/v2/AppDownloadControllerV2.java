@@ -34,7 +34,7 @@ public class AppDownloadControllerV2 extends BasicController {
 
 	@RequestMapping(value = "/api/download", method = RequestMethod.POST)
 	@ResponseBody
-	public AppDownloadVo list(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {
 		AppDownloadVo appDownloadVo = new AppDownloadVo();
 		InputStream is;
 		int version = 1;
@@ -54,11 +54,12 @@ public class AppDownloadControllerV2 extends BasicController {
 			map.put("ifForce", appDownload.getIfForce()+"");
 			appDownloadVo.setStatus("0");
 			appDownloadVo.setDesc("获取新版本成功");
-			appDownloadVo.setMap(map);
+			appDownloadVo.setData(map);
 		} else {
 			appDownloadVo.setStatus("0");
 			appDownloadVo.setDesc("已经是最新版本了");
 		}
-		return appDownloadVo;
+		model.addAttribute("response", appDownloadVo);
+		return model;
 	}
 }

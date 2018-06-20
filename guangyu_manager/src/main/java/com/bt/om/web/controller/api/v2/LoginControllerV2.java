@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.adtime.common.lang.StringUtil;
 import com.bt.om.cache.JedisPool;
+import com.bt.om.common.SysConst;
 import com.bt.om.entity.Invitation;
 import com.bt.om.entity.User;
 import com.bt.om.service.IInvitationService;
@@ -53,7 +56,7 @@ public class LoginControllerV2 extends BasicController {
 
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
 	@ResponseBody
-	public CommonVo loginApi(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model loginApi(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		String mobile = "";
 		String code = "";
@@ -72,26 +75,32 @@ public class LoginControllerV2 extends BasicController {
 		if (StringUtil.isEmpty(smscode)) {
 			registerVo.setStatus("1");
 			registerVo.setDesc("短信验证码已过期");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
 			registerVo.setStatus("2");
 			registerVo.setDesc("短信验证码不正确");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		} else {
 			jedisPool.getResource().del(mobile);
 		}
 
 		User user = userService.selectByMobile(mobile);
-		if (user != null) {
-			registerVo.setUserId(SecurityUtil1.encrypts(mobile));
+		if (user != null) {						
 			registerVo.setStatus("0");
 			registerVo.setDesc("登陆成功");
-			return registerVo;
+			Map<String,String> data=new HashMap<>();
+			data.put("userId", SecurityUtil1.encrypts(mobile));
+			registerVo.setData(data);
+			model.addAttribute("response", registerVo);
+			return model;
 		} else {
 			registerVo.setStatus("3");
 			registerVo.setDesc("该手机号未注册");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		}
 	}
 
@@ -104,7 +113,7 @@ public class LoginControllerV2 extends BasicController {
 
 	@RequestMapping(value = "/api/register", method = RequestMethod.POST)
 	@ResponseBody
-	public CommonVo registerApi(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model registerApi(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		String inviteCode = "";
 		String mobile = "";
@@ -131,12 +140,14 @@ public class LoginControllerV2 extends BasicController {
 		if (StringUtil.isEmpty(smscode)) {
 			registerVo.setStatus("1");
 			registerVo.setDesc("短信验证码已过期");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
 			registerVo.setStatus("2");
 			registerVo.setDesc("短信验证码不正确");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		} else {
 			jedisPool.getResource().del(mobile);
 		}
@@ -174,12 +185,16 @@ public class LoginControllerV2 extends BasicController {
 		} catch (Exception e) {
 			registerVo.setStatus("3");
 			registerVo.setDesc("用户已注册");
-			return registerVo;
+			model.addAttribute("response", registerVo);
+			return model;
 		}
 
-		registerVo.setUserId(SecurityUtil1.encrypts(mobile));
 		registerVo.setStatus("0");
 		registerVo.setDesc("注册成功");
-		return registerVo;
+		Map<String,String> data=new HashMap<>();
+		data.put("userId", SecurityUtil1.encrypts(mobile));
+		registerVo.setData(data);
+		model.addAttribute("response", registerVo);
+		return model;
 	}
 }

@@ -9,13 +9,8 @@
 		<div class="main">
 			<div class="bkfff"></div>
 			<form>
-			    <!--
-				<div>
-					<input type="text" placeholder="请输入您的手机号" name="phone" id="mobile"/>
-				</div>	
-				-->			
 				<div class="code">
-					<input type="text" placeholder="请粘贴从淘宝或京东复制的订单号" name="code" id="orderid"/>
+					<input type="text" placeholder="请粘贴从淘宝或京东复制的订单号" name="orderid" id="orderid"/>
 				</div>
 			</form>
 			<span class="btn btn-submit">提交</span>
@@ -58,7 +53,7 @@
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)){
+				if(!counter.rule('*',_p.orderid)){
 					mui.toast('请将信息填写完整');
 					status=0;
 				}
@@ -84,8 +79,7 @@
 								    mui.toast("订单号提交成功，请收货后，去淘宝/京东【确认收货】后方可提现");								    
 								    var orderSubmitNotice = $.cookie('ordersubmitnotice');
 								    if(!orderSubmitNotice){
-								      mui.toast("订单号提交成功，刚录入的订单号，最快1分钟、最迟次日可查");
-								      //$.cookie('ordersubmitnotice', 'ordersubmitnotice', { expires: 7, path: '/',domain:'${cookieDomain?if_exists}'});
+								      mui.toast("订单号提交成功，刚录入的订单号，最快1分钟、最迟次日可查");								      
 								    }
 								    $("#orderid").val("");							    
 								  }

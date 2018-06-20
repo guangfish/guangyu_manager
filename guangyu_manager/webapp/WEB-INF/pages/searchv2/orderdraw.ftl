@@ -123,7 +123,8 @@
 								console.log('请求到的数据为：', data)
 								if(JSON.stringify(data) != "{}"){
 								  if(data.ret.result.status=="0"){
-								    Core.Dialog.msg("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！",10000);	
+								    //Core.Dialog.msg("提现申请成功,提现商品"+data.ret.result.productNums+"件,返利金额"+data.ret.result.fanli+"元,邀请奖励"+data.ret.result.reward+"元,提现总金额"+data.ret.result.money+"元,请注意支付宝查收！",10000);	
+								    mui.toast("提现成功，请注意支付宝查收！");
 								    $("#code").val("");		  
 								  }					  
 								  if(data.ret.result.status=="6"){

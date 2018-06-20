@@ -4,14 +4,14 @@ import java.util.Map;
 
 public class ProductInfoVo extends CommonVo {
 	private String mall = "";
-	private Map<String, String> map;
+	private Map<String, String> data;
 
-	public Map<String, String> getMap() {
-		return map;
+	public Map<String, String> getData() {
+		return data;
 	}
 
-	public void setMap(Map<String, String> map) {
-		this.map = map;
+	public void setData(Map<String, String> data) {
+		this.data = data;
 	}
 
 	public String getMall() {

@@ -165,7 +165,7 @@ public class MyControllerV2 extends BasicController {
 	// 申请提现
 	@RequestMapping(value = "/api/rewarddraw", method = RequestMethod.POST)
 	@ResponseBody
-	public OrderDrawVo rewardDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model rewardDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
 		String userId = "";
 		String smscode = "";
@@ -191,20 +191,23 @@ public class MyControllerV2 extends BasicController {
 		} catch (IOException e) {
 			orderDrawVo.setStatus("1");
 			orderDrawVo.setDesc("系统繁忙，请稍后再试");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
 			orderDrawVo.setStatus("2");
 			orderDrawVo.setDesc("请求参数中缺少用户ID");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 		// 短信验证码必须验证
 		if (StringUtils.isEmpty(smscode)) {
 			orderDrawVo.setStatus("3");
 			orderDrawVo.setDesc("请求参数中缺少短信验证码");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		String vcodejds = jedisPool.getResource().get(userId);
@@ -212,14 +215,16 @@ public class MyControllerV2 extends BasicController {
 		if (StringUtils.isEmpty(vcodejds)) {
 			orderDrawVo.setStatus("4");
 			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 验证码有效验证
 		if (!smscode.equalsIgnoreCase(vcodejds)) {
 			orderDrawVo.setStatus("5");
 			orderDrawVo.setDesc("短信验证码验证失败");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		jedisPool.getResource().del(userId);
@@ -278,14 +283,15 @@ public class MyControllerV2 extends BasicController {
 		orderDrawVo.setDesc("奖励提取成功，请注意支付宝查收！");
 		Map<String, String> map = new HashMap<>();
 		map.put("reward", reward + "");
-		orderDrawVo.setMap(map);
-		return orderDrawVo;
+		orderDrawVo.setData(map);
+		model.addAttribute("response", orderDrawVo);
+		return model;
 	}
 
 	// 申请提现
 	@RequestMapping(value = "/api/agencyrewarddraw", method = RequestMethod.POST)
 	@ResponseBody
-	public OrderDrawVo agencyRewardDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model agencyRewardDraw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
 		String userId = "";
 		String smscode = "";
@@ -311,20 +317,23 @@ public class MyControllerV2 extends BasicController {
 		} catch (IOException e) {
 			orderDrawVo.setStatus("1");
 			orderDrawVo.setDesc("系统繁忙，请稍后再试");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
 			orderDrawVo.setStatus("2");
 			orderDrawVo.setDesc("请求参数中缺少用户ID");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 		// 短信验证码必须验证
 		if (StringUtils.isEmpty(smscode)) {
 			orderDrawVo.setStatus("3");
 			orderDrawVo.setDesc("请求参数中缺少短信验证码");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		String vcodejds = jedisPool.getResource().get(userId);
@@ -332,14 +341,16 @@ public class MyControllerV2 extends BasicController {
 		if (StringUtils.isEmpty(vcodejds)) {
 			orderDrawVo.setStatus("4");
 			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		// 验证码有效验证
 		if (!smscode.equalsIgnoreCase(vcodejds)) {
 			orderDrawVo.setStatus("5");
 			orderDrawVo.setDesc("短信验证码验证失败");
-			return orderDrawVo;
+			model.addAttribute("response", orderDrawVo);
+			return model;
 		}
 
 		jedisPool.getResource().del(userId);
@@ -391,7 +402,8 @@ public class MyControllerV2 extends BasicController {
 		orderDrawVo.setDesc("奖励提取成功，请注意支付宝查收！");
 		Map<String, String> map = new HashMap<>();
 		map.put("reward", reward + "");
-		orderDrawVo.setMap(map);
-		return orderDrawVo;
+		orderDrawVo.setData(map);
+		model.addAttribute("response", orderDrawVo);
+		return model;
 	}
 }

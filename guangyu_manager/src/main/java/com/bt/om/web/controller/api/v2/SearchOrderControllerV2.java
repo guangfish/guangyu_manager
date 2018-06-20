@@ -121,7 +121,7 @@ public class SearchOrderControllerV2 extends BasicController {
 	// 查询订单列表
 	@RequestMapping(value = "/api/searchorder", method = RequestMethod.POST)
 	@ResponseBody
-	public UserOrderVo searchOrder(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model searchOrder(Model model, HttpServletRequest request, HttpServletResponse response) {
 		UserOrderVo userOrderVo = new UserOrderVo();
 		String userId = "";
 		try {
@@ -135,14 +135,16 @@ public class SearchOrderControllerV2 extends BasicController {
 		} catch (IOException e) {
 			userOrderVo.setStatus("1");
 			userOrderVo.setDesc("系统繁忙，请稍后再试");
-			return userOrderVo;
+			model.addAttribute("response", userOrderVo);
+			return model;
 		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
 			userOrderVo.setStatus("2");
 			userOrderVo.setDesc("请提交手机号码");
-			return userOrderVo;
+			model.addAttribute("response", userOrderVo);
+			return model;
 		}
 
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
@@ -220,7 +222,8 @@ public class SearchOrderControllerV2 extends BasicController {
 		userOrderVo.setReward(reward);
 		userOrderVo.setRewardAll(rewardAll);
 		userOrderVo.setTotalCommission((float) (Math.round(totalCommission * 100)) / 100);
-		userOrderVo.setMap(list);
-		return userOrderVo;
+		userOrderVo.setData(list);
+		model.addAttribute("response", userOrderVo);
+		return model;
 	}
 }

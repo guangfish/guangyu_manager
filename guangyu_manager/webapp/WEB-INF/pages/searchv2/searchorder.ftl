@@ -30,9 +30,9 @@
 												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
 												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
 												<div>
-													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+													<br/><span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
 												</div>
-												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+												<!--<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>-->
 											</div>											
 										</a>
 									</li>
@@ -61,9 +61,9 @@
 												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
 												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
 												<div>
-													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+													<br/><span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
 												</div>
-												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+												<!--<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>-->
 											</div>											
 										</a>
 									</li>
@@ -88,9 +88,9 @@
 												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
 												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
 												<div>
-													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+													<br/><span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
 												</div>
-												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+												<!--<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>-->
 											</div>											
 										</a>
 									</li>
@@ -114,9 +114,9 @@
 												<p>订单状态:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.orderStatus?if_exists}</span></p>
 												<p>订单时间:&nbsp;&nbsp;&nbsp;<span class="mui-bodycolor">${userOrder.createTime?string('yyyy-MM-dd')}</span></p>
 												<div>
-													<span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
+													<br/><span>返现:&nbsp;&nbsp;&nbsp;<em class="mui-first-payment">￥${userOrder.commission3?if_exists}</em></span>
 												</div>
-												<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>
+												<!--<p class="mui-buy-gift">购买该商品可额外获得${userOrder.fanliMultiple?if_exists}倍返现奖励</p>-->
 											</div>											
 										</a>
 									</li>

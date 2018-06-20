@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OrderDrawVo extends CommonVo {
-	private Map<String, String> map = new HashMap<>();
+	private Map<String, String> data = new HashMap<>();
 
-	public Map<String, String> getMap() {
-		return map;
+	public Map<String, String> getData() {
+		return data;
 	}
 
-	public void setMap(Map<String, String> map) {
-		this.map = map;
+	public void setData(Map<String, String> data) {
+		this.data = data;
 	}
 
 }

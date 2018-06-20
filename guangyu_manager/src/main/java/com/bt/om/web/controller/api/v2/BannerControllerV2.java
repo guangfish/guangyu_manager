@@ -32,7 +32,7 @@ public class BannerControllerV2 extends BasicController {
 
 	@RequestMapping(value = "/api/banner", method = RequestMethod.POST)
 	@ResponseBody
-	public BannerVo list(Model model, HttpServletRequest request, HttpServletResponse response) {		
+	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {		
 		BannerVo bannerVo = new BannerVo();
 		bannerVo.setDesc("获取成功");
 		bannerVo.setStatus("0");
@@ -48,8 +48,9 @@ public class BannerControllerV2 extends BasicController {
 				map.put("height", banner.getHight());
 				list.add(map);
 			}
-			bannerVo.setMap(list);
+			bannerVo.setData(list);
 		}			
-		return bannerVo;
+		model.addAttribute("response", bannerVo);
+		return model;
 	}
 }
