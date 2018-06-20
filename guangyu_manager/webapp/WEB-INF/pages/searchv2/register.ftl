@@ -45,12 +45,14 @@
 						<a href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
 					</div>
 				</div>
+				<!--
 				<div>
 					<input type="password" placeholder="请输入新密码" name="newpass" id="newpass"/>
 				</div>
 				<div>
 					<input type="password" placeholder="请确认新密码"  name="newpassagain"/>
 				</div>
+				-->
 				<!--
 				<div class="login-lable agreement">
 					<span><input type="checkbox" class="input_check norm-input" id="check3"><label for="check3"></label></span>
@@ -147,15 +149,12 @@
 				for(var i in _k){
 					_p[_k[i].name]=_k[i].value;
 				}console.log(this,counter.rule('*',_p.phone))
-				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.alipay)||!counter.rule('*',_p.imgCode)||!counter.rule('*',_p.code)||!counter.rule('*',_p.newpass)||!counter.rule('*',_p.newpassagain)){
+				if(!counter.rule('*',_p.phone)||!counter.rule('*',_p.alipay)||!counter.rule('*',_p.imgCode)||!counter.rule('*',_p.code)){
 					mui.toast('请将信息填写完整');
 					status=0;
 				}else if(!counter.rule('phone',_p.phone)){
 					mui.toast('请填写正确的手机号码');
 					status=0;
-				}else if(_p.newpass!=_p.newpassagain){
-					mui.toast('新密码不一致');
-					var status=0;
 				}
 				if(status){
 				    var invitecode = $('#invitecode').val();
@@ -164,7 +163,6 @@
 					var weixin = $('#weixin').val();
 					//var imgcode = $('#imgcode').val();
 					var code = $('#code').val();
-					var newpass = $('#newpass').val();
 					
 					$
 						.ajax({
@@ -177,8 +175,7 @@
 								"mobile" : mobile,
 								"alipay" : alipay,
 								"weixin" : weixin,
-								"code" : code,
-								"newpass" : newpass
+								"code" : code
 							}),
 							timeout : 30000,
 							success : function(data) {

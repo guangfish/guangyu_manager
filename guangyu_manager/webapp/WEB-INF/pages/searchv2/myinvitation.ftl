@@ -7,14 +7,20 @@
 	<div class="mui-content mui-answer">
 		<div class="mui-main-answer">
 			<div class="mui-scroll-wrapper ans_mt">
-			<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">新激活<font color="red">${activeFriend?if_exists}</font>个朋友，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
+			<#if (invitationList?exists && invitationList?size > 0)>
+			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">新激活<font color="red">${activeFriend?if_exists}</font>个朋友，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
+			<#else>
+			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">去邀请朋友成为你的会员吧！<a href="/v2/invitation"><font color="red">点我邀请</font></a></div></div>
+			</#if>
 				<div class="mui-scoll">
-					<div class="main-answer-cont">
+					<div class="main-answer-cont">					  
 					  <#if (invitationList?exists && invitationList?size > 0)>
+					  <div class="main-answer-item">
+							<p>我的会员<span>邀请奖励</i></span></p>						
+					  </div>
 			          <#list invitationList as invitation>
 						<div class="main-answer-item">
-							<p><font color="red">${invitation.beInviterMobile?if_exists}</font><span>${(invitation.createTime)?string('yyyy-MM-dd')}</i></span></p>
-							<p><#if (invitation.status==1)>未激活，激活后奖励金额<font color="red">￥${invitation.money?if_exists}</font><#else>已激活，奖励金额<font color="red">￥${invitation.money?if_exists}</font>，<#if (invitation.reward==1)>未领取奖励<#else>已领取奖励</#if></#if></p>
+							<p>${invitation.beInviterMobile?if_exists}<font color="red">(<#if (invitation.status==1)>未激活<#else>已激活</#if>)</font><span><#if (invitation.status==1)>￥${invitation.money?if_exists}(可领取)<#else>￥${invitation.money?if_exists}(<#if (invitation.reward==1)>未领取<#else>已领取</#if>)</#if></i></span></p>							
 						</div>	
 					  </#list>
 			          </#if>					

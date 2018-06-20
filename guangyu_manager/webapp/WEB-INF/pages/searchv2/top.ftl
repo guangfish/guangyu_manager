@@ -18,6 +18,7 @@
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
 	<title>逛鱼网 | 全网搜券拿返利的网站，支持淘宝、京东</title>
 </head>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1273766090'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/z_stat.php%3Fid%3D1273766090%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 <body>
 
 <script type="text/javascript" src="/static/frontv2/js/mui/mui.min.js"></script>

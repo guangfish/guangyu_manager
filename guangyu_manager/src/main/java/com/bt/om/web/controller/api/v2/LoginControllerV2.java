@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,15 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.adtime.common.lang.StringUtil;
 import com.bt.om.cache.JedisPool;
-import com.bt.om.common.SysConst;
 import com.bt.om.entity.Invitation;
 import com.bt.om.entity.User;
-import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.SecurityUtil1;
-import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.api.v2.vo.RegisterVo;
@@ -110,25 +106,23 @@ public class LoginControllerV2 extends BasicController {
 	@ResponseBody
 	public CommonVo registerApi(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
-		String inviteCode="";
+		String inviteCode = "";
 		String mobile = "";
 		String alipay = "";
 		String weixin = "";
 		String code = "";
-		String newpass = "";
 		InputStream is;
 		try {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			if(obj.get("inviteCode")!=null){
-				inviteCode=obj.get("inviteCode").getAsString();
+			if (obj.get("inviteCode") != null) {
+				inviteCode = obj.get("inviteCode").getAsString();
 			}
 			mobile = obj.get("mobile").getAsString();
 			alipay = obj.get("alipay").getAsString();
 			weixin = obj.get("weixin").getAsString();
 			code = obj.get("code").getAsString();
-			newpass = obj.get("newpass").getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -149,34 +143,34 @@ public class LoginControllerV2 extends BasicController {
 
 		User user = new User();
 		user.setMobile(mobile);
-		user.setPassword(newpass);
+		user.setPassword("");
 		user.setAlipay(alipay);
 		user.setWeixin(weixin);
 		user.setCreateTime(new Date());
 		user.setUpdateTime(new Date());
-		String myInviteCode = String.valueOf(((mobile + newpass).hashCode()));
+		String myInviteCode = (String.valueOf(((mobile + "1qaz2wsx").hashCode()))).replace("-", "");
 		user.setTaInviteCode(inviteCode);
 		user.setMyInviteCode(myInviteCode);
 		user.setAccountType(1);
 		try {
 			userService.insert(user);
-			if(StringUtil.isNotEmpty(inviteCode)){
-				User user1=userService.selectByTaInviteCode(inviteCode);
+			if (StringUtil.isNotEmpty(inviteCode)) {
+				User user1 = userService.selectByTaInviteCode(inviteCode);
 				Invitation invitation = new Invitation();
 				invitation.setInviterMobile(user1.getMobile());
 				invitation.setBeInviterMobile(mobile);
 				invitation.setStatus(1);
 				invitation.setReward(1);
-				invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));		
+				invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));
 				invitation.setCreateTime(new Date());
 				invitation.setUpdateTime(new Date());
-				
-				String mobile1=invitationService.haveInvitation(invitation);
+
+				String mobile1 = invitationService.haveInvitation(invitation);
 				if (StringUtils.isEmpty(mobile1)) {
 					invitationService.insert(invitation);
 				}
-			}			
-			
+			}
+
 		} catch (Exception e) {
 			registerVo.setStatus("3");
 			registerVo.setDesc("用户已注册");
