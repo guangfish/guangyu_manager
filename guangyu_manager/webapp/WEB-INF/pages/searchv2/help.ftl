@@ -10,8 +10,9 @@
 			<div class="mui-event-title tab_links">
 				<a data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
 				<a data-id="#jd" class="mui-event-tap">京东使用</a>
-				<a data-id="#orderid" class="mui-event-tap">找订单号</a>
+				<!--<a data-id="#orderid" class="mui-event-tap">找订单号</a>-->
 				<a data-id="#faq" class="mui-event-tap">常见提问</a>
+				<a data-id="#cjhy" class="mui-event-tap">超级会员</a>
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
@@ -120,6 +121,32 @@
 								<div class="mui-cont-text limit_text">
 									答：逛鱼网目前只有移动端；安卓版APP即将推出，苹果APP正在开发中。
 								</div>									
+							</a>
+						</div>							
+					</div>
+					<div id="cjhy" class="mui-event-cont disn">
+						<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit ">
+									<h2>邀请规则</h2><br/>
+								</div>
+								<div class="mui-cont-text limit_text">
+									1. 底部菜单栏"我的->复制我的邀请码"，粘贴发送给朋友；
+								</div>
+								<div class="mui-cont-text limit_text">
+									2. 好友通过您的邀请码注册后，Ta即永久成为你的会员；
+								</div>
+								<div class="mui-cont-text limit_text">
+									3. 未来Ta领券下单后，平台将会奖励你每笔订单佣金的20%；
+								</div>	
+								<div class="mui-cont-box">
+							<a href="#">
+							    <div class="mui-cont-tit">
+									<h2 align="center">加客服微信，申请为超级会员</h2>
+								</div>
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>								
+							</a>
+						</div>											
 							</a>
 						</div>							
 					</div>
