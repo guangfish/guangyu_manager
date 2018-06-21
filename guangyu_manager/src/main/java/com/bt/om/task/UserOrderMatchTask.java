@@ -216,12 +216,16 @@ public class UserOrderMatchTask {
 							if ("已结算".equals(tkOrderInputJd.getOrderStatus())
 									|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
 								status1 = 2;
-							} else if ("无效".equals(tkOrderInputJd.getOrderStatus())) {
+							} else if ((tkOrderInputJd.getOrderStatus()).equals("无效")) {
 								status1 = 3;
 							}
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
+							userOrder.setCommissionReward((double) (Math.round(commission3
+									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
+									/ 100);
+							userOrder.setRewardStatus(1);
 							userOrder.setCreateTime(new Date());
 							userOrder.setUpdateTime(new Date());
 
