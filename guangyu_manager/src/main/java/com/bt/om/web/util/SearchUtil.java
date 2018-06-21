@@ -53,7 +53,7 @@ public class SearchUtil {
         return new SearchDataVo(RequestUtil.getParameter(request, "orderField"),
             RequestUtil.getParameter(request, "orderBy"),
             RequestUtil.getIntParameter(request, "start", 0),
-            RequestUtil.getIntParameter(request, "length", 20));
+            RequestUtil.getIntParameter(request, "length", 20),0);
     }
     
     /**

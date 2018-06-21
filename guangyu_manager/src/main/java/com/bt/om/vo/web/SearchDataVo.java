@@ -60,6 +60,38 @@ public class SearchDataVo extends ID {
             searchMap.put("orderBy", orderBy);
         }
     }
+    
+    public SearchDataVo(String orderField, String orderBy, int start, int size,int type) {
+        this.searchMap = Maps.newHashMap();
+        this.queryMap = Maps.newHashMap();
+
+        if (orderField != null) {
+            queryMap.put("orderField", orderField);
+        }
+
+        if (orderBy != null) {
+            queryMap.put("orderBy", orderBy);
+        }
+
+        this.orderBy = orderBy;
+        this.orderField = orderField;
+
+        this.size = size;
+        this.start = start;
+        if (this.start < 0) {
+            this.start = 0;
+        }
+
+        queryMap.put("size", String.valueOf(this.size));
+        queryMap.put("start", String.valueOf(this.start));
+
+        if (StringUtil.isNotEmpty(orderField)) {
+            searchMap.put("orderField", orderField);
+        }
+        if (StringUtil.isNotEmpty(orderBy)) {
+            searchMap.put("orderBy", orderBy);
+        }
+    }
 
     /**
      * 加载搜索参数
