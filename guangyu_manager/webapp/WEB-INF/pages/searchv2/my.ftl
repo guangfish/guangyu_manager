@@ -37,7 +37,7 @@
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<a class="mui-navigate-right" href="/v2/myinvitation">
-								<i class="ic_mycollect"></i>我的会员
+								<i class="ic_mycollect"></i><#if (user.accountType == 1)>我的邀请<#else>我的会员</#if>
 							</a>
 						</li>
 						<#if (user.accountType == 2)>
