@@ -6,14 +6,14 @@
 	</header>
 	<div class="mui-content mui-answer">
 		<div class="mui-main-answer">
-			<div class="mui-scroll-wrapper ans_mt">
-			<#if (invitationList?exists && invitationList?size > 0)>
+			<div class="mui-scroll-wrapper ans_mt">			
+				<div class="mui-scoll">
+					<div class="main-answer-cont">	
+					  <#if (invitationList?exists && invitationList?size > 0)>
 			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">新激活<font color="red">${activeFriend?if_exists}</font>个朋友，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
 			<#else>
 			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">去邀请朋友成为你的会员吧！<a href="/v2/invitation"><font color="red">点我邀请</font></a></div></div>
-			</#if>
-				<div class="mui-scoll">
-					<div class="main-answer-cont">					  
+			</#if>				  
 					  <#if (invitationList?exists && invitationList?size > 0)>
 					  <div class="main-answer-item">
 							<p>我的会员<span>邀请奖励</i></span></p>						
