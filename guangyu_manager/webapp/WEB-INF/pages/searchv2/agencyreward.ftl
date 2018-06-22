@@ -7,13 +7,14 @@
 	<div class="mui-content mui-answer">
 		<div class="mui-main-answer">
 			<div class="mui-scroll-wrapper ans_mt">
-			<#if (userOrderList?exists && userOrderList?size > 0)>
+			
+				<div class="mui-scoll">
+					<div class="main-answer-cont">	
+					<#if (userOrderList?exists && userOrderList?size > 0)>
 			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">共<font color="red">${orderNum?if_exists}</font>个订单，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
 			<#else>
 			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">还没邀请会员或我的会员还没有订单！</div></div>
-			</#if>
-				<div class="mui-scoll">
-					<div class="main-answer-cont">					    
+			</#if>				    
 					  <#if (userOrderList?exists && userOrderList?size > 0)>
 					    <div class="main-answer-item">
 							<p>我的会员<span>订单奖励</i></span></p>						
