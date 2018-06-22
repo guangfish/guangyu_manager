@@ -18,6 +18,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
+import com.bt.om.util.RequestUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.util.TaobaoSmsUtil;
@@ -83,6 +84,7 @@ public class ApiControllerV2 extends BasicController {
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String remoteIp=RequestUtil.getRealIp(request);
 		CommonVo commonVo=new CommonVo();
 		String mobile = "";
 		String userId="";
@@ -125,7 +127,9 @@ public class ApiControllerV2 extends BasicController {
 
 		// 发送短信验证码
 		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
-			TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
+			if(!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))){
+				TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
+			}	
 		}
 
 		commonVo.setStatus("0");

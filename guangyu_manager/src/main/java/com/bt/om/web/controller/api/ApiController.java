@@ -84,7 +84,7 @@ public class ApiController extends BasicController {
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(RequestUtil.getRealIp(request));
+		String remoteIp=RequestUtil.getRealIp(request);
 		ResultVo<GetSmsCodeVo> result = new ResultVo<>();
 		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
 		result.setResultDes("获取验证码成功");
@@ -126,7 +126,9 @@ public class ApiController extends BasicController {
 
 		// 发送短信验证码
 		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
-			TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
+			if(!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))){
+				TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
+			}			
 		}
 
 		// System.out.println(jedisPool.getResource().get("vcode"));
