@@ -19,6 +19,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
+import com.bt.om.util.RequestUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.util.TaobaoSmsUtil;
 import com.bt.om.vo.api.GetSmsCodeVo;
@@ -83,6 +84,7 @@ public class ApiController extends BasicController {
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(RequestUtil.getRealIp(request));
 		ResultVo<GetSmsCodeVo> result = new ResultVo<>();
 		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
 		result.setResultDes("获取验证码成功");

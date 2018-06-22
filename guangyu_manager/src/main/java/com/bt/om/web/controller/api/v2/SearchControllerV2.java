@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.Banner;
 import com.bt.om.entity.ProductInfo;
 import com.bt.om.service.IBannerService;
@@ -36,6 +37,9 @@ public class SearchControllerV2 extends BasicController {
 
 	@Autowired
 	private IBannerService bannerService;
+	
+	@Autowired
+	private JedisPool jedisPool;
 
 	@RequestMapping(value = "/search", method = { RequestMethod.GET, RequestMethod.POST })
 	public String search(Model model, HttpServletRequest request) {
@@ -78,7 +82,9 @@ public class SearchControllerV2 extends BasicController {
 		}
 		model.addAttribute("productInfoList", productInfoList);
 		
-		model.addAttribute("saveMoney",GlobalVariable.resourceMap.get(DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN)));
+//		model.addAttribute("saveMoney",GlobalVariable.resourceMap.get(DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN)));
+		String date = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN);
+		model.addAttribute("saveMoney",jedisPool.getResource().get(date));
 		
 		return "searchv2/search";
 	}

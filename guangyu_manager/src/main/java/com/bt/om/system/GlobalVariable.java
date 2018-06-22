@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.Resource;
 import com.bt.om.service.IResourceService;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.NumberUtil;
+import com.bt.om.util.StringUtil;
 
 /**
  * Created by chenhj on 2017/9/28.
@@ -25,6 +27,9 @@ public class GlobalVariable {
 
 	@Autowired
 	private IResourceService resourceService;
+
+	@Autowired
+	private JedisPool jedisPool;
 
 	public void init() {
 		logger.info("初始化全局变量开始！~~~~~~~~~~~~~~~");
@@ -40,15 +45,21 @@ public class GlobalVariable {
 				resourceMap.put(resource.getName(), resource.getValue());
 			}
 		}
-        
-		//定时增加提示的节约金额
+
+		// 定时增加提示的节约金额
 		String date = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN);
-		if (resourceMap.get(date) != null) {
-			long maney = Long.parseLong(resourceMap.get(date));
-			maney = maney + NumberUtil.getRandomInt(50, 100);
-			resourceMap.put(date, maney + "");
-		} else {
-			resourceMap.put(date, "10");
+		String money = jedisPool.getResource().get(date);
+		if (StringUtil.isNotEmpty(money)) {
+			jedisPool.getResource().incrBy(date, NumberUtil.getRandomInt(Integer.parseInt(resourceMap.get("saveMoney_inc")), Integer.parseInt(resourceMap.get("saveMoney_inc"))*3));
+		}else{
+			jedisPool.getResource().setex(date, 86400, "10");
 		}
+//		if (resourceMap.get(date) != null) {
+//			long maney = Long.parseLong(resourceMap.get(date));
+//			maney = maney + NumberUtil.getRandomInt(50, 100);
+//			resourceMap.put(date, maney + "");
+//		} else {
+//			resourceMap.put(date, "10");
+//		}
 	}
 }

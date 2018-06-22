@@ -216,7 +216,7 @@ public class UserOrderMatchTask {
 							if ("已结算".equals(tkOrderInputJd.getOrderStatus())
 									|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
 								status1 = 2;
-							} else if ((tkOrderInputJd.getOrderStatus()).equals("无效")) {
+							} else if ((tkOrderInputJd.getOrderStatus()).contains("无效")) {
 								status1 = 3;
 							}
 							userOrder.setStatus1(status1);
