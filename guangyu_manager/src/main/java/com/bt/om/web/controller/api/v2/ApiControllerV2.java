@@ -195,7 +195,14 @@ public class ApiControllerV2 extends BasicController {
 					return model;
 				} else {
 					Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
-					productUrl = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
+					String puri=urlMap0.get("puri");
+					String pid="";
+					if(puri.contains("a.m.taobao.com")){
+						pid=puri.substring(puri.lastIndexOf("/")+2, puri.lastIndexOf("."));
+						productUrl = "https://item.taobao.com/item.htm" + "?id=" + pid;
+					}else{
+						productUrl = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
+					}
 					logger.info("通过淘口令转换获得的商品缩短链接==>" + productUrl);
 				}
 				break;
