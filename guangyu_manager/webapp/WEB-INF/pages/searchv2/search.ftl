@@ -163,7 +163,7 @@
 <script type='text/javascript' src='/static/front/js/clipboard.min.js' charset='utf-8'></script>
 
 <script>
-  setTimeout("clear()", 10000);
+  setTimeout("clear()", 5000);
   
   function clear(){
     $("#pullTips").remove();
