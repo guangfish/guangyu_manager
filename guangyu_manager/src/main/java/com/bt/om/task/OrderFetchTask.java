@@ -234,10 +234,10 @@ public class OrderFetchTask {
 				HSSFCell hssfCell20 = hssfRow1.getCell(19);
 				if (hssfCell20 != null) {  
                     hssfCell20.setCellType(CellType.STRING);  
-                }
-				if(StringUtil.isNotEmpty(hssfCell20.getStringCellValue())){
-					tkOrderInput.setTechService(Double.valueOf(((hssfCell20.getStringCellValue()).replace("%", "")).trim()));
-				}
+                    if(StringUtil.isNotEmpty(hssfCell20.getStringCellValue())){
+    					tkOrderInput.setTechService(Double.valueOf(((hssfCell20.getStringCellValue()).replace("%", "")).trim()));
+    				}
+                }				
 				
 				HSSFCell hssfCell21 = hssfRow1.getCell(20);
 				if (hssfCell21 != null) {  
