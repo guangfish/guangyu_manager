@@ -237,7 +237,9 @@ public class OrderFetchTask {
                     if(StringUtil.isNotEmpty(hssfCell20.getStringCellValue())){
     					tkOrderInput.setTechService(Double.valueOf(((hssfCell20.getStringCellValue()).replace("%", "")).trim()));
     				}
-                }				
+                }else{
+                	tkOrderInput.setTechService(0d);
+                }
 				
 				HSSFCell hssfCell21 = hssfRow1.getCell(20);
 				if (hssfCell21 != null) {  
@@ -254,16 +256,18 @@ public class OrderFetchTask {
 				tkOrderInput.setDealPlatform(hssfCell24.getStringCellValue());
 				HSSFCell hssfCell25 = hssfRow1.getCell(24);
 				tkOrderInput.setThirdServiceFrom(hssfCell25.getStringCellValue());
-				HSSFCell hssfCell26 = hssfRow1.getCell(26);
+				HSSFCell hssfCell26 = hssfRow1.getCell(25);
 				tkOrderInput.setOrderId(hssfCell26.getStringCellValue());
 				HSSFCell hssfCell27 = hssfRow1.getCell(26);
 				tkOrderInput.setCatName(hssfCell27.getStringCellValue());
 				HSSFCell hssfCell28 = hssfRow1.getCell(27);
 				tkOrderInput.setSourceMediaId(hssfCell28.getStringCellValue());
 				HSSFCell hssfCell29 = hssfRow1.getCell(28);
-				tkOrderInput.setAdId(hssfCell29.getStringCellValue());
+				tkOrderInput.setSourceMediaName(hssfCell29.getStringCellValue());
 				HSSFCell hssfCell30 = hssfRow1.getCell(29);
-				tkOrderInput.setAdName(hssfCell30.getStringCellValue());
+				tkOrderInput.setAdId(hssfCell30.getStringCellValue());
+				HSSFCell hssfCell31 = hssfRow1.getCell(30);
+				tkOrderInput.setAdName(hssfCell31.getStringCellValue());
 				
 				tkOrderInput.setUpdateTime(new Date());
 				
