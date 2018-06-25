@@ -45,7 +45,8 @@ public class SearchController extends BasicController {
 			Random r3 = new Random();
 			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
-		return "search/search";
+//		return "search/search";
+		return "redirect:/v2/search";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -56,7 +57,8 @@ public class SearchController extends BasicController {
 			Random r3 = new Random();
 			model.addAttribute("notice", noticeList.get(r3.nextInt(noticeList.size())));
 		}
-		return "search/search";
+//		return "search/search";
+		return "redirect:/v2/search";
 	}
 	
 	@RequestMapping(value = "/api/notice", method = RequestMethod.POST)
