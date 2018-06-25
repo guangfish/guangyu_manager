@@ -491,13 +491,25 @@
 							if(!couponRest){
 							  couponRest=999;
 							}
+							
+							var func;
+					        if(isWeiXin()){
+					          if(list.tkl){
+					            func="jsCopy('"+list.tkl+"')";
+					          }else{
+					            func="drump('"+list.couponPromoLink+"')";
+					          }					    
+					        }else{
+					          func="drump('"+list.couponPromoLink+"')";
+					        }
+							
 							if(list.couponMiane){
-							  var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
+							  var myInner = '<a target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
 									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>'+list.price+'元</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>￥'+list.price+'</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
 									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
 										</br><span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
@@ -505,12 +517,12 @@
 								</div>\
 							  </a>';
 							}else{
-							  var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
+							  var myInner = '<a target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
 									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>'+list.price+'元</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>￥'+list.price+'</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
 									<div>\
 										</br><span>预估返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\

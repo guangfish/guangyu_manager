@@ -24,6 +24,8 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.TaoKouling;
+import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.RequestUtil;
@@ -126,6 +128,7 @@ public class SearchControllerV2 extends BasicController {
 			long total_results = materialSearchVo.getTbk_dg_material_optional_response().getTotal_results();
 			List<ProductInfo> productInfoList = new ArrayList<>();
 			if (mapDataBeanList != null && mapDataBeanList.size() > 0) {
+				String tkurl="";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					ProductInfo productInfo = new ProductInfo();
 					productInfo.setProductName(mapDataBean.getTitle());
@@ -134,7 +137,7 @@ public class SearchControllerV2 extends BasicController {
 					productInfo.setPrice(Double.parseDouble(mapDataBean.getReserve_price()));
 					productInfo.setZkPrice(Float.parseFloat(mapDataBean.getZk_final_price()));
 					productInfo.setMonthSales(mapDataBean.getVolume().intValue());
-					String quan = "";
+					String quan = "";					
 					if (StringUtil.isNotEmpty(mapDataBean.getCoupon_info())) {
 						productInfo.setCouponMiane(mapDataBean.getCoupon_info());
 						productInfo.setCouponRest(mapDataBean.getCoupon_remain_count().intValue());						
@@ -150,9 +153,16 @@ public class SearchControllerV2 extends BasicController {
 							quan = m.group(1);
 							productInfo.setCouponQuan(quan);
 						}
-						productInfo.setCouponPromoLink(mapDataBean.getCoupon_share_url());
+						tkurl=mapDataBean.getCoupon_share_url();
+						productInfo.setCouponPromoLink(tkurl);
 					}else{
-						productInfo.setCouponPromoLink(mapDataBean.getUrl());
+						tkurl=mapDataBean.getUrl();
+						productInfo.setCouponPromoLink(tkurl);
+					}
+					String tklStr=TaoKouling.createTkl("https:"+tkurl,mapDataBean.getTitle(),mapDataBean.getPict_url());
+					if(StringUtil.isNotEmpty(tklStr)){
+						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+						productInfo.setTkl(tklResponse.getTbk_tpwd_create_response().getData().getModel());
 					}
 					float commission = 0f;
 					float actualCommission = 0f;
