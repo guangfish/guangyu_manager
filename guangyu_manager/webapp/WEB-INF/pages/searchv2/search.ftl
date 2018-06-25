@@ -504,7 +504,7 @@
 					        }
 							
 							if(list.couponMiane){
-							  var myInner = '<a target="_blank" onclick="'+func+'" href="javascript:void(0);">\
+							  var myInner = '<a id="copy" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
@@ -517,7 +517,7 @@
 								</div>\
 							  </a>';
 							}else{
-							  var myInner = '<a target="_blank" onclick="'+func+'" href="javascript:void(0);">\
+							  var myInner = '<a id="copy" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
