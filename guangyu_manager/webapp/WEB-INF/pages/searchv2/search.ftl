@@ -475,6 +475,12 @@
 					if(document.getElementById("search-page")){
 						var table = document.getElementById("search-page").querySelector('.mui-table-view');
 						var o = data.list;
+						if(!o){
+						   $("#pullTips").remove();
+					       var myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">该商品无返利</div></div>';
+					       $(".search-page").append(myInner);
+						   return;
+						}else{
 						maxPage=data.maxPage;
 						var list;
 						for (var i = 0; i<o.length; i++) {	
@@ -516,7 +522,7 @@
 						}
 						isListLoading = false;
 						$("#pullTips").remove();
-	
+	                  }
 					}
 				},
 				error:function(xhr,type,errorThrown){
