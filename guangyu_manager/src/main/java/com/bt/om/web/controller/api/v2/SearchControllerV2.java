@@ -137,6 +137,7 @@ public class SearchControllerV2 extends BasicController {
 					productInfo.setPrice(Double.parseDouble(mapDataBean.getReserve_price()));
 					productInfo.setZkPrice(Float.parseFloat(mapDataBean.getZk_final_price()));
 					productInfo.setMonthSales(mapDataBean.getVolume().intValue());
+					productInfo.setProductId(mapDataBean.getNum_iid().toString());
 					String quan = "";					
 					if (StringUtil.isNotEmpty(mapDataBean.getCoupon_info())) {
 						productInfo.setCouponMiane(mapDataBean.getCoupon_info());

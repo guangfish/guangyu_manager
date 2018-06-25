@@ -237,6 +237,18 @@
       alert('复制失败');
     });
   }
+  
+  function jsCopyId(tkl,id){
+	$('#copy'+id).attr('data-clipboard-text', tkl);
+	var clipboard = new Clipboard('#copy'+id);
+    clipboard.on('success', function (e) {
+       Core.Dialog.msg('淘口令复制成功，去打开手机淘宝完成商品购买，【付款时不要用红包抵扣】，完成购买后记得回来录入订单号拿返利哦！',9000);
+       $('#copy'+id).removeAttr('data-clipboard-text');
+    });
+    clipboard.on('error', function (e) {
+      alert('复制失败');
+    });
+  }
 </script>
 
 <script>
@@ -495,7 +507,7 @@
 							var func;
 					        if(isWeiXin()){
 					          if(list.tkl){
-					            func="jsCopy('"+list.tkl+"')";
+					            func="jsCopyId('"+list.tkl+"','"+list.productId+"')";
 					          }else{
 					            func="drump('"+list.couponPromoLink+"')";
 					          }					    
@@ -504,7 +516,7 @@
 					        }
 							
 							if(list.couponMiane){
-							  var myInner = '<a id="copy" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
+							  var myInner = '<a id="copy'+list.productId+'" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
@@ -517,7 +529,7 @@
 								</div>\
 							  </a>';
 							}else{
-							  var myInner = '<a id="copy" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
+							  var myInner = '<a id="copy'+list.productId+'" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
