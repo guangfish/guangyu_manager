@@ -126,10 +126,11 @@
 		<!-- taobao sms api-->
 		<dependency org="com.taobao" name="taobao-sdk-java-auto" rev="1.2" changing="true" conf="compile,test->default(*)" />
 		<!-- taobao api -->
-		<dependency org="taobao" name="taobao-sdk-java" rev="20180202" changing="true" conf="compile,test->default(*)" />
+		<!--<dependency org="taobao" name="taobao-sdk-java" rev="20180202" changing="true" conf="compile,test->default(*)" />-->
 		
-		<dependency org="com.aliyun" name="aliyun-java-sdk-core" rev="3.7.1" changing="true" conf="compile,test->default(*)" />
+		<!--<dependency org="com.aliyun" name="aliyun-java-sdk-core" rev="3.7.1" changing="true" conf="compile,test->default(*)" />
 		<dependency org="com.aliyun" name="aliyun-java-sdk-dysmsapi" rev="1.1.0" changing="true" conf="compile,test->default(*)" />
+		-->
 
         <!-- selenium -->
 		<dependency org="org.seleniumhq.selenium" name="selenium-java" rev="3.11.0" changing="true" conf="compile,test->default(*)" />
