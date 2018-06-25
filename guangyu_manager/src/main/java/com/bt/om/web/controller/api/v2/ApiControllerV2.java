@@ -21,7 +21,7 @@ import com.bt.om.util.GsonUtil;
 import com.bt.om.util.RequestUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
-import com.bt.om.util.TaobaoSmsUtil;
+import com.bt.om.util.TaobaoSmsNewUtil;
 import com.bt.om.vo.api.GetSmsCodeVo;
 import com.bt.om.vo.api.ProductCommissionVo;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
@@ -128,7 +128,7 @@ public class ApiControllerV2 extends BasicController {
 		// 发送短信验证码
 		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
 			if(!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))){
-				TaobaoSmsUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
+				TaobaoSmsNewUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
 			}	
 		}
 

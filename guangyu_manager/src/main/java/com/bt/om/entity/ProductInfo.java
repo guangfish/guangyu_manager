@@ -697,6 +697,7 @@ public class ProductInfo{
 	//非表中字段
 	private float fanli;
 	private float actualCommission;
+	private float zkPrice;
 
 	private int size;
 
@@ -722,6 +723,14 @@ public class ProductInfo{
 
 	public void setActualCommission(float actualCommission) {
 		this.actualCommission = actualCommission;
+	}
+
+	public float getZkPrice() {
+		return zkPrice;
+	}
+
+	public void setZkPrice(float zkPrice) {
+		this.zkPrice = zkPrice;
 	}	
         
 }

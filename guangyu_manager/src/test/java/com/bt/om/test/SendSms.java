@@ -1,6 +1,6 @@
 package com.bt.om.test;
 
-import com.bt.om.util.TaobaoSmsUtil;
+import com.bt.om.util.TaobaoSmsNewUtil;
 
 public class SendSms {
 
@@ -10,7 +10,7 @@ public class SendSms {
 		String[] mobiles = mobiesStr.split(";");
 		for (String mobile : mobiles) {
 			System.out.println(mobile);
-			TaobaoSmsUtil.sendSmsCommon("逛鱼返利", "SMS_135793100", mobile);
+			TaobaoSmsNewUtil.sendSmsCommon("逛鱼返利", "SMS_135793100", mobile);
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {

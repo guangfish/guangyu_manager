@@ -4,7 +4,7 @@
 	    <a class="backToIndex mui-icon mui-icon-back"></a>
 		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
-			<input type="search" class="mui-input-clear" placeholder="请粘贴淘宝或京东的商品链接">
+			<input type="search" class="mui-input-clear" placeholder="请粘贴标题或链接或淘口令">
 		</div>
 		<a class=" mui-icon mui-icon-search mui-self-search"></a>
 	</div>
@@ -485,22 +485,38 @@
 							if(!couponRest){
 							  couponRest=999;
 							}
-							var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
+							if(list.couponMiane){
+							  var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
 									<h2 class="mui-body-tit">'+list.productName+'</h2>\
 									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
-									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.price+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>'+list.price+'元</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
 									<p>券:&nbsp;<span class="mui-inventory">'+list.couponMiane+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余<span class="mui-inventory">'+couponRest+'张</span></p>\
 									<div>\
 										</br><span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;再返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
 									</div>\
 								</div>\
-							</a>';
+							  </a>';
+							}else{
+							  var myInner = '<a target="_blank" onclick="drump(\''+list.couponPromoLink+'\')" href="javascript:void(0);">\
+								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
+								<div class="mui-media-body">\
+									<h2 class="mui-body-tit">'+list.productName+'</h2>\
+									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
+									<p>现价:&nbsp;<span class="mui-bodycolor">￥'+list.zkPrice+'&nbsp<del>'+list.price+'元</del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件</span></p>\
+									<div>\
+										</br><span>预估返现:<em class="mui-first-payment">￥'+list.actualCommission+'</em></span>\
+									</div>\
+								</div>\
+							  </a>';
+							}							
 							li.innerHTML = myInner;
 							table.appendChild(li);
 						}
 						isListLoading = false;
+						$("#pullTips").remove();
+	
 					}
 				},
 				error:function(xhr,type,errorThrown){

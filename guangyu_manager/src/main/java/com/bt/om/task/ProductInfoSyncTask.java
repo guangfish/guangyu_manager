@@ -45,13 +45,13 @@ public class ProductInfoSyncTask {
 					productInfo=new ProductInfo();
 					ConvertUtils.register(new DateConverter(null), Date.class);
 					BeanUtils.copyProperties(productInfo,productInfoMid);
-					productInfoService.insertProductInfo(productInfo);
-					
+					productInfoService.insertProductInfo(productInfo);	
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}finally{
 					//更新数据到表product_info_mid
 					productInfoMid.setIfvalid(3);
 					productInfoMidService.updateByPrimaryKey(productInfoMid);
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		}

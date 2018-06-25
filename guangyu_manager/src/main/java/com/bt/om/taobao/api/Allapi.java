@@ -45,7 +45,7 @@ public class Allapi {
 		TaobaoClient client = new DefaultTaobaoClient(serverUrl, appKey,
 				appSecret);
 		TbkItemInfoGetRequest req = new TbkItemInfoGetRequest();
-		req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
+//		req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
 		req.setPlatform(1L);
 		req.setNumIids("559374142896");
 		TbkItemInfoGetResponse rsp;
