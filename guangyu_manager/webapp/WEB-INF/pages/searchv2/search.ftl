@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		
-		<!--<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">今日已为用户节省${saveMoney?if_exists}元</font></div></div>-->
+		<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption"><font color="red">今日已为用户节省${saveMoney?if_exists}元</font></div></div>
 		
 		<!-- 热门活动 -->
 		<div class="mui-cont-box">
