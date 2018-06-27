@@ -20,4 +20,14 @@ public class HelpControllerV2 extends BasicController {
 	public String help(Model model, HttpServletRequest request) {
 		return "searchv2/help";
 	}
+	
+	@RequestMapping(value = "/kefu", method = { RequestMethod.GET, RequestMethod.POST })
+	public String kefu(Model model, HttpServletRequest request) {
+		return "searchv2/kefu";
+	}
+	
+	@RequestMapping(value = "/sucai", method = { RequestMethod.GET, RequestMethod.POST })
+	public String sucai(Model model, HttpServletRequest request) {
+		return "searchv2/sucai";
+	}
 }

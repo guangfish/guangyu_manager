@@ -13,7 +13,7 @@
 				<div class="mui-self-top">
 					<a class="mui-head-img"><img src="/static/frontv2/img/icon_head.png" alt=""></a>
 					<div class="mui-self-infor">
-					    <h2><#if (user.accountType == 1)>逛鱼会员<#else>超级会员</#if></h2>
+					    <h2><#if (user.accountType == 1)>逛鱼会员<#else>超级会员&nbsp;<img height="20px" width="20px" src="/static/frontv2/img/vip.png" alt=""></#if></h2>
 						<p>${user.mobile?if_exists}</p>
 					</div>
 				</div>
@@ -22,14 +22,14 @@
 				    <ul class="mui-table-view">						
 						<li class="mui-table-view-cell">
 							<a class="" href="javascript:void(0);">
-								<i class="ic_compare"></i>累计购物已省<font color="red">￥${cash?if_exists}</font>
+								<i class="ic_save"></i>累计购物已省<font color="red">￥${cash?if_exists}</font>
 							</a>
 						</li>
 						<#if (user.accountType == 2)>
 						<li class="mui-table-view-cell">
 							<a class="" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
 							    <input type="hidden" name="myInviteCode" id="myInviteCode" value="${user.myInviteCode?if_exists}"/>
-								<i class="ic_mybrowse"></i>我的邀请码
+								<i class="ic_invite"></i>我的邀请码
 							</a>
 						</li>
 						</#if>
@@ -43,11 +43,23 @@
 						<#if (user.accountType == 2)>
 						<li class="mui-table-view-cell">
 							<a class="mui-navigate-right" href="/v2/agencyreward">
-								<i class="ic_mycollect"></i>订单奖励
+								<i class="ic_reward"></i>订单奖励
 							</a>
 						</li>
 						</#if>
 					</ul>	
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="javascript:void(0);">
+								<i class="ic_sucai"></i>宣传素材
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right" href="/v2/kefu">
+								<i class="ic_kefu"></i>专属客服
+							</a>
+						</li>
+					</ul>
 								
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">

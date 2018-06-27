@@ -77,7 +77,13 @@
 .mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_calculator,
 .mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_compare,
 .mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_setting,
-.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_drive {
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_drive,
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_reward,
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_sucai,
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_kefu,
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_invite,
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_save
+ {
   display: inline-block;
   width: .4rem;
   height: .39rem;
@@ -119,6 +125,31 @@
 }
 .mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_setting {
   background-image: url(../../img/m_icon9.png);
+  width: .37rem;
+  height: .37rem;
+}
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_reward {
+  background-image: url(../../img/reward.png);
+  width: .37rem;
+  height: .37rem;
+}
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_sucai {
+  background-image: url(../../img/sucai.png);
+  width: .37rem;
+  height: .37rem;
+}
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_kefu {
+  background-image: url(../../img/kefu.png);
+  width: .37rem;
+  height: .37rem;
+}
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_invite {
+  background-image: url(../../img/invite.png);
+  width: .37rem;
+  height: .37rem;
+}
+.mui-content.self-content-box .self-center .mui-table-view .mui-table-view-cell .ic_save {
+  background-image: url(../../img/save.png);
   width: .37rem;
   height: .37rem;
 }
