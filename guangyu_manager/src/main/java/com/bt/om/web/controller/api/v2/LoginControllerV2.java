@@ -162,7 +162,7 @@ public class LoginControllerV2 extends BasicController {
 		String myInviteCode = (String.valueOf(((mobile + "1qaz2wsx").hashCode()))).replace("-", "");
 		user.setTaInviteCode(inviteCode);
 		user.setMyInviteCode(myInviteCode);
-		user.setAccountType(1);
+		user.setAccountType(2);
 		try {
 			userService.insert(user);
 			if (StringUtil.isNotEmpty(inviteCode)) {
