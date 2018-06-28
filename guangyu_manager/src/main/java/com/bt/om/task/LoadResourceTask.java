@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.bt.om.system.GlobalVariable;
 
-//@Component
+@Component
 public class LoadResourceTask {
 	private static final Logger logger = Logger.getLogger(LoadResourceTask.class);
 

@@ -42,6 +42,8 @@ import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import redis.clients.jedis.ShardedJedis;
+
 /**
  * 逛鱼申请提现Controller
  */
@@ -121,12 +123,14 @@ public class OrderDrawControllerV2 extends BasicController {
 			return model;
 		}
 
-		String vcodejds = jedisPool.getResource().get(userId);
+		ShardedJedis jedis = jedisPool.getResource();
+		String vcodejds = jedis.get(userId);
 		// 短信验证码已过期
 		if (StringUtils.isEmpty(vcodejds)) {
 			orderDrawVo.setStatus("4");
 			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
 			model.addAttribute("response", orderDrawVo);
+			jedis.close();
 			return model;
 		}
 
@@ -135,10 +139,12 @@ public class OrderDrawControllerV2 extends BasicController {
 			orderDrawVo.setStatus("5");
 			orderDrawVo.setDesc("短信验证码验证失败");
 			model.addAttribute("response", orderDrawVo);
+			jedis.close();
 			return model;
 		}
 
-		jedisPool.getResource().del(userId);
+		jedis.del(userId);
+		jedis.close();
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();

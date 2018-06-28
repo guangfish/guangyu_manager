@@ -33,6 +33,8 @@ import com.bt.om.web.controller.api.v2.vo.RegisterVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import redis.clients.jedis.ShardedJedis;
+
 /**
  * 登陆Controller
  */
@@ -71,21 +73,26 @@ public class LoginControllerV2 extends BasicController {
 			e.printStackTrace();
 		}
 
-		String smscode = jedisPool.getResource().get(mobile);
+		ShardedJedis jedis = jedisPool.getResource();
+		String smscode = jedis.get(mobile);
 		if (StringUtil.isEmpty(smscode)) {
 			registerVo.setStatus("1");
 			registerVo.setDesc("短信验证码已过期");
 			model.addAttribute("response", registerVo);
+			jedis.close();
 			return model;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
 			registerVo.setStatus("2");
 			registerVo.setDesc("短信验证码不正确");
 			model.addAttribute("response", registerVo);
+			jedis.close();
 			return model;
 		} else {
-			jedisPool.getResource().del(mobile);
+			jedis.del(mobile);
 		}
+		jedis.close();
+		
 
 		User user = userService.selectByMobile(mobile);
 		if (user != null) {						
@@ -136,21 +143,25 @@ public class LoginControllerV2 extends BasicController {
 			e.printStackTrace();
 		}
 
-		String smscode = jedisPool.getResource().get(mobile);
+		ShardedJedis jedis = jedisPool.getResource();
+		String smscode = jedis.get(mobile);
 		if (StringUtil.isEmpty(smscode)) {
 			registerVo.setStatus("1");
 			registerVo.setDesc("短信验证码已过期");
 			model.addAttribute("response", registerVo);
+			jedis.close();
 			return model;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
 			registerVo.setStatus("2");
 			registerVo.setDesc("短信验证码不正确");
 			model.addAttribute("response", registerVo);
+			jedis.close();
 			return model;
 		} else {
-			jedisPool.getResource().del(mobile);
+			jedis.del(mobile);
 		}
+		jedis.close();
 
 		User user = new User();
 		user.setMobile(mobile);

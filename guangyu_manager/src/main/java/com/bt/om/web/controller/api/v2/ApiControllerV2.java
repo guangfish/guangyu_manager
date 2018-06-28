@@ -34,6 +34,8 @@ import com.bt.om.web.controller.api.TaskBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import redis.clients.jedis.ShardedJedis;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -114,7 +116,8 @@ public class ApiControllerV2 extends BasicController {
 			return model;
 		}
 		
-		if(jedisPool.getResource().exists(mobile)){
+		ShardedJedis jedis = jedisPool.getResource();
+		if(jedis.exists(mobile)){
 			commonVo.setStatus("3");
 			commonVo.setDesc("请等待2分钟后再次发送短信验证码");
 			model.addAttribute("response", commonVo);
@@ -123,7 +126,8 @@ public class ApiControllerV2 extends BasicController {
 
 		String vcode = getVcode(5);
 		System.out.println(vcode);
-		jedisPool.getResource().setex(mobile, 120, vcode);
+		jedis.setex(mobile, 120, vcode);
+		jedis.close();
 
 		// 发送短信验证码
 		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {

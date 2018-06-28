@@ -17,6 +17,8 @@ import com.bt.om.util.DateUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
 
+import redis.clients.jedis.ShardedJedis;
+
 /**
  * Created by chenhj on 2017/9/28.
  */
@@ -48,12 +50,14 @@ public class GlobalVariable {
 
 		// 定时增加提示的节约金额
 		String date = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN);
-		String money = jedisPool.getResource().get(date);
+		ShardedJedis jedis = jedisPool.getResource();
+		String money = jedis.get(date);
 		if (StringUtil.isNotEmpty(money)) {
-			jedisPool.getResource().incrBy(date, NumberUtil.getRandomInt(Integer.parseInt(resourceMap.get("saveMoney_inc")), Integer.parseInt(resourceMap.get("saveMoney_inc"))*3));
+			jedis.incrBy(date, NumberUtil.getRandomInt(Integer.parseInt(resourceMap.get("saveMoney_inc")), Integer.parseInt(resourceMap.get("saveMoney_inc"))*3));
 		}else{
-			jedisPool.getResource().setex(date, 86400, "10");
+			jedis.setex(date, 86400, "10");
 		}
+		jedis.close();
 //		if (resourceMap.get(date) != null) {
 //			long maney = Long.parseLong(resourceMap.get(date));
 //			maney = maney + NumberUtil.getRandomInt(50, 100);

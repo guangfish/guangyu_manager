@@ -35,6 +35,8 @@ import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.vo.JsonResult;
 import com.bt.om.web.util.SearchUtil;
 
+import redis.clients.jedis.ShardedJedis;
+
 /**
  * 逛鱼搜索Controller
  */
@@ -94,7 +96,9 @@ public class SearchControllerV2 extends BasicController {
 		// model.addAttribute("saveMoney",GlobalVariable.resourceMap.get(DateUtil.dateFormate(new
 		// Date(), DateUtil.CHINESE_PATTERN)));
 		String date = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN);
-		model.addAttribute("saveMoney", jedisPool.getResource().get(date));
+		ShardedJedis jedis = jedisPool.getResource();
+		model.addAttribute("saveMoney", jedis.get(date));
+		jedis.close();
 
 		return "searchv2/search";
 	}
