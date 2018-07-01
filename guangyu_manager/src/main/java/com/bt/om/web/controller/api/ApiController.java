@@ -28,6 +28,7 @@ import com.bt.om.vo.api.ProductInfoVo;
 //import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -161,7 +162,7 @@ public class ApiController extends BasicController {
 		@SuppressWarnings("unused")
 		String user_id;
 		String product_url = "";
-		String mobile = "";
+		String mobile = CookieHelper.getCookie("mobile");
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -170,9 +171,9 @@ public class ApiController extends BasicController {
 				user_id = obj.get("user_id").getAsString();
 			}			
 			product_url = obj.get("product_url").getAsString();
-			if(obj.get("mobile")!=null){
-				mobile = obj.get("mobile").getAsString();
-			}
+//			if(obj.get("mobile")!=null){
+//				mobile = obj.get("mobile").getAsString();
+//			}
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
@@ -341,6 +342,8 @@ public class ApiController extends BasicController {
 				//插入搜索记录
 				SearchRecord searchRecord=new SearchRecord();
 				searchRecord.setMobile(mobile);
+				searchRecord.setProductId(productId);
+				searchRecord.setMall(platform.equals("taobao")?1:2);
 				searchRecord.setStatus(1);
 				searchRecord.setTitle(productName);
 				searchRecord.setCreateTime(new Date());
@@ -451,6 +454,8 @@ public class ApiController extends BasicController {
 			//插入搜索记录
 			SearchRecord searchRecord=new SearchRecord();
 			searchRecord.setMobile(mobile);
+			searchRecord.setProductId(productInfo.getProductId());
+			searchRecord.setMall(platform.equals("taobao")?1:2);
 			searchRecord.setStatus(1);
 			searchRecord.setTitle(productInfo.getProductName());
 			searchRecord.setCreateTime(new Date());

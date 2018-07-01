@@ -506,6 +506,16 @@ public class DateUtil {
         now.set(Calendar.MONTH, now.get(Calendar.MONTH) + 1);
         return now.getTime();
     }
+    
+    public static Date getBeforeMonth(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
+        return now.getTime();
+    }
 
     public static String getStrDateBefor(int createdDate) {
         if (createdDate <= 0) {
@@ -592,5 +602,9 @@ public class DateUtil {
             w = 0;
 
         return weekDays[w];
+    }
+    
+    public static void main(String[] args){
+    	System.out.println(dateFormate(getBeforeMonth(new Date()),CHINESE_PATTERN));
     }
 }

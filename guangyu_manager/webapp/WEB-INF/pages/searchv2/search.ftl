@@ -304,6 +304,11 @@
 	var maxPage = 2;
 	
 	function wrapLoad(v) {
+	  var mobile = $.cookie('mobile');
+	  if(!mobile){
+	    location.href="/v2/login?toUrl=/v2/search";
+	  }
+	  	  
 	  var _v = v;
 	  if(_v && _v.indexOf("http") != -1){
 		curPage++;

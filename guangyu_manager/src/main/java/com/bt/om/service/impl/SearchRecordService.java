@@ -23,4 +23,9 @@ public class SearchRecordService implements ISearchRecordService {
 	public List<SearchRecord> selectByStatusAndTime(SearchRecord searchRecord) {
 		return searchRecordMapper.selectByStatusAndTime(searchRecord);
 	}
+	
+	@Override
+	public List<SearchRecord> selectLastest(Integer minute) {
+		return searchRecordMapper.selectLastest(minute);
+	}
 }

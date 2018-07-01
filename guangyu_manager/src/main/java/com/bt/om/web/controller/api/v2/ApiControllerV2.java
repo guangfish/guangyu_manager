@@ -328,6 +328,8 @@ public class ApiControllerV2 extends BasicController {
 				//插入搜索记录
 				SearchRecord searchRecord=new SearchRecord();
 				searchRecord.setMobile(userId);
+				searchRecord.setProductId(productId);
+				searchRecord.setMall(platform.equals("taobao")?1:2);
 				searchRecord.setStatus(1);
 				searchRecord.setTitle(productName);
 				searchRecord.setCreateTime(new Date());
@@ -375,6 +377,8 @@ public class ApiControllerV2 extends BasicController {
 			//插入搜索记录
 			SearchRecord searchRecord=new SearchRecord();
 			searchRecord.setMobile(userId);
+			searchRecord.setProductId(productInfo.getProductId());
+			searchRecord.setMall(platform.equals("taobao")?1:2);
 			searchRecord.setStatus(1);
 			searchRecord.setTitle(productInfo.getProductName());
 			searchRecord.setCreateTime(new Date());

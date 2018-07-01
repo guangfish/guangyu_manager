@@ -9,4 +9,6 @@ public interface ISearchRecordService {
     public void insert(SearchRecord searchRecord);
     
     public List<SearchRecord> selectByStatusAndTime(SearchRecord searchRecord);
+    
+    public List<SearchRecord> selectLastest(Integer minute);
 }

@@ -80,7 +80,7 @@ public class OrderFetchTask {
 	}
 
 	@Scheduled(cron = "0 0 7-23 * * ?")
-//	@Scheduled(cron = "0 0/2 * * * ?")
+//	@Scheduled(cron = "0 0/1 * * * ?")
 	public void orderFetchTask() {
 		logger.info("淘宝订单报表下载入库");
 		try {
@@ -92,23 +92,32 @@ public class OrderFetchTask {
 	}
 	
 	private void orderTaobaoFetch() throws Exception { 
-		try{						
-//			driver.navigate().refresh();
-//			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
-			
+		try{									
 			WebElement element0 = driver.findElement(By.xpath("//*[@id='sitemapTimeRange']"));
 			PageUtils.scrollToElementAndClick(element0, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
 			
-//			String idd = driver.findElement(By.cssSelector("a.quick-item[4]")).getAttribute("id");
-			List<WebElement> element = driver.findElements(By.cssSelector("a.quick-item")); 
-			PageUtils.scrollToElementAndClick(element.get(3), driver);
-//			element.get(3).click();
-			System.out.println(element.size());
-//			driver.findElement(By.xpath("//*[@id="brix_1453"]/div/div/ul/li[4]/a")).click();			
+			String id = driver.findElement(By.cssSelector("div.datepicker")).getAttribute("id");
+			System.out.println(id);
+			
+			//快捷选择时间
+//			List<WebElement> element = driver.findElements(By.cssSelector("a.quick-item")); 
+//			PageUtils.scrollToElementAndClick(element.get(3), driver);
+//			System.out.println(element.size());
+			
+			//输入起始时间
+			String dataString=DateUtil.dateFormate(DateUtil.getBeforeMonth(new Date()),DateUtil.CHINESE_PATTERN);
+			driver.findElement(By.xpath("//*[@id='"+id+"']/div/div/div[1]/input[1]")).clear();
+			driver.findElement(By.xpath("//*[@id='"+id+"']/div/div/div[1]/input[1]")).sendKeys(dataString);					
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+			
+			//点击确定
+			WebElement element = driver.findElement(By.xpath("//*[@id='"+id+"']/div/div/div[2]/a[1]"));
+			PageUtils.scrollToElementAndClick(element, driver);			
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
             
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*2, sleepTimeEnd*2));
-			String id = driver.findElement(By.xpath("//*[@id='magix_vf_main']/div[1]")).getAttribute("id");
+			id = driver.findElement(By.xpath("//*[@id='magix_vf_main']/div[1]")).getAttribute("id");
 			System.out.println(id);
 			//点击下载报告			
 			WebElement element1 = driver.findElement(By.xpath("//*[@id='"+id+"']/div[2]/div[1]/div[1]/a"));
@@ -152,9 +161,11 @@ public class OrderFetchTask {
         File file = new File(filePath);  
         if (!file.exists())  
         	logger.info("文件不存在");  
+        FileInputStream in = null;
         try {  
+        	in=new FileInputStream(file);
             //1.读取Excel的对象  
-            POIFSFileSystem poifsFileSystem = new POIFSFileSystem(new FileInputStream(file));  
+            POIFSFileSystem poifsFileSystem = new POIFSFileSystem(in);  
             //2.Excel工作薄对象  
             HSSFWorkbook hssfWorkbook = new HSSFWorkbook(poifsFileSystem);  
             //3.Excel工作表对象  
@@ -277,7 +288,15 @@ public class OrderFetchTask {
         } catch (IOException e) {  
             e.printStackTrace();  
             return null;
-        }  
+        } finally{
+        	if(in!=null){
+        		try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
         return tkOrderInputList;
     }
 	

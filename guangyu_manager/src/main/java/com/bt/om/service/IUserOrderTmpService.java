@@ -10,5 +10,7 @@ public interface IUserOrderTmpService {
 	public void update(UserOrderTmp userOrderTmp);
 	
 	public List<UserOrderTmp> selectUnCheckOrder(Integer belong);
+	
+	public UserOrderTmp selectByOrderId(String orderId);
 
 }

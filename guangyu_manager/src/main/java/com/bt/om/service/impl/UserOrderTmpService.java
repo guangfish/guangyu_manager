@@ -27,4 +27,8 @@ public class UserOrderTmpService implements IUserOrderTmpService {
 	public List<UserOrderTmp> selectUnCheckOrder(Integer belong){
 		return userOrderTmpMapper.selectUnCheckOrder(belong);
 	}
+	
+	public UserOrderTmp selectByOrderId(String orderId){
+		return userOrderTmpMapper.selectByOrderId(orderId);
+	}
 }

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.Banner;
 import com.bt.om.entity.ProductInfo;
+import com.bt.om.entity.SearchRecord;
 import com.bt.om.service.IBannerService;
 import com.bt.om.service.IProductInfoService;
+import com.bt.om.service.ISearchRecordService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
@@ -33,6 +35,7 @@ import com.bt.om.util.StringUtil;
 import com.bt.om.vo.web.SearchDataVo;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.vo.JsonResult;
+import com.bt.om.web.util.CookieHelper;
 import com.bt.om.web.util.SearchUtil;
 
 import redis.clients.jedis.ShardedJedis;
@@ -48,6 +51,9 @@ public class SearchControllerV2 extends BasicController {
 
 	@Autowired
 	private IBannerService bannerService;
+	
+	@Autowired
+	private ISearchRecordService searchRecordService;
 
 	@Autowired
 	private JedisPool jedisPool;
@@ -111,6 +117,7 @@ public class SearchControllerV2 extends BasicController {
 	@ResponseBody
 	@RequestMapping(value = "/api/more", method = { RequestMethod.GET, RequestMethod.POST })
 	public JsonResult apiMore(Model model, HttpServletRequest request) {
+		String mobile = CookieHelper.getCookie("mobile");
 		String key = request.getParameter("product_url");
 		long pageNo = RequestUtil.getLongParameter(request, "pageNo", 1);
 		long size = RequestUtil.getLongParameter(request, "size", 20);
@@ -125,6 +132,17 @@ public class SearchControllerV2 extends BasicController {
 		model.addAttribute("rate", rate);
 
 		if (StringUtil.isNotEmpty(key)) {
+			//插入搜索记录
+			SearchRecord searchRecord=new SearchRecord();
+			searchRecord.setMobile(mobile);
+			searchRecord.setProductId("");
+			searchRecord.setMall(1);
+			searchRecord.setStatus(1);
+			searchRecord.setTitle(key);
+			searchRecord.setCreateTime(new Date());
+			searchRecord.setUpdateTime(new Date());
+			searchRecordService.insert(searchRecord);
+			
 			String retStr = MaterialSearch.materialSearch(key, pageNo, size);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()

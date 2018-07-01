@@ -43,4 +43,6 @@ public interface UserOrderTmpMapper {
 	int updateByPrimaryKey(UserOrderTmp record);
 	
 	List<UserOrderTmp> selectUnCheckOrder(Integer belong);
+	
+	UserOrderTmp selectByOrderId(String orderId);
 }
