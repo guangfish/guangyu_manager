@@ -20,7 +20,7 @@
 					  </div>
 			          <#list invitationList as invitation>
 						<div class="main-answer-item">
-							<p>${invitation.beInviterMobile?if_exists}&nbsp;<font color="red">(<#if (invitation.status==1)>未激活<#else>已激活</#if>)</font><span><#if (invitation.status==1)>￥${invitation.money?if_exists}&nbsp;(可领取)<#else>￥${invitation.money?if_exists}&nbsp;(<#if (invitation.reward==1)>未领取<#else>已领取</#if>)</#if></i></span></p>							
+							<p>${invitation.beInviterMobile?if_exists}&nbsp;<font color="red">(<#if (invitation.status==1)>未激活<#else>已激活</#if>)</font><span><#if (invitation.status==1)>￥${invitation.money?if_exists}&nbsp;<font color="red">(可领取)<#else>￥${invitation.money?if_exists}&nbsp;(<#if (invitation.reward==1)>未领取<#else>已领取</#if>)</#if></font></i></span></p>							
 						</div>	
 					  </#list>
 			          </#if>					
