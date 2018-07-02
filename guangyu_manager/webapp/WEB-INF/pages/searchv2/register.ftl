@@ -42,7 +42,7 @@
 				<div class="code" id="codesend">
 					<input type="text" placeholder="请输入手机验证码" name="code" id="code"/>
 					<div>
-						<a href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
+						<a style="text-decoration: none;" href="javascript:void(0);" onclick="send()" id="aaa">获取验证码</a>
 					</div>
 				</div>
 				<!--
