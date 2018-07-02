@@ -27,7 +27,7 @@
 						</li>
 						<#if (user.accountType == 2)>
 						<li class="mui-table-view-cell">
-							<a class="" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
+							<a class="mui-navigate-right" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
 							    <input type="hidden" name="myInviteCode" id="myInviteCode" value="${user.myInviteCode?if_exists}"/>
 								<i class="ic_invite"></i>我的邀请码
 							</a>
@@ -108,7 +108,7 @@
 		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【'+value+'】');
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
-            Core.Dialog.msg('我的邀请码复制成功，赶紧去微信粘贴邀请好友吧！',9000);
+            Core.Dialog.msg('邀请码复制成功，赶紧去微信粘贴邀请好友吧！',6000);
             $('#copy').removeAttr('data-clipboard-text');
           });
           clipboard.on('error', function (e) {
