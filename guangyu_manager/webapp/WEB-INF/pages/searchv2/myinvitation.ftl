@@ -16,11 +16,11 @@
 			</#if>				  
 					  <#if (invitationList?exists && invitationList?size > 0)>
 					  <div class="main-answer-item">
-							<p>我的会员<span>邀请奖励</i></span></p>						
+							<p>我的会员&nbsp;<font color="red">(激活状态)</font><span>邀请奖励&nbsp;<font color="red">(奖励状态)</font></i></span></p>						
 					  </div>
 			          <#list invitationList as invitation>
 						<div class="main-answer-item">
-							<p>${invitation.beInviterMobile?if_exists}<font color="red">(<#if (invitation.status==1)>未激活<#else>已激活</#if>)</font><span><#if (invitation.status==1)>￥${invitation.money?if_exists}(可领取)<#else>￥${invitation.money?if_exists}(<#if (invitation.reward==1)>未领取<#else>已领取</#if>)</#if></i></span></p>							
+							<p>${invitation.beInviterMobile?if_exists}&nbsp;<font color="red">(<#if (invitation.status==1)>未激活<#else>已激活</#if>)</font><span><#if (invitation.status==1)>￥${invitation.money?if_exists}&nbsp;(可领取)<#else>￥${invitation.money?if_exists}&nbsp;(<#if (invitation.reward==1)>未领取<#else>已领取</#if>)</#if></i></span></p>							
 						</div>	
 					  </#list>
 			          </#if>					
