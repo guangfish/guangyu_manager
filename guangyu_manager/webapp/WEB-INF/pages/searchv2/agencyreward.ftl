@@ -17,11 +17,11 @@
 			</#if>				    
 					  <#if (userOrderList?exists && userOrderList?size > 0)>
 					    <div class="main-answer-item">
-							<p>我的会员<font color="red">(订单返现)</font><span>平台奖励<font color="red">(%)</font></i></span></p>						
+							<p>我的会员&nbsp;<font color="red">(订单返现)</font><span>平台奖励&nbsp;<font color="red">(%)</font></i></span></p>						
 						</div>
 			          <#list userOrderList as userOrder>
 						<div class="main-answer-item">
-							<p>${userOrder.mobile?if_exists}<font color="red">(￥${userOrder.commission3?if_exists})</font><span>￥${userOrder.commissionReward?if_exists}<font color="red">(20%)</font></i></span></p>						
+							<p>${userOrder.mobile?if_exists}&nbsp;<font color="red">(￥${userOrder.commission3?if_exists})</font><span>￥${userOrder.commissionReward?if_exists}&nbsp;<font color="red">(20%)</font></i></span></p>						
 						</div>	
 					  </#list>
 			          </#if>					
