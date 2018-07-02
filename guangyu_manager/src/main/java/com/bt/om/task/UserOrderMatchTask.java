@@ -21,6 +21,7 @@ import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserOrderTmpService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.NumberUtil;
 
 /**
  * 用户订单匹配
@@ -45,6 +46,8 @@ public class UserOrderMatchTask {
 	public void userOrderCheck() {
 		String ifRun = GlobalVariable.resourceMap.get("UserOrderMatchTask");
 		if ("1".equals(ifRun)) {
+			int baseAgencyRewardRate = (int) (Float
+					.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100);
 			logger.info("用户订单定时匹配");
 			// for 淘宝
 			List<UserOrderTmp> userOrderTmpList = userOrderTmpService.selectUnCheckOrder(1);
@@ -116,9 +119,15 @@ public class UserOrderMatchTask {
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
-							userOrder.setCommissionReward((double) (Math.round(commission3
-									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
-									/ 100);
+							int agencyRewardRate = 0;
+							if (commission3 >= 30) {
+								agencyRewardRate = baseAgencyRewardRate;
+							} else {
+								agencyRewardRate = baseAgencyRewardRate + NumberUtil.getRandomNumber(0, 80);
+							}
+							userOrder.setCommissionReward(
+									(double) (Math.round(commission3 * (agencyRewardRate) * 100)/100) / 100);
+							userOrder.setCommissionRewardRate(agencyRewardRate);
 							userOrder.setRewardStatus(1);
 							userOrder.setCreateTime(new Date());
 							userOrder.setUpdateTime(new Date());
@@ -222,9 +231,15 @@ public class UserOrderMatchTask {
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
-							userOrder.setCommissionReward((double) (Math.round(commission3
-									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
-									/ 100);
+							int agencyRewardRate = 0;
+							if (commission3 >= 30) {
+								agencyRewardRate = baseAgencyRewardRate;
+							} else {
+								agencyRewardRate = baseAgencyRewardRate + NumberUtil.getRandomNumber(0, 80);
+							}
+							userOrder.setCommissionReward(
+									(double) (Math.round(commission3 * (agencyRewardRate) * 100)/100) / 100);
+							userOrder.setCommissionRewardRate(agencyRewardRate);
 							userOrder.setRewardStatus(1);
 							userOrder.setCreateTime(new Date());
 							userOrder.setUpdateTime(new Date());

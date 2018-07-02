@@ -174,9 +174,10 @@
   </select>
   
   <select id="selectLastest" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT a.mobile,a.title 
-    FROM (SELECT * FROM search_record WHERE mobile !='' AND ROUND((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(create_time))/60)&lt;#{minute,jdbcType=INTEGER} and ROUND((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(create_time))/60)&gt;=#{minute,jdbcType=INTEGER}/2 ORDER BY id ASC) a 
-    GROUP BY a.mobile,a.title
-   
+    select 
+    <include refid="Base_Column_List" />
+    from search_record 
+    where mobile !='' AND ROUND((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(create_time))/60)&lt;=#{minute,jdbcType=INTEGER} 
+    ORDER BY id ASC   
   </select>
 </mapper>

@@ -17,6 +17,7 @@ import com.bt.om.entity.UserOrder;
 import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.NumberUtil;
 
 /**
  * 淘宝订单核验
@@ -35,6 +36,8 @@ public class UserOrderCheckTask {
 	public void userOrderCheck() {
 		String ifRun = GlobalVariable.resourceMap.get("UserOrderCheckTask");
 		if ("1".equals(ifRun)) {
+			int baseAgencyRewardRate = (int) (Float
+					.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100);
 			logger.info("用户订单定时校验");
 			UserOrder userOrder = new UserOrder();
 			userOrder.setStatus1(1);
@@ -121,9 +124,15 @@ public class UserOrderCheckTask {
 							}
 
 							userOrder1.setStatus1(status1);
-							userOrder1.setCommissionReward((double) (Math.round(commission3
-									* Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100))
-									/ 100);
+							int agencyRewardRate = 0;
+							if (commission3 >= 30) {
+								agencyRewardRate = baseAgencyRewardRate;
+							} else {
+								agencyRewardRate = baseAgencyRewardRate + NumberUtil.getRandomNumber(0, 80);
+							}
+							userOrder1.setCommissionReward(
+									(double) (Math.round(commission3 * (agencyRewardRate) * 100) / 100) / 100);
+							userOrder1.setCommissionRewardRate(agencyRewardRate);
 							userOrder1.setRewardStatus(1);
 							userOrder1.setUpdateTime(new Date());
 							userOrderService.updateByPrimaryKey(userOrder1);

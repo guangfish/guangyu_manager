@@ -21,7 +21,7 @@
 						</div>
 			          <#list userOrderList as userOrder>
 						<div class="main-answer-item">
-							<p>${userOrder.mobile?if_exists}&nbsp;<font color="red">(￥${userOrder.commission3?if_exists})</font><span>￥${userOrder.commissionReward?if_exists}&nbsp;<font color="red">(20%)</font></i></span></p>						
+							<p>${userOrder.mobile?if_exists}&nbsp;<font color="red">(￥${userOrder.commission3?if_exists})</font><span>￥${userOrder.commissionReward?if_exists}&nbsp;<font color="red">(${userOrder.commissionRewardRate?if_exists}%)</font></i></span></p>						
 						</div>	
 					  </#list>
 			          </#if>					

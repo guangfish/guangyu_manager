@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -101,47 +103,52 @@ public class OrderBindTask {
 					if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
 						int cnt = 0;
 						String orderId = "";
+						Double commission = 0d;
 						UserOrderTmp userOrderTmp = null;
 						for (SearchRecord searchRecord : searchRecordList) {
 							for (TkOrderInput tkOrderInput : tkOrderInputList) {
-								//判断搜索标题是否与订单标题相同
+								// 判断搜索标题是否与订单标题相同
 								if (searchRecord.getTitle().equals(tkOrderInput.getProductInfo())) {
-									//判断订单状态
+									// 判断订单状态
 									if (!tkOrderInput.getOrderStatus().equals("订单失效")) {
-//										System.out.println(tkOrderInput.getCreateTime());
-//										// 判断搜索时间小于订单创建时间
-//										if ((DateUtil
-//												.dateFormate(searchRecord.getCreateTime(),
-//														DateUtil.FULL_CHINESE_PATTERN))
-//																.compareTo(tkOrderInput.getCreateTime()) < 0) {
+										// 判断搜索时间小于订单创建时间
+										if ((DateUtil.dateFormate(searchRecord.getCreateTime(),
+												DateUtil.FULL_CHINESE_PATTERN))
+														.compareTo(tkOrderInput.getCreateTime()) < 0) {
 											cnt = cnt + 1;
 											orderId = tkOrderInput.getOrderId();
-//										}
+											commission = commission + tkOrderInput.getEffectEstimate();
+										}
 									}
 								}
 							}
 							// 根据标题，搜索记录与订单记录标题匹配到一次
 							if (cnt == 1) {
-								userOrderTmp = userOrderTmpService.selectByOrderId(orderId);
-								if (userOrderTmp == null) {
-									BindVo bindVo = new BindVo();
-									bindVo.setMobile(searchRecord.getMobile());
-									bindVo.setOrderId(orderId);
-									bindVoList.add(bindVo);
+								// 订单佣金小于指定的佣金最大值是系统允许自动绑定订单
+								if (commission < Double
+										.parseDouble(GlobalVariable.resourceMap.get("OrderBindTask_commission_max"))) {
+									userOrderTmp = userOrderTmpService.selectByOrderId(orderId);
+									if (userOrderTmp == null) {
+										BindVo bindVo = new BindVo();
+										bindVo.setMobile(searchRecord.getMobile());
+										bindVo.setOrderId(orderId);
+										bindVoList.add(bindVo);
+									}
 								}
 							}
 							cnt = 0;
 							orderId = "";
+							commission=0d;
 							userOrderTmp = null;
 						}
 					} else {
-						System.out.println("今天还没有产生用户订单");
+						logger.info("今天还没有产生用户订单");
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
-				System.out.println("该时间段内没有用户搜索记录");
+				logger.info("该时间段内没有用户搜索记录");
 			}
 
 			// 绑定用户订单
@@ -154,10 +161,14 @@ public class OrderBindTask {
 					userOrderTmp.setBelong(1);
 					userOrderTmp.setCreateTime(new Date());
 					userOrderTmp.setUpdateTime(new Date());
+					try{
 					userOrderTmpService.insert(userOrderTmp);
+					}catch(Exception e){
+						logger.info("订单号重复");
+					}
 				}
 			} else {
-				System.out.println("没有可绑定的用户订单");
+				logger.info("没有可绑定的用户订单");
 			}
 		}
 	}
