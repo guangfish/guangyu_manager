@@ -8,17 +8,17 @@
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
 			<div class="mui-event-title tab_links">
-				<a data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
-				<a data-id="#jd" class="mui-event-tap">京东使用</a>
-				<!--<a data-id="#orderid" class="mui-event-tap">找订单号</a>-->
-				<a data-id="#cjhy" class="mui-event-tap">超级会员</a>
-				<a data-id="#faq" class="mui-event-tap">常见提问</a>				
+				<a style="text-decoration: none;" data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
+				<a style="text-decoration: none;" data-id="#jd" class="mui-event-tap">京东使用</a>
+				<!--<a style="text-decoration: none;" data-id="#orderid" class="mui-event-tap">找订单号</a>-->
+				<a style="text-decoration: none;" data-id="#cjhy" class="mui-event-tap">超级会员</a>
+				<a style="text-decoration: none;" data-id="#faq" class="mui-event-tap">常见提问</a>				
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
 					<div id="taobao" class="mui-event-cont">
 					    <div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-1 淘宝商品链接拷贝</h2>
 								</div>
@@ -26,7 +26,7 @@
 							</a>
 						</div>
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-2 把链接贴贴到逛鱼搜索框，并搜索</h2>
 								</div>
@@ -34,7 +34,7 @@
 							</a>
 						</div>
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-3 够买完成后，回来录入订单号</h2>
 								</div>
@@ -42,7 +42,7 @@
 							</a>
 						</div>
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-4 提现（完成提现后，注意支付宝查收）</h2>
 								</div>
@@ -52,7 +52,7 @@
 					</div>
 					<div id="jd" class="mui-event-cont disn">
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-1 京东商品链接拷贝</h2>
 								</div>
@@ -60,7 +60,7 @@
 							</a>
 						</div>	
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-2 把链接贴贴到逛鱼搜索框，并搜索</h2>
 								</div>
@@ -68,7 +68,7 @@
 							</a>
 						</div>	
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-3 够买完成后，回来录入订单号</h2>
 								</div>
@@ -76,7 +76,7 @@
 							</a>
 						</div>	
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>Step-4 提现（完成提现后，注意支付宝查收）</h2>
 								</div>
@@ -86,7 +86,7 @@
 					</div>
 					<div id="orderid" class="mui-event-cont disn">
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>寻找复制订单号</h2>
 								</div>
@@ -96,7 +96,7 @@
 					</div>
 					<div id="faq" class="mui-event-cont disn">
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>问题1：逛鱼搜索是否安全？</h2>
 								</div>
@@ -130,7 +130,7 @@
 					</div>
 					<div id="cjhy" class="mui-event-cont disn">
 						<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
 									<h2>邀请规则</h2><br/>
 								</div>
@@ -144,7 +144,7 @@
 									3. 未来Ta领券下单后，平台将会奖励你每笔订单佣金的20%；
 								</div>	
 								<div class="mui-cont-box">
-							<a href="#">
+							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit">
 									<h2 align="center">加客服微信，申请为超级会员</h2>
 								</div>

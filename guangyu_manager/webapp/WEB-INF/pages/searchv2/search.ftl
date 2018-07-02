@@ -1,4 +1,5 @@
 <@model.webheadsearchv2 />
+<link rel="stylesheet" type="text/css" href="/static/frontv2/css/index.css">
 <!-- 头部 -->
 	<div class=" mui-bar mui-bar-nav mui-search-box">
 	    <a class="backToIndex mui-icon mui-icon-back"></a>
@@ -6,7 +7,7 @@
 		<div class="mui-input-row mui-search">
 			<input type="search" class="mui-input-clear" placeholder="请粘贴标题或链接或淘口令">
 		</div>
-		<a class=" mui-icon mui-icon-search mui-self-search"></a>
+		<a style="text-decoration: none;" class=" mui-icon mui-icon-search mui-self-search"></a>
 	</div>
 	<div class="mui-content mui-content-box">
 		
@@ -16,7 +17,7 @@
 		<div class="mui-cont-box">
 			<div class="mui-tit">
 				<p>热门活动</p>
-				<a href="/v2/campaign">更多>></a>
+				<a style="text-decoration: none;" href="/v2/campaign">更多>></a>
 			</div>
 			<div class="mui-swiper">
 				<div class="swiper-container">
@@ -33,7 +34,7 @@
 		<div class="mui-cont-box ">
 			<div class="mui-tit">
 				<p>好券直播</p>
-				<a class="mui-self-search">更多>></a>
+				<a style="text-decoration: none;" class="mui-self-search">更多>></a>
 			</div>
 			
 			<div class="mui-new-list">

@@ -2,17 +2,17 @@
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/self_index/self_index.css">
 
 <header class="mui-bar mui-bar-nav mui-setting-tit">
-		<a class="mui-icon mui-icon-left-nav mui-pull-left" href="/v2/search"></a>
+		<a style="text-decoration: none;" class="mui-icon mui-icon-left-nav mui-pull-left" href="/v2/search"></a>
 		<h1 class="mui-title">我的订单</h1>
 
 	</header>
 	<div class="mui-content self-content-box">
 		<div class="mui-main-common">
 			<div class="mui-common-tit tab_links">
-			    <a data-id="#all" class="mui-event-tap active">全部</a>
-				<a data-id="#complete" class="mui-event-tap">订单结算</a>
-				<a data-id="#pay" class="mui-event-tap">订单付款</a>
-				<a data-id="#novalid" class="mui-event-tap">订单失效</a>
+			    <a style="text-decoration: none;" data-id="#all" class="mui-event-tap active">全部</a>
+				<a style="text-decoration: none;" data-id="#complete" class="mui-event-tap">订单结算</a>
+				<a style="text-decoration: none;" data-id="#pay" class="mui-event-tap">订单付款</a>
+				<a style="text-decoration: none;" data-id="#novalid" class="mui-event-tap">订单失效</a>
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">			    
 				<div class="mui-scroll">

@@ -16,11 +16,6 @@
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
-    <style type="text/css"> 
-      <!-- 
-      a { text-decoration: none} 
-      --> 
-    </style>
 	<title>逛鱼网 | 全网搜券拿返利的网站，支持淘宝、京东</title>	
 </head>
 <body>

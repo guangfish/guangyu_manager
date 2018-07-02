@@ -8,10 +8,10 @@
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
 			<div class="mui-event-title tab_links">
-				<a data-id="#allEvent" class="mui-event-tap active">全部活动</a>
-				<a data-id="#notStarted" class="mui-event-tap">即将开始</a>
-				<a data-id="#started" class="mui-event-tap">已开始</a>
-				<a data-id="#finished" class="mui-event-tap">已结束</a>
+				<a style="text-decoration: none;" data-id="#allEvent" class="mui-event-tap active">全部活动</a>
+				<a style="text-decoration: none;" data-id="#notStarted" class="mui-event-tap">即将开始</a>
+				<a style="text-decoration: none;" data-id="#started" class="mui-event-tap">已开始</a>
+				<a style="text-decoration: none;" data-id="#finished" class="mui-event-tap">已结束</a>
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
@@ -19,7 +19,7 @@
 					    <#if (campaignAllList?exists && campaignAllList?size > 0)>
 					    <#list campaignAllList as banner>
 						<div class="mui-cont-box">
-							<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
+							<a style="text-decoration: none;" href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
 								<div class="eventImg"><img class="eventImg" src="${banner.imgUrl?if_exists}" alt=""></div>	
 								<div class="mui-cont-tit ">
 									<h2>${banner.title?if_exists}</h2>
@@ -37,7 +37,7 @@
 						<#if (campaignBeginInAMinuteList?exists && campaignBeginInAMinuteList?size > 0)>
 					    <#list campaignBeginInAMinuteList as banner>
 						<div class="mui-cont-box">
-							<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
+							<a style="text-decoration: none;" href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
 								<div class="eventImg"><img class="eventImg" src="${banner.imgUrl?if_exists}" alt=""></div>	
 								<div class="mui-cont-tit ">
 									<h2>${banner.title?if_exists}</h2>
@@ -55,7 +55,7 @@
 						<#if (campaignAlreadyStartedList?exists && campaignAlreadyStartedList?size > 0)>
 					    <#list campaignAlreadyStartedList as banner>
 						<div class="mui-cont-box">
-							<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
+							<a style="text-decoration: none;" href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
 								<div class="eventImg"><img class="eventImg" src="${banner.imgUrl?if_exists}" alt=""></div>	
 								<div class="mui-cont-tit ">
 									<h2>${banner.title?if_exists}</h2>
@@ -73,7 +73,7 @@
 						<#if (campaignAlreadyStopedList?exists && campaignAlreadyStopedList?size > 0)>
 					    <#list campaignAlreadyStopedList as banner>
 						<div class="mui-cont-box">
-							<a href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
+							<a style="text-decoration: none;" href="${banner.link?if_exists}" <#if (banner.target==2)>target="_blank"</#if>>
 								<div class="eventImg"><img class="eventImg" src="${banner.imgUrl?if_exists}" alt=""></div>	
 								<div class="mui-cont-tit ">
 									<h2>${banner.title?if_exists}</h2>
