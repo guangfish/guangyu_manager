@@ -45,8 +45,8 @@
 						<a target="_blank" onclick="drump('${productInfo.couponPromoLink?if_exists}')" href="javascript:void(0);">
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
-								<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">${productInfo.productName?if_exists}</h2>
-								<p>商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
+								<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit"><#if (productInfo.platformType?exists)><img style="width:20px;align:center;" src="/static/frontv2/img/guangfish/<#if (productInfo.platformType=="淘宝")>taobao.png<#else>tmall.png</#if>"/>&nbsp;</#if>${productInfo.productName?if_exists}</h2>
+								<p style="margin-top: 3px">商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
 								<p><span class="mui-inventory">现价:&nbsp;${productInfo.price?if_exists}元</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;${productInfo.monthSales?if_exists}件&nbsp;&nbsp;</span></p>
 								<p><span class="mui-inventory">券:&nbsp;${productInfo.couponMiane?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-inventory">余${productInfo.couponRest?if_exists}张&nbsp;&nbsp;</span></p>
 								
@@ -488,12 +488,25 @@
 							if(zkPrice==0){
 							  zkPrice=price;
 							}
+							var platformType=list.platformType
+							var mallimg="";
+							var imgstr="";
+							var px=20;
+							if(platformType=="淘宝"){
+							  mallimg="taobao.png";		
+							  imgstr='<img style="width:20px;align:center;" src="/static/frontv2/img/guangfish/'+mallimg+'">&nbsp;';				
+							}else if(platformType=="天猫"){
+							  mallimg="tmall.png";
+							  imgstr='<img style="width:20px;align:center;" src="/static/frontv2/img/guangfish/'+mallimg+'">&nbsp;';
+							}else{
+							  imgstr='';
+							}
 							if(list.couponMiane){
 							  var myInner = '<a id="copy'+list.productId+'" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
-									<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+list.productName+'</h2>\
-									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
+									<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+imgstr+list.productName+'</h2>\
+									<p style="margin-top: 3px">商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
 									<p><span class="mui-bodycolor">现价:&nbsp;'+zkPrice+'元&nbsp<del>'+price+'元</del></span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件&nbsp;&nbsp;</span></p>\
 									<p><span class="mui-inventory">券:&nbsp;'+list.couponMiane+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">余<span class="mui-inventory">'+couponRest+'张&nbsp;&nbsp;</span></p>\
 									<div style="margin-top: 15px">\
@@ -505,8 +518,8 @@
 							  var myInner = '<a id="copy'+list.productId+'" target="_blank" onclick="'+func+'" href="javascript:void(0);">\
 								<img class="mui-media-object mui-pull-left" src="'+list.productImgUrl+'">\
 								<div class="mui-media-body">\
-									<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+list.productName+'</h2>\
-									<p>商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
+									<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+imgstr+list.productName+'</h2>\
+									<p style="margin-top: 3px">商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
 									<p><span class="mui-bodycolor">现价:&nbsp;'+zkPrice+'元&nbsp<del>'+price+'元</del></span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件&nbsp;&nbsp;</span></p>\
 									<div style="margin-top: 15px">\
 										<span>预估返现:<em class="mui-first-payment">'+list.actualCommission+'元</em></span>\
