@@ -497,7 +497,7 @@
 									<p><span class="mui-bodycolor">现价:&nbsp;￥'+zkPrice+'&nbsp<del>￥'+price+'</del></span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件&nbsp;&nbsp;</span></p>\
 									<p><span class="mui-inventory">券:&nbsp;'+list.couponMiane+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">余<span class="mui-inventory">'+couponRest+'张&nbsp;&nbsp;</span></p>\
 									<div>\
-										</br><span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em></span><span style="position: absolute;right: 0;text-align: center;">再返现:<em class="mui-first-payment">￥'+list.actualCommission+'&nbsp;&nbsp;</em></span>\
+										</br><span>领券省:<em class="mui-first-payment">￥'+list.couponQuan+'</em></span><span style="position: absolute;right: 0;text-align: center;">再返现:<em class="mui-first-payment">￥'+list.actualCommission+'&nbsp;&nbsp;&nbsp;</em></span>\
 									</div>\
 								</div>\
 							  </a>';
