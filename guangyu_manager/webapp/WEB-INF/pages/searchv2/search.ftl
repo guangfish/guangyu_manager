@@ -1,5 +1,5 @@
 <@model.webheadsearchv2 />
-<link rel="stylesheet" type="text/css" href="/static/frontv2/css/index.css">
+
 <!-- 头部 -->
 	<div class=" mui-bar mui-bar-nav mui-search-box">
 	    <a style="text-decoration: none;" class="backToIndex mui-icon mui-icon-back"></a>
@@ -47,8 +47,8 @@
 							<div class="mui-media-body">
 								<h2 class="mui-body-tit">${productInfo.productName?if_exists}</h2>
 								<p>商店名:&nbsp;<span class="mui-inventory">${productInfo.shopName?if_exists}</span></p>
-								<p><span class="mui-inventory">现价:&nbsp;￥${productInfo.price?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;${productInfo.monthSales?if_exists}件</span></p>
-								<p><span class="mui-inventory">券:&nbsp;${productInfo.couponMiane?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-inventory">余${productInfo.couponRest?if_exists}张</span></p>
+								<p><span class="mui-inventory">现价:&nbsp;￥${productInfo.price?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;${productInfo.monthSales?if_exists}件&nbsp;&nbsp;</span></p>
+								<p><span class="mui-inventory">券:&nbsp;${productInfo.couponMiane?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-inventory">余${productInfo.couponRest?if_exists}张&nbsp;&nbsp;</span></p>
 								</br>
 								<div>
 									<span><em class="mui-first-payment">领券省:￥${productInfo.couponQuan?if_exists}</em><em style="position: absolute;right: 0;text-align: center;" class="mui-first-payment">再返现:￥<#if (productInfo.commission?exists)>${productInfo.commission*rate}</#if>&nbsp;&nbsp;</em></span>
