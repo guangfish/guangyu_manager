@@ -141,7 +141,7 @@
 									2. 好友通过您的邀请码注册后，Ta即永久成为你的会员；
 								</div>
 								<div class="mui-cont-text limit_text">
-									3. 未来Ta领券下单后，平台将会奖励你每笔订单佣金的20%；
+									3. 未来Ta领券下单后，平台将会奖励你每笔订单佣金的20%至100%(简单讲：朋友订单返现20元，那么你最多能得到平台20元的奖励)；
 								</div>	
 								<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
