@@ -11,7 +11,7 @@
 				<div class="mui-scoll">
 					<div class="main-answer-cont">	
 					<#if (userOrderList?exists && userOrderList?size > 0)>
-			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">共<font color="red">${orderNum?if_exists}</font>个订单，可提奖励金额<font color="red">￥${reward?if_exists}(20%)</font></div></div>
+			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">共<font color="red">${orderNum?if_exists}</font>个订单，可提奖励金额<font color="red">￥${reward?if_exists}</font></div></div>
 			<#else>
 			  <div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">还没邀请会员或我的会员还没有订单！</div></div>
 			</#if>				    
@@ -21,7 +21,7 @@
 						</div>
 			          <#list userOrderList as userOrder>
 						<div class="main-answer-item">
-							<p><font color="red">${userOrder.mobile?if_exists}</font>(订单返现：${userOrder.commission3?if_exists})<span>￥${userOrder.commissionReward?if_exists}</i></span></p>						
+							<p><font color="red">${userOrder.mobile?if_exists}</font>(订单返现：${userOrder.commission3?if_exists})<span>￥${userOrder.commissionReward?if_exists}(平台奖励：20%)</i></span></p>						
 						</div>	
 					  </#list>
 			          </#if>					
