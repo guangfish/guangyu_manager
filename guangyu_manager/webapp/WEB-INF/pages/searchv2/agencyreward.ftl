@@ -32,7 +32,7 @@
 	</div>
 	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item mui-active" href="<#if (userOrderList?exists && userOrderList?size > 0)>/v2/agencyrewarddraw<#else>javascript:void(0);</#if>">
+		<a style="text-decoration: none;" class="mui-tab-item mui-active" href="<#if (userOrderList?exists && userOrderList?size > 0)>/v2/agencyrewarddraw<#else>javascript:void(0);</#if>">
 			<span class="mui-icon mui-icon-draw"></span>
 			<span class="mui-tab-label">提取平台奖励</span>
 		</a>

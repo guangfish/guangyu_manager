@@ -94,23 +94,23 @@
 	</div>
 	<!-- 底部菜单栏 -->
 	<nav class="mui-bar mui-bar-tab new-bar">
-		<a class="mui-tab-item mui-active" href="/v2/search">
+		<a style="text-decoration: none;" class="mui-tab-item mui-active" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
-		<a class="mui-tab-item" href="/v2/order">
+		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-order"></span>
 			<span class="mui-tab-label">订单</span>
 		</a>
-		<a class="mui-tab-item" href="/v2/searchorder">
+		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/searchorder">
 			<span class="mui-icon mui-icon-draw"></span>
 			<span class="mui-tab-label">提现</span>
 		</a>
-		<a class="mui-tab-item" href="/v2/help">
+		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/help">
 			<span class="mui-icon mui-icon-help1"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
-		<a class="mui-tab-item" href="/v2/my">
+		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/my">
 			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">我的</span>
 		</a>
