@@ -533,7 +533,7 @@
 	<select id="selectByInviteCode" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select
-		id, INSERT(mobile, 4, 4, 'XXXX') mobile, alipay_account, user_id, product_num, order_id, price, rate, belong, product_id, product_info, product_img_url, shop_name, commission1, commission2, commission3, fanli_multiple, order_status, status1, status2, status3, commission_reward, reward_status, create_time, update_time
+		id, INSERT(mobile, 4, 4, 'XXXX') mobile, alipay_account, user_id, product_num, order_id, price, rate, belong, product_id, product_info, product_img_url, shop_name, commission1, commission2, commission3, fanli_multiple, order_status, status1, status2, status3, commission_reward, commission_reward_rate, reward_status, create_time, update_time
 		FROM user_order b 
 		WHERE status1=2 AND reward_status=1 AND b.mobile IN (SELECT a.mobile FROM user a WHERE ta_invite_code=#{taInviteCode,jdbcType=VARCHAR})
 	</select>
