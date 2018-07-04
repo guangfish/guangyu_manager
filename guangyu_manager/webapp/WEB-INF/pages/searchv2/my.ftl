@@ -105,7 +105,7 @@
 	  
 	  function copyInviteCode() {
 	    var value = $('#myInviteCode').val();
-		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【'+value+'】');
+		  $('#copy').attr('data-clipboard-text', '邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【'+value+'】');
 		  var clipboard = new Clipboard('#copy');
           clipboard.on('success', function (e) {
             Core.Dialog.msg('邀请码复制成功，赶紧去微信粘贴邀请好友吧！',6000);
