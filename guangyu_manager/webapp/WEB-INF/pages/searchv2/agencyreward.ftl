@@ -17,7 +17,7 @@
 			</#if>				    
 					  <#if (userOrderList?exists && userOrderList?size > 0)>
 					    <div class="main-answer-item">
-							<p>我的会员&nbsp;<font color="red">(会员订单返现)</font><span>平台奖励&nbsp;<font color="red">(随机20%至100%)</font></i></span></p>						
+							<p>会员订单返现<span>平台奖励&nbsp;<font color="red">(20%至100%)</font></i></span></p>						
 						</div>
 			          <#list userOrderList as userOrder>
 						<div class="main-answer-item">

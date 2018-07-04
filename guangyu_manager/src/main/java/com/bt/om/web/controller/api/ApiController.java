@@ -333,11 +333,12 @@ public class ApiController extends BasicController {
 				productInfo.setSourcefrom(2);
 				productInfo.setCreateTime(new Date());
 				productInfo.setUpdateTime(new Date());
-				try{
-				    productInfoService.insertProductInfo(productInfo);		
-				}catch(Exception e){
-					logger.error(e.getMessage());
-				}
+				
+//				try{
+//				    productInfoService.insertProductInfo(productInfo);		
+//				}catch(Exception e){
+//					logger.error(e.getMessage());
+//				}
 				
 				//插入搜索记录
 				SearchRecord searchRecord=new SearchRecord();

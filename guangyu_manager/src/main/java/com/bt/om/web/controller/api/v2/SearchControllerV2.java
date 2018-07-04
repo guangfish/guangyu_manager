@@ -82,6 +82,8 @@ public class SearchControllerV2 extends BasicController {
 		//通过接口取优惠群数据
 		CouponSearchVo couponSearchVo = GsonUtil.GsonToBean(CouponGet.couponGet(null,1,30), CouponSearchVo.class);
 		List<CouponBean> couponBeanList=couponSearchVo.getTbk_dg_item_coupon_get_response().getResults().getTbk_coupon();
+		long total_results = couponSearchVo.getTbk_dg_item_coupon_get_response().getTotal_results();
+		System.out.println(total_results);
 		List<ProductInfo> productInfoList = new ArrayList<>();
 		if(couponBeanList!=null && couponBeanList.size()>0){
 			for(CouponBean couponBean:couponBeanList){
