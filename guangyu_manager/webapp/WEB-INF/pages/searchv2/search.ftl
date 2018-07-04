@@ -5,7 +5,7 @@
 	    <a style="text-decoration: none;" class="backToIndex mui-icon mui-icon-back"></a>
 		<a href="/v2/search" class="index-logo"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
 		<div class="mui-input-row mui-search">
-			<input type="search" class="mui-input-clear" placeholder="请粘贴标题或链接或淘口令">
+			<input type="search" class="mui-input-clear" placeholder="粘贴宝贝标题，先领券再购物">
 		</div>
 		<a style="text-decoration: none;" class=" mui-icon mui-icon-search mui-self-search"></a>
 	</div>
@@ -312,6 +312,9 @@
 	  	  
 	  var _v = v;
 	  if(_v && _v.indexOf("http") != -1){
+	    alert("暂时不支持通过链接、淘口令搜索商品，请拷贝宝贝标题搜索。");
+	    return;
+	    
 		curPage++;
 		if($("#pullTips").length > 0) {
 			$("#pullTips").remove();
