@@ -42,7 +42,7 @@
 				    <#if (productInfoList?exists && productInfoList?size > 0)>
 			        <#list productInfoList as productInfo>
 					<li class="mui-table-view-cell mui-media pos">
-						<a target="_blank" id="copy" onclick="<#if (ifWeixinBrower=="yes")>jsCopy('${productInfo.tkl?if_exists}')<#else>drump('${productInfo.couponPromoLink?if_exists}')</#if>" href="javascript:void(0);">
+						<a target="_blank" id="copy${productInfo.productId?if_exists}" onclick="<#if (ifWeixinBrower=="yes")>jsCopy('${productInfo.tkl?if_exists}','${productInfo.productId?if_exists}')<#else>drump('${productInfo.couponPromoLink?if_exists}')</#if>" href="javascript:void(0);">
 							<img class="mui-media-object mui-pull-left" src="${productInfo.productImgUrl?if_exists}">
 							<div class="mui-media-body">
 								<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit"><#if (productInfo.platformType?exists)><img style="width:20px;align:center;" src="/static/frontv2/img/guangfish/<#if (productInfo.platformType=="淘宝")>taobao.png<#else>tmall.png</#if>"/>&nbsp;</#if>${productInfo.productName?if_exists}</h2>
