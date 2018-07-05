@@ -21,6 +21,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,6 +33,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -142,6 +144,54 @@ public final class HttpcomponentsUtil {
 		}
 		return result;
 	}
+	
+	/**
+	 * post请求（用于请求json格式的参数）
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	public static String doPost(String url, String params) throws Exception {		
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(url);// 创建httpPost   
+    	httpPost.setHeader("Accept", "application/json"); 
+    	httpPost.setHeader("Content-Type", "application/json");
+    	String charSet = "UTF-8";
+    	StringEntity entity = new StringEntity(params, charSet);
+    	httpPost.setEntity(entity);        
+        CloseableHttpResponse response = null;
+        
+        try {        	
+        	response = httpclient.execute(httpPost);
+            StatusLine status = response.getStatusLine();
+            int state = status.getStatusCode();
+            if (state == HttpStatus.SC_OK) {
+            	HttpEntity responseEntity = response.getEntity();
+            	String jsonString = EntityUtils.toString(responseEntity);
+            	return jsonString;
+            }
+            else{
+				 logger.error("请求返回:"+state+"("+url+")");
+			}
+        }
+        finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+        return null;
+	}
+	
+
 
 	public static String getReq(String requestUrl) throws Exception {
 		String result = "ok";

@@ -312,7 +312,7 @@
 	  	  
 	  var _v = v;
 	  if(_v && _v.indexOf("http") != -1){
-	    alert("暂时不支持通过链接、淘口令搜索商品，请拷贝宝贝标题搜索！");
+	    alert("偶尔短暂性不能通过链接、淘口令搜索商品时，请拷贝宝贝标题搜索！");
 	    
 		curPage++;
 		if($("#pullTips").length > 0) {

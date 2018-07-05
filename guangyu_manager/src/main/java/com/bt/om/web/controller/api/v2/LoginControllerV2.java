@@ -69,7 +69,7 @@ public class LoginControllerV2 extends BasicController {
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			mobile = obj.get("mobile").getAsString();
 			code = obj.get("code").getAsString();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -139,7 +139,7 @@ public class LoginControllerV2 extends BasicController {
 			alipay = obj.get("alipay").getAsString();
 			weixin = obj.get("weixin").getAsString();
 			code = obj.get("code").getAsString();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

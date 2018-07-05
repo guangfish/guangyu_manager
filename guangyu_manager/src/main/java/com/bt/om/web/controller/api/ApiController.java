@@ -268,7 +268,7 @@ public class ApiController extends BasicController {
 			}
 		}
 //		从数据库中查询是否已查询过改商品
-		productInfo = productInfoService.getByProductId(uriProductId);
+//		productInfo = productInfoService.getByProductId(uriProductId);
 		Map<String, String> map = new HashMap<>();
 		
 		String msg = "";
