@@ -139,6 +139,16 @@ public class AppCommonController extends BasicController {
 		model.addAttribute("response", appDownloadVo);
 		return model;
 	}
+	
+	@RequestMapping(value = "/help", method = { RequestMethod.GET, RequestMethod.POST })
+	public String help(Model model, HttpServletRequest request) {
+		return "searchv2/helpapp";
+	}
+	
+	@RequestMapping(value = "/customer", method = { RequestMethod.GET, RequestMethod.POST })
+	public String kefu(Model model, HttpServletRequest request) {
+		return "searchv2/customer";
+	}
 
 	/**
 	 * 根据位数生成验证码

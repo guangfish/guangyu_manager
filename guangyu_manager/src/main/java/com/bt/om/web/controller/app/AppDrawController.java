@@ -132,7 +132,7 @@ public class AppDrawController extends BasicController {
 						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
 						map.put("productName", userOrder.getProductInfo());
 						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-								? ("预估￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
+								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
 
 						map.put("multiple", "" + userOrder.getFanliMultiple());
 						map.put("orderStatus", userOrder.getOrderStatus());
@@ -149,7 +149,7 @@ public class AppDrawController extends BasicController {
 						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
 						map.put("productName", userOrder.getProductInfo());
 						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-								? ("预估￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
+								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
 
 						map.put("multiple", "" + userOrder.getFanliMultiple());
 						map.put("orderStatus", userOrder.getOrderStatus());
@@ -166,7 +166,7 @@ public class AppDrawController extends BasicController {
 						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
 						map.put("productName", userOrder.getProductInfo());
 						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-								? ("预估￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
+								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
 
 						map.put("multiple", "" + userOrder.getFanliMultiple());
 						map.put("orderStatus", userOrder.getOrderStatus());
