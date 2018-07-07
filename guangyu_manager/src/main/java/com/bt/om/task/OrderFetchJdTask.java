@@ -30,6 +30,7 @@ import com.adtime.common.lang.StringUtil;
 import com.bt.om.entity.TkOrderInputJd;
 import com.bt.om.selenium.util.PageUtils;
 import com.bt.om.service.ITkOrderInputJdService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.NumberUtil;
@@ -37,7 +38,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 京东订单报表下载入库
  */
-//@Component
+@Component
 public class OrderFetchJdTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchJdTask.class);
 	
@@ -63,8 +64,10 @@ public class OrderFetchJdTask {
 
 	private static int sleepTimeBegin = 1000;
 	private static int sleepTimeEnd = 2000;
-
-	static {
+	private static boolean ifInit=false;
+	
+	private static void init(){
+		ifInit=true;
 		schedule();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
@@ -76,15 +79,33 @@ public class OrderFetchJdTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-//	@Scheduled(cron = "0 0/3 * * * ?")
+//	static {
+//		schedule();
+//		System.setProperty(key, value);
+//		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+//			driver = new ChromeDriver();
+//		} else {
+//			driver = new FirefoxDriver();
+//		}
+//		driver.get(baseUrl);
+//		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
+//	}
+
+//	@Scheduled(cron = "0 0/1 * * * ?")
 	@Scheduled(cron = "0 0/20 7-23 * * ?")
 	public void orderJdFetchTask() {
-		logger.info("京东订单报表下载入库");
-		try {
-			orderJdFetch();
-		} catch (Exception e) {
-			e.printStackTrace();
-//			driver.navigate().refresh();
+		String ifRun = GlobalVariable.resourceMap.get("OrderFetchJdTask");
+		if ("1".equals(ifRun)) {
+			if (ifInit == false) {
+				init();
+			}
+			logger.info("京东订单报表下载入库");
+			try {
+				orderJdFetch();
+			} catch (Exception e) {
+				e.printStackTrace();
+				// driver.navigate().refresh();
+			}
 		}
 	}
 

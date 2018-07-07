@@ -33,6 +33,7 @@ import com.adtime.common.lang.StringUtil;
 import com.bt.om.entity.TkOrderInput;
 import com.bt.om.selenium.util.PageUtils;
 import com.bt.om.service.ITkOrderInputService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.DateUtil;
 import com.bt.om.util.NumberUtil;
@@ -40,7 +41,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 淘宝订单报表下载入库
  */
-//@Component
+@Component
 public class OrderFetchTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchTask.class);
 	
@@ -66,8 +67,11 @@ public class OrderFetchTask {
 
 	private static int sleepTimeBegin = 1000;
 	private static int sleepTimeEnd = 2000;
-
-	static {
+	
+	private static boolean ifInit=false;
+	
+	private static void init(){
+		ifInit=true;
 		schedule();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
@@ -79,15 +83,33 @@ public class OrderFetchTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
+//	static {
+//		schedule();
+//		System.setProperty(key, value);
+//		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+//			driver = new ChromeDriver();
+//		} else {
+//			driver = new FirefoxDriver();
+//		}
+//		driver.get(baseUrl);
+//		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
+//	}
+
 	@Scheduled(cron = "0 0 7-23 * * ?")
 //	@Scheduled(cron = "0 0/1 * * * ?")
 	public void orderFetchTask() {
-		logger.info("淘宝订单报表下载入库");
-		try {
-			orderTaobaoFetch();
-		} catch (Exception e) {
-			e.printStackTrace();
-			driver.navigate().refresh();
+		String ifRun = GlobalVariable.resourceMap.get("OrderFetchTask");
+		if ("1".equals(ifRun)) {
+			if(ifInit==false){
+				init();
+			}			
+			logger.info("淘宝订单报表下载入库");
+			try {
+				orderTaobaoFetch();
+			} catch (Exception e) {
+				e.printStackTrace();
+				driver.navigate().refresh();
+			}
 		}
 	}
 	
