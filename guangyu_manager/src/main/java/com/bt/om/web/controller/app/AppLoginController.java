@@ -162,7 +162,7 @@ public class AppLoginController extends BasicController {
 //			data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
 //			data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
 //			data.put("totalBuySave", cash + "");// 累计购物已省
-			data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【"+user.getMyInviteCode()+"】");// 我的邀请码
+			data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\n-------------\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\n-------------\n访问链接：https://www.guangfish.com\n-------------\n邀请码【"+user.getMyInviteCode()+"】");// 我的邀请码
 			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
 //																// 2：超级会员
 			registerVo.setData(data);
@@ -272,7 +272,7 @@ public class AppLoginController extends BasicController {
 //		data.put("friendNum", "0");// 好友数
 //		data.put("orderNum", "0");// 可提现订单数
 //		data.put("totalBuySave", "0.0");// 累计购物已省
-		data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r-------------\r邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r-------------\r访问链接：https://www.guangfish.com\r-------------\r邀请码【"+myInviteCode+"】");// 我的邀请码
+		data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\n-------------\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\n-------------\n访问链接：https://www.guangfish.com\n-------------\n邀请码【"+myInviteCode+"】");// 我的邀请码
 		data.put("userType", "2");// 账号类型1：普通会员 2：超级会员
 		registerVo.setData(data);
 		model.addAttribute("response", registerVo);
