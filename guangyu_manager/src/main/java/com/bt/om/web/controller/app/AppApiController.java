@@ -69,7 +69,7 @@ public class AppApiController extends BasicController {
 	private ITkOrderInputJdService tkOrderInputJdService;
 
 	// 获取商品详情
-	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
+	@RequestMapping(value = "/productInfo1", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productInfo1(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
@@ -95,7 +95,7 @@ public class AppApiController extends BasicController {
 	}
 
 	// 获取商品详情
-	@RequestMapping(value = "/productInfo1", method = RequestMethod.POST)
+	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
