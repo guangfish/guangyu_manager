@@ -37,7 +37,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 京东订单报表下载入库
  */
-@Component
+//@Component
 public class OrderFetchJdTask {
 	private static final Logger logger = Logger.getLogger(OrderFetchJdTask.class);
 	
