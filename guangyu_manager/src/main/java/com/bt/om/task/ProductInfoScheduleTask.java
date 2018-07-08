@@ -36,7 +36,8 @@ public class ProductInfoScheduleTask {
 		}
 	}
 
-	@Scheduled(cron = "0 0/1 * * * ?")
+//	@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0/30 * * * * ?")
 	public void valid() {
 		String ifRun = GlobalVariable.resourceMap.get("ProductInfoScheduleTask");
 		if ("1".equals(ifRun)) {
