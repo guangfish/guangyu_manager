@@ -36,7 +36,7 @@ public class ProductInfoScheduleTask {
 		}
 	}
 
-	@Scheduled(cron = "0 0/3 * * * ?")
+	@Scheduled(cron = "0 0/1 * * * ?")
 	public void valid() {
 		String ifRun = GlobalVariable.resourceMap.get("ProductInfoScheduleTask");
 		if ("1".equals(ifRun)) {
@@ -50,7 +50,7 @@ public class ProductInfoScheduleTask {
 				System.out.println(params);
 				String retStr = "";
 				try {
-					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
+//					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
 					retStr = HttpcomponentsUtil.doPost(domain + "/api/productInfo", params);
 					System.out.println(retStr);
 				} catch (Exception e) {
