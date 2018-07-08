@@ -1,11 +1,7 @@
 package com.bt.om.task;
 
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.converters.DateConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,12 +10,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.bt.om.entity.ProductInfo;
-import com.bt.om.entity.ProductInfoMid;
-import com.bt.om.service.IProductInfoMidService;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.HttpcomponentsUtil;
+import com.bt.om.util.NumberUtil;
 
 /**
  * 定时通过/api/productInfo产销商品信息
@@ -27,14 +22,14 @@ import com.bt.om.util.HttpcomponentsUtil;
  * @author chenhj
  *
  */
-//@Component
+@Component
 public class ProductInfoScheduleTask {
 	private static final Logger logger = Logger.getLogger(ProductInfoScheduleTask.class);
 
 	@Autowired
 	private IProductInfoService productInfoService;
 
-	@Scheduled(cron = "0 0/2 * * * ?")
+	@Scheduled(cron = "0 0/3 * * * ?")
 	public void valid() {
 		String ifRun = GlobalVariable.resourceMap.get("ProductInfoScheduleTask");
 		if ("1".equals(ifRun)) {
@@ -46,10 +41,11 @@ public class ProductInfoScheduleTask {
 				ProductInfo productInfo = productInfoList.get(0);
 				String params = "{\"product_url\":\"" + productInfo.getProductInfoUrl() + "\"}";
 				System.out.println(params);
-				String retStr="";
+				String retStr = "";
 				try {
-					retStr=HttpcomponentsUtil.doPost(ConfigUtil.getString("crawl.task.send.domain.test") + "/api/productInfo",
-							params);
+					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
+					retStr = HttpcomponentsUtil
+							.doPost(ConfigUtil.getString("crawl.task.send.domain.test") + "/api/productInfo", params);
 					System.out.println(retStr);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -296,6 +296,8 @@ public class AppLoginController extends BasicController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+		
+		String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
 		User user = userService.selectByMobile(userId);
 		if (user != null) {
@@ -370,6 +372,8 @@ public class AppLoginController extends BasicController {
 //			data.put("inviteCode", user.getMyInviteCode());// 我的邀请码
 //			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
 																// 2：超级会员
+			data.put("tklSymbols", tklSymbols);
+			
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
 			return model;

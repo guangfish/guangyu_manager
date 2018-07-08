@@ -77,8 +77,8 @@ public class ProductUrlTrans {
 	static {
 		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
 			init();
-			scheduleTaobao();
-			scheduleJd();
+//			scheduleTaobao();
+//			scheduleJd();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
@@ -297,7 +297,7 @@ public class ProductUrlTrans {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			driver.navigate().refresh();
+//			driver.navigate().refresh();
 			return;
 		}
 	}
@@ -406,7 +406,7 @@ public class ProductUrlTrans {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			jdDriver.navigate().refresh();
+//			jdDriver.navigate().refresh();
 			return;
 		}
 	}
@@ -418,12 +418,13 @@ public class ProductUrlTrans {
 			public void run() {
 				try {
 					logger.info("taobao refresh...");
+					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
 					driver.navigate().refresh();
 				} catch (Exception e) {
 					logger.error("taobao refresh error:[{}]", e);
 				}
 			}
-		}, NumberUtil.getRandomNumber(5, 10), NumberUtil.getRandomNumber(5, 10), TimeUnit.MINUTES);
+		}, 5, 5, TimeUnit.MINUTES);
 	}
 
 	private static void scheduleJd() {
@@ -433,11 +434,12 @@ public class ProductUrlTrans {
 			public void run() {
 				try {
 					logger.info("jd refresh...");
+					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
 					jdDriver.navigate().refresh();
 				} catch (Exception e) {
 					logger.error("jd refresh error:[{}]", e);
 				}
 			}
-		}, NumberUtil.getRandomNumber(3, 5), NumberUtil.getRandomNumber(3, 5), TimeUnit.MINUTES);
+		}, 5, 5, TimeUnit.MINUTES);
 	}
 }
