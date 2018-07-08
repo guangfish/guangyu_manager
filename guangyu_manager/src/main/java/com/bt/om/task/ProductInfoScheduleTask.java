@@ -29,6 +29,13 @@ public class ProductInfoScheduleTask {
 	@Autowired
 	private IProductInfoService productInfoService;
 
+	private static String domain = ConfigUtil.getString("crawl.task.send.domain");
+	static {
+		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
+			domain = ConfigUtil.getString("crawl.task.send.domain.test");
+		}
+	}
+
 	@Scheduled(cron = "0 0/3 * * * ?")
 	public void valid() {
 		String ifRun = GlobalVariable.resourceMap.get("ProductInfoScheduleTask");
@@ -44,8 +51,7 @@ public class ProductInfoScheduleTask {
 				String retStr = "";
 				try {
 					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
-					retStr = HttpcomponentsUtil
-							.doPost(ConfigUtil.getString("crawl.task.send.domain.test") + "/api/productInfo", params);
+					retStr = HttpcomponentsUtil.doPost(domain + "/api/productInfo", params);
 					System.out.println(retStr);
 				} catch (Exception e) {
 					e.printStackTrace();
