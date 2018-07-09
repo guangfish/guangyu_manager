@@ -76,7 +76,7 @@
 			<div class="mui-footer-tel">
 				<p><img style="width:120px;height:120px" src="http://help.guangfish.com/imgs/gzh.jpg"></p>	
 				<span>©2018 杭州特为网络科技有限公司 版权所有</span><br/>
-				<span>浙ICP备13014457号-2号</span>	
+				<span>浙ICP备33011002013316号</span>	
 			</div>	
 		</div>
 				
