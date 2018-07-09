@@ -297,7 +297,7 @@ public class ProductUrlTrans {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-//			driver.navigate().refresh();
+			driver.navigate().refresh();
 			return;
 		}
 	}
@@ -406,7 +406,7 @@ public class ProductUrlTrans {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-//			jdDriver.navigate().refresh();
+			jdDriver.navigate().refresh();
 			return;
 		}
 	}
