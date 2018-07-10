@@ -312,8 +312,8 @@
 	  	  
 	  var _v = v;
 	  if(_v && _v.indexOf("http") != -1){
-	    alert("偶尔短暂性不能通过链接、淘口令搜索商品时，请拷贝宝贝标题搜索！");
-	    
+	    //alert("偶尔短暂性不能通过链接、淘口令搜索商品时，请拷贝宝贝标题搜索！");
+	    Core.Dialog.msg("偶尔不能通过链接、淘口令搜索商品时，请拷贝宝贝标题搜索！",5000);
 		curPage++;
 		if($("#pullTips").length > 0) {
 			$("#pullTips").remove();
