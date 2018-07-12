@@ -35,6 +35,19 @@ public class SearchUtil {
      * 
      * @return
      */
+    public static SearchDataVo getVoForList(int pageNo,int size) {
+        HttpServletRequest request = ServletAttributes.getRequest();
+        return new SearchDataVo(RequestUtil.getParameter(request, "orderField"),
+            RequestUtil.getParameter(request, "orderBy"),
+            pageNo,
+            size);
+    }
+    
+    /**
+     * 得到搜索类
+     * 
+     * @return
+     */
     public static SearchDataVo getVoForList() {
         HttpServletRequest request = ServletAttributes.getRequest();
         return new SearchDataVo(RequestUtil.getParameter(request, "orderField"),

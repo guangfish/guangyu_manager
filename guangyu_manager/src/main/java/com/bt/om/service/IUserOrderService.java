@@ -26,4 +26,8 @@ public interface IUserOrderService {
     int deleteOrder(Integer id);
     
     public List<UserOrder> selectByInviteCode(String taInviteCode);
+    
+    public void selectByMobileAndOrderStatus(SearchDataVo vo);
+    
+    public void getByInviteCode(SearchDataVo vo);
 }

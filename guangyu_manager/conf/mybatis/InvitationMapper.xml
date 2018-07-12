@@ -215,4 +215,31 @@
 		from invitation
 		where status =1 and be_inviter_mobile in (select mobile from user_order where status1 = 2 and status2 = 3)
 	</select>
+	
+	<select id="selectByMobileFriendCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from invitation WHERE 1=1	
+		and inviter_mobile = #{beInviterMobile,jdbcType=VARCHAR}
+		<if test="status != null">
+			and	status = #{status,jdbcType=INTEGER}
+		</if>
+		<if test="reward != null">
+			and	reward = #{reward,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="selectByMobileFriendList" parameterType="map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from invitation WHERE 1=1
+		and inviter_mobile = #{beInviterMobile,jdbcType=VARCHAR}
+		<if test="status != null">
+			and	status = #{status,jdbcType=INTEGER}
+		</if>
+		<if test="reward != null">
+			and	reward = #{reward,jdbcType=INTEGER}
+		</if>
+		order by id desc
+	</select>
 </mapper>

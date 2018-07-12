@@ -538,4 +538,33 @@
 		WHERE status1=2 AND reward_status=1 AND b.mobile IN (SELECT a.mobile FROM user a WHERE ta_invite_code=#{taInviteCode,jdbcType=VARCHAR})
 	</select>
 	
+	<select id="getByInviteCodeCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from user_order b WHERE 1=1	
+		and status1=2 AND reward_status=1 AND b.mobile IN (SELECT a.mobile FROM user a WHERE ta_invite_code=#{taInviteCode,jdbcType=VARCHAR})
+	</select>
+
+	<select id="getByInviteCodeList" parameterType="map" resultMap="BaseResultMap">
+	    select
+		id, INSERT(mobile, 4, 4, 'XXXX') mobile, alipay_account, user_id, product_num, order_id, price, rate, belong, product_id, product_info, product_img_url, shop_name, commission1, commission2, commission3, fanli_multiple, order_status, status1, status2, status3, commission_reward, commission_reward_rate, reward_status, create_time, update_time
+		FROM user_order b 
+		WHERE status1=2 AND reward_status=1 AND b.mobile IN (SELECT a.mobile FROM user a WHERE ta_invite_code=#{taInviteCode,jdbcType=VARCHAR})
+	</select>
+	
+	<select id="selectByMobileAndOrderStatusCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from user_order WHERE 1=1	
+		and mobile = #{mobile,jdbcType=VARCHAR} and status2!=3 and status2!=2 and status3!=2 and order_status = #{orderStatus,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByMobileAndOrderStatusList" parameterType="map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_order WHERE 1=1
+		and mobile = #{mobile,jdbcType=VARCHAR} and status2!=3 and status2!=2 and status3!=2 and order_status = #{orderStatus,jdbcType=VARCHAR}
+		order by id desc
+	</select>
+	
 </mapper>

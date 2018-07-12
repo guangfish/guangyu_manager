@@ -1,13 +1,16 @@
 package com.bt.om.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bt.om.entity.Invitation;
 import com.bt.om.mapper.InvitationMapper;
 import com.bt.om.service.IInvitationService;
+import com.bt.om.vo.web.SearchDataVo;
 
 @Service
 public class InvitationService implements IInvitationService {
@@ -46,5 +49,16 @@ public class InvitationService implements IInvitationService {
 	
 	public int updateByPrimaryKey(Invitation record){
 		return invitationMapper.updateByPrimaryKey(record);
+	}
+	
+	@Override
+	public void selectByMobileFriend(SearchDataVo vo){
+		int count = invitationMapper.selectByMobileFriendCount(vo.getSearchMap());
+		vo.setCount(count);
+		if (count > 0) {
+			vo.setList(invitationMapper.selectByMobileFriendList(vo.getSearchMap(), new RowBounds(vo.getStart(), vo.getSize())));
+		} else {
+			vo.setList(new ArrayList<Invitation>());
+		}
 	}
 }

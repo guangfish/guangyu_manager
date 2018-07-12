@@ -59,6 +59,7 @@ public class AppLoginController extends BasicController {
 	@ResponseBody
 	public Model login(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
+		String app="android";
 		String mobile = "";
 		String code = "";
 		InputStream is;
@@ -66,6 +67,9 @@ public class AppLoginController extends BasicController {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			mobile = obj.get("mobile").getAsString();
 			code = obj.get("code").getAsString();
 		} catch (Exception e) {
@@ -152,6 +156,16 @@ public class AppLoginController extends BasicController {
 //					platformReward = platformReward + userOrder.getCommissionReward();
 //				}
 //			}
+			
+			String downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
+			if("android".equals(app)){
+				downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
+			}else if("ios".equals(app)){
+				downloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
+			}
+			
+			String inviteCodeInfo=GlobalVariable.resourceMap.get("invite_info");
+			inviteCodeInfo=inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());			
 
 //			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
 			data.put("userId", SecurityUtil1.encrypts(mobile));
@@ -162,9 +176,10 @@ public class AppLoginController extends BasicController {
 //			data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
 //			data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
 //			data.put("totalBuySave", cash + "");// 累计购物已省
-			data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\n-------------\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\n-------------\n访问链接：https://www.guangfish.com\n-------------\n邀请码【"+user.getMyInviteCode()+"】");// 我的邀请码
+			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
 			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
 //																// 2：超级会员
+			data.put("sex", user.getSex()+"");
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
 			return model;
@@ -180,16 +195,24 @@ public class AppLoginController extends BasicController {
 	@ResponseBody
 	public Model register(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
+		String app="android";
 		String inviteCode = "";
 		String mobile = "";
 		String alipay = "";
 		String weixin = "";
+		int sex=1;
 		String code = "";
 		InputStream is;
 		try {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
+			if (obj.get("sex") != null) {
+				sex = obj.get("sex").getAsInt();
+			}
 			if (obj.get("inviteCode") != null) {
 				inviteCode = obj.get("inviteCode").getAsString();
 			}
@@ -232,6 +255,7 @@ public class AppLoginController extends BasicController {
 		user.setTaInviteCode(inviteCode);
 		user.setMyInviteCode(myInviteCode);
 		user.setAccountType(2);
+		user.setSex(sex);
 
 		try {
 			userService.insert(user);
@@ -260,6 +284,16 @@ public class AppLoginController extends BasicController {
 			model.addAttribute("response", registerVo);
 			return model;
 		}
+		
+		String downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
+		if("android".equals(app)){
+			downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
+		}else if("ios".equals(app)){
+			downloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
+		}
+		
+		String inviteCodeInfo=GlobalVariable.resourceMap.get("invite_info");
+		inviteCodeInfo=inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
 
 		registerVo.setStatus("0");
 		registerVo.setDesc("注册成功");
@@ -272,8 +306,9 @@ public class AppLoginController extends BasicController {
 //		data.put("friendNum", "0");// 好友数
 //		data.put("orderNum", "0");// 可提现订单数
 //		data.put("totalBuySave", "0.0");// 累计购物已省
-		data.put("inviteCode", "邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\n-------------\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\n-------------\n访问链接：https://www.guangfish.com\n-------------\n邀请码【"+myInviteCode+"】");// 我的邀请码
+		data.put("inviteCode", inviteCodeInfo);// 我的邀请码
 		data.put("userType", "2");// 账号类型1：普通会员 2：超级会员
+		data.put("sex", sex+"");
 		registerVo.setData(data);
 		model.addAttribute("response", registerVo);
 		return model;

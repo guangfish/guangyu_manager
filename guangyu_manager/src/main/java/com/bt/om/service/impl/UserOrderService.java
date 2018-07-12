@@ -1,5 +1,6 @@
 package com.bt.om.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,5 +94,27 @@ public class UserOrderService implements IUserOrderService {
 	@Override
 	public List<UserOrder> selectByInviteCode(String taInviteCode) {
 		return userOrderMapper.selectByInviteCode(taInviteCode);
+	}
+	
+	@Override
+	public void selectByMobileAndOrderStatus(SearchDataVo vo){
+		int count = userOrderMapper.selectByMobileAndOrderStatusCount(vo.getSearchMap());
+		vo.setCount(count);
+		if (count > 0) {
+			vo.setList(userOrderMapper.selectByMobileAndOrderStatusList(vo.getSearchMap(), new RowBounds(vo.getStart(), vo.getSize())));
+		} else {
+			vo.setList(new ArrayList<UserOrder>());
+		}
+	}
+	
+	@Override
+	public void getByInviteCode(SearchDataVo vo){
+		int count = userOrderMapper.getByInviteCodeCount(vo.getSearchMap());
+		vo.setCount(count);
+		if (count > 0) {
+			vo.setList(userOrderMapper.getByInviteCodeList(vo.getSearchMap(), new RowBounds(vo.getStart(), vo.getSize())));
+		} else {
+			vo.setList(new ArrayList<UserOrder>());
+		}
 	}
 }

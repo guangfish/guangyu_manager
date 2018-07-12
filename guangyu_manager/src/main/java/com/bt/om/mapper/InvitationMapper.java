@@ -1,6 +1,9 @@
 package com.bt.om.mapper;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
 
 import com.bt.om.entity.Invitation;
 
@@ -48,6 +51,10 @@ public interface InvitationMapper {
 	List<Invitation> selectInvitationList(Invitation invitation);
 	
 	List<Invitation> selectUnValidInvitationList();
+	
+	int selectByMobileFriendCount(Map<String, Object> searchMap);
+
+    List<Invitation> selectByMobileFriendList(Map<String, Object> searchMap, RowBounds rowBounds);
 	
 	
 }

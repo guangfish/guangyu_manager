@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
+import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.UserOrder;
 
 public interface UserOrderMapper {
@@ -66,4 +67,12 @@ public interface UserOrderMapper {
 	List<UserOrder> findByMobile(String mobile);
 	
 	List<UserOrder> selectByInviteCode(String taInviteCode);
+	
+	int selectByMobileAndOrderStatusCount(Map<String, Object> searchMap);
+
+    List<UserOrder> selectByMobileAndOrderStatusList(Map<String, Object> searchMap, RowBounds rowBounds);
+    
+    int getByInviteCodeCount(Map<String, Object> searchMap);
+
+    List<UserOrder> getByInviteCodeList(Map<String, Object> searchMap, RowBounds rowBounds);
 }

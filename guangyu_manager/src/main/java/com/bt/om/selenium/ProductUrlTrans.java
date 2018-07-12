@@ -78,7 +78,7 @@ public class ProductUrlTrans {
 		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
 			init();
 //			scheduleTaobao();
-//			scheduleJd();
+			scheduleJd();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
