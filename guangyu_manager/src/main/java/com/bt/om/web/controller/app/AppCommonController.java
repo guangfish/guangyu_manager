@@ -142,11 +142,16 @@ public class AppCommonController extends BasicController {
 	
 	@RequestMapping(value = "/help", method = { RequestMethod.GET, RequestMethod.POST })
 	public String help(Model model, HttpServletRequest request) {
-		return "redirect:https://h5.m.taobao.com/mlapp/olist.html?spm=a2141.7756461.2.6";
-//		return "searchv2/helpapp";
+//		return "redirect:https://h5.m.taobao.com/mlapp/olist.html?spm=a2141.7756461.2.6";
+		return "searchv2/helpapp";
 	}
 	
 	@RequestMapping(value = "/customer", method = { RequestMethod.GET, RequestMethod.POST })
+	public String customer(Model model, HttpServletRequest request) {
+		return "searchv2/customer";
+	}
+	
+	@RequestMapping(value = "/kefu", method = { RequestMethod.GET, RequestMethod.POST })
 	public String kefu(Model model, HttpServletRequest request) {
 		return "searchv2/customer";
 	}
