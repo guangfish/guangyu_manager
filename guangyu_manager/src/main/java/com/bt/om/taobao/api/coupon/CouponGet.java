@@ -29,6 +29,7 @@ public class CouponGet {
 		try {
 			rsp = client.execute(req);
 			retStr = rsp.getBody();
+//			System.out.println(retStr);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}
@@ -37,7 +38,7 @@ public class CouponGet {
 
 	public static void main(String[] args) {
 		// System.out.println(couponGet(null,1,30));
-		CouponSearchVo couponSearchVo = GsonUtil.GsonToBean(couponGet(null, 1, 30), CouponSearchVo.class);
+		CouponSearchVo couponSearchVo = GsonUtil.GsonToBean(couponGet("范姿牛仔连衣裙女中长款2018新款时尚短袖POLO领开叉修身裙子女夏", 1, 30), CouponSearchVo.class);
 		System.out.println(couponSearchVo.getTbk_dg_item_coupon_get_response().getResults().getTbk_coupon().size());
 	}
 

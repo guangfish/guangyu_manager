@@ -37,12 +37,12 @@ public class AppDownloadControllerV2 extends BasicController {
 	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {
 		AppDownloadVo appDownloadVo = new AppDownloadVo();
 		InputStream is;
-		int version = 1;
+		String version = "1.0.0";
 		try {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			version = obj.get("version").getAsInt();
+			version = obj.get("version").getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

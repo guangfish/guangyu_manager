@@ -422,11 +422,14 @@ public class ApiControllerV2 extends BasicController {
 			map.put("fanliMultiple", fanliMultiple+"");								
 		}
 		
+		List<Map<String, String>> list =new ArrayList<>();
+		list.add(map);
+		
         //查询成功
 		productInfoVo.setStatus("0");
 		productInfoVo.setDesc("查询成功");
 		productInfoVo.setMall(platform);
-		productInfoVo.setData(map);
+		productInfoVo.setData(list);
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 

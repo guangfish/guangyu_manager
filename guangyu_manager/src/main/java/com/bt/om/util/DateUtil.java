@@ -605,6 +605,6 @@ public class DateUtil {
     }
     
     public static void main(String[] args){
-    	System.out.println(dateFormate(getBeforeMonth(new Date()),CHINESE_PATTERN));
+    	System.out.println(dateFormate(new Date(),"dd"));
     }
 }

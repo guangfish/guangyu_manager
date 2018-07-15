@@ -29,6 +29,7 @@ import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.DateUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.v2.vo.RegisterVo;
@@ -165,6 +166,7 @@ public class AppLoginController extends BasicController {
 			}
 			
 			String inviteCodeInfo=GlobalVariable.resourceMap.get("invite_info");
+//			inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r\n-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
 			inviteCodeInfo=inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());			
 
 //			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
@@ -332,6 +334,20 @@ public class AppLoginController extends BasicController {
 			e.printStackTrace();
 		}		
 		
+		String canDraw="true";
+		String reason="";
+		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
+		if("1".equals(canDrawSwitch)){
+			String day=DateUtil.dateFormate(new Date(),"dd");			
+			String canDrawDay=GlobalVariable.resourceMap.get("can_draw_day");
+			if(canDrawDay.equals(day)){
+				canDraw="true";
+			}else{
+				canDraw="false";
+				reason="亲！每月"+canDrawDay+"日开启提现功能。";
+			}
+		}
+		
 		String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
 		User user = userService.selectByMobile(userId);
@@ -407,7 +423,9 @@ public class AppLoginController extends BasicController {
 //			data.put("inviteCode", user.getMyInviteCode());// 我的邀请码
 //			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
 																// 2：超级会员
-			data.put("tklSymbols", tklSymbols);
+			data.put("tklSymbols", tklSymbols); //淘口令前后特殊符号
+			data.put("canDraw", canDraw);//是否可以提现 true/false
+			data.put("reason", reason);//不可提现原因
 			
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);

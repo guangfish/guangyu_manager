@@ -14,16 +14,22 @@ import com.bt.om.service.ITkInfoTaskService;
 import com.bt.om.service.ITkOrderInputJdService;
 import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.taobao.api.MapDataBean;
+import com.bt.om.taobao.api.MaterialSearch;
+import com.bt.om.taobao.api.MaterialSearchVo;
 import com.bt.om.taobao.api.TaoKouling;
+import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
+import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.vo.api.ProductCommissionVo;
-import com.bt.om.web.controller.api.v2.vo.ProductInfoVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.CrawlTask;
 import com.bt.om.web.controller.api.TaskBean;
+import com.bt.om.web.controller.app.vo.ItemVo;
+import com.bt.om.web.controller.app.vo.ProductInfoVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -68,33 +74,38 @@ public class AppApiController extends BasicController {
 	@Autowired
 	private ITkOrderInputJdService tkOrderInputJdService;
 
-	// 获取商品详情
-	@RequestMapping(value = "/productInfo1", method = RequestMethod.POST)
-	@ResponseBody
-	public Model productInfo1(Model model, HttpServletRequest request, HttpServletResponse response) {
-		ProductInfoVo productInfoVo = new ProductInfoVo();
-		productInfoVo.setStatus("0");
-		productInfoVo.setDesc("");
-		productInfoVo.setMall("taobao");
-		;
-		Map<String, String> map = new HashMap<>();
-		map.put("imgUrl",
-				"http://img.alicdn.com/bao/uploaded/i2/884679010/TB2IrJ3uFuWBuNjSszbXXcS7FXa_!!884679010.jpg");
-		map.put("shopName", "米吉诺拉づ外贸袜子日韩店");
-		map.put("productName", "米吉诺拉少女甜美生理内裤女士纯棉三角蕾丝性感月经期防漏姨妈裤");
-		map.put("commission", "10");
-		map.put("price", "100");
-		map.put("tkl", "€7OkK0BGAXeP€");
-		map.put("per", "20");
-		map.put("sellNum", "100");
-		map.put("quanMianzhi", "20");
-		map.put("fanliMultiple", "1.5");
-
-		productInfoVo.setData(map);
-
-		model.addAttribute("response", productInfoVo);
-		return model;
-	}
+//	// 获取商品详情
+//	@RequestMapping(value = "/productInfo1", method = RequestMethod.POST)
+//	@ResponseBody
+//	public Model productInfo1(Model model, HttpServletRequest request, HttpServletResponse response) {
+//		ProductInfoVo productInfoVo = new ProductInfoVo();
+//		productInfoVo.setStatus("0");
+//		productInfoVo.setDesc("");
+//		productInfoVo.setTotalSize(1);
+//		productInfoVo.setCurPage(1);
+//		productInfoVo.setMaxPage(1);
+//		productInfoVo.setMall("taobao");
+//		List<Map<String, String>> list = new ArrayList<>();
+//		Map<String, String> map = new HashMap<>();
+//		map.put("imgUrl",
+//				"http://img.alicdn.com/bao/uploaded/i2/884679010/TB2IrJ3uFuWBuNjSszbXXcS7FXa_!!884679010.jpg");
+//		map.put("shopName", "米吉诺拉づ外贸袜子日韩店");
+//		map.put("productName", "米吉诺拉少女甜美生理内裤女士纯棉三角蕾丝性感月经期防漏姨妈裤");
+//		map.put("commission", "10");
+//		map.put("price", "100");
+//		map.put("tkl", "€7OkK0BGAXeP€");
+//		map.put("per", "20");
+//		map.put("sellNum", "100");
+//		map.put("quanMianzhi", "20");
+//		map.put("fanliMultiple", "1.5");
+//
+//		list.add(map);
+//
+//		productInfoVo.setData(list);
+//
+//		model.addAttribute("response", productInfoVo);
+//		return model;
+//	}
 
 	// 获取商品详情
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
@@ -102,9 +113,9 @@ public class AppApiController extends BasicController {
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		String userId = "";
-		@SuppressWarnings("unused")
-		String imei = "";
 		String productUrl = "";
+		int pageNo = 1;
+		int size = 30;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -116,8 +127,11 @@ public class AppApiController extends BasicController {
 			if (obj.get("productUrl") != null) {
 				productUrl = obj.get("productUrl").getAsString();
 			}
-			if (obj.get("imei") != null) {
-				imei = obj.get("imei").getAsString();
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsInt();
+			}
+			if (obj.get("size") != null) {
+				size = obj.get("size").getAsInt();
 			}
 		} catch (IOException e) {
 			productInfoVo.setStatus("1");
@@ -126,14 +140,31 @@ public class AppApiController extends BasicController {
 			return model;
 		}
 
-		// 商品链接验证
+		// 商品链接、淘口令非空验证
 		if (StringUtils.isEmpty(productUrl)) {
 			productInfoVo.setStatus("2");
 			productInfoVo.setDesc("商品链接为空");
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
+		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
+		if (keyParser(productUrl, tklSymbolsStr)) {
+			productInfoVo = productInfoCrawl(userId, productUrl);
+		} else {
+			productInfoVo = productInfoApi(productUrl, pageNo, size);
+		}
 
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+
+		model.addAttribute("response", productInfoVo);
+		return model;
+	}
+
+	public ProductInfoVo productInfoCrawl(String userId, String productUrl) {
+		ProductInfoVo productInfoVo = new ProductInfoVo();
+
+		// 判断productUrl是否为淘口令，如果是淘口令通过接口获取商品链接
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 		String[] tklSymbols = tklSymbolsStr.split(";");
 		for (String symbol : tklSymbols) {
@@ -146,8 +177,7 @@ public class AppApiController extends BasicController {
 				if (StringUtils.isEmpty(productUrl)) {
 					productInfoVo.setStatus("3");
 					productInfoVo.setDesc("商品链接解析失败");
-					model.addAttribute("response", productInfoVo);
-					return model;
+					return productInfoVo;
 				} else {
 					Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
 					String puri = urlMap0.get("puri");
@@ -164,6 +194,7 @@ public class AppApiController extends BasicController {
 			}
 		}
 
+		// 解析链接地址，并判断链接是否合法
 		Map<String, String> urlMap = StringUtil.urlSplit(productUrl);
 		String platform = "taobao";
 		if (urlMap.get("puri").contains("taobao.com") || urlMap.get("puri").contains("tmall.com")) {
@@ -174,8 +205,7 @@ public class AppApiController extends BasicController {
 		} else {
 			productInfoVo.setStatus("4");
 			productInfoVo.setDesc("不支持的商品链接地址");
-			model.addAttribute("response", productInfoVo);
-			return model;
+			return productInfoVo;
 		}
 
 		String uriProductId = "";
@@ -184,8 +214,7 @@ public class AppApiController extends BasicController {
 			if (StringUtils.isEmpty(urlMap.get("id"))) {
 				productInfoVo.setStatus("5");
 				productInfoVo.setDesc("商品ID为空");
-				model.addAttribute("response", productInfoVo);
-				return model;
+				return productInfoVo;
 			}
 			uriProductId = urlMap.get("id");
 		} else if ("jd".equals(platform)) {
@@ -200,8 +229,7 @@ public class AppApiController extends BasicController {
 			if (StringUtils.isEmpty(uriProductId)) {
 				productInfoVo.setStatus("5");
 				productInfoVo.setDesc("商品ID为空");
-				model.addAttribute("response", productInfoVo);
-				return model;
+				return productInfoVo;
 			}
 		}
 
@@ -267,12 +295,12 @@ public class AppApiController extends BasicController {
 			productInfo.setCreateTime(new Date());
 			productInfo.setUpdateTime(new Date());
 
-//			//查询的商品信息入库
-//			try {
-//				productInfoService.insertProductInfo(productInfo);
-//			} catch (Exception e) {
-//				logger.error(e.getMessage());
-//			}
+			// //查询的商品信息入库
+			// try {
+			// productInfoService.insertProductInfo(productInfo);
+			// } catch (Exception e) {
+			// logger.error(e.getMessage());
+			// }
 
 			// 插入搜索记录
 			SearchRecord searchRecord = new SearchRecord();
@@ -288,25 +316,30 @@ public class AppApiController extends BasicController {
 			map.put("imgUrl", productImgUrl);
 			map.put("shopName", shopName);
 			map.put("productName", productName);
-			map.put("commission",
-					"" + ((float) (Math.round(
-							commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-							/ 100));
 			map.put("price", "" + price);
 			if (StringUtil.isNotEmpty(tklquan)) {
 				map.put("tkl", tklquan);
 			} else {
 				map.put("tkl", tkl);
 			}
-			map.put("per",
-					((float) (Math.round(
-							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-							/ 100) + "");
+
+			float pre = Float.parseFloat(NumberUtil.formatFloat(
+					incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
+			map.put("per", pre + "");
 			map.put("sellNum", sellNum);
+			float actualCommission = (float) (Math
+					.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+					/ 100;
 			if ("0.0".equals(quanMianzhi)) {
 				quanMianzhi = "";
+				actualCommission = commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate"));
+			} else {
+				actualCommission = (commission - Float.parseFloat(quanMianzhi) * incomeRate / 100)
+						* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate"));
 			}
+			actualCommission = Float.parseFloat(NumberUtil.formatFloat(actualCommission, "0.00"));
 			map.put("quanMianzhi", quanMianzhi);
+			map.put("commission", "" + actualCommission);
 
 			float fanli = ((float) (Math
 					.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
@@ -330,20 +363,141 @@ public class AppApiController extends BasicController {
 			}
 			map.put("fanliMultiple", fanliMultiple + "");
 		} else {
-			model.addAttribute("response", productInfoVo);
-			return model;
+			productInfoVo.setStatus("6");
+			productInfoVo.setDesc("未查到商品信息");
+			return productInfoVo;
 		}
+
+		List<Map<String, String>> list = new ArrayList<>();		
+		list.add(map);
+		
+		ItemVo itemVo=new ItemVo();
 
 		// 查询成功
 		productInfoVo.setStatus("0");
 		productInfoVo.setDesc("查询成功");
-		productInfoVo.setMall(platform);
-		productInfoVo.setData(map);
-		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
-		response.setHeader("Access-Control-Allow-Credentials", "true");
+		itemVo.setTotalSize(1);
+		itemVo.setCurPage(1);
+		itemVo.setMaxPage(1);
+		itemVo.setMall(platform);
+		itemVo.setHasNext(false);
+		itemVo.setItems(list);
+		productInfoVo.setData(itemVo);
 
-		model.addAttribute("response", productInfoVo);
-		return model;
+		return productInfoVo;
+	}
+
+	public ProductInfoVo productInfoApi(String productUrl, int pageNo, int size) {
+		ProductInfoVo productInfoVo = new ProductInfoVo();
+		try {			
+			String retStr = MaterialSearch.materialSearch(productUrl, pageNo, size);
+			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
+			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
+					.getMap_data();
+			long total_results = materialSearchVo.getTbk_dg_material_optional_response().getTotal_results();
+			List<Map<String, String>> list = new ArrayList<>();
+
+			if (mapDataBeanList != null && mapDataBeanList.size() > 0) {
+				String tkurl = "";
+				for (MapDataBean mapDataBean : mapDataBeanList) {
+					Map<String, String> map = new HashMap<>();
+					map.put("imgUrl", mapDataBean.getPict_url());
+					map.put("shopName", mapDataBean.getShop_title());
+					map.put("productName", mapDataBean.getTitle());
+					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
+					map.put("sellNum", mapDataBean.getVolume().intValue() + "");
+
+					String quan = "";
+					if (StringUtil.isNotEmpty(mapDataBean.getCoupon_info())) {
+						Pattern p = Pattern.compile("减(\\d+)元");
+						Matcher m = p.matcher(mapDataBean.getCoupon_info());
+						if (m.find()) {
+							quan = m.group(1);
+							map.put("quanMianzhi", quan);
+						}
+						p = Pattern.compile("(\\d+)元无条件券");
+						m = p.matcher(mapDataBean.getCoupon_info());
+						if (m.find()) {
+							quan = m.group(1);
+							map.put("quanMianzhi", quan);
+						}						
+						tkurl=mapDataBean.getCoupon_share_url();
+					}else{
+						tkurl=mapDataBean.getUrl();
+					}
+					String tklStr = TaoKouling.createTkl("https:"+tkurl, mapDataBean.getTitle(), mapDataBean.getPict_url());
+					if (StringUtil.isNotEmpty(tklStr)) {
+						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
+					}
+					float actualCommission = 0f;
+					double actualPrice = 0d;
+					double incomeRate = Double.parseDouble(mapDataBean.getCommission_rate()) / 100;
+					if (StringUtil.isNotEmpty(quan)) {
+						actualPrice = Double.parseDouble(mapDataBean.getZk_final_price()) - Double.parseDouble(quan);
+					} else {
+						actualPrice = Double.parseDouble(mapDataBean.getZk_final_price());
+					}
+//					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
+//							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100);
+					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
+							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)/100) / 100);
+					map.put("commission", actualCommission + "");
+
+					float pre = Float.parseFloat(NumberUtil.formatDouble(
+							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
+					map.put("per", pre + "");
+
+					float fanliMultiple = 1;
+					if (actualCommission <= 1) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
+					} else if (actualCommission > 1 && actualCommission <= 5) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
+					} else if (actualCommission > 5 && actualCommission <= 10) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
+					} else if (actualCommission > 10 && actualCommission <= 50) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
+					} else if (actualCommission > 50 && actualCommission <= 100) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
+					} else if (actualCommission > 100 && actualCommission <= 500) {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
+					} else {
+						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
+					}
+
+					map.put("fanliMultiple", fanliMultiple + "");
+
+					list.add(map);
+				}
+				
+				ItemVo itemVo=new ItemVo();
+				
+				
+				itemVo.setItems(list);
+				itemVo.setMall("taobao");
+				itemVo.setCurPage((int) pageNo);
+				long maxPage = 0;
+				boolean ifHasNextPage=false;
+				if (total_results % size == 0) {
+					maxPage = total_results / size;
+				} else {
+					maxPage = total_results / size + 1;
+				}
+				if(maxPage>pageNo){
+					ifHasNextPage=true;
+				}else{
+					ifHasNextPage=false;
+				}
+				itemVo.setMaxPage(maxPage);
+				itemVo.setHasNext(ifHasNextPage);
+				itemVo.setTotalSize(total_results);
+				
+				productInfoVo.setData(itemVo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return productInfoVo;
 	}
 
 	// 佣金信息获取请求
@@ -614,5 +768,30 @@ public class AppApiController extends BasicController {
 			tkOrderInputJdService.insert(tkOrderInputJd);
 		}
 		return model;
+	}
+
+	/**
+	 * 
+	 * @param conetnt
+	 *            搜索的字符串
+	 * @param tklSymbolsStr
+	 *            淘口令符号“€;￥;《”
+	 * @return
+	 */
+	private boolean keyParser(String conetnt, String tklSymbolsStr) {
+		if (conetnt.contains("jd.com") || conetnt.contains("taobao.com") || conetnt.contains("tmall.com")) {
+			return true;
+		} else {
+			String[] tklSymbols = tklSymbolsStr.split(";");
+			for (String symbol : tklSymbols) {
+				String reg = symbol + ".*" + symbol;
+				Pattern pattern = Pattern.compile(reg);
+				Matcher matcher = pattern.matcher(conetnt);
+				if (matcher.find()) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }

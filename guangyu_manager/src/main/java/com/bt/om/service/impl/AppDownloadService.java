@@ -13,7 +13,7 @@ public class AppDownloadService implements IAppDownloadService {
 	private AppDownloadMapper appDownloadMapper;
 
 	@Override
-	public AppDownload selectLastest(Integer version) {
+	public AppDownload selectLastest(String version) {
 		return appDownloadMapper.selectLastest(version);
 	}
 }

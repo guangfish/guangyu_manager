@@ -113,12 +113,12 @@ public class AppCommonController extends BasicController {
 	public Model download(Model model, HttpServletRequest request, HttpServletResponse response) {
 		AppDownloadVo appDownloadVo = new AppDownloadVo();
 		InputStream is;
-		int version = 1;
+		String version = "1.0.0";
 		try {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			version = obj.get("version").getAsInt();
+			version = obj.get("version").getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -154,6 +154,16 @@ public class AppCommonController extends BasicController {
 	@RequestMapping(value = "/kefu", method = { RequestMethod.GET, RequestMethod.POST })
 	public String kefu(Model model, HttpServletRequest request) {
 		return "searchv2/customer";
+	}
+	
+	@RequestMapping(value = "/invite", method = { RequestMethod.GET, RequestMethod.POST })
+	public String invite(Model model, HttpServletRequest request) {
+		return "searchv2/inviteapp";
+	}
+	
+	@RequestMapping(value = "/about", method = { RequestMethod.GET, RequestMethod.POST })
+	public String about(Model model, HttpServletRequest request) {
+		return "searchv2/about";
 	}
 
 	/**

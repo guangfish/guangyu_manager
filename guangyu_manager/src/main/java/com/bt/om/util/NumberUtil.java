@@ -185,6 +185,15 @@ public class NumberUtil {
         NumberFormat objFormat = new DecimalFormat(formatStr);
         return objFormat.format(value);
     }
+    
+    public static String formatFloat(Float value,String formatStr) {
+        if (value == null || value == 0) {
+            return "0";
+        }
+
+        NumberFormat objFormat = new DecimalFormat(formatStr);
+        return objFormat.format(value);
+    }
 
     /**
      * 计算分成比例
@@ -583,5 +592,10 @@ public class NumberUtil {
 
     public static Integer parserInt(String number) {
         return Integer.valueOf(number);
+    }
+    
+    public static void main(String[] args){
+    	System.out.println(formatDouble(0.121212d,"0.00"));
+    	System.out.println(formatFloat(0.121212f,"0.00"));
     }
 }

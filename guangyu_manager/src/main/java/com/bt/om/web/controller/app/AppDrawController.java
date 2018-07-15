@@ -42,6 +42,7 @@ import com.bt.om.vo.web.SearchDataVo;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.api.v2.vo.OrderDrawVo;
+import com.bt.om.web.controller.app.vo.ItemVo;
 import com.bt.om.web.controller.app.vo.ResultVo;
 import com.bt.om.web.util.SearchUtil;
 import com.google.gson.Gson;
@@ -134,7 +135,7 @@ public class AppDrawController extends BasicController {
 			vo.putSearchParam("mobile", userId, userId);
 		}
 		
-		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		
 		userOrderService.selectByMobileAndOrderStatus(vo);
 		@SuppressWarnings("unchecked")
@@ -152,16 +153,27 @@ public class AppDrawController extends BasicController {
 			list.add(map);
 		}
 		
-		resultVo.setData(list);
-		resultVo.setCurPage(pageNo);
+		ItemVo itemVo=new ItemVo();
+		
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
 		long maxPage=0;
+		boolean ifHasNextPage=false;
 		if(vo.getCount()%vo.getSize()==0){
 			maxPage=vo.getCount() / vo.getSize();
 		}else{
 			maxPage=vo.getCount() / vo.getSize()+1;
 		}
-		resultVo.setMaxPage(maxPage);
-		resultVo.setTotalSize(vo.getCount());
+		if(maxPage>pageNo){
+			ifHasNextPage=true;
+		}else{
+			ifHasNextPage=false;
+		}		
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+		
+		resultVo.setData(itemVo);
 
 //		
 //		try {
@@ -277,7 +289,7 @@ public class AppDrawController extends BasicController {
 			return model;
 		}
 
-		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		
 		SearchDataVo vo = SearchUtil.getVoForList(pageNo,size);
 		if(StringUtil.isNotEmpty(userId)){
@@ -288,7 +300,7 @@ public class AppDrawController extends BasicController {
 		}else if(status==2){
 			vo.putSearchParam("status", status+"", status);
 			vo.putSearchParam("reward", "1", 1);
-		}else if(status==2){
+		}else if(status==3){
 			vo.putSearchParam("status", status+"", status);
 			vo.putSearchParam("reward", "2", 2);
 		}
@@ -305,16 +317,27 @@ public class AppDrawController extends BasicController {
 			list.add(map);
 		}
 		
-		resultVo.setData(list);
-		resultVo.setCurPage(pageNo);
+		ItemVo itemVo=new ItemVo();
+		
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
 		long maxPage=0;
+		boolean ifHasNextPage=false;
 		if(vo.getCount()%vo.getSize()==0){
 			maxPage=vo.getCount() / vo.getSize();
 		}else{
 			maxPage=vo.getCount() / vo.getSize()+1;
 		}
-		resultVo.setMaxPage(maxPage);
-		resultVo.setTotalSize(vo.getCount());
+		if(maxPage>pageNo){
+			ifHasNextPage=true;
+		}else{
+			ifHasNextPage=false;
+		}		
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+		
+		resultVo.setData(itemVo);
 
 //		Invitation invitation = new Invitation();
 //		invitation.setBeInviterMobile(userId);
@@ -367,7 +390,7 @@ public class AppDrawController extends BasicController {
 		}
 		
 		User user = userService.selectByMobile(userId);
-		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		
 		SearchDataVo vo = SearchUtil.getVoForList(pageNo,size);
 		vo.putSearchParam("taInviteCode", user.getMyInviteCode(), user.getMyInviteCode());
@@ -385,16 +408,27 @@ public class AppDrawController extends BasicController {
 			list.add(map);
 		}
 		
-		resultVo.setData(list);
-		resultVo.setCurPage(pageNo);
+		ItemVo itemVo=new ItemVo();
+		
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
 		long maxPage=0;
+		boolean ifHasNextPage=false;
 		if(vo.getCount()%vo.getSize()==0){
 			maxPage=vo.getCount() / vo.getSize();
 		}else{
 			maxPage=vo.getCount() / vo.getSize()+1;
 		}
-		resultVo.setMaxPage(maxPage);
-		resultVo.setTotalSize(vo.getCount());
+		if(maxPage>pageNo){
+			ifHasNextPage=true;
+		}else{
+			ifHasNextPage=false;
+		}		
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+		
+		resultVo.setData(itemVo);
 		
 //		List<UserOrder> userOrderList = userOrderService.selectByInviteCode(user.getMyInviteCode());
 //
