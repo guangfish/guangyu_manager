@@ -301,7 +301,7 @@ public class AppDrawController extends BasicController {
 			vo.putSearchParam("status", status+"", status);
 			vo.putSearchParam("reward", "1", 1);
 		}else if(status==3){
-			vo.putSearchParam("status", status+"", status);
+			vo.putSearchParam("status", "2", 2);
 			vo.putSearchParam("reward", "2", 2);
 		}
 		invitationService.selectByMobileFriend(vo);
