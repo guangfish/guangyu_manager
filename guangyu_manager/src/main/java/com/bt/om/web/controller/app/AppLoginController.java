@@ -424,6 +424,13 @@ public class AppLoginController extends BasicController {
 //			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
 																// 2：超级会员
 			data.put("tklSymbols", tklSymbols); //淘口令前后特殊符号
+			
+			if("true".equals(canDraw)){
+				if(totalMoney==0){
+					canDraw="false";
+					reason="我的钱包空空的！";
+				}
+			}
 			data.put("canDraw", canDraw);//是否可以提现 true/false
 			data.put("reason", reason);//不可提现原因
 			

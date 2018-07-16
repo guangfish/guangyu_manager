@@ -317,11 +317,15 @@ public class AppApiController extends BasicController {
 			map.put("shopName", shopName);
 			map.put("productName", productName);
 			map.put("price", "" + price);
-			if (StringUtil.isNotEmpty(tklquan)) {
-				map.put("tkl", tklquan);
-			} else {
-				map.put("tkl", tkl);
-			}
+			if("taobao".equals(platform)){
+				if (StringUtil.isNotEmpty(tklquan)) {
+					map.put("tkl", tklquan);
+				} else {
+					map.put("tkl", tkl);
+				}
+			}else{
+				map.put("tkl", tkLink);
+			}			
 
 			float pre = Float.parseFloat(NumberUtil.formatFloat(
 					incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
