@@ -104,67 +104,6 @@ public class AppLoginController extends BasicController {
 			registerVo.setDesc("登陆成功");
 			Map<String, String> data = new HashMap<>();
 
-			// //邀请的好友
-			// Invitation invitationVo = new Invitation();
-			// invitationVo.setInviterMobile(mobile);
-			// List<Invitation> invitationList =
-			// invitationService.selectInvitationList(invitationVo);
-			// float inviteReward = 0;
-			// int friendNum = 0;
-			// int friendNumValid = 0;
-			// int friendNumNoValid = 0;
-			// float rewardAll = 0;
-			// if (invitationList != null && invitationList.size() > 0) {
-			// for (Invitation invitation : invitationList) {
-			// // 邀请已激活获得奖励
-			// if (invitation.getStatus() == 2 && invitation.getReward() == 1) {
-			// friendNumValid = friendNumValid + 1;
-			// inviteReward = inviteReward + invitation.getMoney();
-			// }
-			// // 邀请未激活，预计可获得奖励
-			// if (invitation.getStatus() == 1) {
-			// friendNumNoValid = friendNumNoValid + 1;
-			// rewardAll = rewardAll + invitation.getMoney();
-			// }
-			// }
-			// friendNum = invitationList.size();
-			// }
-
-			// //可提现订单
-			// int canDrawOrderNum = 0;
-			// double totalCommission = 0;
-			// float tCommission = 0;
-			// List<UserOrder> userOrderList =
-			// userOrderService.selectAllOrderByMobile(mobile);
-			// List<UserOrder> userOrderCanDrawList = new ArrayList<>();
-			// for (UserOrder userOrder : userOrderList) {
-			// if ("订单结算".equals(userOrder.getOrderStatus())) {
-			// canDrawOrderNum = canDrawOrderNum + 1;
-			// totalCommission = totalCommission + userOrder.getCommission3() *
-			// userOrder.getFanliMultiple();
-			// userOrderCanDrawList.add(userOrder);
-			// }
-			// }
-			// tCommission = ((float) (Math.round(totalCommission * 100)) /
-			// 100);
-
-			// // 累计购物已省
-			// Map<String, Object> map = new HashMap<>();
-			// map.put("mobile", mobile);
-			// map.put("status", 2);
-			// double cash = drawCashService.getSumByMobile(map);
-
-			// //订单平台奖励
-			// List<UserOrder> userOrderList1 =
-			// userOrderService.selectByInviteCode(user.getMyInviteCode());
-			// double platformReward = 0f;
-			// if (userOrderList1 != null && userOrderList1.size() > 0) {
-			// for (UserOrder userOrder : userOrderList1) {
-			// platformReward = platformReward +
-			// userOrder.getCommissionReward();
-			// }
-			// }
-
 			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
 			if ("android".equals(app)) {
 				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
@@ -177,19 +116,9 @@ public class AppLoginController extends BasicController {
 			inviteCodeInfo = inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#",
 					user.getMyInviteCode());
 
-			// double totalMoney = ((double) (Math.round((tCommission +
-			// inviteReward + platformReward) * 100)) / 100);
 			data.put("userId", SecurityUtil1.encrypts(mobile));
-			// data.put("totalMoney", totalMoney + "");// 总共可提现金额
-			// data.put("orderMoney", tCommission + "");// 订单可提金额
-			// data.put("inviteReward", inviteReward + "");// 邀请奖励金额
-			// data.put("platformReward", platformReward + "");// 平台订单奖励金额
-			// data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
-			// data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
-			// data.put("totalBuySave", cash + "");// 累计购物已省
 			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
-			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
-			// // 2：超级会员
+			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员  2：超级会员
 			data.put("sex", user.getSex() + "");
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
@@ -315,13 +244,6 @@ public class AppLoginController extends BasicController {
 		registerVo.setDesc("注册成功");
 		Map<String, String> data = new HashMap<>();
 		data.put("userId", SecurityUtil1.encrypts(mobile));
-		// data.put("totalMoney", "0.0");// 总共可提现金额
-		// data.put("orderMoney", "0.0");// 订单可提金额
-		// data.put("inviteReward", "0.0");// 邀请奖励金额
-		// data.put("platformReward", "0.0");// 平台订单奖励金额
-		// data.put("friendNum", "0");// 好友数
-		// data.put("orderNum", "0");// 可提现订单数
-		// data.put("totalBuySave", "0.0");// 累计购物已省
 		data.put("inviteCode", inviteCodeInfo);// 我的邀请码
 		data.put("userType", "2");// 账号类型1：普通会员 2：超级会员
 		data.put("sex", sex + "");
@@ -438,7 +360,8 @@ public class AppLoginController extends BasicController {
 					}
 				}
 			}
-			data.put("totalMoney", totalMoney + "");// 总共可提现金额
+			totalMoney=((double) (Math.round((totalMoney + hongbao) * 100)) / 100);
+			data.put("totalMoney", totalMoney+ "");// 总共可提现金额
 			data.put("orderMoney", tCommission + "");// 订单可提金额
 			data.put("inviteReward", inviteReward + "");// 邀请奖励金额
 			data.put("platformReward", platformReward + "");// 平台订单奖励金额
