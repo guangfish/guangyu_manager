@@ -66,24 +66,45 @@ public class UserOrderCheckJdTask {
 						orderStatus = tkOrderInputJd.getOrderStatus();
 						productNum = tkOrderInputJd.getProductNum();
 						// 订单结算时的实际佣金
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())
-								|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+//						if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+//								|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+//							commission = tkOrderInputJd.getActualCommission();
+//						} else {
+//							// 订单未结算时的预估佣金
+//							commission = tkOrderInputJd.getEstimateCommission();
+//						}												
+
+//						if ("已结算".equals(tkOrderInputJd.getOrderStatus())
+//								|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+//							status1 = 2;
+//						} else if ((tkOrderInputJd.getOrderStatus()).contains("无效")) {
+//							status1 = 3;
+//						}
+
+//						if ("已付款".equals(orderStatus)) {
+//							orderStatus = "订单付款";
+//						} else if ("已结算".equals(orderStatus) || "已完成".equals(orderStatus)) {
+//							orderStatus = "订单结算";
+//						} else if (orderStatus.contains("无效")) {
+//							orderStatus = "订单失效";
+//						}
+						
+						if ("已结算".equals(tkOrderInputJd.getOrderStatus())) {
 							commission = tkOrderInputJd.getActualCommission();
 						} else {
 							// 订单未结算时的预估佣金
 							commission = tkOrderInputJd.getEstimateCommission();
 						}
-
-						if ("已结算".equals(tkOrderInputJd.getOrderStatus())
-								|| "已完成".equals(tkOrderInputJd.getOrderStatus())) {
+						
+						if ("已结算".equals(tkOrderInputJd.getOrderStatus())) {
 							status1 = 2;
 						} else if ((tkOrderInputJd.getOrderStatus()).contains("无效")) {
 							status1 = 3;
 						}
-
-						if ("已付款".equals(orderStatus)) {
+						
+						if ("已付款".equals(orderStatus) || "已完成".equals(orderStatus)) {
 							orderStatus = "订单付款";
-						} else if ("已结算".equals(orderStatus) || "已完成".equals(orderStatus)) {
+						} else if ("已结算".equals(orderStatus)) {
 							orderStatus = "订单结算";
 						} else if (orderStatus.contains("无效")) {
 							orderStatus = "订单失效";
