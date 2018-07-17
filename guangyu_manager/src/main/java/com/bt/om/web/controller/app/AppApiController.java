@@ -21,6 +21,7 @@ import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
+import com.bt.om.util.RegexUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.vo.api.ProductCommissionVo;
@@ -149,7 +150,13 @@ public class AppApiController extends BasicController {
 		}
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 		if (keyParser(productUrl, tklSymbolsStr)) {
-			productInfoVo = productInfoCrawl(userId, productUrl);
+			productInfoVo = productInfoWebCrawl(userId, productUrl);
+			if(productInfoVo.getData()==null){
+				List<String[]> lists=RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+				if(lists.size()>0){
+					productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+				}
+			}
 		} else {
 			productInfoVo = productInfoApi(productUrl, pageNo, size);
 		}
@@ -160,8 +167,15 @@ public class AppApiController extends BasicController {
 		model.addAttribute("response", productInfoVo);
 		return model;
 	}
+	
+	//APP爬虫任务
+	public ProductInfoVo productInfoAppCrawl(String userId, String productUrl) {
+		ProductInfoVo productInfoVo = new ProductInfoVo();
+		return productInfoVo;
+	}
 
-	public ProductInfoVo productInfoCrawl(String userId, String productUrl) {
+	//浏览器爬虫任务
+	public ProductInfoVo productInfoWebCrawl(String userId, String productUrl) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 
 		// 判断productUrl是否为淘口令，如果是淘口令通过接口获取商品链接
@@ -295,12 +309,12 @@ public class AppApiController extends BasicController {
 			productInfo.setCreateTime(new Date());
 			productInfo.setUpdateTime(new Date());
 
-			// //查询的商品信息入库
-			// try {
-			// productInfoService.insertProductInfo(productInfo);
-			// } catch (Exception e) {
-			// logger.error(e.getMessage());
-			// }
+			// 查询的商品信息入库
+			try {
+				productInfoService.insertProductInfo(productInfo);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
 
 			// 插入搜索记录
 			SearchRecord searchRecord = new SearchRecord();
@@ -391,6 +405,7 @@ public class AppApiController extends BasicController {
 		return productInfoVo;
 	}
 
+	//通过淘宝API查询商品信息
 	public ProductInfoVo productInfoApi(String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {			
