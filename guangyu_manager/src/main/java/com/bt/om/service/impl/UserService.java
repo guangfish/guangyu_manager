@@ -26,4 +26,9 @@ public class UserService implements IUserService {
 	public User selectByTaInviteCode(String taInviteCode) {
 		return userMapper.selectByTaInviteCode(taInviteCode);
 	}
+	
+	@Override
+	public void updateHongbao(User user) {
+		userMapper.updateHongbao(user);
+	}
 }

@@ -198,6 +198,7 @@ $('#payTime').val("");
 	                { title: "提现金额",data:'cash' },
 	                { title: "邀请奖励",data:'reward' },
 	                { title: "订单奖励",data:'orderReward' },
+	                { title: "红包奖励",data:'hongbao' },
 	                { title: "支付状态",render:function(d,t,r){
 		                switch(r.status){
                             case 1:return '未打款';

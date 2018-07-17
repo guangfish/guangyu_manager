@@ -514,6 +514,11 @@ public class NumberUtil {
     public static int getRandomNumber(int begin, int end) {
         return (int) Math.round(Math.random() * (end - begin) + begin);
     }
+    
+    public static float getRandomNumberFloat(int begin, int end) {
+    	float floatBounded = begin + new Random().nextFloat() * (end - begin);
+        return floatBounded;
+    }
 
     /**
      * 生成固定长度的随机数
@@ -595,7 +600,8 @@ public class NumberUtil {
     }
     
     public static void main(String[] args){
-    	System.out.println(formatDouble(0.121212d,"0.00"));
-    	System.out.println(formatFloat(0.121212f,"0.00"));
+    	for(int i=0;i<100;i++){
+    		System.out.println((float) (Math.round(getRandomNumberFloat(1,5) * 100)) / 100);
+    	}
     }
 }

@@ -8,4 +8,6 @@ public interface IUserService {
 	public void insert(User user);
 	
 	public User selectByTaInviteCode(String taInviteCode);
+	
+	public void updateHongbao(User user);
 }

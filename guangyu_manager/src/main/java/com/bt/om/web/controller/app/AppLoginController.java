@@ -30,6 +30,7 @@ import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.DateUtil;
+import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.v2.vo.RegisterVo;
@@ -60,7 +61,7 @@ public class AppLoginController extends BasicController {
 	@ResponseBody
 	public Model login(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
-		String app="android";
+		String app = "android";
 		String mobile = "";
 		String code = "";
 		InputStream is;
@@ -103,85 +104,93 @@ public class AppLoginController extends BasicController {
 			registerVo.setDesc("登陆成功");
 			Map<String, String> data = new HashMap<>();
 
-//			//邀请的好友
-//			Invitation invitationVo = new Invitation();
-//			invitationVo.setInviterMobile(mobile);
-//			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
-//			float inviteReward = 0;
-//			int friendNum = 0;
-//			int friendNumValid = 0;
-//			int friendNumNoValid = 0;
-//			float rewardAll = 0;
-//			if (invitationList != null && invitationList.size() > 0) {
-//				for (Invitation invitation : invitationList) {
-//					// 邀请已激活获得奖励
-//					if (invitation.getStatus() == 2 && invitation.getReward() == 1) {
-//						friendNumValid = friendNumValid + 1;
-//						inviteReward = inviteReward + invitation.getMoney();
-//					}
-//					// 邀请未激活，预计可获得奖励
-//					if (invitation.getStatus() == 1) {
-//						friendNumNoValid = friendNumNoValid + 1;
-//						rewardAll = rewardAll + invitation.getMoney();
-//					}
-//				}
-//				friendNum = invitationList.size();
-//			}
+			// //邀请的好友
+			// Invitation invitationVo = new Invitation();
+			// invitationVo.setInviterMobile(mobile);
+			// List<Invitation> invitationList =
+			// invitationService.selectInvitationList(invitationVo);
+			// float inviteReward = 0;
+			// int friendNum = 0;
+			// int friendNumValid = 0;
+			// int friendNumNoValid = 0;
+			// float rewardAll = 0;
+			// if (invitationList != null && invitationList.size() > 0) {
+			// for (Invitation invitation : invitationList) {
+			// // 邀请已激活获得奖励
+			// if (invitation.getStatus() == 2 && invitation.getReward() == 1) {
+			// friendNumValid = friendNumValid + 1;
+			// inviteReward = inviteReward + invitation.getMoney();
+			// }
+			// // 邀请未激活，预计可获得奖励
+			// if (invitation.getStatus() == 1) {
+			// friendNumNoValid = friendNumNoValid + 1;
+			// rewardAll = rewardAll + invitation.getMoney();
+			// }
+			// }
+			// friendNum = invitationList.size();
+			// }
 
-//			//可提现订单
-//			int canDrawOrderNum = 0;
-//			double totalCommission = 0;
-//			float tCommission = 0;
-//			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(mobile);
-//			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
-//			for (UserOrder userOrder : userOrderList) {
-//				if ("订单结算".equals(userOrder.getOrderStatus())) {
-//					canDrawOrderNum = canDrawOrderNum + 1;
-//					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-//					userOrderCanDrawList.add(userOrder);
-//				}
-//			}
-//			tCommission = ((float) (Math.round(totalCommission * 100)) / 100);
+			// //可提现订单
+			// int canDrawOrderNum = 0;
+			// double totalCommission = 0;
+			// float tCommission = 0;
+			// List<UserOrder> userOrderList =
+			// userOrderService.selectAllOrderByMobile(mobile);
+			// List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+			// for (UserOrder userOrder : userOrderList) {
+			// if ("订单结算".equals(userOrder.getOrderStatus())) {
+			// canDrawOrderNum = canDrawOrderNum + 1;
+			// totalCommission = totalCommission + userOrder.getCommission3() *
+			// userOrder.getFanliMultiple();
+			// userOrderCanDrawList.add(userOrder);
+			// }
+			// }
+			// tCommission = ((float) (Math.round(totalCommission * 100)) /
+			// 100);
 
-//			// 累计购物已省
-//			Map<String, Object> map = new HashMap<>();
-//			map.put("mobile", mobile);
-//			map.put("status", 2);
-//			double cash = drawCashService.getSumByMobile(map);
+			// // 累计购物已省
+			// Map<String, Object> map = new HashMap<>();
+			// map.put("mobile", mobile);
+			// map.put("status", 2);
+			// double cash = drawCashService.getSumByMobile(map);
 
-//			//订单平台奖励
-//			List<UserOrder> userOrderList1 = userOrderService.selectByInviteCode(user.getMyInviteCode());
-//			double platformReward = 0f;
-//			if (userOrderList1 != null && userOrderList1.size() > 0) {
-//				for (UserOrder userOrder : userOrderList1) {
-//					platformReward = platformReward + userOrder.getCommissionReward();
-//				}
-//			}
-			
-			String downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
-			if("android".equals(app)){
-				downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
-			}else if("ios".equals(app)){
-				downloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
+			// //订单平台奖励
+			// List<UserOrder> userOrderList1 =
+			// userOrderService.selectByInviteCode(user.getMyInviteCode());
+			// double platformReward = 0f;
+			// if (userOrderList1 != null && userOrderList1.size() > 0) {
+			// for (UserOrder userOrder : userOrderList1) {
+			// platformReward = platformReward +
+			// userOrder.getCommissionReward();
+			// }
+			// }
+
+			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+			if ("android".equals(app)) {
+				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+			} else if ("ios".equals(app)) {
+				downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
 			}
-			
-			String inviteCodeInfo=GlobalVariable.resourceMap.get("invite_info");
-//			inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r\n-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
-			inviteCodeInfo=inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());			
 
-//			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
+			String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
+			// inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r\n-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
+			inviteCodeInfo = inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#",
+					user.getMyInviteCode());
+
+			// double totalMoney = ((double) (Math.round((tCommission +
+			// inviteReward + platformReward) * 100)) / 100);
 			data.put("userId", SecurityUtil1.encrypts(mobile));
-//			data.put("totalMoney", totalMoney + "");// 总共可提现金额
-//			data.put("orderMoney", tCommission + "");// 订单可提金额
-//			data.put("inviteReward", inviteReward + "");// 邀请奖励金额
-//			data.put("platformReward", platformReward + "");// 平台订单奖励金额
-//			data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
-//			data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
-//			data.put("totalBuySave", cash + "");// 累计购物已省
+			// data.put("totalMoney", totalMoney + "");// 总共可提现金额
+			// data.put("orderMoney", tCommission + "");// 订单可提金额
+			// data.put("inviteReward", inviteReward + "");// 邀请奖励金额
+			// data.put("platformReward", platformReward + "");// 平台订单奖励金额
+			// data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
+			// data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
+			// data.put("totalBuySave", cash + "");// 累计购物已省
 			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
 			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
-//																// 2：超级会员
-			data.put("sex", user.getSex()+"");
+			// // 2：超级会员
+			data.put("sex", user.getSex() + "");
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
 			return model;
@@ -197,12 +206,12 @@ public class AppLoginController extends BasicController {
 	@ResponseBody
 	public Model register(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
-		String app="android";
+		String app = "android";
 		String inviteCode = "";
 		String mobile = "";
 		String alipay = "";
 		String weixin = "";
-		int sex=1;
+		int sex = 1;
 		String code = "";
 		InputStream is;
 		try {
@@ -258,6 +267,11 @@ public class AppLoginController extends BasicController {
 		user.setMyInviteCode(myInviteCode);
 		user.setAccountType(2);
 		user.setSex(sex);
+		String hongbaoMin = GlobalVariable.resourceMap.get("register_hongbao_min");
+		String hongbaoMax = GlobalVariable.resourceMap.get("register_hongbao_max");
+		user.setHongbao((float) (Math.round(
+				NumberUtil.getRandomNumberFloat(Integer.parseInt(hongbaoMin), Integer.parseInt(hongbaoMax)) * 100))
+				/ 100);
 
 		try {
 			userService.insert(user);
@@ -286,41 +300,41 @@ public class AppLoginController extends BasicController {
 			model.addAttribute("response", registerVo);
 			return model;
 		}
-		
-		String downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
-		if("android".equals(app)){
-			downloadUrl=GlobalVariable.resourceMap.get("android_download_url");
-		}else if("ios".equals(app)){
-			downloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
+
+		String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+		if ("android".equals(app)) {
+			downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+		} else if ("ios".equals(app)) {
+			downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
 		}
-		
-		String inviteCodeInfo=GlobalVariable.resourceMap.get("invite_info");
-		inviteCodeInfo=inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
+
+		String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
+		inviteCodeInfo = inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
 
 		registerVo.setStatus("0");
 		registerVo.setDesc("注册成功");
 		Map<String, String> data = new HashMap<>();
 		data.put("userId", SecurityUtil1.encrypts(mobile));
-//		data.put("totalMoney", "0.0");// 总共可提现金额
-//		data.put("orderMoney", "0.0");// 订单可提金额
-//		data.put("inviteReward", "0.0");// 邀请奖励金额
-//		data.put("platformReward", "0.0");// 平台订单奖励金额
-//		data.put("friendNum", "0");// 好友数
-//		data.put("orderNum", "0");// 可提现订单数
-//		data.put("totalBuySave", "0.0");// 累计购物已省
+		// data.put("totalMoney", "0.0");// 总共可提现金额
+		// data.put("orderMoney", "0.0");// 订单可提金额
+		// data.put("inviteReward", "0.0");// 邀请奖励金额
+		// data.put("platformReward", "0.0");// 平台订单奖励金额
+		// data.put("friendNum", "0");// 好友数
+		// data.put("orderNum", "0");// 可提现订单数
+		// data.put("totalBuySave", "0.0");// 累计购物已省
 		data.put("inviteCode", inviteCodeInfo);// 我的邀请码
 		data.put("userType", "2");// 账号类型1：普通会员 2：超级会员
-		data.put("sex", sex+"");
+		data.put("sex", sex + "");
 		registerVo.setData(data);
 		model.addAttribute("response", registerVo);
 		return model;
 	}
-	
+
 	@RequestMapping(value = "/drawstats", method = RequestMethod.POST)
 	@ResponseBody
 	public Model userInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
-		String userId = "";	
+		String userId = "";
 		InputStream is;
 		try {
 			is = request.getInputStream();
@@ -332,22 +346,22 @@ public class AppLoginController extends BasicController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
-		
-		String canDraw="true";
-		String reason="";
-		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
-		if("1".equals(canDrawSwitch)){
-			String day=DateUtil.dateFormate(new Date(),"dd");			
-			String canDrawDay=GlobalVariable.resourceMap.get("can_draw_day");
-			if(canDrawDay.equals(day)){
-				canDraw="true";
-			}else{
-				canDraw="false";
-				reason="亲！每月"+canDrawDay+"日开启提现功能。";
+		}
+
+		String canDraw = "true";
+		String reason = "";
+		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+		if ("1".equals(canDrawSwitch)) {
+			String day = DateUtil.dateFormate(new Date(), "dd");
+			String canDrawDay = GlobalVariable.resourceMap.get("can_draw_day");
+			if (canDrawDay.equals(day)) {
+				canDraw = "true";
+			} else {
+				canDraw = "false";
+				reason = "亲！每月" + canDrawDay + "日开启提现功能。";
 			}
 		}
-		
+
 		String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
 		User user = userService.selectByMobile(userId);
@@ -356,7 +370,7 @@ public class AppLoginController extends BasicController {
 			registerVo.setDesc("信息获取成功");
 			Map<String, String> data = new HashMap<>();
 
-			//邀请的好友
+			// 邀请的好友
 			Invitation invitationVo = new Invitation();
 			invitationVo.setInviterMobile(userId);
 			List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
@@ -381,7 +395,7 @@ public class AppLoginController extends BasicController {
 				friendNum = invitationList.size();
 			}
 
-			//可提现订单
+			// 可提现订单
 			int canDrawOrderNum = 0;
 			double totalCommission = 0;
 			float tCommission = 0;
@@ -402,7 +416,7 @@ public class AppLoginController extends BasicController {
 			map.put("status", 2);
 			double cash = drawCashService.getSumByMobile(map);
 
-			//订单平台奖励
+			// 订单平台奖励
 			List<UserOrder> userOrderList1 = userOrderService.selectByInviteCode(user.getMyInviteCode());
 			double platformReward = 0f;
 			if (userOrderList1 != null && userOrderList1.size() > 0) {
@@ -411,33 +425,38 @@ public class AppLoginController extends BasicController {
 				}
 			}
 
+			float hongbao = user.getHongbao();
+
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
-//			data.put("userId", SecurityUtil1.encrypts(userId));
+			if ("true".equals(canDraw)) {
+				if (totalMoney == 0) {
+					canDraw = "false";
+					if (hongbao > 0) {
+						reason = "亲！红包不能单独提现，等有返现或奖励时在提吧。";
+					} else {
+						reason = "我的钱包空空的！";
+					}
+				}
+			}
 			data.put("totalMoney", totalMoney + "");// 总共可提现金额
 			data.put("orderMoney", tCommission + "");// 订单可提金额
 			data.put("inviteReward", inviteReward + "");// 邀请奖励金额
 			data.put("platformReward", platformReward + "");// 平台订单奖励金额
+			data.put("hongbao", user.getHongbao() + "");// 我的红包
 			data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
 			data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
 			data.put("totalBuySave", cash + "");// 累计购物已省
-//			data.put("inviteCode", user.getMyInviteCode());// 我的邀请码
-//			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
-																// 2：超级会员
-			data.put("tklSymbols", tklSymbols); //淘口令前后特殊符号
-			
-			if("true".equals(canDraw)){
-				if(totalMoney==0){
-					canDraw="false";
-					reason="我的钱包空空的！";
-				}
-			}
-			data.put("canDraw", canDraw);//是否可以提现 true/false
-			data.put("reason", reason);//不可提现原因
-			
+			// data.put("inviteCode", user.getMyInviteCode());// 我的邀请码
+			// data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
+			// 2：超级会员
+			data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
+			data.put("canDraw", canDraw);// 是否可以提现 true/false
+			data.put("reason", reason);// 不可提现原因
+
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
 			return model;
-		} else{
+		} else {
 			return null;
 		}
 	}

@@ -627,9 +627,17 @@ public class AppDrawController extends BasicController {
 		drawCash.setCash(totalCommission);
 		drawCash.setReward(reward);
 		drawCash.setOrderReward(orderReward);
+		if(user.getHongbao()>0){
+			drawCash.setHongbao(user.getHongbao());
+		}
 		drawCash.setCreateTime(new Date());
 		drawCash.setUpdateTime(new Date());
 		drawCashService.insert(drawCash);
+		
+		//更新用户红包金额
+		user.setHongbao(0f);
+		user.setUpdateTime(new Date());
+		userService.updateHongbao(user);
 
 		// 订单提现后插入提现订单表并更新订单状态
 		for (UserOrder userOrder : userOrderList) {
