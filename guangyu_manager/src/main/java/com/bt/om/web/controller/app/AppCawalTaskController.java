@@ -29,6 +29,7 @@ import com.bt.om.util.StringUtil;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.app.vo.AppCrawlBean;
 import com.bt.om.web.controller.app.vo.AppCrawlTaskBean;
+import com.bt.om.web.controller.app.vo.BaseVo;
 
 import redis.clients.jedis.ShardedJedis;
 
@@ -51,11 +52,16 @@ public class AppCawalTaskController extends BasicController {
 		AppCrawlTaskBean appCrawlTaskBean = null;
 		TkInfoTask tkInfoTask = null;
 		Object object = ProductUrlTrans.getTkl();
-		if (object != null) {
-			appCrawlTaskBean=new AppCrawlTaskBean();
+		appCrawlTaskBean=new AppCrawlTaskBean();
+		if (object != null) {			
 			tkInfoTask = (TkInfoTask) object;
+			appCrawlTaskBean.setStatus("1");
 			appCrawlTaskBean.setSign(tkInfoTask.getSign());
-			appCrawlTaskBean.setTklStr(tkInfoTask.getProductUrl());
+			appCrawlTaskBean.setTklStr(tkInfoTask.getProductUrl());			
+		}else{
+			appCrawlTaskBean.setSign("");
+			appCrawlTaskBean.setStatus("0");
+			appCrawlTaskBean.setTklStr("");
 		}
 		return appCrawlTaskBean;
 	}

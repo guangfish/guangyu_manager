@@ -1,6 +1,6 @@
 package com.bt.om.web.controller.app.vo;
 
-public class AppCrawlTaskBean {
+public class AppCrawlTaskBean extends BaseVo{
 	private String sign = "";
 	private String tklStr = "";
 
