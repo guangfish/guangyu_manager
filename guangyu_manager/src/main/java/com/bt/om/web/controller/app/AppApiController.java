@@ -141,6 +141,12 @@ public class AppApiController extends BasicController {
 			if (ifTkl(productUrl, tklSymbolsStr)) {
 				logger.info("淘口令请求");
 				productInfoVo = productInfoAppCrawl(userId, productUrl);
+				if (productInfoVo.getData() == null) {
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+					if (lists.size() > 0) {
+						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+					}
+				}
 			} else if (keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
