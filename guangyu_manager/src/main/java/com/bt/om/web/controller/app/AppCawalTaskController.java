@@ -88,10 +88,13 @@ public class AppCawalTaskController extends BasicController {
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 			String tklStr=appCrawlBean.getData();
 			String sign=appCrawlBean.getSign();
-			String sellNum=appCrawlBean.getSellNum();
-			String commission=appCrawlBean.getCommission();
-			logger.info("sellNum="+sellNum);
-			logger.info("commission="+commission);
+			String sellNumStr=appCrawlBean.getSellNum();
+			String sellNum="";
+			String commissionStr=appCrawlBean.getCommission();
+			String commission="";
+
+			logger.info("sellNum="+sellNumStr);
+			logger.info("commission="+commissionStr);
 			
 			String prodcutName=tklStr.substring(0, tklStr.indexOf("【"));
 			String price="0";
@@ -107,10 +110,19 @@ public class AppCawalTaskController extends BasicController {
 			if(lists.size()>0){
 				quanHou=(lists.get(0))[0];
 			}
-			lists=RegexUtil.getListMatcher(tklStr, "【下单链接】(.*)");
+			lists=RegexUtil.getListMatcher(tklStr, "【下单链接】(.*)--");
 			if(lists.size()>0){
 				tkLink=(lists.get(0))[0];
 			}
+			lists=RegexUtil.getListMatcher(commissionStr, "（预计￥(.*?)）");
+			if(lists.size()>0){
+				commission=(lists.get(0))[0];
+			}
+			lists=RegexUtil.getListMatcher(sellNumStr, "已售(.*?)件");
+			if(lists.size()>0){
+				sellNum=(lists.get(0))[0];
+			}
+			
 			for(String symbol:tklSymbolsStr.split(";")){
 				String reg = symbol + ".*" + symbol;
 				Pattern pattern = Pattern.compile(reg);
@@ -137,9 +149,9 @@ public class AppCawalTaskController extends BasicController {
 			if (StringUtil.isNotEmpty(appCrawlBean.getQuan())) {
 				tkInfoTask.setQuanMianzhi(Double.parseDouble(quan));
 			}
-			tkInfoTask.setCommision(0d);
+			tkInfoTask.setCommision(Double.parseDouble(commission));
 			tkInfoTask.setRate(0d);
-			tkInfoTask.setSales(0);
+			tkInfoTask.setSales(Integer.parseInt(sellNum));
 			tkInfoTask.setStatus(0);
 			tkInfoTask.setType(2);
 			tkInfoTask.setCreateTime(new Date());
