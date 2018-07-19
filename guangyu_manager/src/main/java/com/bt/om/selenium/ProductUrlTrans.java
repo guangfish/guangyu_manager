@@ -74,10 +74,14 @@ public class ProductUrlTrans {
 	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
 			new BlockingWaitStrategy());
 
+	// 初始化队列，定义队列长度
+	final static DisruptorQueueImpl queueTkl = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
+			new BlockingWaitStrategy());
+
 	static {
 		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
 			init();
-//			scheduleTaobao();
+			// scheduleTaobao();
 			scheduleJd();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
@@ -129,12 +133,24 @@ public class ProductUrlTrans {
 	}
 
 	public static void put(TkInfoTask tkInfoTask) {
-//		logger.info("publish..");
-		queue.publish(tkInfoTask);
+		// logger.info("publish..");
+		if(tkInfoTask.getType()==2){
+			System.out.println("淘口令请求入队列");
+			queueTkl.publish(tkInfoTask);
+		}else{
+			System.out.println("URL请求入队列");
+		    queue.publish(tkInfoTask);
+		}
 	}
 	
+	public static Object getTkl() {
+		// logger.info("consumer..");
+		System.out.println("获取淘口令任务");
+		return queueTkl.poll();
+	}
+
 	public static Object get() {
-//		logger.info("consumer..");
+		// logger.info("consumer..");
 		return queue.poll();
 	}
 
@@ -165,12 +181,12 @@ public class ProductUrlTrans {
 			String commision = "0";
 			String rate = "0";
 			String shopName = "";
-			String quanMianzhi="0";
+			String quanMianzhi = "0";
 			shopName = driver.findElement(By.xpath("//*[@id='J_search_results']/div/div/div[3]/div[1]/span/a/span"))
 					.getText();
 			try {
 				// 存在优惠券的处理方式
-				quanMianzhi=driver
+				quanMianzhi = driver
 						.findElement(By.xpath("//*[@id='J_search_results']/div/div/div[2]/div[2]/span[1]/span[2]/span"))
 						.getText();
 				price = driver
@@ -292,7 +308,7 @@ public class ProductUrlTrans {
 			tkInfoTask.setTcode(tcode);
 			tkInfoTask.setQuanCode(quancode);
 			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
@@ -333,7 +349,7 @@ public class ProductUrlTrans {
 			String commision = "0";
 			String rate = "0";
 			String shopName = "";
-			String quanMianzhi="0";
+			String quanMianzhi = "0";
 			price = jdDriver
 					.findElement(By
 							.xpath("//*[@id='goodsQueryForm']/div[2]/div/div/div/div[2]/ul/li/div[1]/div[2]/div[2]/span[2]/span"))

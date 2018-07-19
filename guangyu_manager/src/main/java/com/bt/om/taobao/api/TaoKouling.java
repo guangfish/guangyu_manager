@@ -21,6 +21,30 @@ public class TaoKouling {
 //		System.out.println(createTkl("https://s.click.taobao.com/t?e=m=2&s=iFpYkRAdNhZw4vFB6t2Z2ueEDrYVVa64qYbrUZilZ4UYX8TY+NEwd7GfWq0iAFqMbJxUEh8sgi9h0P5Awum43Texw+KOh7ITNWf5FlaIm5YwhCI/ziBObgnlfQyFtCJvm9ckqDpbvbi2h3NlB8wsea6YN/hjnMyqDJbuZDCrHt4=&scm=NULL&pvid=100_10.103.67.73_12231_9251529892760622368&app_pvid=0bfa8dac15298927606131596&union_lens=lensId:0bb3a96c_5fe0_16434b6ecc6_7c6d","儿童防蚊裤夏季男童夏装纯棉女童长裤子薄阔腿宝宝小童棉绸灯笼裤","https://img.alicdn.com/bao/uploaded/i3/1844656432/TB2gBD1rQCWBuNjy0FaXXXUlXXa_!!1844656432.jpg_220x220"));
 	}
 	
+	public static String parserTklApp(String content) {
+		TaobaoClient client = new DefaultTaobaoClient(serverUrl, appKey,
+				appSecret);
+		WirelessShareTpwdQueryRequest req = new WirelessShareTpwdQueryRequest();
+		req.setPasswordContent(content);
+		WirelessShareTpwdQueryResponse rsp = null;
+		String retStr="";
+		String url="";
+		String imgUrl="";
+		try {
+			rsp = client.execute(req);
+			retStr=rsp.getBody();
+			System.out.println(retStr);
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(retStr, JsonObject.class);		
+			JsonObject obj1=obj.getAsJsonObject("wireless_share_tpwd_query_response");
+			url=obj1.get("url").getAsString();
+			imgUrl=obj1.get("thumb_pic_url").getAsString();
+		} catch (ApiException e) {
+			e.printStackTrace();
+		}
+		return url+";;"+imgUrl;
+	}
+	
 	public static String parserTkl(String content) {
 		TaobaoClient client = new DefaultTaobaoClient(serverUrl, appKey,
 				appSecret);

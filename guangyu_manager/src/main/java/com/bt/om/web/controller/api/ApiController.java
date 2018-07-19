@@ -694,7 +694,12 @@ public class ApiController extends BasicController {
 		TkInfoTask tkInfoTask = new TkInfoTask();
 		tkInfoTask.setProductUrl(url);
 		tkInfoTask.setSign(sign);
-		tkInfoTask.setType(1);
+		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
+		if (ifTkl(url, tklSymbolsStr)) {
+			tkInfoTask.setType(2);
+		} else {
+			tkInfoTask.setType(1);
+		}
 		tkInfoTask.setStatus(0);
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
@@ -866,5 +871,24 @@ public class ApiController extends BasicController {
 			retNum += codeStr.charAt(r.nextInt(codeStr.length()));
 		}
 		return retNum;
+	}
+	
+	/**
+	 * 
+	 * @param conetnt
+	 * @param tklSymbolsStr
+	 * @return
+	 */
+	private boolean ifTkl(String conetnt, String tklSymbolsStr) {
+		String[] tklSymbols = tklSymbolsStr.split(";");
+		for (String symbol : tklSymbols) {
+			String reg = symbol + ".*" + symbol;
+			Pattern pattern = Pattern.compile(reg);
+			Matcher matcher = pattern.matcher(conetnt);
+			if (matcher.find()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
