@@ -40,6 +40,7 @@ public class CrawlTask {
 			TaskBeanRet taskBeanRet = GsonUtil.GsonToBean(ret, TaskBeanRet.class);
 			// System.out.println(taskBean.getMap().get("sign"));
 			retStr = taskBeanRet.getRet().getMap().get("sign") + ";" + taskBeanRet.getRet().getMap().get("type");
+			System.out.println("发送任务后返回值="+retStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

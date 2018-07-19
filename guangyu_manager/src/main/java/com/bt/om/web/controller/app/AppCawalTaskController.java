@@ -110,7 +110,7 @@ public class AppCawalTaskController extends BasicController {
 			if(lists.size()>0){
 				quanHou=(lists.get(0))[0];
 			}
-			lists=RegexUtil.getListMatcher(tklStr, "【下单链接】(.*)--");
+			lists=RegexUtil.getListMatcher(tklStr, "【下单链接】(.*?)--");
 			if(lists.size()>0){
 				tkLink=(lists.get(0))[0];
 			}
@@ -149,8 +149,13 @@ public class AppCawalTaskController extends BasicController {
 			if (StringUtil.isNotEmpty(appCrawlBean.getQuan())) {
 				tkInfoTask.setQuanMianzhi(Double.parseDouble(quan));
 			}
-			tkInfoTask.setCommision(Double.parseDouble(commission));
-			tkInfoTask.setRate(0d);
+//			String commissionRate=GlobalVariable.resourceMap.get("commission.rate");
+			tkInfoTask.setCommision(((double) (Math.round(Double.parseDouble(commission) * 100)) / 100));
+			if(StringUtil.isEmpty(quanHou)){
+				tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(price) * 100)) / 100));
+			}else{
+				tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(quanHou) * 100)) / 100));
+			}			
 			tkInfoTask.setSales(Integer.parseInt(sellNum));
 			tkInfoTask.setStatus(0);
 			tkInfoTask.setType(2);

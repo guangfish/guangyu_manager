@@ -188,7 +188,7 @@ public class AppApiController extends BasicController {
 		}
 		if(StringUtil.isNotEmpty(imgUrl)){
 			ShardedJedis jedis = jedisPool.getResource();
-			jedis.setex(tklStr.hashCode()+"", 60, imgUrl);
+			jedis.setex(tklStr.hashCode()+"", 3600, imgUrl);
 			jedis.close();
 		}
 		Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
