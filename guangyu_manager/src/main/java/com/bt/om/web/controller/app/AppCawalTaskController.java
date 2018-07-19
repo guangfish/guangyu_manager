@@ -155,8 +155,14 @@ public class AppCawalTaskController extends BasicController {
 				tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(price) * 100)) / 100));
 			}else{
 				tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(quanHou) * 100)) / 100));
-			}			
-			tkInfoTask.setSales(Integer.parseInt(sellNum));
+			}
+			int sellNumInt=0;
+            if(sellNum.contains("万")){
+            	sellNumInt=Integer.parseInt(sellNum.replace("万", ""))*10000;
+            }else{
+            	sellNumInt=Integer.parseInt(sellNum);
+            }
+			tkInfoTask.setSales(sellNumInt);
 			tkInfoTask.setStatus(0);
 			tkInfoTask.setType(2);
 			tkInfoTask.setCreateTime(new Date());
