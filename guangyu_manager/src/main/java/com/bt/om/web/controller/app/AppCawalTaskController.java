@@ -49,6 +49,7 @@ public class AppCawalTaskController extends BasicController {
 	@RequestMapping(value = "/getTask", method = RequestMethod.POST)
 	@ResponseBody
 	public AppCrawlTaskBean getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("收到app任务获取请求");
 		AppCrawlTaskBean appCrawlTaskBean = null;
 		TkInfoTask tkInfoTask = null;
 		Object object = ProductUrlTrans.getTkl();
@@ -57,11 +58,13 @@ public class AppCawalTaskController extends BasicController {
 			tkInfoTask = (TkInfoTask) object;
 			appCrawlTaskBean.setStatus("1");
 			appCrawlTaskBean.setSign(tkInfoTask.getSign());
-			appCrawlTaskBean.setTklStr(tkInfoTask.getProductUrl());			
+			appCrawlTaskBean.setTklStr(tkInfoTask.getProductUrl());	
+			logger.info("队列有任务返回");
 		}else{
 			appCrawlTaskBean.setSign("");
 			appCrawlTaskBean.setStatus("0");
 			appCrawlTaskBean.setTklStr("");
+			logger.info("队列中无任务");
 		}
 		return appCrawlTaskBean;
 	}
@@ -70,6 +73,7 @@ public class AppCawalTaskController extends BasicController {
 	@ResponseBody
 	public Model pushData(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String data = request.getParameter("data");
+		logger.info("收到APP端任务结果数据推送");
 		logger.info(data);
 		AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
 		TkInfoTask tkInfoTask = new TkInfoTask();
@@ -82,7 +86,7 @@ public class AppCawalTaskController extends BasicController {
 			jedis.close();
 			
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
-			String tklStr=appCrawlBean.getTkl();
+			String tklStr=appCrawlBean.getData();
 			String sign=appCrawlBean.getSign();
 			String sellNum=appCrawlBean.getSellNum();
 			String commission=appCrawlBean.getCommission();

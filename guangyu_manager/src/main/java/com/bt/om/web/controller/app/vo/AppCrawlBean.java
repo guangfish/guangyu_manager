@@ -5,7 +5,7 @@ public class AppCrawlBean {
 	private String imgUrl = "";
 	private String productName = "";
 	private String shopName = "";
-	private String tkl = "";
+	private String data = "";
 	private String price = "0";
 	private String quan = "0";
 	private String commission = "0";
@@ -46,12 +46,12 @@ public class AppCrawlBean {
 		this.shopName = shopName;
 	}
 
-	public String getTkl() {
-		return tkl;
+	public String getData() {
+		return data;
 	}
 
-	public void setTkl(String tkl) {
-		this.tkl = tkl;
+	public void setData(String data) {
+		this.data = data;
 	}
 
 	public String getPrice() {
