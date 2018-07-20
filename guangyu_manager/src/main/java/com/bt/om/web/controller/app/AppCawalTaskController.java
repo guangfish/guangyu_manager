@@ -81,7 +81,7 @@ public class AppCawalTaskController extends BasicController {
 			String tklOld=appCrawlBean.getTklStr();
 			ShardedJedis jedis = jedisPool.getResource();
 			System.out.println(tklOld.hashCode());
-			String imgUrl = jedis.get(tklOld.hashCode()+""); 
+			String imgUrl = jedis.get(tklOld.hashCode()+"");  
 			System.out.println(imgUrl);
 			jedis.close();
 			
