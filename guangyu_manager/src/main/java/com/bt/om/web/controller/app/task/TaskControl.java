@@ -34,7 +34,7 @@ public class TaskControl {
 	private JedisPool jedisPool = ContextLoader.getCurrentWebApplicationContext().getBean(JedisPool.class);
 
 	// 商品信息查询
-	public Map<String, String> getProduct(String tkl) { 
+	public Map<String, String> getProduct(String tkl) {  
 		Map<String, String> paramsMap = sendTask(tkl);
 		Map<String, String> resultMap = loadData(paramsMap.get("sign"));
 		int i = 0;
