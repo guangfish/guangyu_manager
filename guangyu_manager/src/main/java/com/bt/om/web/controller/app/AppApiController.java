@@ -140,7 +140,7 @@ public class AppApiController extends BasicController {
 		String appCrawlSwitch = GlobalVariable.resourceMap.get("app_crawl_switch");
 		if ("1".equals(appCrawlSwitch)) {
 			if (ifTkl(productUrl, tklSymbolsStr)) {
-				logger.info("淘口令请求");
+				logger.info("用户发送的是淘口令请求");
 				productInfoVo = productInfoAppCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");

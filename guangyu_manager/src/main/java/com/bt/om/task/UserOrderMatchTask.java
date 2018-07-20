@@ -46,8 +46,10 @@ public class UserOrderMatchTask {
 	public void userOrderCheck() {
 		String ifRun = GlobalVariable.resourceMap.get("UserOrderMatchTask");
 		if ("1".equals(ifRun)) {
-			int baseAgencyRewardRate = (int) (Float
-					.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100);
+			int minAgencyRewardRate = (int) (Float
+					.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_min")) * 100);
+			int maxAgencyRewardRate = (int) (Float
+					.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_max")) * 100);
 			logger.info("用户订单定时匹配");
 			// for 淘宝
 			List<UserOrderTmp> userOrderTmpList = userOrderTmpService.selectUnCheckOrder(1);
@@ -121,9 +123,9 @@ public class UserOrderMatchTask {
 							userOrder.setStatus3(1);
 							int agencyRewardRate = 0;
 							if (commission3 >= 30) {
-								agencyRewardRate = baseAgencyRewardRate;
+								agencyRewardRate = minAgencyRewardRate;
 							} else {
-								agencyRewardRate = baseAgencyRewardRate + NumberUtil.getRandomNumber(0, 80);
+								agencyRewardRate = minAgencyRewardRate + NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
 							}
 							userOrder.setCommissionReward(
 									(double) (Math.round(commission3 * (agencyRewardRate) * 100)/100) / 100);
@@ -256,9 +258,9 @@ public class UserOrderMatchTask {
 							userOrder.setStatus3(1);
 							int agencyRewardRate = 0;
 							if (commission3 >= 30) {
-								agencyRewardRate = baseAgencyRewardRate;
+								agencyRewardRate = minAgencyRewardRate;
 							} else {
-								agencyRewardRate = baseAgencyRewardRate + NumberUtil.getRandomNumber(0, 80);
+								agencyRewardRate = minAgencyRewardRate + NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
 							}
 							userOrder.setCommissionReward(
 									(double) (Math.round(commission3 * (agencyRewardRate) * 100)/100) / 100);

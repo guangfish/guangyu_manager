@@ -346,6 +346,7 @@ public class AppLoginController extends BasicController {
 					platformReward = platformReward + userOrder.getCommissionReward();
 				}
 			}
+			platformReward=((float) (Math.round(platformReward * 100)) / 100);
 
 			float hongbao = user.getHongbao();
 

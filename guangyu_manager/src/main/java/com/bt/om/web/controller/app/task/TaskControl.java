@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.cache.JedisPool;
@@ -19,7 +18,6 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.RegexUtil;
 import com.bt.om.util.StringUtil;
-import com.bt.om.web.controller.app.AppCawalTaskController;
 import com.bt.om.web.controller.app.vo.AppCrawlBean;
 
 import redis.clients.jedis.ShardedJedis;

@@ -1,5 +1,7 @@
 package com.bt.om.taobao.api;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.taobao.api.ApiException;
@@ -12,6 +14,7 @@ import com.taobao.api.response.WirelessShareTpwdQueryResponse;
 
 
 public class TaoKouling {
+	private static final Logger logger = Logger.getLogger(TaoKouling.class);
 	private static String serverUrl="https://eco.taobao.com/router/rest";
 	private static String appKey="24736090";
 	private static String appSecret="8759042d314ec30a88a0d6e9668e7bfe";
@@ -33,7 +36,7 @@ public class TaoKouling {
 		try {
 			rsp = client.execute(req);
 			retStr=rsp.getBody();
-			System.out.println(retStr);
+			logger.info("淘口令解析结果="+retStr);
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(retStr, JsonObject.class);		
 			JsonObject obj1=obj.getAsJsonObject("wireless_share_tpwd_query_response");

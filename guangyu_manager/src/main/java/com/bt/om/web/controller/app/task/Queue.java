@@ -15,7 +15,7 @@ public class Queue {
 
 	public static void put(TkInfoTask tkInfoTask) {
 
-		logger.info("URL请求入队列");
+		logger.info("淘口令请求入队列");
 		queue.publish(tkInfoTask);
 	}
 
