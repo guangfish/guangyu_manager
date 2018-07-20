@@ -365,7 +365,7 @@ public class AppLoginController extends BasicController {
 			data.put("totalMoney", totalMoney+ "");// 总共可提现金额
 			data.put("orderMoney", tCommission + "");// 订单可提金额
 			data.put("inviteReward", inviteReward + "");// 邀请奖励金额
-			data.put("platformReward", platformReward + "");// 平台订单奖励金额
+			data.put("platformReward", NumberUtil.format(platformReward));// 平台订单奖励金额
 			data.put("hongbao", user.getHongbao() + "");// 我的红包
 			data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
 			data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
