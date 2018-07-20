@@ -202,6 +202,8 @@ public class TaskControl {
 			map.put("tkl", tkInfoTask.getTcode());
 			map.put("tklquan", tkInfoTask.getQuanCode());
 			map.put("quanMianzhi", "" + tkInfoTask.getQuanMianzhi());
+		}else{
+			logger.info(sign+"APP端尚未返回");
 		}
 		return map;
 	}
