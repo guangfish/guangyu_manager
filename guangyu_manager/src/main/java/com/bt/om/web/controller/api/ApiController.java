@@ -67,13 +67,13 @@ public class ApiController extends BasicController {
 
 	@Autowired
 	private ITkInfoTaskService tkInfoTaskService;
-	
+
 	@Autowired
 	private ISearchRecordService searchRecordService;
-	
+
 	@Autowired
 	private ITkOrderInputService tkOrderInputService;
-	
+
 	@Autowired
 	private ITkOrderInputJdService tkOrderInputJdService;
 
@@ -87,7 +87,7 @@ public class ApiController extends BasicController {
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String remoteIp=RequestUtil.getRealIp(request);
+		String remoteIp = RequestUtil.getRealIp(request);
 		ResultVo<GetSmsCodeVo> result = new ResultVo<>();
 		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
 		result.setResultDes("获取验证码成功");
@@ -97,7 +97,7 @@ public class ApiController extends BasicController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			mobile = obj.get("mobile").getAsString();			
+			mobile = obj.get("mobile").getAsString();
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
@@ -109,16 +109,16 @@ public class ApiController extends BasicController {
 		if (StringUtils.isEmpty(mobile)) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("手机号为必填！");
-			result.setResult(new GetSmsCodeVo("","1"));
+			result.setResult(new GetSmsCodeVo("", "1"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
-		
+
 		ShardedJedis jedis = jedisPool.getResource();
-		if(jedis.exists(mobile)){
+		if (jedis.exists(mobile)) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("请等待2分钟后再次发送短信验证码！");
-			result.setResult(new GetSmsCodeVo("","4"));
+			result.setResult(new GetSmsCodeVo("", "4"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -131,13 +131,13 @@ public class ApiController extends BasicController {
 
 		// 发送短信验证码
 		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
-			if(!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))){
-				TaobaoSmsNewUtil.sendSms("逛鱼返利", "SMS_125955002","vcode", vcode, mobile);
-			}			
+			if (!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))) {
+				TaobaoSmsNewUtil.sendSms("逛鱼返利", "SMS_125955002", "vcode", vcode, mobile);
+			}
 		}
 
 		// System.out.println(jedisPool.getResource().get("vcode"));
-		result.setResult(new GetSmsCodeVo(vcode,"0"));
+		result.setResult(new GetSmsCodeVo(vcode, "0"));
 		model.addAttribute(SysConst.RESULT_KEY, result);
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -149,11 +149,11 @@ public class ApiController extends BasicController {
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String ua=request.getHeader("User-Agent");
+		String ua = request.getHeader("User-Agent");
 		System.out.println(ua);
-		String ifWeixinBrower="no";
-		if((ua.toLowerCase()).contains("micromessenger")){
-			ifWeixinBrower="yes";
+		String ifWeixinBrower = "no";
+		if ((ua.toLowerCase()).contains("micromessenger")) {
+			ifWeixinBrower = "yes";
 		}
 		ResultVo<ProductInfoVo> result = new ResultVo<>();
 		result.setCode(ResultCode.RESULT_SUCCESS.getCode());
@@ -167,17 +167,17 @@ public class ApiController extends BasicController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
-			if(obj.get("user_id")!=null){
+			if (obj.get("user_id") != null) {
 				user_id = obj.get("user_id").getAsString();
-			}			
+			}
 			product_url = obj.get("product_url").getAsString();
-//			if(obj.get("mobile")!=null){
-//				mobile = obj.get("mobile").getAsString();
-//			}
+			// if(obj.get("mobile")!=null){
+			// mobile = obj.get("mobile").getAsString();
+			// }
 		} catch (IOException e) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("系统繁忙，请稍后再试！");
-			result.setResult(new ProductInfoVo("","","","","1"));
+			result.setResult(new ProductInfoVo("", "", "", "", "1"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
@@ -186,11 +186,11 @@ public class ApiController extends BasicController {
 		if (StringUtils.isEmpty(product_url)) {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("商品链接为空！");
-			result.setResult(new ProductInfoVo("","","","","2"));
+			result.setResult(new ProductInfoVo("", "", "", "", "2"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
-		}		
-		
+		}
+
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 		String[] tklSymbols = tklSymbolsStr.split(";");
 		for (String symbol : tklSymbols) {
@@ -208,13 +208,13 @@ public class ApiController extends BasicController {
 					return model;
 				} else {
 					Map<String, String> urlMap0 = StringUtil.urlSplit(product_url);
-					String puri=urlMap0.get("puri");
-					String pid="";
-					if(puri.contains("a.m.taobao.com")){
-						pid=puri.substring(puri.lastIndexOf("/")+2, puri.lastIndexOf("."));
+					String puri = urlMap0.get("puri");
+					String pid = "";
+					if (puri.contains("a.m.taobao.com")) {
+						pid = puri.substring(puri.lastIndexOf("/") + 2, puri.lastIndexOf("."));
 						product_url = "https://item.taobao.com/item.htm" + "?id=" + pid;
-					}else{
-					  product_url = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
+					} else {
+						product_url = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
 					}
 					logger.info("通过淘口令转换获得的商品缩短链接==>" + product_url);
 				}
@@ -226,347 +226,246 @@ public class ApiController extends BasicController {
 		String platform = "taobao";
 		if (urlMap.get("puri").contains("taobao.com") || urlMap.get("puri").contains("tmall.com")) {
 			platform = "taobao";
-			product_url=urlMap.get("puri")+"?id="+urlMap.get("id");
+			product_url = urlMap.get("puri") + "?id=" + urlMap.get("id");
 		} else if (urlMap.get("puri").contains("jd.com")) {
 			platform = "jd";
-		}else{
+		} else {
 			result.setCode(ResultCode.RESULT_FAILURE.getCode());
 			result.setResultDes("不支持的URL地址！");
-			result.setResult(new ProductInfoVo("","","","","4"));
+			result.setResult(new ProductInfoVo("", "", "", "", "4"));
 			model.addAttribute(SysConst.RESULT_KEY, result);
 			return model;
 		}
-        
+
 		ProductInfo productInfo = null;
-		String uriProductId="";
+		String uriProductId = "";
 		if ("taobao".equals(platform)) {
 			// 判断链接中是否有ID
 			if (StringUtils.isEmpty(urlMap.get("id"))) {
 				result.setCode(ResultCode.RESULT_FAILURE.getCode());
 				result.setResultDes("商品ID为空！");
-				result.setResult(new ProductInfoVo("","","","","3"));
+				result.setResult(new ProductInfoVo("", "", "", "", "3"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
-			uriProductId=urlMap.get("id");
-		}else if("jd".equals(platform)){
-			String puri=urlMap.get("puri");
-			//截取京东商品ID
-			String action=puri.substring(puri.lastIndexOf("/")+1);
-			if(action.contains(".")){
-				uriProductId=puri.substring(puri.lastIndexOf("/")+1, puri.lastIndexOf("."));
-			}else{
-				uriProductId=action;
+			uriProductId = urlMap.get("id");
+		} else if ("jd".equals(platform)) {
+			String puri = urlMap.get("puri");
+			// 截取京东商品ID
+			String action = puri.substring(puri.lastIndexOf("/") + 1);
+			if (action.contains(".")) {
+				uriProductId = puri.substring(puri.lastIndexOf("/") + 1, puri.lastIndexOf("."));
+			} else {
+				uriProductId = action;
 			}
-			
+
 			if (StringUtils.isEmpty(uriProductId)) {
 				result.setCode(ResultCode.RESULT_FAILURE.getCode());
 				result.setResultDes("商品ID为空！");
-				result.setResult(new ProductInfoVo("","","","","3"));
+				result.setResult(new ProductInfoVo("", "", "", "", "3"));
 				model.addAttribute(SysConst.RESULT_KEY, result);
 				return model;
 			}
 		}
-//		从数据库中查询是否已查询过改商品
-//		productInfo = productInfoService.getByProductId(uriProductId);
+		// 从数据库中查询是否已查询过改商品
+		// productInfo = productInfoService.getByProductId(uriProductId);
 		Map<String, String> map = new HashMap<>();
-		
-		String msg = "";
-		if (productInfo == null) {
-			productInfo = new ProductInfo();
-			CrawlTask crawlTask = new CrawlTask();
-			TaskBean taskBean = null;
-			//如果是淘宝搜索的参数是商品地址
-			if("taobao".equals(platform)){
-				taskBean = crawlTask.getProduct(product_url);
-			}
-			//如果是京东，搜索的参数是链接中商品ID
-			else if("jd".equals(platform)){
-				taskBean = crawlTask.getProduct(uriProductId);
-			}
-			if (StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl1"))
-					|| StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl2"))) {
-				String goodUrl = StringUtils.isEmpty(taskBean.getMap().get("goodUrl1"))
-						? taskBean.getMap().get("goodUrl2") : taskBean.getMap().get("goodUrl1");
-				
-				String productId = "";
-				String productInfoUrl = "";
-				if ("taobao".equals(platform)) {
-					productId = urlMap.get("id");
-					productInfoUrl = taskBean.getMap().get("url");
-				} else if("jd".equals(platform)){
-					productId = uriProductId;
-					productInfoUrl = urlMap.get("puri");
-				}else{
-					productId="";
-					productInfoUrl="";
-				}
-				productInfo.setProductId(productId);
-				productInfo.setProductInfoUrl(productInfoUrl);
-				String productImgUrl = taskBean.getMap().get("img");
-				productInfo.setProductImgUrl(productImgUrl);
-				
-				String shopName = taskBean.getMap().get("shop");
-				productInfo.setShopName(shopName);
-				String productName = taskBean.getMap().get("title");
-				productInfo.setProductName(productName);
-				String tkLink = goodUrl;
-				productInfo.setTkLink(tkLink);
-				double price = Double.valueOf(taskBean.getMap().get("price").replace("￥", "").replace(",", ""));
-				productInfo.setPrice(price);
-				float incomeRate = Float.valueOf(taskBean.getMap().get("per").replace("%", ""));
-				productInfo.setIncomeRate(incomeRate);
-				float commission = Float.valueOf(taskBean.getMap().get("money").replace("￥", ""));
-				productInfo.setCommission(commission);
-				String couponLink = taskBean.getMap().get("quanUrl");
-				productInfo.setCouponLink(couponLink);
-				productInfo.setCouponPromoLink(couponLink);
-				String sellNum = taskBean.getMap().get("sellNum");
-				productInfo.setMonthSales(Integer.parseInt(sellNum));
-				String tkl=taskBean.getMap().get("tkl");
-				productInfo.setTkl(tkl);
-				String tklquan=taskBean.getMap().get("tklquan");
-				productInfo.setTklquan(tklquan);
-				String quanMianzhi=taskBean.getMap().get("quanMianzhi");
-				productInfo.setCouponQuan(quanMianzhi);
-				productInfo.setIfvalid(2);
-				productInfo.setSourcefrom(2);
-				productInfo.setCreateTime(new Date());
-				productInfo.setUpdateTime(new Date());
-				
-				try{
-				    productInfoService.insertProductInfo(productInfo);		
-				}catch(Exception e){
-					logger.error(e.getMessage());
-				}
-				
-				//插入搜索记录
-				SearchRecord searchRecord=new SearchRecord();
-				searchRecord.setMobile(mobile);
-				searchRecord.setProductId(productId);
-				searchRecord.setMall(platform.equals("taobao")?1:2);
-				searchRecord.setStatus(1);
-				searchRecord.setTitle(productName);
-				searchRecord.setCreateTime(new Date());
-				searchRecord.setUpdateTime(new Date());
-				searchRecordService.insert(searchRecord);
-				
-				map.put("img", productImgUrl);
-				map.put("shop", shopName);
-				map.put("title", productName);
-				map.put("url", product_url);
-				map.put("quanUrl", couponLink);
-				map.put("money", "￥" + ((float) (Math.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
-				map.put("tagNum", "");
-				map.put("price", "￥" + price);
-				map.put("tklquan", tklquan);
-				map.put("tag", "");
-				map.put("per", ((float) (Math.round(incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
-				map.put("sellNum", sellNum + "");
-				map.put("goodUrl", tkLink);
-				map.put("tkl", tkl);
-				map.put("tklquan", tklquan);
-				map.put("quanMianzhi", "" +quanMianzhi);
 
-				// 组装msg
-				StringBuffer sb = new StringBuffer();
-				sb.append(
-						"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
-				sb.append(productImgUrl);
-				if ("no".equals(ifWeixinBrower)) {
+		String msg = "";
+		productInfo = new ProductInfo();
+		CrawlTask crawlTask = new CrawlTask();
+		TaskBean taskBean = null;
+		// 如果是淘宝搜索的参数是商品地址
+		if ("taobao".equals(platform)) {
+			taskBean = crawlTask.getProduct(product_url);
+		}
+		// 如果是京东，搜索的参数是链接中商品ID
+		else if ("jd".equals(platform)) {
+			taskBean = crawlTask.getProduct(uriProductId);
+		}
+		if (StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl1"))
+				|| StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl2"))) {
+			String goodUrl = StringUtils.isEmpty(taskBean.getMap().get("goodUrl1")) ? taskBean.getMap().get("goodUrl2")
+					: taskBean.getMap().get("goodUrl1");
+
+			String productId = "";
+			String productInfoUrl = "";
+			if ("taobao".equals(platform)) {
+				productId = urlMap.get("id");
+				productInfoUrl = taskBean.getMap().get("url");
+			} else if ("jd".equals(platform)) {
+				productId = uriProductId;
+				productInfoUrl = urlMap.get("puri");
+			} else {
+				productId = "";
+				productInfoUrl = "";
+			}
+			productInfo.setProductId(productId);
+			productInfo.setProductInfoUrl(productInfoUrl);
+			String productImgUrl = taskBean.getMap().get("img");
+			productInfo.setProductImgUrl(productImgUrl);
+
+			String shopName = taskBean.getMap().get("shop");
+			productInfo.setShopName(shopName);
+			String productName = taskBean.getMap().get("title");
+			productInfo.setProductName(productName);
+			String tkLink = goodUrl;
+			productInfo.setTkLink(tkLink);
+			double price = Double.valueOf(taskBean.getMap().get("price").replace("￥", "").replace(",", ""));
+			productInfo.setPrice(price);
+			float incomeRate = Float.valueOf(taskBean.getMap().get("per").replace("%", ""));
+			productInfo.setIncomeRate(incomeRate);
+			float commission = Float.valueOf(taskBean.getMap().get("money").replace("￥", ""));
+			productInfo.setCommission(commission);
+			String couponLink = taskBean.getMap().get("quanUrl");
+			productInfo.setCouponLink(couponLink);
+			productInfo.setCouponPromoLink(couponLink);
+			String sellNum = taskBean.getMap().get("sellNum");
+			productInfo.setMonthSales(Integer.parseInt(sellNum));
+			String tkl = taskBean.getMap().get("tkl");
+			productInfo.setTkl(tkl);
+			String tklquan = taskBean.getMap().get("tklquan");
+			productInfo.setTklquan(tklquan);
+			String quanMianzhi = taskBean.getMap().get("quanMianzhi");
+			productInfo.setCouponQuan(quanMianzhi);
+			productInfo.setIfvalid(2);
+			productInfo.setSourcefrom(2);
+			productInfo.setCreateTime(new Date());
+			productInfo.setUpdateTime(new Date());
+
+			try {
+				productInfoService.insertProductInfo(productInfo);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
+
+			// 插入搜索记录
+			SearchRecord searchRecord = new SearchRecord();
+			searchRecord.setMobile(mobile);
+			searchRecord.setProductId(productId);
+			searchRecord.setMall(platform.equals("taobao") ? 1 : 2);
+			searchRecord.setStatus(1);
+			searchRecord.setTitle(productName);
+			searchRecord.setCreateTime(new Date());
+			searchRecord.setUpdateTime(new Date());
+			searchRecordService.insert(searchRecord);
+
+			map.put("img", productImgUrl);
+			map.put("shop", shopName);
+			map.put("title", productName);
+			map.put("url", product_url);
+			map.put("quanUrl", couponLink);
+			map.put("money",
+					"￥" + ((float) (Math.round(
+							commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+							/ 100));
+			map.put("tagNum", "");
+			map.put("price", "￥" + price);
+			map.put("tklquan", tklquan);
+			map.put("tag", "");
+			map.put("per",
+					((float) (Math.round(
+							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+							/ 100) + "%");
+			map.put("sellNum", sellNum + "");
+			map.put("goodUrl", tkLink);
+			map.put("tkl", tkl);
+			map.put("tklquan", tklquan);
+			map.put("quanMianzhi", "" + quanMianzhi);
+
+			// 组装msg
+			StringBuffer sb = new StringBuffer();
+			sb.append(
+					"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
+			sb.append(productImgUrl);
+			if ("no".equals(ifWeixinBrower)) {
+				sb.append("' height='220' width='220' onclick=drump('");
+				if (StringUtils.isNotEmpty(couponLink)) {
+					sb.append(couponLink);
+				} else {
+					sb.append(tkLink);
+				}
+			} else {
+				if ("taobao".equals(platform)) {
+					sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
+					if (StringUtils.isNotEmpty(tklquan)) {
+						sb.append("tklquan");
+					} else {
+						sb.append("tkl");
+					}
+				} else {
 					sb.append("' height='220' width='220' onclick=drump('");
 					if (StringUtils.isNotEmpty(couponLink)) {
 						sb.append(couponLink);
 					} else {
 						sb.append(tkLink);
 					}
-				}else{
-					if("taobao".equals(platform)){
-						sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
-						if (StringUtils.isNotEmpty(tklquan)) {
-							sb.append("tklquan");
-						} else {
-							sb.append("tkl");
-						}
-					}else{
-						sb.append("' height='220' width='220' onclick=drump('");
-						if (StringUtils.isNotEmpty(couponLink)) {
-							sb.append(couponLink);
-						} else {
-							sb.append(tkLink);
-						}
-					} 
 				}
-				if("yes".equals(ifWeixinBrower)){
-					if("taobao".equals(platform)){
-						sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
-					}else{
-						sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
-					}
-				}else{
-				  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
-				}
-				sb.append(productName);
-				sb.append(
-						"</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-				sb.append(StringUtil.getSubString(shopName, 16));
-				if("0.0".equals(quanMianzhi)){
-					sb.append("</span><span style='float:right;'>月销量：");
-					sb.append(sellNum);
-				}else{
-					sb.append("</span><span style='float:right;'>优惠券：￥");
-					sb.append(quanMianzhi);
-				}				
-				sb.append(
-						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
-				sb.append(price);
-				sb.append("</span><span style='float: right;'>预估返现：￥");
-				float fanli=((float) (Math.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100);
-				float fanliMultiple=1;
-				sb.append(fanli);
-				if(fanli<=1){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
-				}else if(fanli>1 && fanli<=5){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
-				}else if(fanli>5 && fanli<=10){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
-				}else if(fanli>10 && fanli<=50){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
-				}else if(fanli>50 && fanli<=100){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
-				}else if(fanli>100 && fanli<=500){
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
-				}else{
-					fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
-				}
-				map.put("fanliMultiple", fanliMultiple+"");
-				sb.append("(");
-				sb.append(((float) (Math.round(incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
-				sb.append("%)");
-				sb.append(
-						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+tkl+"'><input type='hidden' id='tklquan' value='"+tklquan+"'>");
-				
-				sb.append("</div><div style='color:red;'>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
-				msg = sb.toString();
-			} else {
-				return model;
 			}
-		} else {
-			//插入搜索记录
-			SearchRecord searchRecord=new SearchRecord();
-			searchRecord.setMobile(mobile);
-			searchRecord.setProductId(productInfo.getProductId());
-			searchRecord.setMall(platform.equals("taobao")?1:2);
-			searchRecord.setStatus(1);
-			searchRecord.setTitle(productInfo.getProductName());
-			searchRecord.setCreateTime(new Date());
-			searchRecord.setUpdateTime(new Date());
-			searchRecordService.insert(searchRecord);
-			
-			map.put("img", productInfo.getProductImgUrl());
-			map.put("shop", productInfo.getShopName());
-			map.put("title", productInfo.getProductName());
-			map.put("url", productInfo.getProductInfoUrl());
-			map.put("quanUrl", productInfo.getCouponLink());
-			map.put("money", "￥" + ((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-					/ 100));
-			map.put("tagNum", "");
-			map.put("price", "￥" + productInfo.getPrice());
-			map.put("tklquan", productInfo.getTklquan());
-			map.put("tag", "");
-			map.put("per", ((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100) + "%");
-			map.put("sellNum", productInfo.getMonthSales() + "");
-			map.put("goodUrl", productInfo.getTkLink());
-			map.put("tkl", productInfo.getTkl());
-			map.put("tklquan", productInfo.getTklquan());
-			map.put("quanMianzhi", "" +productInfo.getCouponQuan());
-			
-			// 组装msg
-			StringBuffer sb = new StringBuffer();
-			sb.append(
-					"<div id='e-c' align=center></div><div style='font-size:12px;width:330px;top:10%;left:38%;background:#fff;border-radius:10px;box-shadow:5px 5px 10px #888;'><div><img src='");
-			sb.append(productInfo.getProductImgUrl());
-			
-			if ("no".equals(ifWeixinBrower)) {
-				sb.append("' height='220' width='220' onclick=drump('");
-				if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-					sb.append(productInfo.getCouponLink());
+			if ("yes".equals(ifWeixinBrower)) {
+				if ("taobao".equals(platform)) {
+					sb.append(
+							"')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
 				} else {
-					sb.append(productInfo.getTkLink());
-				}
-			}else{
-				if("taobao".equals(platform)){
-					sb.append("' height='220' width='220' id='copy' onclick=jsCopy('");
-					if (StringUtils.isNotEmpty(productInfo.getTklquan())) {
-						sb.append("tklquan");
-					} else {
-						sb.append("tkl");
-					}
-				}else{
-					sb.append("' height='220' width='220' onclick=drump('");
-					if (StringUtils.isNotEmpty(productInfo.getCouponLink())) {
-						sb.append(productInfo.getCouponLink());
-					} else {
-						sb.append(productInfo.getTkLink());
-					}
-				}				
-			}
-			if("yes".equals(ifWeixinBrower)){
-				if("taobao".equals(platform)){
-					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片复制淘口令，然后打开手机淘宝购物</div><div>");
-				}else{
 					sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回京东购物。</div><div>");
 				}
-			}else{
-			  sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"+("taobao".equals(platform)?"淘宝":"京东")+"购物。</div><div>");
+			} else {
+				sb.append("')></div><div style='color:red;'>△</div><div style='color:red;'>点击图片返回"
+						+ ("taobao".equals(platform) ? "淘宝" : "京东") + "购物。</div><div>");
 			}
-			sb.append(productInfo.getProductName());
+			sb.append(productName);
 			sb.append("</div><div style='height:20px;'><span style='float:left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商店：");
-			sb.append(StringUtil.getSubString(productInfo.getShopName(), 20));
-			if("0.0".equals(productInfo.getCouponMiane())){
+			sb.append(StringUtil.getSubString(shopName, 16));
+			if ("0.0".equals(quanMianzhi)) {
 				sb.append("</span><span style='float:right;'>月销量：");
-				sb.append(productInfo.getMonthSales());
-			}else{
+				sb.append(sellNum);
+			} else {
 				sb.append("</span><span style='float:right;'>优惠券：￥");
-				sb.append(productInfo.getCouponMiane());
-			}			
+				sb.append(quanMianzhi);
+			}
 			sb.append(
 					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style='height: 20px;'><span style='float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格：￥");
-			sb.append(productInfo.getPrice());
+			sb.append(price);
 			sb.append("</span><span style='float: right;'>预估返现：￥");
-			float fanli=((float) (Math.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+			float fanli = ((float) (Math
+					.round(commission * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 					/ 100);
-			float fanliMultiple=1;
+			float fanliMultiple = 1;
 			sb.append(fanli);
-			if(fanli<=1){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
-			}else if(fanli>1 && fanli<=5){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
-			}else if(fanli>5 && fanli<=10){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
-			}else if(fanli>10 && fanli<=50){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
-			}else if(fanli>50 && fanli<=100){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
-			}else if(fanli>100 && fanli<=500){
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
-			}else{
-				fanliMultiple=Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
+			if (fanli <= 1) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
+			} else if (fanli > 1 && fanli <= 5) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
+			} else if (fanli > 5 && fanli <= 10) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
+			} else if (fanli > 10 && fanli <= 50) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
+			} else if (fanli > 50 && fanli <= 100) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
+			} else if (fanli > 100 && fanli <= 500) {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
+			} else {
+				fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
 			}
-			
-			map.put("fanliMultiple", fanliMultiple+"");
+			map.put("fanliMultiple", fanliMultiple + "");
 			sb.append("(");
-			sb.append(((float) (Math.round(productInfo.getIncomeRate() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
+			sb.append(((float) (Math
+					.round(incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
+					/ 100));
 			sb.append("%)");
 			sb.append(
-					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"+productInfo.getTkl()+"'><input type='hidden' id='tklquan' value='"+productInfo.getTklquan()+"'>");
-			
-			sb.append("</div><div style='color:red;'><br/>购买该商品预估可额外获得"+fanliMultiple+"倍返现奖励</div></div></div>");
+					"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div id='btn-app'><input type='hidden' id='tkl' value='"
+							+ tkl + "'><input type='hidden' id='tklquan' value='" + tklquan + "'>");
+
+			sb.append("</div><div style='color:red;'>购买该商品预估可额外获得" + fanliMultiple + "倍返现奖励</div></div></div>");
 			msg = sb.toString();
-						
+		} else {
+			return model;
 		}
-        //查询成功
-		ProductInfoVo productInfoVo=new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,"0");
+
+		// 查询成功
+		ProductInfoVo productInfoVo = new ProductInfoVo(productInfo.getTkLink(), "领券", productInfo.getCouponLink(), msg,
+				"0");
 		productInfoVo.setMap(map);
 		result.setResult(productInfoVo);
 		model.addAttribute(SysConst.RESULT_KEY, result);
@@ -639,12 +538,11 @@ public class ApiController extends BasicController {
 				for (ProductInfo productInfo : productInfoList) {
 					if (productId.equals(productInfo.getProductId())) {
 						logger.info("实际佣金=" + productInfo.getCommission());
-						commissionList.add(((float) (Math
-								.round(productInfo.getCommission() * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
-								/ 100));
-//						commissionList.add(((float) (Math
-//								.round(productInfo.getCommission() * 1 * 100))
-//								/ 100));
+						commissionList.add(((float) (Math.round(productInfo.getCommission()
+								* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100)) / 100));
+						// commissionList.add(((float) (Math
+						// .round(productInfo.getCommission() * 1 * 100))
+						// / 100));
 						break;
 					} else {
 						size = size + 1;
@@ -759,7 +657,7 @@ public class ApiController extends BasicController {
 				map.put("goodUrl1", tkInfoTask.getTkurl());
 				map.put("tkl", tkInfoTask.getTcode());
 				map.put("tklquan", tkInfoTask.getQuanCode());
-				map.put("quanMianzhi", "" +tkInfoTask.getQuanMianzhi());
+				map.put("quanMianzhi", "" + tkInfoTask.getQuanMianzhi());
 
 				StringBuffer sb = new StringBuffer();
 				sb.append(
@@ -798,39 +696,39 @@ public class ApiController extends BasicController {
 
 		return model;
 	}
-	
+
 	// 从队列中获取任务
 	@RequestMapping(value = "/gettask", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
-		TkInfoTask tkInfoTask=null;
-		Object object =ProductUrlTrans.get();
-		if(object!=null){
-			tkInfoTask=(TkInfoTask)object;
+		TkInfoTask tkInfoTask = null;
+		Object object = ProductUrlTrans.get();
+		if (object != null) {
+			tkInfoTask = (TkInfoTask) object;
 			tkInfoTask.setCreateTime(null);
 			tkInfoTask.setUpdateTime(null);
 		}
 		model.addAttribute(SysConst.RESULT_KEY, tkInfoTask);
 		return model;
 	}
-	
+
 	// 任务执行完后的反馈
 	@RequestMapping(value = "/receiveTaskFeedback", method = RequestMethod.POST)
 	@ResponseBody
 	public Model receiveTaskFeedback(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String gString=request.getParameter("gString");
-		System.out.println(gString);		
+		String gString = request.getParameter("gString");
+		System.out.println(gString);
 		TkInfoTask tkInfoTask = GsonUtil.GsonToBean(gString, TkInfoTask.class);
 		tkInfoTaskService.insertTkInfoTask(tkInfoTask);
 		return model;
 	}
-	
+
 	// 淘宝报表数据下载后的入库
 	@RequestMapping(value = "/reportTb2Db", method = RequestMethod.POST)
 	@ResponseBody
 	public Model reportTb2Db(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String gString = request.getParameter("gString");
-//		System.out.println("reportTb2Db=="+gString);
+		// System.out.println("reportTb2Db=="+gString);
 		List<TkOrderInput> tkOrderInputList = GsonUtil.fromJsonList(gString, TkOrderInput.class);
 		tkOrderInputService.truncateTkOrderInput();
 		for (TkOrderInput tkOrderInput : tkOrderInputList) {
@@ -838,13 +736,13 @@ public class ApiController extends BasicController {
 		}
 		return model;
 	}
-	
+
 	// 京东报表数据下载后的入库
 	@RequestMapping(value = "/reportJd2Db", method = RequestMethod.POST)
 	@ResponseBody
 	public Model reportJd2Db(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String gString = request.getParameter("gString");
-//		System.out.println("reportJd2Db=="+gString);
+		// System.out.println("reportJd2Db=="+gString);
 		List<TkOrderInputJd> tkOrderInputJdList = GsonUtil.fromJsonList(gString, TkOrderInputJd.class);
 		tkOrderInputJdService.truncateTkOrderInputJd();
 		for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
@@ -872,7 +770,7 @@ public class ApiController extends BasicController {
 		}
 		return retNum;
 	}
-	
+
 	/**
 	 * 
 	 * @param conetnt
