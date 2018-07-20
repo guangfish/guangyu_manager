@@ -36,11 +36,8 @@ public class CrawlTask {
 		String retStr = "";
 		try {
 			String ret = HttpcomponentsUtil.postReq(nvpList, taskUrl);
-			// System.out.println(ret);
 			TaskBeanRet taskBeanRet = GsonUtil.GsonToBean(ret, TaskBeanRet.class);
-			// System.out.println(taskBean.getMap().get("sign"));
 			retStr = taskBeanRet.getRet().getMap().get("sign") + ";" + taskBeanRet.getRet().getMap().get("type");
-			System.out.println("发送任务后返回值="+retStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

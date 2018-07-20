@@ -85,8 +85,11 @@ public class AppCawalTaskController extends BasicController {
 			System.out.println(imgUrl);
 			jedis.close();
 			
+			imgUrl="http://img.alicdn.com/bao/uploaded/i2/3543248633/TB1H0FTonlYBeNjSszcXXbwhFXa_!!0-item_pic.jpg";
+			
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 			String tklStr=appCrawlBean.getData();
+			tklStr="{\"data\": \"Queen2018夏季新品女装V领短袖收腰大摆长裙纯色压褶中长款连衣裙【在售价】338.00元【下单链接】http://m.tb.cn/h.3XA5P2R-----------------復·制这段描述，€xCYobZpohZ4€ ，咑閞【手机淘宝】即可查看\",\"tklStr\": \"【Queen2018夏季新品女装V领短袖收腰大摆长裙纯色压褶中长款连衣裙】http://m.tb.cn/h.3XAUhUY 点击链接，再选择浏览器咑閞；或復·制这段描述€hytQbZpSpPR€后到?淘♂寳♀?\",\"sign\": \"08e047db0ea74aac989945984f2c25e3\",\"commission\": \"（预计￥54.08）\",\"sellNum\": \"已售61件\",\"status\": \"1\"}";
 			String sign=appCrawlBean.getSign();
 			String sellNumStr=appCrawlBean.getSellNum();
 			String sellNum="";
