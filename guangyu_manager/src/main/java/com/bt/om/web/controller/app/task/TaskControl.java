@@ -88,7 +88,7 @@ public class TaskControl {
 		jedis.close();
 //		TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
 		Map<String, String> map = null;
-		if (data != null) {
+		if (StringUtil.isNotEmpty(data)) {
 			logger.info("从redis中查询到APP端推送的数据");
 			logger.info(data);
 			AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
