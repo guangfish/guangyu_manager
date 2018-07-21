@@ -42,6 +42,9 @@ public class TaskControl {
 				break;
 			}
 			if (resultMap != null) {
+				if("0".equals(resultMap.get("status"))){
+					return new HashMap<>();
+				}
 				break;
 			} else {
 				try {

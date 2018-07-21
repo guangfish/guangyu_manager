@@ -359,17 +359,7 @@ public class AppApiController extends BasicController {
 			itemVo.setItems(list);
 			productInfoVo.setData(itemVo);
 		} catch (Exception e) {
-			e.printStackTrace();
-			ItemVo itemVo = new ItemVo();
-			productInfoVo.setStatus("0");
-			productInfoVo.setDesc("查询成功");
-			itemVo.setTotalSize(1);
-			itemVo.setCurPage(1);
-			itemVo.setMaxPage(1);
-			itemVo.setMall("taobao");
-			itemVo.setHasNext(false);
-			itemVo.setItems(new ArrayList<>());
-			productInfoVo.setData(itemVo);
+			e.printStackTrace();		
 		}
 
 		return productInfoVo;
