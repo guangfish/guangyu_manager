@@ -141,11 +141,23 @@ public class AppApiController extends BasicController {
 		if ("1".equals(appCrawlSwitch)) {
 			if (ifTkl(productUrl, tklSymbolsStr)) {
 				logger.info("用户发送的是淘口令请求");
-				productInfoVo = productInfoAppCrawl(userId, productUrl);
-				if (productInfoVo.getData() == null) {
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
-					if (lists.size() > 0) {
-						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+				ShardedJedis jedis = jedisPool.getResource();
+				String productUrlRedis = jedis.get(productUrl.hashCode() + "");
+				jedis.close();
+				//如果redis里有搜索过的商品名称，者直接通过API获取数据
+				if (productUrlRedis != null) {
+					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
+				} else {
+					productInfoVo = productInfoAppCrawl(userId, productUrl);
+					if (productInfoVo.getData() == null) {
+						List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+						if (lists.size() > 0) {
+							//根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，再翻页搜索时期作用，就不用重复爬虫方式了
+							jedis = jedisPool.getResource();
+							jedis.setex(productUrl.hashCode() + "", 6000, (lists.get(0))[0]);
+							jedis.close();
+							productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+						}
 					}
 				}
 			} else if (keyParser(productUrl, tklSymbolsStr)) {

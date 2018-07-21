@@ -60,7 +60,7 @@ public class TaskControl {
 	public Map<String, String> sendTask(String tkl) {
 		Map<String, String> map = new HashMap<>();
 		String sign = StringUtil.getUUID();
-		sign="bd0dd1cdb08a48418b60973f07c2aac1";
+//		sign="bd0dd1cdb08a48418b60973f07c2aac1";
 		map.put("sign", sign);
 		map.put("type", "2");
 		map.put("status", "0");
@@ -98,11 +98,11 @@ public class TaskControl {
 				System.out.println(imgUrl);
 				jedis.close();
 				
-				imgUrl="http://img.alicdn.com/bao/uploaded/i2/3543248633/TB1H0FTonlYBeNjSszcXXbwhFXa_!!0-item_pic.jpg";
+//				imgUrl="http://img.alicdn.com/bao/uploaded/i2/3543248633/TB1H0FTonlYBeNjSszcXXbwhFXa_!!0-item_pic.jpg";
 				
 				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 				String tklStr=appCrawlBean.getData();
-				tklStr= "Queen2018夏季新品女装V领短袖收腰大摆长裙纯色压褶中长款连衣裙【在售价】338.00元【下单链接】http://m.tb.cn/h.3XA5P2R-----------------復·制这段描述，€xCYobZpohZ4€ ，咑閞【手机淘宝】即可查看";
+//				tklStr= "Queen2018夏季新品女装V领短袖收腰大摆长裙纯色压褶中长款连衣裙【在售价】338.00元【下单链接】http://m.tb.cn/h.3XA5P2R-----------------復·制这段描述，€xCYobZpohZ4€ ，咑閞【手机淘宝】即可查看";
 				String sellNumStr=appCrawlBean.getSellNum();
 				String sellNum="";
 				String commissionStr=appCrawlBean.getCommission();
