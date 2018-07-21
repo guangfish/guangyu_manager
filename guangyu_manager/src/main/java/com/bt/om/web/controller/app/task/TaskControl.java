@@ -178,7 +178,7 @@ public class TaskControl {
 				}
 				int sellNumInt=0;
 	            if(sellNum.contains("万")){
-	            	sellNumInt=Integer.parseInt(sellNum.replace("万", ""))*10000;
+	            	sellNumInt=(int)(Float.parseFloat(sellNum.replace("万", ""))*10000);
 	            }else{
 	            	sellNumInt=Integer.parseInt(sellNum);
 	            }
