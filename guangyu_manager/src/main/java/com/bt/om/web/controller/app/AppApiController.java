@@ -154,7 +154,7 @@ public class AppApiController extends BasicController {
 						if (lists.size() > 0) {
 							//根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，再翻页搜索时期作用，就不用重复爬虫方式了
 							jedis = jedisPool.getResource();
-							jedis.setex(productUrl.hashCode() + "", 6000, (lists.get(0))[0]);
+							jedis.setex(productUrl.hashCode() + "", 60, (lists.get(0))[0]);
 							jedis.close();
 							productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
 						}
@@ -360,6 +360,16 @@ public class AppApiController extends BasicController {
 			productInfoVo.setData(itemVo);
 		} catch (Exception e) {
 			e.printStackTrace();
+			ItemVo itemVo = new ItemVo();
+			productInfoVo.setStatus("0");
+			productInfoVo.setDesc("查询成功");
+			itemVo.setTotalSize(1);
+			itemVo.setCurPage(1);
+			itemVo.setMaxPage(1);
+			itemVo.setMall("taobao");
+			itemVo.setHasNext(false);
+			itemVo.setItems(new ArrayList<>());
+			productInfoVo.setData(itemVo);
 		}
 
 		return productInfoVo;

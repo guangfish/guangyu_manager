@@ -91,6 +91,13 @@ public class TaskControl {
 			AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
 			TkInfoTask tkInfoTask = new TkInfoTask();
 			try {
+				String tklStr=appCrawlBean.getData();
+				if(StringUtil.isEmpty(tklStr)){
+					map = new HashMap<>();
+					map.put("status", "0");
+					return map;
+				}
+				
 				String tklOld=appCrawlBean.getTklStr();
 				jedis = jedisPool.getResource();
 				System.out.println(tklOld.hashCode());
@@ -98,11 +105,7 @@ public class TaskControl {
 				System.out.println(imgUrl);
 				jedis.close();
 				
-//				imgUrl="http://img.alicdn.com/bao/uploaded/i2/3543248633/TB1H0FTonlYBeNjSszcXXbwhFXa_!!0-item_pic.jpg";
-				
-				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
-				String tklStr=appCrawlBean.getData();
-//				tklStr= "Queen2018夏季新品女装V领短袖收腰大摆长裙纯色压褶中长款连衣裙【在售价】338.00元【下单链接】http://m.tb.cn/h.3XA5P2R-----------------復·制这段描述，€xCYobZpohZ4€ ，咑閞【手机淘宝】即可查看";
+				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");				
 				String sellNumStr=appCrawlBean.getSellNum();
 				String sellNum="";
 				String commissionStr=appCrawlBean.getCommission();
@@ -200,6 +203,7 @@ public class TaskControl {
 			map.put("tkl", tkInfoTask.getTcode());
 			map.put("tklquan", tkInfoTask.getQuanCode());
 			map.put("quanMianzhi", "" + tkInfoTask.getQuanMianzhi());
+			map.put("status", "1");
 		}else{
 			logger.info(sign+"APP端尚未返回");
 		}
