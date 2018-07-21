@@ -347,7 +347,7 @@ public class AppApiController extends BasicController {
 			list.add(map);
 
 			ItemVo itemVo = new ItemVo();
-
+ 
 			// 查询成功
 			productInfoVo.setStatus("0");
 			productInfoVo.setDesc("查询成功");
