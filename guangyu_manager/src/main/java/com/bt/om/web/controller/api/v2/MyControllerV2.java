@@ -74,7 +74,7 @@ public class MyControllerV2 extends BasicController {
 			double cash = drawCashService.getSumByMobile(map);
 			model.addAttribute("cash", cash);
 			model.addAttribute("agencyRewardRate",
-					Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate")) * 100);
+					Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_min")) * 100);
 			return "searchv2/my";
 		}
 	}
