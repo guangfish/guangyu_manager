@@ -116,7 +116,8 @@ public class AppLoginController extends BasicController {
 			// inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！\r\n-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
 			inviteCodeInfo = inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#",
 					user.getMyInviteCode());
-			inviteCodeInfo=StringUtil.stringToUnicode(inviteCodeInfo);
+			
+			System.out.println(inviteCodeInfo);
 
 			data.put("userId", SecurityUtil1.encrypts(mobile));
 			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
