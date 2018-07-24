@@ -101,7 +101,7 @@ public class AppLoginController extends BasicController {
 
 		User user = userService.selectByMobile(mobile);
 		if (user != null) {
-			registerVo.setStatus("0"); 
+			registerVo.setStatus("0");  
 			registerVo.setDesc("登陆成功");
 			Map<String, String> data = new HashMap<>();
 
