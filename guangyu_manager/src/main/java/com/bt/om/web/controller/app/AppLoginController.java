@@ -106,7 +106,7 @@ public class AppLoginController extends BasicController {
 			Map<String, String> data = new HashMap<>();
 
 			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-			if ("android".equals(app)) {
+			if ("android".equals(app)) { 
 				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
 			} else if ("ios".equals(app)) {
 				downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
