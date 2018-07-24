@@ -11,7 +11,9 @@ import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
+import com.bt.om.util.MailUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.RegexUtil;
 import com.bt.om.util.SecurityUtil1;
@@ -59,6 +61,8 @@ public class AppApiController extends BasicController {
 
 	@Autowired
 	private ISearchRecordService searchRecordService;
+	
+	ProductInfoVo productInfoVoApi = null;
 
 
 	// // 获取商品详情
@@ -144,19 +148,31 @@ public class AppApiController extends BasicController {
 				ShardedJedis jedis = jedisPool.getResource();
 				String productUrlRedis = jedis.get(productUrl.hashCode() + "");
 				jedis.close();
-				//如果redis里有搜索过的商品名称，者直接通过API获取数据
+				//如果redis里有搜索过的商品名称，则直接通过API获取数据
 				if (productUrlRedis != null) {
 					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+					String productTitle=(lists.get(0))[0];
+					
+					//启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换					
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							logger.info("启动线程，通过API获取商品数据");
+							productInfoVoApi = productInfoApi(productTitle, 1, 30);
+						}
+					}).start();					
+					
 					productInfoVo = productInfoAppCrawl(userId, productUrl);
-					if (productInfoVo.getData() == null) {
-						List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+					if (productInfoVo.getData() == null) {						
 						if (lists.size() > 0) {
-							//根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，再翻页搜索时期作用，就不用重复爬虫方式了
+							//根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedis = jedisPool.getResource();
-							jedis.setex(productUrl.hashCode() + "", 60, (lists.get(0))[0]);
+							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
 							jedis.close();
-							productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+//							productInfoVo = productInfoApi(productTitle, pageNo, size);
+							productInfoVo=productInfoVoApi;
 						}
 					}
 				}

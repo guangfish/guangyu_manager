@@ -117,7 +117,7 @@ public class AppLoginController extends BasicController {
 			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl).replace("#myInviteCode#",
 					user.getMyInviteCode());
 			
-			System.out.println(inviteCodeInfo);
+//			System.out.println(inviteCodeInfo);
 
 			data.put("userId", SecurityUtil1.encrypts(mobile));
 			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
