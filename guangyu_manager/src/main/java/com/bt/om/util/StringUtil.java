@@ -15,6 +15,9 @@ import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+
 /**
  * 
  * 
@@ -1201,4 +1204,15 @@ public class StringUtil {
 		}
 		return retNum;
 	}
+    
+    //unicode转中文
+    public static String unicodeToString(String str) {  
+        return String.valueOf(JSON.parse(str));
+    } 
+    
+    //中文字符转unicode
+    public static String stringToUnicode(String s) {  
+        return JSON.toJSONString(s, SerializerFeature.BrowserCompatible);
+        
+    }
 }
