@@ -21,7 +21,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 /**
  * 
  * 
- * @author hl-tanyong
+ * @author hl-tanyong 
  * @version $Id: StringUtil.java, v 0.1 2015年9月18日 下午3:20:45 hl-tanyong Exp $
  */
 public class StringUtil {
