@@ -358,7 +358,7 @@ public class AppLoginController extends BasicController {
 			}
 			platformReward=((float) (Math.round(platformReward * 100)) / 100); 
 
-			float hongbao = user.getHongbao();
+			float hongbao = user.getHongbao(); 
 
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
 			if ("true".equals(canDraw)) {
