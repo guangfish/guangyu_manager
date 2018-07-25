@@ -619,7 +619,7 @@ public class AppDrawController extends BasicController {
 					//本月产生的订单金额
 					thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
 				}else{
-					userOrderCanDrawList.add(userOrder);
+					userOrderCanDrawList.add(userOrder); 
 				}
 			}
 		}
