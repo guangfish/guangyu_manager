@@ -116,11 +116,10 @@ public class AppLoginController extends BasicController {
 //			inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！#Enter#-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
 			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl).replace("#myInviteCode#",
 					user.getMyInviteCode());
-			
-//			System.out.println(inviteCodeInfo);
 
 			data.put("userId", SecurityUtil1.encrypts(mobile));
-			data.put("inviteCode", inviteCodeInfo);// 我的邀请码
+			data.put("inviteCode", inviteCodeInfo);// 我的邀请码、带描述信息
+			data.put("inviteCodeShort", user.getMyInviteCode());// 我的短邀请码
 			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员  2：超级会员
 			data.put("sex", user.getSex() + "");
 			registerVo.setData(data);
@@ -241,13 +240,14 @@ public class AppLoginController extends BasicController {
 		}
 
 		String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
-		inviteCodeInfo = inviteCodeInfo.replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
+		inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
 
 		registerVo.setStatus("0");
 		registerVo.setDesc("注册成功");
 		Map<String, String> data = new HashMap<>();
 		data.put("userId", SecurityUtil1.encrypts(mobile));
-		data.put("inviteCode", inviteCodeInfo);// 我的邀请码
+		data.put("inviteCode", inviteCodeInfo);// 我的邀请码、带描述信息
+		data.put("inviteCodeShort", user.getMyInviteCode());// 我的短邀请码
 		data.put("userType", "2");// 账号类型1：普通会员 2：超级会员
 		data.put("sex", sex + "");
 		registerVo.setData(data);
@@ -324,16 +324,23 @@ public class AppLoginController extends BasicController {
 			int canDrawOrderNum = 0;
 			double totalCommission = 0;
 			float tCommission = 0;
+			double thisMonthCommission = 0;
+			float tmCommission = 0;
 			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(userId);
-			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+//			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+			String thisMonth=DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
 				if ("订单结算".equals(userOrder.getOrderStatus())) {
 					canDrawOrderNum = canDrawOrderNum + 1;
 					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					userOrderCanDrawList.add(userOrder);
+					if(thisMonth.equals(DateUtil.dateFormate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
+						thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+					}
+//					userOrderCanDrawList.add(userOrder);
 				}
 			}
 			tCommission = ((float) (Math.round(totalCommission * 100)) / 100);
+			tmCommission = ((float) (Math.round(thisMonthCommission * 100)) / 100);
 
 			// 累计购物已省
 			Map<String, Object> map = new HashMap<>();
@@ -364,7 +371,7 @@ public class AppLoginController extends BasicController {
 					}
 				}
 			}
-			totalMoney=((double) (Math.round((totalMoney + hongbao) * 100)) / 100);
+			totalMoney=((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
 			data.put("totalMoney", totalMoney+ "");// 总共可提现金额
 			data.put("orderMoney", tCommission + "");// 订单可提金额
 			data.put("inviteReward", inviteReward + "");// 邀请奖励金额

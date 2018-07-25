@@ -604,12 +604,23 @@ public class AppDrawController extends BasicController {
 
 		// 订单返现
 		List<UserOrder> userOrderList = userOrderService.selectByMobile(userId);
+		//可提现的订单
+		List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 		double totalCommission = 0;
+		double thisMonthCommission = 0;
 		int productNums = 0;
 		if (userOrderList != null && userOrderList.size() > 0) {
 			productNums = userOrderList.size();
+			String thisMonth=DateUtil.formatDate(new Date(), DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
+				//总共订单的返利金额
 				totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+				if(thisMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
+					//本月产生的订单金额
+					thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+				}else{
+					userOrderCanDrawList.add(userOrder);
+				}
 			}
 		}
 
@@ -624,7 +635,8 @@ public class AppDrawController extends BasicController {
 		drawCash.setMobile(userId);
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
-		drawCash.setCash(totalCommission);
+		//排除本月订单金额后可提现的金额
+		drawCash.setCash(totalCommission - thisMonthCommission);
 		drawCash.setReward(reward);
 		drawCash.setOrderReward(orderReward);
 		if(user.getHongbao()>0){
@@ -640,7 +652,7 @@ public class AppDrawController extends BasicController {
 		userService.updateHongbao(user);
 
 		// 订单提现后插入提现订单表并更新订单状态
-		for (UserOrder userOrder : userOrderList) {
+		for (UserOrder userOrder : userOrderCanDrawList) {
 			DrawCashOrder drawCashOrder = new DrawCashOrder();
 			drawCashOrder.setOrderId(userOrder.getOrderId());
 			drawCashOrder.setDrawCachId(drawCash.getId());
