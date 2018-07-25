@@ -365,7 +365,7 @@ public class AppLoginController extends BasicController {
 				System.out.println(totalMoney);
 				System.out.println(tmCommission);
 				System.out.println(totalMoney-tmCommission);
-				if ((totalMoney-tmCommission) == 0) {
+				if ((totalMoney-tmCommission) <= 0) {
 					canDraw = "false";
 					if (hongbao > 0) {
 						reason = "亲！红包不能单独提现，等有返现或奖励时再提吧。";
