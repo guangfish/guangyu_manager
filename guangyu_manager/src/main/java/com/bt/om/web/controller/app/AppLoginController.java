@@ -362,9 +362,6 @@ public class AppLoginController extends BasicController {
 
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
 			if ("true".equals(canDraw)) {
-				System.out.println(totalMoney);
-				System.out.println(tmCommission);
-				System.out.println(totalMoney-tmCommission);
 				if ((totalMoney-tmCommission) <= 0) {
 					canDraw = "false";
 					if (hongbao > 0) {
