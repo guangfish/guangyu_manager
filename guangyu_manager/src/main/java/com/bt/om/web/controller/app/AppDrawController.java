@@ -613,7 +613,7 @@ public class AppDrawController extends BasicController {
 			productNums = userOrderList.size();
 			String thisMonth=DateUtil.formatDate(new Date(), DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
-				//总共订单的返利金额
+				//总共订单的返利金额 
 				totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
 				if(thisMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
 					//本月产生的订单金额
