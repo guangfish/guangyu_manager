@@ -87,7 +87,7 @@ public class ProductUrlTrans {
 			init();
 			// scheduleTaobao();
 			scheduleJd();
-//			scheduleTaobaoLogin();
+			scheduleTaobaoLogin();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
@@ -475,15 +475,15 @@ public class ProductUrlTrans {
 					
 					WebElement element = driver.findElement(By.xpath("//*[@id='J_Quick2Static']"));
 					PageUtils.scrollToElementAndClick(element, driver);
-					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					Thread.sleep(NumberUtil.getRandomNumber(1000, 3000));
 					
 					WebElement username = driver.findElement(By.id("TPL_username_1"));// 定位用户名输入框
 					username.sendKeys("chj8023");// 输入用户名root
-					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
 					
 					WebElement password = driver.findElement(By.id("TPL_password_1"));// 定位密码输入框
 					password.sendKeys("chjssj1981822");// 输入密码root
-					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
 					
 					WebElement loginbtn = driver.findElement(By.xpath("//*[@id='J_SubmitStatic']"));// 定位登录按钮，xpath相对路径
 					loginbtn.click();// 点击登录按钮			
@@ -491,6 +491,7 @@ public class ProductUrlTrans {
 					Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
 					driver.get(baseUrl);
 				} catch (Exception e) {
+					e.printStackTrace();
 					logger.error("taobao login error:[{}]", e);
 				}
 			}

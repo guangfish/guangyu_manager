@@ -53,7 +53,7 @@ public class UserOrderCheckTask {
 					Map<String, Object> map = new HashMap<>();
 					map.put("productId", userOrder1.getProductId());
 					map.put("orderId", userOrder1.getOrderId());
-					//从淘宝导入的订单有可能会出现同一个订单号下面有多条相同上商品记录
+					//从淘宝导入的订单有可能会出现同一个订单号下面有多条相同商品记录
 					List<TkOrderInput> tkOrderInputList = tkOrderInputService.selectByMap(map);
 					double payMoney = 0;
 					double commissionRate = 0;
