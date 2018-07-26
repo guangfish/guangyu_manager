@@ -498,6 +498,6 @@ public class ProductUrlTrans {
 					logger.error("taobao login error:[{}]", e);
 				}
 			}
-		}, 10, 10, TimeUnit.MINUTES);
+		}, 2, 10, TimeUnit.MINUTES);
 	}
 }
