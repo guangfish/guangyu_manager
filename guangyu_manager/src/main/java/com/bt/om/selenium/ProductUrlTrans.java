@@ -12,10 +12,13 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.entity.TkInfoTask;
@@ -34,7 +37,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 public class ProductUrlTrans {
 	private static final Logger logger = Logger.getLogger(ProductUrlTrans.class);
 
-	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 	// 这样会导致spring配置中bean再次实例化
 	// private static ITkInfoTaskService tkInfoTaskService =
 	// ServiceLocator.getService(TkInfoTaskService.class);
@@ -65,6 +68,7 @@ public class ProductUrlTrans {
 	private static WebDriver driver;
 	private static WebDriver jdDriver;
 	private static String baseUrl = "https://pub.alimama.com/promo/search/index.htm";
+	private static String taobaoLoginUrl = "https://login.taobao.com/member/login.jhtml?style=mini&newMini2=true&css_style=alimama&from=alimama&redirectURL=http%3A%2F%2Fwww.alimama.com&full_redirect=true&disableQuickLogin=true";
 	private static String jdBaseUrl = "https://media.jd.com";
 
 	private static int sleepTimeBegin = 100;
@@ -83,6 +87,7 @@ public class ProductUrlTrans {
 			init();
 			// scheduleTaobao();
 			scheduleJd();
+			scheduleTaobaoLogin();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
@@ -134,15 +139,15 @@ public class ProductUrlTrans {
 
 	public static void put(TkInfoTask tkInfoTask) {
 		// logger.info("publish..");
-		if(tkInfoTask.getType()==2){
+		if (tkInfoTask.getType() == 2) {
 			System.out.println("淘口令请求入队列");
 			queueTkl.publish(tkInfoTask);
-		}else{
+		} else {
 			System.out.println("URL请求入队列");
-		    queue.publish(tkInfoTask);
+			queue.publish(tkInfoTask);
 		}
 	}
-	
+
 	public static Object getTkl() {
 		// logger.info("consumer..");
 		System.out.println("获取淘口令任务");
@@ -457,5 +462,26 @@ public class ProductUrlTrans {
 				}
 			}
 		}, 5, 5, TimeUnit.MINUTES);
+	}
+
+	private static void scheduleTaobaoLogin() {
+		scheduler.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					logger.info("taobao login...");
+					Thread.sleep(NumberUtil.getRandomNumber(3000, 6000));
+					driver.get(taobaoLoginUrl);
+
+					String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
+					((JavascriptExecutor) driver).executeScript(setValueJS);
+					
+					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
+					driver.get(baseUrl);
+				} catch (Exception e) {
+					logger.error("taobao login error:[{}]", e);
+				}
+			}
+		}, 2, 2, TimeUnit.MINUTES);
 	}
 }
