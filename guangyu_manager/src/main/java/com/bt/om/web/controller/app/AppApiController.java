@@ -142,7 +142,9 @@ public class AppApiController extends BasicController {
 		
 		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 		String appCrawlSwitch = GlobalVariable.resourceMap.get("app_crawl_switch");
+		//APP爬虫的逻辑
 		if ("1".equals(appCrawlSwitch)) {
+			//是淘口令请求时的逻辑
 			if (ifTkl(productUrl, tklSymbolsStr)) {
 				logger.info("用户发送的是淘口令请求");
 				ShardedJedis jedis = jedisPool.getResource();
@@ -162,6 +164,7 @@ public class AppApiController extends BasicController {
 						public void run() {
 							logger.info("启动线程，通过API获取商品数据");
 							String ptitle=productTitle;
+							//特殊淘口令链接的处理
 							if(productTitle.contains("这个#手聚App团购#宝贝不错")){
 								try{
 									//【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -183,11 +186,13 @@ public class AppApiController extends BasicController {
 							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
 							jedis.close();
 //							productInfoVo = productInfoApi(productTitle, pageNo, size);
-							productInfoVo=productInfoVoApi;
+							productInfoVo = productInfoVoApi;
 						}
 					}
 				}
-			} else if (keyParser(productUrl, tklSymbolsStr)) {
+			} 
+			//请求为URL时的逻辑
+			else if (keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
@@ -195,16 +200,21 @@ public class AppApiController extends BasicController {
 						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
 					}
 				}
-			} else {
+			} 
+			//请求为标题或关键词的逻辑
+			else {
 				productInfoVo = productInfoApi(productUrl, pageNo, size);
 			}
-		} else {
+		} 
+		//PC端爬虫逻辑
+		else if("2".equals(appCrawlSwitch)) {
 			if (keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 					String productTitle=(lists.get(0))[0];
 					if (lists.size() > 0) {
+						//特殊淘口令链接的处理
 						if(productTitle.contains("这个#手聚App团购#宝贝不错")){
 							try{
 								//【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -220,6 +230,10 @@ public class AppApiController extends BasicController {
 			} else {
 				productInfoVo = productInfoApi(productUrl, pageNo, size);
 			}
+		}
+		//仅标题、关键词API查询的逻辑
+		else if("3".equals(appCrawlSwitch)){
+			productInfoVo = productInfoApi(productUrl, pageNo, size);
 		}
 		
 
@@ -237,6 +251,7 @@ public class AppApiController extends BasicController {
 			String productUrl = TaoKouling.parserTklApp(tklStr);
 			String imgUrl = (productUrl.split(";;"))[1];
 			productUrl = (productUrl.split(";;"))[0];
+			//接口返回的图片地址可能是没有http前缀
 			if (!imgUrl.contains("http:")) {
 				imgUrl = "http:" + imgUrl;
 			}
@@ -255,7 +270,8 @@ public class AppApiController extends BasicController {
 					}
 					break;
 				}
-			}						
+			}
+			//把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
 			if (StringUtil.isNotEmpty(imgUrl)) {
 				ShardedJedis jedis = jedisPool.getResource();
 				jedis.setex(tklOld.hashCode() + "", 3600*24, imgUrl);
@@ -264,7 +280,12 @@ public class AppApiController extends BasicController {
 			
 			Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
 			String puri = urlMap0.get("puri");
-			String productId = puri.substring(puri.lastIndexOf("/") + 2, puri.lastIndexOf("."));
+			String productId="";
+			try{
+			   productId = puri.substring(puri.lastIndexOf("/") + 2, puri.lastIndexOf("."));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 
 			String platform = "taobao";
 			Map<String, String> map = new HashMap<>();
