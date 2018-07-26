@@ -152,7 +152,7 @@ public class ProductUrlTrans {
 		// logger.info("consumer..");
 		System.out.println("获取淘口令任务");
 		return queueTkl.poll();
-	}
+	} 
 
 	public static Object get() {
 		// logger.info("consumer..");
