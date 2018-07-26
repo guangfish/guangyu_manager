@@ -202,9 +202,19 @@ public class AppApiController extends BasicController {
 			if (keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
+					String productTitle=(lists.get(0))[0];
 					if (lists.size() > 0) {
-						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+						if(productTitle.contains("这个#手聚App团购#宝贝不错")){
+							try{
+								//【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+								productTitle=productTitle.substring(productTitle.indexOf(":")+1, productTitle.lastIndexOf("("));
+							}catch(Exception e){
+								logger.info(productTitle);
+								e.printStackTrace();
+							}
+						}
+						productInfoVo = productInfoApi(productTitle, pageNo, size);
 					}
 				}
 			} else {
