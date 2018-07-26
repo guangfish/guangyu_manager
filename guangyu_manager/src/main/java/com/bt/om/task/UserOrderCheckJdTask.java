@@ -137,7 +137,7 @@ public class UserOrderCheckJdTask {
 										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1")));
 							} else if (commission3 > 1 && commission3 <= 5) {
 								userOrder1.setFanliMultiple(
-										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5")));
+										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"))); 
 							} else if (commission3 > 5 && commission3 <= 10) {
 								userOrder1.setFanliMultiple(
 										Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10")));
