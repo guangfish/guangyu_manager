@@ -470,13 +470,25 @@ public class ProductUrlTrans {
 			public void run() {
 				try {
 					logger.info("taobao login...");
-					Thread.sleep(NumberUtil.getRandomNumber(3000, 6000));
+					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
 					driver.get(taobaoLoginUrl);
-
-					String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
-					((JavascriptExecutor) driver).executeScript(setValueJS);
 					
-					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
+					WebElement element = driver.findElement(By.xpath("//*[@id='J_Quick2Static']"));
+					PageUtils.scrollToElementAndClick(element, driver);
+					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					
+					WebElement username = driver.findElement(By.id("TPL_username_1"));// 定位用户名输入框
+					username.sendKeys("chj8023");// 输入用户名root
+					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					
+					WebElement password = driver.findElement(By.id("TPL_password_1"));// 定位密码输入框
+					password.sendKeys("chjssj1981822");// 输入密码root
+					Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+					
+					WebElement loginbtn = driver.findElement(By.xpath("//*[@id='J_SubmitStatic']"));// 定位登录按钮，xpath相对路径
+					loginbtn.click();// 点击登录按钮			
+					
+					Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
 					driver.get(baseUrl);
 				} catch (Exception e) {
 					logger.error("taobao login error:[{}]", e);
