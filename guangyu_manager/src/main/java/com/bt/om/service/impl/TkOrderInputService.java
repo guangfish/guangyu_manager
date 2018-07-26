@@ -21,7 +21,7 @@ public class TkOrderInputService implements ITkOrderInputService {
 	}
 	
 	@Override
-	public TkOrderInput selectByMap(Map<String,Object> map){
+	public List<TkOrderInput> selectByMap(Map<String,Object> map){
 		return tkOrderInputMapper.selectByMap(map);
 	}
 	

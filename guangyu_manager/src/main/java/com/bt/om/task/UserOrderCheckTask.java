@@ -53,7 +53,8 @@ public class UserOrderCheckTask {
 					Map<String, Object> map = new HashMap<>();
 					map.put("productId", userOrder1.getProductId());
 					map.put("orderId", userOrder1.getOrderId());
-					TkOrderInput tkOrderInput = tkOrderInputService.selectByMap(map);
+					//从淘宝导入的订单有可能会出现同一个订单号下面有多条相同上商品记录
+					List<TkOrderInput> tkOrderInputList = tkOrderInputService.selectByMap(map);
 					double payMoney = 0;
 					double commissionRate = 0;
 					String shopName = "";
@@ -62,7 +63,9 @@ public class UserOrderCheckTask {
 					int productNum = 0;
 					double commission = 0;
 					int status1 = 1;
-					if (tkOrderInput != null) {
+					if (tkOrderInputList != null && tkOrderInputList.size()>0) {
+						//只取第一个
+						TkOrderInput tkOrderInput=tkOrderInputList.get(0);
 						payMoney = tkOrderInput.getPayMoney();
 						commissionRate = tkOrderInput.getCommissionRate();
 						shopName = tkOrderInput.getShopName();

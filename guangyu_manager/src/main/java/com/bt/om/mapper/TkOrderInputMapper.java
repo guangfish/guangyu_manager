@@ -48,5 +48,5 @@ public interface TkOrderInputMapper {
 	
 	void truncateTkOrderInput();
 	
-	TkOrderInput selectByMap(Map<String,Object> map);
+	List<TkOrderInput> selectByMap(Map<String,Object> map);
 }

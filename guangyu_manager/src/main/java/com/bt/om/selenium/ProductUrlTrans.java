@@ -87,7 +87,7 @@ public class ProductUrlTrans {
 			init();
 			// scheduleTaobao();
 			scheduleJd();
-			scheduleTaobaoLogin();
+//			scheduleTaobaoLogin();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
@@ -470,7 +470,7 @@ public class ProductUrlTrans {
 			public void run() {
 				try {
 					logger.info("taobao login...");
-					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
+					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
 					driver.get(taobaoLoginUrl);
 					
 					WebElement element = driver.findElement(By.xpath("//*[@id='J_Quick2Static']"));
