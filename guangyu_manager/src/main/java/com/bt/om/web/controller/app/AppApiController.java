@@ -190,7 +190,7 @@ public class AppApiController extends BasicController {
 			} else if (keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl);
 				if (productInfoVo.getData() == null) {
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】");
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 					if (lists.size() > 0) {
 						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
 					}
