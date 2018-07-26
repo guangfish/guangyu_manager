@@ -491,13 +491,13 @@ public class ProductUrlTrans {
 					String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
 					((JavascriptExecutor) driver).executeScript(setValueJS);
 					
-//					Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
-//					driver.get(baseUrl);
+					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
+					driver.get(baseUrl);
 				} catch (Exception e) {
 					e.printStackTrace();
 					logger.error("taobao login error:[{}]", e);
 				}
 			}
-		}, 2, 2, TimeUnit.MINUTES);
+		}, 10, 30, TimeUnit.MINUTES);
 	}
 }
