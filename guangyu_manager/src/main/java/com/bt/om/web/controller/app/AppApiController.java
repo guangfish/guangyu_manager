@@ -65,40 +65,6 @@ public class AppApiController extends BasicController {
 	ProductInfoVo productInfoVoApi = null;
 
 
-	// // 获取商品详情
-	// @RequestMapping(value = "/productInfo1", method = RequestMethod.POST)
-	// @ResponseBody
-	// public Model productInfo1(Model model, HttpServletRequest request,
-	// HttpServletResponse response) {
-	// ProductInfoVo productInfoVo = new ProductInfoVo();
-	// productInfoVo.setStatus("0");
-	// productInfoVo.setDesc("");
-	// productInfoVo.setTotalSize(1);
-	// productInfoVo.setCurPage(1);
-	// productInfoVo.setMaxPage(1);
-	// productInfoVo.setMall("taobao");
-	// List<Map<String, String>> list = new ArrayList<>();
-	// Map<String, String> map = new HashMap<>();
-	// map.put("imgUrl",
-	// "http://img.alicdn.com/bao/uploaded/i2/884679010/TB2IrJ3uFuWBuNjSszbXXcS7FXa_!!884679010.jpg");
-	// map.put("shopName", "米吉诺拉づ外贸袜子日韩店");
-	// map.put("productName", "米吉诺拉少女甜美生理内裤女士纯棉三角蕾丝性感月经期防漏姨妈裤");
-	// map.put("commission", "10");
-	// map.put("price", "100");
-	// map.put("tkl", "€7OkK0BGAXeP€");
-	// map.put("per", "20");
-	// map.put("sellNum", "100");
-	// map.put("quanMianzhi", "20");
-	// map.put("fanliMultiple", "1.5");
-	//
-	// list.add(map);
-	//
-	// productInfoVo.setData(list);
-	//
-	// model.addAttribute("response", productInfoVo);
-	// return model;
-	// }
-
 	// 获取商品详情
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
 	@ResponseBody
@@ -186,7 +152,12 @@ public class AppApiController extends BasicController {
 							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
 							jedis.close();
 //							productInfoVo = productInfoApi(productTitle, pageNo, size);
-							productInfoVo = productInfoVoApi;
+							try {
+								productInfoVo = (ProductInfoVo)productInfoVoApi.clone();
+								productInfoVoApi=null;
+							} catch (CloneNotSupportedException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -247,7 +218,12 @@ public class AppApiController extends BasicController {
 							jedis = jedisPool.getResource();
 							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
 							jedis.close();
-							productInfoVo = productInfoVoApi;
+							try {
+								productInfoVo = (ProductInfoVo)productInfoVoApi.clone();
+								productInfoVoApi=null;
+							} catch (CloneNotSupportedException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
