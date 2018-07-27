@@ -188,6 +188,7 @@ public class AppApiController extends BasicController {
 				Object productUrlRedisObj=jedisPool.getFromCache("", productUrl.hashCode());
 				if(productUrlRedisObj!=null){
 					productUrlRedis = productUrlRedisObj.toString();
+					System.out.println(productUrlRedis);
 				}
 				
 				//如果redis里有搜索过的商品名称，则直接通过API获取数据
