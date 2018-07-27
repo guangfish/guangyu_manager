@@ -62,7 +62,7 @@ public class AppApiController extends BasicController {
 	@Autowired
 	private ISearchRecordService searchRecordService;
 	
-	ProductInfoVo productInfoVoApi = null;
+	
 
 
 	// 获取商品详情
@@ -113,15 +113,23 @@ public class AppApiController extends BasicController {
 			//是淘口令请求时的逻辑
 			if (ifTkl(productUrl, tklSymbolsStr)) {
 				logger.info("用户发送的是淘口令请求");
-				ShardedJedis jedis = jedisPool.getResource();
-				String productUrlRedis = jedis.get(productUrl.hashCode() + "");
-				jedis.close();
+//				ShardedJedis jedis = jedisPool.getResource();
+//				String productUrlRedis = jedis.get(productUrl.hashCode() + "");
+//				jedis.close();
+				
+				String productUrlRedis = null;
+				Object productUrlRedisObj=jedisPool.getFromCache("", productUrl.hashCode());
+				if(productUrlRedisObj!=null){
+					productUrlRedis = productUrlRedisObj.toString();
+				}
+				
 				//如果redis里有搜索过的商品名称，则直接通过API获取数据
 				if (productUrlRedis != null) {
 					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
 					//用正则去匹配标题，可能会匹配错误
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
+					String productUrlTmp=productUrl;
 					String productTitle=(lists.get(0))[0];					
 					
 					//启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换					
@@ -129,6 +137,7 @@ public class AppApiController extends BasicController {
 						@Override
 						public void run() {
 							logger.info("启动线程，通过API获取商品数据");
+							ProductInfoVo productInfoVoApi = null;
 							String ptitle=productTitle;
 							//特殊淘口令链接的处理
 							if(productTitle.contains("这个#手聚App团购#宝贝不错")){
@@ -139,8 +148,9 @@ public class AppApiController extends BasicController {
 									logger.info(productTitle);
 									e.printStackTrace();
 								}
-							}
+							}														
 							productInfoVoApi = productInfoApi(ptitle, 1, 30);
+							jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
 						}
 					}).start();					
 					
@@ -148,16 +158,14 @@ public class AppApiController extends BasicController {
 					if (productInfoVo.getData() == null) {						
 						if (lists.size() > 0) {
 							//根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-							jedis = jedisPool.getResource();
-							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
-							jedis.close();
-//							productInfoVo = productInfoApi(productTitle, pageNo, size);
-							try {
-								productInfoVo = (ProductInfoVo)productInfoVoApi.clone();
-								productInfoVoApi=null;
-							} catch (CloneNotSupportedException e) {
-								e.printStackTrace();
-							}
+//							jedis = jedisPool.getResource();
+//							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
+//							jedis.close();
+							
+							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+							
+							productInfoVo = (ProductInfoVo)(jedisPool.getFromCache("obj", productUrl.hashCode()));
+						
 						}
 					}
 				}
@@ -301,9 +309,12 @@ public class AppApiController extends BasicController {
 			}
 			//把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
 			if (StringUtil.isNotEmpty(imgUrl)) {
-				ShardedJedis jedis = jedisPool.getResource();
-				jedis.setex(tklOld.hashCode() + "", 3600*24, imgUrl);
-				jedis.close();
+//				ShardedJedis jedis = jedisPool.getResource();
+//				jedis.setex(tklOld.hashCode() + "", 3600*24, imgUrl);
+//				jedis.close();
+				
+				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 3600*24);
+				
 			}
 			
 			Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
