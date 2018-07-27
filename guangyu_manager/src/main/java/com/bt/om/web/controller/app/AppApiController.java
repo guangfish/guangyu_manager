@@ -190,26 +190,26 @@ public class AppApiController extends BasicController {
 					//用正则去匹配标题，可能会匹配错误
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 					String productTitle=(lists.get(0))[0];					
-					
-					//启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换					
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							logger.info("启动线程，通过API获取商品数据");
-							String ptitle=productTitle;
-							//特殊淘口令链接的处理
-							if(productTitle.contains("这个#手聚App团购#宝贝不错")){
-								try{
-									//【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-								    ptitle=productTitle.substring(productTitle.indexOf(":")+1, productTitle.lastIndexOf("("));
-								}catch(Exception e){
-									logger.info(productTitle);
-									e.printStackTrace();
-								}
-							}
-							productInfoVoApi = productInfoApi(ptitle, 1, 30);
-						}
-					}).start();	
+//					
+//					//启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换					
+//					new Thread(new Runnable() {
+//						@Override
+//						public void run() {
+//							logger.info("启动线程，通过API获取商品数据");
+//							String ptitle=productTitle;
+//							//特殊淘口令链接的处理
+//							if(productTitle.contains("这个#手聚App团购#宝贝不错")){
+//								try{
+//									//【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+//								    ptitle=productTitle.substring(productTitle.indexOf(":")+1, productTitle.lastIndexOf("("));
+//								}catch(Exception e){
+//									logger.info(productTitle);
+//									e.printStackTrace();
+//								}
+//							}
+//							productInfoVoApi = productInfoApi(ptitle, 1, 30);
+//						}
+//					}).start();	
 					
 					productInfoVo = productInfoWebCrawl(userId, productUrl);
 					if (productInfoVo.getData() == null) {						
@@ -218,12 +218,20 @@ public class AppApiController extends BasicController {
 							jedis = jedisPool.getResource();
 							jedis.setex(productUrl.hashCode() + "", 120, productTitle);
 							jedis.close();
-							try {
-								productInfoVo = (ProductInfoVo)productInfoVoApi.clone();
-								productInfoVoApi=null;
-							} catch (CloneNotSupportedException e) {
-								e.printStackTrace();
+							
+							// 特殊淘口令链接的处理
+							if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+								try {
+									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+									productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
+											productTitle.lastIndexOf("("));
+								} catch (Exception e) {
+									logger.info(productTitle);
+									e.printStackTrace();
+								}
 							}
+							productInfoVo = productInfoApi(productTitle, pageNo, size);														
 						}
 					}
 				}
