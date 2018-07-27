@@ -100,9 +100,11 @@ public class JedisPool {
                     } else {
                         jedis.setex(cacheName, seconds, v);
                     }
-                    returnResource(jedis);
+                    jedis.close();
                 } catch (Exception e) {
-                	returnResource(jedis);
+                	if(jedis!=null){
+                		jedis.close();
+                	}
                     logger.error("cache " + getCacheName(type, key) + " socket error。");
                 }
             }
@@ -130,10 +132,12 @@ public class JedisPool {
             if (null == v){
                 return null;
             }
-            returnResource(jedis);
+            jedis.close();
             return this.getDeserialization(v);
         } catch (Exception e) {
-        	returnResource(jedis);
+        	if(jedis!=null){
+        		jedis.close();
+        	}
             logger.debug("cache " + getCacheName(type, key) + " error。");
             return null;
         }
