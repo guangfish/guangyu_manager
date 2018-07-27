@@ -1,5 +1,10 @@
 package com.bt.om.cache;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -65,7 +70,6 @@ public class JedisPool {
 	public void returnResource(ShardedJedis jedis) {
 		if (jedis != null) {
 			pool.close();
-//			pool.close();
 		}
 	}
 
@@ -74,4 +78,114 @@ public class JedisPool {
 		    pool.close();
 		}
 	}
+	
+	/**
+     * 写入Cache
+     * 
+     * @param type
+     * @param key
+     * @param value
+     * @param seconds
+     */
+    public void putInCache(String type, Object key, Object value, int seconds) {
+        if (value != null) {
+            byte[] cacheName = getCacheName(type, key);
+            byte[] v = this.getSerializable(value);
+            if (v != null) {
+            	ShardedJedis jedis = null;
+                try {
+                    jedis = getResource();
+                    if (seconds < 1) {
+                        jedis.set(cacheName, v);
+                    } else {
+                        jedis.setex(cacheName, seconds, v);
+                    }
+                    returnResource(jedis);
+                } catch (Exception e) {
+                	returnResource(jedis);
+                    logger.error("cache " + getCacheName(type, key) + " socket error。");
+                }
+            }
+        }
+    }
+    
+    /**
+     * 无时限缓存
+     *
+     * @param type
+     * @param key
+     * @param value
+     */
+    public void putNoTimeInCache(String type, Object key, Object value) {
+        if (value != null) {
+            putInCache(type, key, value, -1);
+        }
+    }
+    
+    public Object getFromCache(String type, Object key) {
+    	ShardedJedis jedis = null;
+        try {
+            jedis = getResource();
+            byte[] v = jedis.get(getCacheName(type, key));
+            if (null == v){
+                return null;
+            }
+            returnResource(jedis);
+            return this.getDeserialization(v);
+        } catch (Exception e) {
+        	returnResource(jedis);
+            logger.debug("cache " + getCacheName(type, key) + " error。");
+            return null;
+        }
+    }
+    
+    private byte[] getCacheName(String type, Object key) {
+        StringBuilder cacheName = new StringBuilder(type);
+        if (key != null && key.toString().length() > 0) {
+            cacheName.append("_").append(key);
+        }
+        return cacheName.toString().getBytes();
+    }
+	
+	/**
+     * 序列化
+     *
+     * @param value
+     * @return
+     */
+    private byte[] getSerializable(Object value) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(buffer);
+            oos.writeObject(value);
+            return buffer.toByteArray();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            logger.error("ERROR:", e);
+        }
+        return null;
+    }
+
+    /**
+     * 反序列化
+     *
+     * @param value
+     * @return
+     */
+    private Object getDeserialization(byte[] value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(value));
+            return ois.readObject();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            logger.error("ERROR:", e);
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            logger.error("ERROR:", e);
+        }
+        return null;
+    }
 }
