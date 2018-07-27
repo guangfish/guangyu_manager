@@ -184,15 +184,14 @@ public class AppApiController extends BasicController {
 //				String productUrlRedis = jedis.get(productUrl.hashCode() + "");
 //				jedis.close();
 				
-				String productUrlRedis ="";
+				String productUrlRedis = null;
 				Object productUrlRedisObj=jedisPool.getFromCache("", productUrl.hashCode());
 				if(productUrlRedisObj!=null){
 					productUrlRedis = productUrlRedisObj.toString();
-					System.out.println(productUrlRedis);
 				}
 				
 				//如果redis里有搜索过的商品名称，则直接通过API获取数据
-				if (productUrlRedis != null) {
+				if (StringUtil.isNotEmpty(productUrlRedis)) {
 					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				}else{
 					//用正则去匹配标题，可能会匹配错误
