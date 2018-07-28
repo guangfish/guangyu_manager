@@ -488,7 +488,7 @@ public class ProductUrlTrans {
 //					WebElement loginbtn = driver.findElement(By.xpath("//*[@id='J_SubmitStatic']"));// 定位登录按钮，xpath相对路径
 //					loginbtn.click();// 点击登录按钮			
 					
-					String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
+					String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='ssj8023';document.getElementById('TPL_password_1').value='chjssj198428';document.getElementById('J_SubmitStatic').click();";
 					((JavascriptExecutor) driver).executeScript(setValueJS);
 					
 					Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
