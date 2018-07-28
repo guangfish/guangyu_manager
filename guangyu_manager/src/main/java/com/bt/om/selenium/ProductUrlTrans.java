@@ -470,7 +470,7 @@ public class ProductUrlTrans {
 			public void run() {
 				try {
 					logger.info("taobao login...");
-					Thread.sleep(NumberUtil.getRandomNumber(60000, 300000));
+					Thread.sleep(NumberUtil.getRandomNumber(60000, 120000));
 					driver.get(taobaoLoginUrl);
 					
 //					WebElement element = driver.findElement(By.xpath("//*[@id='J_Quick2Static']"));
