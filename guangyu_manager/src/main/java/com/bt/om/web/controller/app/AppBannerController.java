@@ -35,7 +35,7 @@ public class AppBannerController extends BasicController {
 		BannerVo bannerVo = new BannerVo();
 		bannerVo.setDesc("获取成功");
 		bannerVo.setStatus("0");
-		List<Banner> bannerList = bannerService.selectAll(1);
+		List<Banner> bannerList = bannerService.selectForApp(1);
 		if(bannerList!=null && bannerList.size()>0){			
 			List<Map<String, String>> list=new ArrayList<>();
 			for(Banner banner:bannerList){

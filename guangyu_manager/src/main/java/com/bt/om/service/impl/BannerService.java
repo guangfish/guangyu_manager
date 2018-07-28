@@ -20,6 +20,11 @@ public class BannerService implements IBannerService {
 	}
 	
 	@Override
+	public List<Banner> selectForApp(Integer type) {
+		return bannerMapper.selectForApp(type);
+	}
+	
+	@Override
 	public List<Banner> selectCampaign(Integer size) {
 		return bannerMapper.selectCampaign(size);
 	}
