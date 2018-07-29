@@ -87,8 +87,8 @@ public class OrderFetchTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-	@Scheduled(cron = "0 0 7-23 * * ?")
-//	@Scheduled(cron = "0 0/1 * * * ?")
+//	@Scheduled(cron = "0 0 7-23 * * ?")
+	@Scheduled(cron = "0 0/3 * * * ?")
 	public void orderFetchTask() {
 		String ifRun = GlobalVariable.resourceMap.get("OrderFetchTask");
 		if ("1".equals(ifRun)) {
@@ -100,13 +100,13 @@ public class OrderFetchTask {
 				orderTaobaoFetch();
 			} catch (Exception e) {
 				e.printStackTrace();
-				driver.navigate().refresh();
+//				driver.navigate().refresh();
 			}
 		}
 	}
 	
 	private void orderTaobaoFetch() throws Exception { 
-		try{					
+		try{
 			//先登录
 			driver.get(taobaoLoginUrl);
 			String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
@@ -170,10 +170,10 @@ public class OrderFetchTask {
 //				}
 //			}
 			
-			driver.navigate().refresh();
+//			driver.navigate().refresh();
 		}catch(Exception e){
 			e.printStackTrace();
-			driver.navigate().refresh();
+//			driver.navigate().refresh();
 			return;
 		}
 	}
