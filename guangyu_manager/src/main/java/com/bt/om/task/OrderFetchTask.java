@@ -19,6 +19,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -63,7 +64,10 @@ public class OrderFetchTask {
 	}
 
 	private static WebDriver driver;
-	private static String baseUrl = "http://pub.alimama.com/myunion.htm?spm=a2320.7388781.a214tr8.d006.6f372030YQy6Yz#!/report/detail/taoke";
+//	private static String baseUrl = "http://pub.alimama.com/myunion.htm?spm=a2320.7388781.a214tr8.d006.6f372030YQy6Yz#!/report/detail/taoke";
+	private static String baseUrl="https://pub.alimama.com/myunion.htm#!/report/detail/taoke";
+	
+	private static String taobaoLoginUrl = "https://login.taobao.com/member/login.jhtml?style=mini&newMini2=true&css_style=alimama&from=alimama&redirectURL=http%3A%2F%2Fwww.alimama.com&full_redirect=true&disableQuickLogin=true";
 
 	private static int sleepTimeBegin = 1000;
 	private static int sleepTimeEnd = 2000;
@@ -72,7 +76,7 @@ public class OrderFetchTask {
 	
 	private static void init(){
 		ifInit=true;
-		schedule();
+//		schedule();
 		System.setProperty(key, value);
 		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 			driver = new ChromeDriver();
@@ -82,18 +86,6 @@ public class OrderFetchTask {
 		driver.get(baseUrl);
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
-
-//	static {
-//		schedule();
-//		System.setProperty(key, value);
-//		if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
-//			driver = new ChromeDriver();
-//		} else {
-//			driver = new FirefoxDriver();
-//		}
-//		driver.get(baseUrl);
-//		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
-//	}
 
 	@Scheduled(cron = "0 0 7-23 * * ?")
 //	@Scheduled(cron = "0 0/1 * * * ?")
@@ -114,7 +106,15 @@ public class OrderFetchTask {
 	}
 	
 	private void orderTaobaoFetch() throws Exception { 
-		try{									
+		try{					
+			//先登录
+			driver.get(taobaoLoginUrl);
+			String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
+			((JavascriptExecutor) driver).executeScript(setValueJS);
+			
+			Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
+			driver.get(baseUrl);
+			
 			WebElement element0 = driver.findElement(By.xpath("//*[@id='sitemapTimeRange']"));
 			PageUtils.scrollToElementAndClick(element0, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd)); 
