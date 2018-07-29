@@ -109,11 +109,11 @@ public class AppApiController extends BasicController {
 		String appCrawlSwitch = GlobalVariable.resourceMap.get("app_crawl_switch");
 		// APP爬虫的逻辑
 		if ("1".equals(appCrawlSwitch)) {
-			appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+			productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// PC端爬虫逻辑
 		else if ("2".equals(appCrawlSwitch)) {
-			webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+			productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// 仅标题、关键词API查询的逻辑
 		else if ("3".equals(appCrawlSwitch)) {
