@@ -10,4 +10,6 @@ public interface IUserService {
 	public User selectByTaInviteCode(String taInviteCode);
 	
 	public void updateHongbao(User user);
+	
+	public void update(User user);
 }

@@ -31,4 +31,9 @@ public class UserService implements IUserService {
 	public void updateHongbao(User user) {
 		userMapper.updateHongbao(user);
 	}
+	
+	@Override
+	public void update(User user) {
+		userMapper.updateByPrimaryKey(user);
+	}
 }

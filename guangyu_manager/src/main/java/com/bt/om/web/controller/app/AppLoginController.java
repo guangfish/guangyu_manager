@@ -2,7 +2,6 @@ package com.bt.om.web.controller.app;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.api.v2.vo.RegisterVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -101,26 +101,27 @@ public class AppLoginController extends BasicController {
 
 		User user = userService.selectByMobile(mobile);
 		if (user != null) {
-			registerVo.setStatus("0");  
+			registerVo.setStatus("0");
 			registerVo.setDesc("登陆成功");
 			Map<String, String> data = new HashMap<>();
 
 			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-			if ("android".equals(app)) { 
+			if ("android".equals(app)) {
 				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
 			} else if ("ios".equals(app)) {
 				downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
 			}
 
 			String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
-//			inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！#Enter#-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
-			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl).replace("#myInviteCode#",
-					user.getMyInviteCode());
+			// inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！#Enter#-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
+			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl)
+					.replace("#myInviteCode#", user.getMyInviteCode());
 
 			data.put("userId", SecurityUtil1.encrypts(mobile));
 			data.put("inviteCode", inviteCodeInfo);// 我的邀请码、带描述信息
 			data.put("inviteCodeShort", user.getMyInviteCode());// 我的短邀请码
-			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员  2：超级会员
+			data.put("userType", user.getAccountType() + "");// 账号类型1：普通会员
+																// 2：超级会员
 			data.put("sex", user.getSex() + "");
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
@@ -159,8 +160,13 @@ public class AppLoginController extends BasicController {
 				inviteCode = obj.get("inviteCode").getAsString();
 			}
 			mobile = obj.get("mobile").getAsString();
-			alipay = obj.get("alipay").getAsString();
-			weixin = obj.get("weixin").getAsString();
+
+			if (obj.get("alipay") != null) {
+				alipay = obj.get("alipay").getAsString();
+			}
+			if (obj.get("weixin") != null) {
+				weixin = obj.get("weixin").getAsString();
+			}
 			code = obj.get("code").getAsString();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,7 +246,8 @@ public class AppLoginController extends BasicController {
 		}
 
 		String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
-		inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl).replace("#myInviteCode#", user.getMyInviteCode());
+		inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl)
+				.replace("#myInviteCode#", user.getMyInviteCode());
 
 		registerVo.setStatus("0");
 		registerVo.setDesc("注册成功");
@@ -255,9 +262,52 @@ public class AppLoginController extends BasicController {
 		return model;
 	}
 
+	@RequestMapping(value = "/userUpdate", method = RequestMethod.POST)
+	@ResponseBody
+	public Model userUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
+		CommonVo commonVo = new CommonVo();
+		String userId = "";
+		String alipay = "";
+		String weixin = "";
+		InputStream is;
+		try {
+			is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+			}
+			if (obj.get("alipay") != null) {
+				alipay = obj.get("alipay").getAsString();
+			}
+			if (obj.get("weixin") != null) {
+				weixin = obj.get("weixin").getAsString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		User user = userService.selectByMobile(userId);
+		if(user!=null){
+			user.setAlipay(alipay);
+			user.setWeixin(weixin);
+			user.setUpdateTime(new Date());
+			userService.update(user);
+			commonVo.setStatus("0");
+			commonVo.setDesc("更新成功");
+		}else{
+			commonVo.setStatus("1");
+			commonVo.setDesc("更新失败");
+		}
+		
+		model.addAttribute("response", commonVo);
+		return model;
+	}
+
 	@RequestMapping(value = "/drawstats", method = RequestMethod.POST)
 	@ResponseBody
-	public Model userInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model drawstats(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		String userId = "";
 		InputStream is;
@@ -327,16 +377,17 @@ public class AppLoginController extends BasicController {
 			double thisMonthCommission = 0;
 			float tmCommission = 0;
 			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(userId);
-//			List<UserOrder> userOrderCanDrawList = new ArrayList<>();
-			String thisMonth=DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN);
+			// List<UserOrder> userOrderCanDrawList = new ArrayList<>();
+			String thisMonth = DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
 				if ("订单结算".equals(userOrder.getOrderStatus())) {
 					canDrawOrderNum = canDrawOrderNum + 1;
 					totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					if(thisMonth.equals(DateUtil.dateFormate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
-						thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+					if (thisMonth.equals(DateUtil.dateFormate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))) {
+						thisMonthCommission = thisMonthCommission
+								+ userOrder.getCommission3() * userOrder.getFanliMultiple();
 					}
-//					userOrderCanDrawList.add(userOrder);
+					// userOrderCanDrawList.add(userOrder);
 				}
 			}
 			tCommission = ((float) (Math.round(totalCommission * 100)) / 100);
@@ -356,13 +407,13 @@ public class AppLoginController extends BasicController {
 					platformReward = platformReward + userOrder.getCommissionReward();
 				}
 			}
-			platformReward=((float) (Math.round(platformReward * 100)) / 100); 
+			platformReward = ((float) (Math.round(platformReward * 100)) / 100);
 
-			float hongbao = user.getHongbao();   
+			float hongbao = user.getHongbao();
 
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
 			if ("true".equals(canDraw)) {
-				if ((totalMoney-tmCommission) <= 0) {
+				if ((totalMoney - tmCommission) <= 0) {
 					canDraw = "false";
 					if (hongbao > 0) {
 						reason = "亲！红包不能单独提现，等有返现或奖励时再提吧。";
@@ -371,8 +422,8 @@ public class AppLoginController extends BasicController {
 					}
 				}
 			}
-			totalMoney=((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
-			data.put("totalMoney", totalMoney+ "");// 总共可提现金额
+			totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
+			data.put("totalMoney", totalMoney + "");// 总共可提现金额
 			data.put("orderMoney", tCommission + "");// 订单可提金额
 			data.put("inviteReward", inviteReward + "");// 邀请奖励金额
 			data.put("platformReward", NumberUtil.format(platformReward));// 平台订单奖励金额
@@ -386,6 +437,11 @@ public class AppLoginController extends BasicController {
 			data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
 			data.put("canDraw", canDraw);// 是否可以提现 true/false
 			data.put("reason", reason);// 不可提现原因
+			if(StringUtil.isEmpty(user.getAlipay())){
+				data.put("hasBindAccount", "false");// 还没绑定支付宝账号
+			}else{
+				data.put("hasBindAccount", "true");// 已经绑定支付宝账号
+			}
 
 			registerVo.setData(data);
 			model.addAttribute("response", registerVo);
