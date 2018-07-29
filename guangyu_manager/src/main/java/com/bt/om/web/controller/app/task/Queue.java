@@ -24,4 +24,8 @@ public class Queue {
 		logger.info("获取淘口令任务");
 		return queue.poll();
 	}
+	
+	public static long getSize() {
+		return queue.population();
+	}
 }

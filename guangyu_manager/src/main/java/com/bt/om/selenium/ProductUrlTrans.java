@@ -158,6 +158,10 @@ public class ProductUrlTrans {
 		// logger.info("consumer..");
 		return queue.poll();
 	}
+	
+	public static long getSize() {
+		return queue.population();
+	}
 
 	public static void setClipboardData(String string) {
 		StringSelection stringSelection = new StringSelection(string);
