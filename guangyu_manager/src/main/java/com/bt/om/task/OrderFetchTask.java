@@ -87,8 +87,8 @@ public class OrderFetchTask {
 		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 	}
 
-//	@Scheduled(cron = "0 0 7-23 * * ?")
-	@Scheduled(cron = "0 0/3 * * * ?")
+	@Scheduled(cron = "0 0 7-23 * * ?")
+//	@Scheduled(cron = "0 0/3 * * * ?")
 	public void orderFetchTask() {
 		String ifRun = GlobalVariable.resourceMap.get("OrderFetchTask");
 		if ("1".equals(ifRun)) {
@@ -112,8 +112,10 @@ public class OrderFetchTask {
 			String setValueJS ="document.getElementById('J_Quick2Static').click();document.getElementById('TPL_username_1').value='chj8023';document.getElementById('TPL_password_1').value='chjssj1981822';document.getElementById('J_SubmitStatic').click();";
 			((JavascriptExecutor) driver).executeScript(setValueJS);
 			
-			Thread.sleep(NumberUtil.getRandomNumber(2000, 3000));
+			Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
 			driver.get(baseUrl);
+			
+			Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
 			
 			WebElement element0 = driver.findElement(By.xpath("//*[@id='sitemapTimeRange']"));
 			PageUtils.scrollToElementAndClick(element0, driver);
