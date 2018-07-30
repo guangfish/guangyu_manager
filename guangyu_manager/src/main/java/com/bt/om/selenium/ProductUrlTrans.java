@@ -324,13 +324,13 @@ public class ProductUrlTrans {
 			tkInfoTask.setQuanCode(quancode);
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
 			
-			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
 			driver.navigate().refresh();
 			return;
 		}
@@ -435,13 +435,13 @@ public class ProductUrlTrans {
 			tkInfoTask.setQuanCode("");
 
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
-			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
 			jdDriver.navigate().refresh();
 			return;
 		}
