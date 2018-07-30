@@ -632,7 +632,12 @@ public class ApiController extends BasicController {
 		}
 		Map<String, String> map = new HashMap<>();
 
-		TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
+//		TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
+		TkInfoTask tkInfoTask = null;
+		Object tkInfoTaskObj = jedisPool.getFromCache("", sign);
+		if(tkInfoTaskObj!=null){
+			tkInfoTask=(TkInfoTask) tkInfoTaskObj;
+		}
 		if (tkInfoTask == null) {
 			result.setSucc(false);
 			result.setMsg("");
