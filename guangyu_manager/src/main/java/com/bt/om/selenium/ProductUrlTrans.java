@@ -19,8 +19,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.ContextLoader;
 
+import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.TkInfoTask;
 import com.bt.om.queue.disruptor.DisruptorQueueImpl;
 import com.bt.om.selenium.util.PageUtils;
@@ -30,6 +32,7 @@ import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.HttpcomponentsUtil;
 import com.bt.om.util.NumberUtil;
+import com.bt.om.web.controller.app.task.WebQueue;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.dsl.ProducerType;
 
@@ -44,6 +47,9 @@ public class ProductUrlTrans {
 
 	private static ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext()
 			.getBean(TkInfoTaskService.class);
+	
+	private static JedisPool jedisPool=ContextLoader.getCurrentWebApplicationContext()
+			.getBean(JedisPool.class);
 
 	// @Autowired
 	// private static ITkInfoTaskService tkInfoTaskService;
@@ -74,13 +80,13 @@ public class ProductUrlTrans {
 	private static int sleepTimeBegin = 100;
 	private static int sleepTimeEnd = 500;
 
-	// 初始化队列，定义队列长度
-	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
-			new BlockingWaitStrategy());
-
-	// 初始化队列，定义队列长度
-	final static DisruptorQueueImpl queueTkl = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
-			new BlockingWaitStrategy());
+//	// 初始化队列，定义队列长度
+//	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
+//			new BlockingWaitStrategy());
+//
+//	// 初始化队列，定义队列长度
+//	final static DisruptorQueueImpl queueTkl = new DisruptorQueueImpl("name", ProducerType.SINGLE, 256,
+//			new BlockingWaitStrategy());
 
 	static {
 		if ("on".equals(ConfigUtil.getString("if.start.crawl"))) {
@@ -110,7 +116,7 @@ public class ProductUrlTrans {
 				while (true) {
 					TkInfoTask tkInfoTask = null;
 					try {
-						tkInfoTask = (TkInfoTask) queue.take();
+						tkInfoTask = (TkInfoTask) WebQueue.getQueue().take();
 						logger.info("consumer..");
 						// 淘宝通过URl搜索商品
 						if (tkInfoTask.getProductUrl().contains("http")) {
@@ -122,10 +128,10 @@ public class ProductUrlTrans {
 						}
 					} catch (Exception e) {
 						logger.info(e.getMessage());
-						// e.printStackTrace();
+						 e.printStackTrace();
 						// 做数据库任务状态更新操作
-						tkInfoTask.setStatus(1);
-						tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+//						tkInfoTask.setStatus(1);
+//						tkInfoTaskService.insertTkInfoTask(tkInfoTask);
 					}
 				}
 			}
@@ -137,31 +143,31 @@ public class ProductUrlTrans {
 		return driver;
 	}
 
-	public static void put(TkInfoTask tkInfoTask) {
-		// logger.info("publish..");
-		if (tkInfoTask.getType() == 2) {
-			System.out.println("淘口令请求入队列");
-			queueTkl.publish(tkInfoTask);
-		} else {
-			System.out.println("URL请求入队列");
-			queue.publish(tkInfoTask);
-		}
-	}
-
-	public static Object getTkl() {
-		// logger.info("consumer..");
-		System.out.println("获取淘口令任务");
-		return queueTkl.poll();
-	} 
-
-	public static Object get() {
-		// logger.info("consumer..");
-		return queue.poll();
-	}
-	
-	public static long getSize() {
-		return queue.population();
-	}
+//	public static void put(TkInfoTask tkInfoTask) {
+//		// logger.info("publish..");
+//		if (tkInfoTask.getType() == 2) {
+//			System.out.println("淘口令请求入队列");
+//			queueTkl.publish(tkInfoTask);
+//		} else {
+//			System.out.println("URL请求入队列");
+//			queue.publish(tkInfoTask);
+//		}
+//	}
+//
+//	public static Object getTkl() {
+//		// logger.info("consumer..");
+//		System.out.println("获取淘口令任务");
+//		return queueTkl.poll();
+//	} 
+//
+//	public static Object get() {
+//		// logger.info("consumer..");
+//		return queue.poll();
+//	}
+//	
+//	public static long getSize() {
+//		return queue.population();
+//	}
 
 	public static void setClipboardData(String string) {
 		StringSelection stringSelection = new StringSelection(string);
@@ -316,12 +322,15 @@ public class ProductUrlTrans {
 			tkInfoTask.setQuanUrl(quanurl);
 			tkInfoTask.setTcode(tcode);
 			tkInfoTask.setQuanCode(quancode);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+//			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+//			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
 			driver.navigate().refresh();
 			return;
 		}
@@ -425,12 +434,14 @@ public class ProductUrlTrans {
 			tkInfoTask.setTcode("");
 			tkInfoTask.setQuanCode("");
 
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+//			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			tkInfoTask.setStatus(1);
-			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+//			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
+			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 120);
 			jdDriver.navigate().refresh();
 			return;
 		}

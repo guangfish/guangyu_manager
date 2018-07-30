@@ -28,6 +28,7 @@ import com.bt.om.vo.api.ProductInfoVo;
 //import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
+import com.bt.om.web.controller.app.task.WebQueue;
 import com.bt.om.web.util.CookieHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -602,7 +603,8 @@ public class ApiController extends BasicController {
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
 
-		ProductUrlTrans.put(tkInfoTask);
+//		ProductUrlTrans.put(tkInfoTask);
+		WebQueue.put(tkInfoTask);
 
 		result.setMap(map);
 		model.addAttribute(SysConst.RESULT_KEY, result);
@@ -702,7 +704,8 @@ public class ApiController extends BasicController {
 	@ResponseBody
 	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
 		TkInfoTask tkInfoTask = null;
-		Object object = ProductUrlTrans.get();
+//		Object object = ProductUrlTrans.get();
+		Object object = WebQueue.get();
 		if (object != null) {
 			tkInfoTask = (TkInfoTask) object;
 			tkInfoTask.setCreateTime(null);

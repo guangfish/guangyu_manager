@@ -26,6 +26,7 @@ import com.bt.om.vo.api.GetSmsCodeVo;
 import com.bt.om.vo.api.ProductCommissionVo;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.api.v2.vo.ProductInfoVo;
+import com.bt.om.web.controller.app.task.WebQueue;
 //import com.bt.om.vo.api.UserOrderVo;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -559,7 +560,8 @@ public class ApiControllerV2 extends BasicController {
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
 
-		ProductUrlTrans.put(tkInfoTask);
+//		ProductUrlTrans.put(tkInfoTask);
+		WebQueue.put(tkInfoTask);
 
 		result.setMap(map);
 		model.addAttribute(SysConst.RESULT_KEY, result);
@@ -659,7 +661,8 @@ public class ApiControllerV2 extends BasicController {
 	@ResponseBody
 	public Model getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
 		TkInfoTask tkInfoTask=null;
-		Object object =ProductUrlTrans.get();
+//		Object object =ProductUrlTrans.get();
+		Object object = WebQueue.get();
 		if(object!=null){
 			tkInfoTask=(TkInfoTask)object;
 			tkInfoTask.setCreateTime(null);

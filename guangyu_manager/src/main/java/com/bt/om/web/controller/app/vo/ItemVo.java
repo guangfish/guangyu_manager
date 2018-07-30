@@ -1,10 +1,13 @@
 package com.bt.om.web.controller.app.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ItemVo {
+public class ItemVo implements Serializable{
+	private static final long serialVersionUID = -1390815588353123246L;
+	
 	private long totalSize = 0;
 	private long curPage=1;
 	private long maxPage=1;

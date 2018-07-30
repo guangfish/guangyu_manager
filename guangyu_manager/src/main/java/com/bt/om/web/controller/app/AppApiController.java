@@ -22,6 +22,8 @@ import com.bt.om.web.controller.api.CrawlTask;
 import com.bt.om.web.controller.api.TaskBean;
 import com.bt.om.web.controller.app.task.Queue;
 import com.bt.om.web.controller.app.task.TaskControl;
+import com.bt.om.web.controller.app.task.WebQueue;
+import com.bt.om.web.controller.app.task.WebTaskControl;
 import com.bt.om.web.controller.app.vo.ItemVo;
 import com.bt.om.web.controller.app.vo.ProductInfoVo;
 import com.google.gson.Gson;
@@ -126,6 +128,7 @@ public class AppApiController extends BasicController {
 	// 手机爬从的逻辑
 	private ProductInfoVo appCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
+		try{
 		// 是淘口令请求时的逻辑
 		if (ifTkl(productUrl, tklSymbolsStr)) {
 			logger.info("用户发送的是淘口令请求");
@@ -216,6 +219,9 @@ public class AppApiController extends BasicController {
 		else {
 			productInfoVo = productInfoApi(productUrl, pageNo, size);
 		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 
 		return productInfoVo;
 	}
@@ -237,7 +243,7 @@ public class AppApiController extends BasicController {
 				// 用正则去匹配标题，可能会匹配错误
 				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 				String productTitle = (lists.get(0))[0];
-				long queueSize = ProductUrlTrans.getSize();
+				long queueSize = WebQueue.getSize();
 				logger.info("队列长度==" + queueSize);
 				if (queueSize >= 3) {
 					if (lists.size() > 0) {
@@ -558,26 +564,24 @@ public class AppApiController extends BasicController {
 
 			Map<String, String> map = new HashMap<>();
 			ProductInfo productInfo = new ProductInfo();
-			CrawlTask crawlTask = new CrawlTask();
-			TaskBean taskBean = null;
+//			CrawlTask crawlTask = new CrawlTask();
+			WebTaskControl webTaskControl=new WebTaskControl();
+			Map<String, String> resultMap = null;
 			// 如果是淘宝搜索的参数是商品地址
 			if ("taobao".equals(platform)) {
-				taskBean = crawlTask.getProduct(productUrl);
+				resultMap = webTaskControl.getProduct(productUrl);
 			}
 			// 如果是京东，搜索的参数是链接中商品ID
 			else if ("jd".equals(platform)) {
-				taskBean = crawlTask.getProduct(uriProductId);
+				resultMap = webTaskControl.getProduct(uriProductId);
 			}
-			if (StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl1"))
-					|| StringUtils.isNotEmpty(taskBean.getMap().get("goodUrl2"))) {
-				String goodUrl = StringUtils.isEmpty(taskBean.getMap().get("goodUrl1"))
-						? taskBean.getMap().get("goodUrl2") : taskBean.getMap().get("goodUrl1");
-
+			
+			if(resultMap!=null){
 				String productId = "";
 				String productInfoUrl = "";
 				if ("taobao".equals(platform)) {
 					productId = urlMap.get("id");
-					productInfoUrl = taskBean.getMap().get("url");
+					productInfoUrl = resultMap.get("productUrl");
 				} else if ("jd".equals(platform)) {
 					productId = uriProductId;
 					productInfoUrl = urlMap.get("puri");
@@ -587,31 +591,31 @@ public class AppApiController extends BasicController {
 				}
 				productInfo.setProductId(productId);
 				productInfo.setProductInfoUrl(productInfoUrl);
-				String productImgUrl = taskBean.getMap().get("img");
+				String productImgUrl = resultMap.get("imgUrl");
 				productInfo.setProductImgUrl(productImgUrl);
 
-				String shopName = taskBean.getMap().get("shop");
+				String shopName =resultMap.get("shopName");
 				productInfo.setShopName(shopName);
-				String productName = taskBean.getMap().get("title");
+				String productName = resultMap.get("productName");
 				productInfo.setProductName(productName);
-				String tkLink = goodUrl;
+				String tkLink = resultMap.get("tkUrl");
 				productInfo.setTkLink(tkLink);
-				double price = Double.valueOf(taskBean.getMap().get("price").replace("￥", "").replace(",", ""));
+				double price = Double.valueOf(resultMap.get("price").replace(",", ""));
 				productInfo.setPrice(price);
-				float incomeRate = Float.valueOf(taskBean.getMap().get("per").replace("%", ""));
+				float incomeRate = Float.valueOf(resultMap.get("rate"));
 				productInfo.setIncomeRate(incomeRate);
-				float commission = Float.valueOf(taskBean.getMap().get("money").replace("￥", ""));
+				float commission = Float.valueOf(resultMap.get("commission"));
 				productInfo.setCommission(commission);
-				String couponLink = taskBean.getMap().get("quanUrl");
+				String couponLink = resultMap.get("quanUrl");
 				productInfo.setCouponLink(couponLink);
 				productInfo.setCouponPromoLink(couponLink);
-				String sellNum = taskBean.getMap().get("sellNum");
+				String sellNum = resultMap.get("sellNum");
 				productInfo.setMonthSales(Integer.parseInt(sellNum));
-				String tkl = taskBean.getMap().get("tkl");
+				String tkl = resultMap.get("tkl");
 				productInfo.setTkl(tkl);
-				String tklquan = taskBean.getMap().get("tklquan");
+				String tklquan = resultMap.get("tklquan");
 				productInfo.setTklquan(tklquan);
-				String quanMianzhi = taskBean.getMap().get("quanMianzhi");
+				String quanMianzhi = resultMap.get("quanMianzhi");
 				productInfo.setCouponQuan(quanMianzhi);
 				productInfo.setIfvalid(2);
 				productInfo.setSourcefrom(2);
@@ -689,11 +693,11 @@ public class AppApiController extends BasicController {
 					fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
 				}
 				map.put("fanliMultiple", fanliMultiple + "");
-			} else {
+			}else {
 				productInfoVo.setStatus("6");
 				productInfoVo.setDesc("未查到商品信息");
 				return productInfoVo;
-			}
+			}		
 
 			List<Map<String, String>> list = new ArrayList<>();
 			list.add(map);
@@ -774,7 +778,7 @@ public class AppApiController extends BasicController {
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
 					
-					String tklStr = TaoKouling.createTkl("https:" + tkurl, mapDataBean.getTitle()+"【预估返:"+actualCommission+"】",
+					String tklStr = TaoKouling.createTkl("https:" + tkurl, "【预估返:"+actualCommission+"】"+mapDataBean.getTitle(),
 							mapDataBean.getPict_url());
 					if (StringUtil.isNotEmpty(tklStr)) {
 						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
