@@ -61,7 +61,7 @@ public class TaoKouling {
 			rsp = client.execute(req);
 			retStr=rsp.getBody();
 			System.out.println(retStr);
-			Gson gson = new Gson();
+			Gson gson = new Gson(); 
 			JsonObject obj = gson.fromJson(retStr, JsonObject.class);		
 			JsonObject obj1=obj.getAsJsonObject("wireless_share_tpwd_query_response");
 			url=obj1.get("url").getAsString();
