@@ -66,7 +66,7 @@ public class TaoKouling {
 			JsonObject obj1=obj.getAsJsonObject("wireless_share_tpwd_query_response");
 			url=obj1.get("url").getAsString();
 		} catch (ApiException e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		return url;
 	}
