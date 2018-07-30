@@ -756,12 +756,7 @@ public class AppApiController extends BasicController {
 					} else {
 						tkurl = mapDataBean.getUrl();
 					}
-					String tklStr = TaoKouling.createTkl("https:" + tkurl, mapDataBean.getTitle(),
-							mapDataBean.getPict_url());
-					if (StringUtil.isNotEmpty(tklStr)) {
-						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
-						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
-					}
+					
 					float actualCommission = 0f;
 					double actualPrice = 0d;
 					double incomeRate = Double.parseDouble(mapDataBean.getCommission_rate()) / 100;
@@ -778,6 +773,13 @@ public class AppApiController extends BasicController {
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
+					
+					String tklStr = TaoKouling.createTkl("https:" + tkurl, mapDataBean.getTitle()+"【预估返:"+actualCommission+"】",
+							mapDataBean.getPict_url());
+					if (StringUtil.isNotEmpty(tklStr)) {
+						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
+					}
 
 					float pre = Float.parseFloat(NumberUtil.formatDouble(
 							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));

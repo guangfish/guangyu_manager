@@ -413,7 +413,8 @@ public class AppLoginController extends BasicController {
 
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
 			if ("true".equals(canDraw)) {
-				if ((totalMoney - tmCommission) <= 0) {
+				System.out.println(totalMoney - tmCommission);
+				if ((int)(totalMoney - tmCommission) <= 0) {
 					canDraw = "false";
 					if (hongbao > 0) {
 						reason = "亲！红包不能单独提现，等有返现或奖励时再提吧。";
