@@ -114,7 +114,7 @@ public class AppApiController extends BasicController {
 			productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// 仅标题、关键词API查询的逻辑
-		else if ("3".equals(appCrawlSwitch)) {
+		else if ("3".equals(appCrawlSwitch)) { 
 			productInfoVo = apiLogic(productUrl, pageNo, size);
 		}
 		// 启动网页爬虫、手机爬虫混合逻辑
