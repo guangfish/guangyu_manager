@@ -29,7 +29,7 @@ public class AppCawalTaskController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;
 
-	// 获取验证码
+	// 获取验证码 
 	@RequestMapping(value = "/getTask", method = RequestMethod.POST)
 	@ResponseBody
 	public AppCrawlTaskBean getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
