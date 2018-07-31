@@ -117,6 +117,15 @@ public class AppApiController extends BasicController {
 		else if ("3".equals(appCrawlSwitch)) {
 			productInfoVo = apiLogic(productUrl, pageNo, size);
 		}
+		// 启动网页爬虫、手机爬虫混合逻辑
+		else if ("4".equals(appCrawlSwitch)) {
+			int randomInt = NumberUtil.getRandomInt(0, 1);
+			if(randomInt==0){
+				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+			}else{
+				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+			}
+		}
 
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
