@@ -11,6 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.HttpcomponentsUtil;
 import com.bt.om.util.NumberUtil;
 
@@ -25,17 +26,20 @@ public class TklSendTmpTask {
 	// 每隔一段时间进行一次邀请用户的核实
 	@Scheduled(cron = "0/20 * * * * ?")
 	public void sendTkl() {
-		logger.info("测试淘口令定时发送");
-		List<String> tkls = new ArrayList<>();
-		tkls.add("€IWUkbZ76TDE€");
-		tkls.add("€AXG4bZGYwFa€");
-		tkls.add("€qClrbZGcfIC€");
-		tkls.add("€KM7rbZGcEU1€");
-		tkls.add("€zYgmbZG2I8m€");
-		int i=0;
-		
-		i=NumberUtil.getRandomInt(0, tkls.size()-1);
-		sendTask(tkls.get(i));
+		String ifRun = GlobalVariable.resourceMap.get("TklSendTmpTask");
+		if("1".equals(ifRun)){
+			logger.info("测试淘口令定时发送");
+			List<String> tkls = new ArrayList<>();
+			tkls.add("€IWUkbZ76TDE€");
+			tkls.add("€AXG4bZGYwFa€");
+			tkls.add("€qClrbZGcfIC€");
+			tkls.add("€KM7rbZGcEU1€");
+			tkls.add("€zYgmbZG2I8m€");
+			int i=0;
+			
+			i=NumberUtil.getRandomInt(0, tkls.size()-1);
+			sendTask(tkls.get(i));
+		}		
 	}
 	
 	private static String sendTask(String url) {
