@@ -334,6 +334,8 @@ public class AppApiController extends BasicController {
 			if (!imgUrl.contains("http:")) {
 				imgUrl = "http:" + imgUrl;
 			}
+			
+			logger.info("淘口令解析返回的图片地址="+imgUrl);
 
 			String tklOld = "";
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
@@ -350,9 +352,10 @@ public class AppApiController extends BasicController {
 					break;
 				}
 			}
+			
+			logger.info("淘口令解析返回的图片地址保存到redis Key为="+tklOld.hashCode());
 			// 把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
-			if (StringUtil.isNotEmpty(imgUrl)) {
-				logger.info("aaaaaaaaaaa图片保存到redis="+tklOld.hashCode());
+			if (StringUtil.isNotEmpty(imgUrl)) {				
 				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
 			}
 

@@ -417,7 +417,7 @@ public class AppLoginController extends BasicController {
 				if ((int)(totalMoney - tmCommission) <= 0) {
 					canDraw = "false";
 					if (hongbao > 0) {
-						reason = "亲！红包不能单独提现，等有返现或奖励时再提吧。";
+						reason = "亲！我的钱包中只有红包，红包不能单独提现，等有返现或奖励时再提吧。";
 					} else {
 						reason = "我的钱包空空的！";
 					}

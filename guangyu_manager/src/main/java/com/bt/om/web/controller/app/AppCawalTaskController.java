@@ -62,7 +62,7 @@ public class AppCawalTaskController extends BasicController {
 		AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
 
 		String sign = appCrawlBean.getSign();
-		jedisPool.putInCache("", sign, data, 3600);
+		jedisPool.putInCache("", sign, data, 60);
 
 		return model;
 	}
