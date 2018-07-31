@@ -22,7 +22,7 @@ public class TaskControl {
 	private static final Logger logger = Logger.getLogger(TaskControl.class);
 	private static int sleepTime = 500;
 
-	private JedisPool jedisPool = ContextLoader.getCurrentWebApplicationContext().getBean(JedisPool.class);
+	private static JedisPool jedisPool = ContextLoader.getCurrentWebApplicationContext().getBean(JedisPool.class);
 
 	// 商品信息查询
 	public Map<String, String> getProduct(String tkl) {  
