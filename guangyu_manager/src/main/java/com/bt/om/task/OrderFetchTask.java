@@ -130,7 +130,7 @@ public class OrderFetchTask {
 //			System.out.println(element.size());
 			
 			//输入起始时间
-			String dataString=DateUtil.dateFormate(DateUtil.getBeforeMonth(new Date()),DateUtil.CHINESE_PATTERN);
+			String dataString=DateUtil.dateFormate(DateUtil.get2BeforeMonth(new Date()),DateUtil.CHINESE_PATTERN);
 			driver.findElement(By.xpath("//*[@id='"+id+"']/div/div/div[1]/input[1]")).clear();
 			driver.findElement(By.xpath("//*[@id='"+id+"']/div/div/div[1]/input[1]")).sendKeys(dataString);					
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));

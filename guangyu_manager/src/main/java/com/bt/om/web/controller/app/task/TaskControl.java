@@ -12,22 +12,15 @@ import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.TkInfoTask;
-import com.bt.om.service.ITkInfoTaskService;
-import com.bt.om.service.impl.TkInfoTaskService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.RegexUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.controller.app.vo.AppCrawlBean;
 
-import redis.clients.jedis.ShardedJedis;
-
 public class TaskControl {
 	private static final Logger logger = Logger.getLogger(TaskControl.class);
 	private static int sleepTime = 500;
-
-	private ITkInfoTaskService tkInfoTaskService = ContextLoader.getCurrentWebApplicationContext()
-			.getBean(TkInfoTaskService.class);
 
 	private JedisPool jedisPool = ContextLoader.getCurrentWebApplicationContext().getBean(JedisPool.class);
 
@@ -63,7 +56,6 @@ public class TaskControl {
 	public Map<String, String> sendTask(String tkl) {
 		Map<String, String> map = new HashMap<>();
 		String sign = StringUtil.getUUID();
-//		sign="bd0dd1cdb08a48418b60973f07c2aac1";
 		map.put("sign", sign);
 		map.put("type", "2");
 		map.put("status", "0");
@@ -88,9 +80,11 @@ public class TaskControl {
 	}
 
 	private Map<String, String> loadData(String sign) {
-		ShardedJedis jedis = jedisPool.getResource();
-		String data=jedis.get(sign);
-		jedis.close();
+		String data="";
+		Object dataObj=jedisPool.getFromCache("", sign);
+		if(dataObj!=null){
+			data=(String)dataObj;
+		}
 //		TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
 		Map<String, String> map = null;
 		if (StringUtil.isNotEmpty(data)) {
@@ -107,11 +101,12 @@ public class TaskControl {
 				}
 				
 				String tklOld=appCrawlBean.getTklStr();
-				jedis = jedisPool.getResource();
-				System.out.println(tklOld.hashCode());
-				String imgUrl = jedis.get(tklOld.hashCode()+""); 
+				Object imgUrlObj = jedisPool.getFromCache("", tklOld.hashCode());
+				String imgUrl="";
+				if(imgUrlObj!=null){
+					imgUrl=(String)imgUrlObj;
+				}
 				System.out.println(imgUrl);
-				jedis.close();
 				
 				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");				
 				String sellNumStr=appCrawlBean.getSellNum();

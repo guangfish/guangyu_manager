@@ -127,8 +127,8 @@ public class OrderFetchJdTask {
 			WebElement element = driver.findElement(By.xpath("//*[@id='inShortcutDate']"));
 			PageUtils.scrollToElementAndClick(element, driver);
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
-			// 点击过去30天
-			driver.findElement(By.xpath("//*[@id='inShortcutDate']/option[6]")).click();
+			// 点击过去60天
+			driver.findElement(By.xpath("//*[@id='inShortcutDate']/option[7]")).click();
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
 			// 点击查询
 			WebElement element1 = driver.findElement(By.xpath("//*[@id='inOrderQueryBtn']"));

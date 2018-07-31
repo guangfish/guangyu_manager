@@ -19,8 +19,6 @@ import com.bt.om.web.controller.app.task.Queue;
 import com.bt.om.web.controller.app.vo.AppCrawlBean;
 import com.bt.om.web.controller.app.vo.AppCrawlTaskBean;
 
-import redis.clients.jedis.ShardedJedis;
-
 /**
  * APP端爬虫接口
  */
@@ -64,9 +62,7 @@ public class AppCawalTaskController extends BasicController {
 		AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
 
 		String sign = appCrawlBean.getSign();
-		ShardedJedis jedis = jedisPool.getResource();
-		jedis.setex(sign + "", 3600, data);
-		jedis.close();
+		jedisPool.putInCache("", sign, data, 3600);
 
 		return model;
 	}

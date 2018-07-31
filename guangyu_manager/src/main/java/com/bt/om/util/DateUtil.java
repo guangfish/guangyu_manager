@@ -516,6 +516,16 @@ public class DateUtil {
         now.set(Calendar.MONTH, now.get(Calendar.MONTH) - 1);
         return now.getTime();
     }
+    
+    public static Date get2BeforeMonth(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.MONTH, now.get(Calendar.MONTH) - 2);
+        return now.getTime();
+    }
 
     public static String getStrDateBefor(int createdDate) {
         if (createdDate <= 0) {
@@ -605,6 +615,6 @@ public class DateUtil {
     }
     
     public static void main(String[] args){
-    	System.out.println(dateFormate(new Date(),"dd"));
+    	System.out.println(get2BeforeMonth(new Date()));
     }
 }
