@@ -121,8 +121,10 @@ public class AppApiController extends BasicController {
 		else if ("4".equals(appCrawlSwitch)) {
 			int randomInt = NumberUtil.getRandomInt(0, 1);
 			if(randomInt==0){
+				logger.info("执行APP爬虫逻辑");
 				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}else{
+				logger.info("执行WEB爬虫逻辑");
 				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
 		}
