@@ -106,7 +106,7 @@ public class TaskControl {
 				if(imgUrlObj!=null){
 					imgUrl=(String)imgUrlObj;
 				}
-				System.out.println(imgUrl);
+				System.out.println("bbbbbbbbbbbbbbbbbb=="+tklOld.hashCode()+""+imgUrl);
 				
 				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");				
 				String sellNumStr=appCrawlBean.getSellNum();

@@ -352,7 +352,8 @@ public class AppApiController extends BasicController {
 			}
 			// 把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
 			if (StringUtil.isNotEmpty(imgUrl)) {
-				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 3600 * 24);
+				logger.info("aaaaaaaaaaa图片保存到redis="+tklOld.hashCode());
+				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
 			}
 
 			Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
