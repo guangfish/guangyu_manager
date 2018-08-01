@@ -67,6 +67,8 @@ public class WebTaskControl {
 			// 任务入队列
 			WebQueue.put(tkInfoTask);
 		} else {
+			tkInfoTask.setStatus(1);
+			jedisPool.putInCache("", sign, tkInfoTask, 60);
 			logger.info("队列中任务大于3【" + WebQueue.getSize() + "】");
 		}
 

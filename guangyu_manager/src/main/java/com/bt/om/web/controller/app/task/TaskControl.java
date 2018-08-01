@@ -73,6 +73,7 @@ public class TaskControl {
 			// 任务入队列
 			Queue.put(tkInfoTask);
 		}else{
+			jedisPool.putInCache("", sign, "{\"tklStr\":\""+tkl+"\",\"sign\":\""+sign+"\"}", 60);
 			logger.info("队列中任务大于3【"+Queue.getSize()+"】");
 		}
 
@@ -106,7 +107,6 @@ public class TaskControl {
 				if(imgUrlObj!=null){
 					imgUrl=(String)imgUrlObj;
 				}
-				System.out.println("bbbbbbbbbbbbbbbbbb=="+tklOld.hashCode()+""+imgUrl);
 				
 				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");				
 				String sellNumStr=appCrawlBean.getSellNum();
