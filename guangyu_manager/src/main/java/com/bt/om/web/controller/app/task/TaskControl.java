@@ -72,6 +72,7 @@ public class TaskControl {
 		if(Queue.getSize()<3){
 			// 任务入队列
 			Queue.put(tkInfoTask);
+			logger.info(tkl+"入队列");
 		}else{
 			jedisPool.putInCache("", sign, "{\"tklStr\":\""+tkl+"\",\"sign\":\""+sign+"\"}", 60);
 			logger.info("队列中任务大于3【"+Queue.getSize()+"】");
