@@ -14,7 +14,7 @@ import com.lmax.disruptor.dsl.ProducerType;
  */
 public class WebQueue {
 	private static final Logger logger = Logger.getLogger(WebQueue.class);
-	// 初始化队列，定义队列长度
+	// 初始化队列，定义队列长度 // bufferSize 必须是 2 的 N 次方
 	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("WebQueue", ProducerType.SINGLE, 8,
 			new BlockingWaitStrategy());
 	
