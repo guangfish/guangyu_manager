@@ -3,7 +3,6 @@ package com.bt.om.web.controller.app;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.SearchRecord;
-import com.bt.om.selenium.ProductUrlTrans;
 import com.bt.om.service.IProductInfoService;
 import com.bt.om.service.ISearchRecordService;
 import com.bt.om.system.GlobalVariable;
@@ -18,8 +17,6 @@ import com.bt.om.util.RegexUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.BasicController;
-import com.bt.om.web.controller.api.CrawlTask;
-import com.bt.om.web.controller.api.TaskBean;
 import com.bt.om.web.controller.app.task.Queue;
 import com.bt.om.web.controller.app.task.TaskControl;
 import com.bt.om.web.controller.app.task.WebQueue;
@@ -107,7 +104,6 @@ public class AppApiController extends BasicController {
 		String appCrawlSwitch = GlobalVariable.resourceMap.get("app_crawl_switch");
 		// APP爬虫的逻辑
 		if ("1".equals(appCrawlSwitch)) {
-			logger.info("aaaaaaaaaaaaaaaa");
 			productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// PC端爬虫逻辑
@@ -139,7 +135,6 @@ public class AppApiController extends BasicController {
 
 	// 手机爬从的逻辑
 	private ProductInfoVo appCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
-		logger.info("bbbbbbbbbbbbbb");
 		ProductInfoVo productInfoVo = null;
 		try{
 		// 是淘口令请求时的逻辑
@@ -150,13 +145,10 @@ public class AppApiController extends BasicController {
 			if (productUrlRedisObj != null) {
 				productUrlRedis = productUrlRedisObj.toString();
 			}
-			logger.info("11111111111111111111111");
 			// 如果redis里有搜索过的商品名称，则直接通过API获取数据
 			if (productUrlRedis != null) {
-				logger.info("2222222222222222222222");
 				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 			} else {
-				logger.info("33333333333333333333333333");
 				// 用正则去匹配标题，可能会匹配错误
 				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 				String productUrlTmp = productUrl;
@@ -184,7 +176,6 @@ public class AppApiController extends BasicController {
 						productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
 					}
 				} else {
-					logger.info("4444444444444444444444444");
 					// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
 					new Thread(new Runnable() {
 						@Override
@@ -331,7 +322,6 @@ public class AppApiController extends BasicController {
 
 	// APP爬虫任务
 	public ProductInfoVo productInfoAppCrawl(String userId, String tklStr) {
-		logger.info("cccccccccccccccc");
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
 			String productUrl = TaoKouling.parserTklApp(tklStr);

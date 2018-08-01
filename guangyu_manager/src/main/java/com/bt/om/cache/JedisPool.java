@@ -69,7 +69,7 @@ public class JedisPool {
 
 	public void returnResource(ShardedJedis jedis) {
 		if (jedis != null) {
-			pool.close();
+			jedis.close();
 		}
 	}
 
@@ -103,9 +103,7 @@ public class JedisPool {
                 } catch (Exception e) {
                     logger.error("cache " + getCacheName(type, key) + " socket error。");
                 }finally{
-                	if(jedis!=null){
-                		jedis.close();
-                	}
+                	returnResource(jedis);
                 }
             }
         }
@@ -137,9 +135,7 @@ public class JedisPool {
             logger.debug("cache " + getCacheName(type, key) + " error。");
             return null;
         }finally{
-        	if(jedis!=null){
-        		jedis.close();
-        	}
+        	returnResource(jedis);
         }
     }
     

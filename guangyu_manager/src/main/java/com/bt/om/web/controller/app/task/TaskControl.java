@@ -26,7 +26,6 @@ public class TaskControl {
 
 	// 商品信息查询
 	public Map<String, String> getProduct(String tkl) {
-		logger.info("dddddddddddddddddd");
 		Map<String, String> paramsMap = sendTask(tkl);
 		Map<String, String> resultMap = loadData(paramsMap.get("sign"));
         String taskinfochecknumStr="";
@@ -65,7 +64,6 @@ public class TaskControl {
 
 	// 发送任务
 	public Map<String, String> sendTask(String tkl) {
-		logger.info("eeeeeeeeeeeeeeeeeeee");
 		Map<String, String> map = new HashMap<>();
 		String sign = StringUtil.getUUID();
 		map.put("sign", sign);
@@ -94,7 +92,6 @@ public class TaskControl {
 	}
 
 	private Map<String, String> loadData(String sign) {
-		logger.info("fffffffffffffffffffff");
 		String data = "";
 		Object dataObj = jedisPool.getFromCache("", sign);
 		if (dataObj != null) {
