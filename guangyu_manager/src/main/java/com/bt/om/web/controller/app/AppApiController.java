@@ -153,8 +153,10 @@ public class AppApiController extends BasicController {
 			logger.info("11111111111111111111111");
 			// 如果redis里有搜索过的商品名称，则直接通过API获取数据
 			if (productUrlRedis != null) {
+				logger.info("2222222222222222222222");
 				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 			} else {
+				logger.info("33333333333333333333333333");
 				// 用正则去匹配标题，可能会匹配错误
 				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
 				String productUrlTmp = productUrl;
@@ -174,7 +176,7 @@ public class AppApiController extends BasicController {
 								// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
 								productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
 										productTitleTmp.lastIndexOf("("));
-							} catch (Exception e) {
+							} catch (Exception e) { 
 								logger.info(productTitleTmp);
 								e.printStackTrace();
 							}
@@ -182,6 +184,7 @@ public class AppApiController extends BasicController {
 						productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
 					}
 				} else {
+					logger.info("4444444444444444444444444");
 					// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
 					new Thread(new Runnable() {
 						@Override
