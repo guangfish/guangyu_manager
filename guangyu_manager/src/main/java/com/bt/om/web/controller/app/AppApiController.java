@@ -107,6 +107,7 @@ public class AppApiController extends BasicController {
 		String appCrawlSwitch = GlobalVariable.resourceMap.get("app_crawl_switch");
 		// APP爬虫的逻辑
 		if ("1".equals(appCrawlSwitch)) {
+			logger.info("aaaaaaaaaaaaaaaa");
 			productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// PC端爬虫逻辑
@@ -138,6 +139,7 @@ public class AppApiController extends BasicController {
 
 	// 手机爬从的逻辑
 	private ProductInfoVo appCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
+		logger.info("bbbbbbbbbbbbbb");
 		ProductInfoVo productInfoVo = null;
 		try{
 		// 是淘口令请求时的逻辑
@@ -325,6 +327,7 @@ public class AppApiController extends BasicController {
 
 	// APP爬虫任务
 	public ProductInfoVo productInfoAppCrawl(String userId, String tklStr) {
+		logger.info("cccccccccccccccc");
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
 			String productUrl = TaoKouling.parserTklApp(tklStr);

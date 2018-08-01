@@ -26,6 +26,7 @@ public class TaskControl {
 
 	// 商品信息查询
 	public Map<String, String> getProduct(String tkl) {
+		logger.info("dddddddddddddddddd");
 		Map<String, String> paramsMap = sendTask(tkl);
 		Map<String, String> resultMap = loadData(paramsMap.get("sign"));
         String taskinfochecknumStr="";
@@ -64,6 +65,7 @@ public class TaskControl {
 
 	// 发送任务
 	public Map<String, String> sendTask(String tkl) {
+		logger.info("eeeeeeeeeeeeeeeeeeee");
 		Map<String, String> map = new HashMap<>();
 		String sign = StringUtil.getUUID();
 		map.put("sign", sign);
@@ -77,23 +79,22 @@ public class TaskControl {
 		tkInfoTask.setStatus(0);
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
-		
-		Queue.put(tkInfoTask);
 
-//		// 队列中任务小于3时入队列
-//		if (Queue.getSize() < 3) {
-//			// 任务入队列
-//			Queue.put(tkInfoTask);
-//			logger.info(tkl + "入队列");
-//		} else {
-//			jedisPool.putInCache("", sign, "{\"tklStr\":\"" + tkl + "\",\"sign\":\"" + sign + "\"}", 60);
-//			logger.info("队列中任务大于3【" + Queue.getSize() + "】");
-//		}
+		// 队列中任务小于3时入队列
+		if (Queue.getSize() < 3) {
+			// 任务入队列
+			Queue.put(tkInfoTask);
+			logger.info(tkl + "入队列");
+		} else {
+			jedisPool.putInCache("", sign, "{\"tklStr\":\"" + tkl + "\",\"sign\":\"" + sign + "\"}", 60);
+			logger.info("队列中任务大于3【" + Queue.getSize() + "】");
+		}
 
 		return map;
 	}
 
 	private Map<String, String> loadData(String sign) {
+		logger.info("fffffffffffffffffffff");
 		String data = "";
 		Object dataObj = jedisPool.getFromCache("", sign);
 		if (dataObj != null) {
