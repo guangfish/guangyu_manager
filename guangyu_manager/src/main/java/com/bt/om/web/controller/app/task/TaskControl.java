@@ -77,16 +77,18 @@ public class TaskControl {
 		tkInfoTask.setStatus(0);
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
+		
+		Queue.put(tkInfoTask);
 
-		// 队列中任务小于3时入队列
-		if (Queue.getSize() < 3) {
-			// 任务入队列
-			Queue.put(tkInfoTask);
-			logger.info(tkl + "入队列");
-		} else {
-			jedisPool.putInCache("", sign, "{\"tklStr\":\"" + tkl + "\",\"sign\":\"" + sign + "\"}", 60);
-			logger.info("队列中任务大于3【" + Queue.getSize() + "】");
-		}
+//		// 队列中任务小于3时入队列
+//		if (Queue.getSize() < 3) {
+//			// 任务入队列
+//			Queue.put(tkInfoTask);
+//			logger.info(tkl + "入队列");
+//		} else {
+//			jedisPool.putInCache("", sign, "{\"tklStr\":\"" + tkl + "\",\"sign\":\"" + sign + "\"}", 60);
+//			logger.info("队列中任务大于3【" + Queue.getSize() + "】");
+//		}
 
 		return map;
 	}
