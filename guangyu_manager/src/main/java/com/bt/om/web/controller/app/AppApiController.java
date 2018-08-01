@@ -150,6 +150,7 @@ public class AppApiController extends BasicController {
 			if (productUrlRedisObj != null) {
 				productUrlRedis = productUrlRedisObj.toString();
 			}
+			logger.info("11111111111111111111111");
 			// 如果redis里有搜索过的商品名称，则直接通过API获取数据
 			if (productUrlRedis != null) {
 				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
