@@ -103,7 +103,9 @@ public class JedisPool {
                 } catch (Exception e) {
                     logger.error("cache " + getCacheName(type, key) + " socket error。");
                 }finally{
-                	returnResource(jedis);
+                	if(jedis!=null){
+                		jedis.close();
+                	}
                 }
             }
         }
@@ -135,7 +137,9 @@ public class JedisPool {
             logger.debug("cache " + getCacheName(type, key) + " error。");
             return null;
         }finally{
-        	returnResource(jedis);
+        	if(jedis!=null){
+        		jedis.close();
+        	}
         }
     }
     
