@@ -25,29 +25,39 @@ public class TaskControl {
 	private static JedisPool jedisPool = ContextLoader.getCurrentWebApplicationContext().getBean(JedisPool.class);
 
 	// 商品信息查询
-	public Map<String, String> getProduct(String tkl) {  
+	public Map<String, String> getProduct(String tkl) {
 		Map<String, String> paramsMap = sendTask(tkl);
 		Map<String, String> resultMap = loadData(paramsMap.get("sign"));
+        String taskinfochecknumStr="";
+        int taskinfochecknum=30;
 		int i = 0;
 		while (true) {
-			// 连续多少次查询后仍然查不到数据就退出
-			if (i >= Integer.parseInt(GlobalVariable.resourceMap.get("task.info.check.num"))) {
-				break;
+			taskinfochecknumStr=GlobalVariable.resourceMap.get("task.info.check.num");
+			if(StringUtil.isNotEmpty(taskinfochecknumStr)){
+				taskinfochecknum=Integer.parseInt(taskinfochecknumStr);
 			}
-			if (resultMap != null) {
-				if("0".equals(resultMap.get("status"))){
-					return null;
+			try {
+				// 连续多少次查询后仍然查不到数据就退出
+				if (i >= taskinfochecknum) {
+					break;
 				}
-				break;
-			} else {
-				try {
-					Thread.sleep(sleepTime);
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (resultMap != null) {
+					if ("0".equals(resultMap.get("status"))) {
+						return null;
+					}
+					break;
+				} else {
+					try {
+						Thread.sleep(sleepTime);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					resultMap = loadData(paramsMap.get("sign"));
 				}
-				resultMap = loadData(paramsMap.get("sign"));
+				i++;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			i++;
 		}
 		return resultMap;
 	}
@@ -68,26 +78,26 @@ public class TaskControl {
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
 
-		//队列中任务小于3时入队列
-		if(Queue.getSize()<3){
+		// 队列中任务小于3时入队列
+		if (Queue.getSize() < 3) {
 			// 任务入队列
 			Queue.put(tkInfoTask);
-			logger.info(tkl+"入队列");
-		}else{
-			jedisPool.putInCache("", sign, "{\"tklStr\":\""+tkl+"\",\"sign\":\""+sign+"\"}", 60);
-			logger.info("队列中任务大于3【"+Queue.getSize()+"】");
+			logger.info(tkl + "入队列");
+		} else {
+			jedisPool.putInCache("", sign, "{\"tklStr\":\"" + tkl + "\",\"sign\":\"" + sign + "\"}", 60);
+			logger.info("队列中任务大于3【" + Queue.getSize() + "】");
 		}
 
 		return map;
 	}
 
 	private Map<String, String> loadData(String sign) {
-		String data="";
-		Object dataObj=jedisPool.getFromCache("", sign);
-		if(dataObj!=null){
-			data=(String)dataObj;
+		String data = "";
+		Object dataObj = jedisPool.getFromCache("", sign);
+		if (dataObj != null) {
+			data = (String) dataObj;
 		}
-//		TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
+		// TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
 		Map<String, String> map = null;
 		if (StringUtil.isNotEmpty(data)) {
 			logger.info("从redis中查询到APP端推送的数据");
@@ -95,72 +105,72 @@ public class TaskControl {
 			AppCrawlBean appCrawlBean = GsonUtil.GsonToBean(data, AppCrawlBean.class);
 			TkInfoTask tkInfoTask = new TkInfoTask();
 			try {
-				String tklStr=appCrawlBean.getData();
-				if(StringUtil.isEmpty(tklStr)){
+				String tklStr = appCrawlBean.getData();
+				if (StringUtil.isEmpty(tklStr)) {
 					map = new HashMap<>();
 					map.put("status", "0");
 					return map;
 				}
-				
-				String tklOld=appCrawlBean.getTklStr();
-				Object imgUrlObj = jedisPool.getFromCache("", tklOld.hashCode());
-				String imgUrl="";
-				if(imgUrlObj!=null){
-					imgUrl=(String)imgUrlObj;
-				}
-				
-				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");				
-				String sellNumStr=appCrawlBean.getSellNum();
-				String sellNum="";
-				String commissionStr=appCrawlBean.getCommission();
-				String commission="";
 
-				logger.info("sellNum="+sellNumStr);
-				logger.info("commission="+commissionStr);
-				
-				String prodcutName=tklStr.substring(0, tklStr.indexOf("【"));
-				String price="0";
-				String quanHou="";
-				String quan="0";
-				String tkl="";
-				String tkLink="";
-				List<String[]> lists=RegexUtil.getListMatcher(tklStr, "【在售价】(.*?)元");
-				if(lists.size()>0){
-					price=(lists.get(0))[0];
+				String tklOld = appCrawlBean.getTklStr();
+				Object imgUrlObj = jedisPool.getFromCache("", tklOld.hashCode());
+				String imgUrl = "";
+				if (imgUrlObj != null) {
+					imgUrl = (String) imgUrlObj;
 				}
-				lists=RegexUtil.getListMatcher(tklStr, "【券后价】(.*?)元");
-				if(lists.size()>0){
-					quanHou=(lists.get(0))[0];
+
+				String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
+				String sellNumStr = appCrawlBean.getSellNum();
+				String sellNum = "";
+				String commissionStr = appCrawlBean.getCommission();
+				String commission = "";
+
+				logger.info("sellNum=" + sellNumStr);
+				logger.info("commission=" + commissionStr);
+
+				String prodcutName = tklStr.substring(0, tklStr.indexOf("【"));
+				String price = "0";
+				String quanHou = "";
+				String quan = "0";
+				String tkl = "";
+				String tkLink = "";
+				List<String[]> lists = RegexUtil.getListMatcher(tklStr, "【在售价】(.*?)元");
+				if (lists.size() > 0) {
+					price = (lists.get(0))[0];
 				}
-				lists=RegexUtil.getListMatcher(tklStr, "【下单链接】(.*?)--");
-				if(lists.size()>0){
-					tkLink=(lists.get(0))[0];
+				lists = RegexUtil.getListMatcher(tklStr, "【券后价】(.*?)元");
+				if (lists.size() > 0) {
+					quanHou = (lists.get(0))[0];
 				}
-				lists=RegexUtil.getListMatcher(commissionStr, "（预计￥(.*?)）");
-				if(lists.size()>0){
-					commission=(lists.get(0))[0];
+				lists = RegexUtil.getListMatcher(tklStr, "【下单链接】(.*?)--");
+				if (lists.size() > 0) {
+					tkLink = (lists.get(0))[0];
 				}
-				lists=RegexUtil.getListMatcher(sellNumStr, "已售(.*?)件");
-				if(lists.size()>0){
-					sellNum=(lists.get(0))[0];
+				lists = RegexUtil.getListMatcher(commissionStr, "（预计￥(.*?)）");
+				if (lists.size() > 0) {
+					commission = (lists.get(0))[0];
 				}
-				
-				for(String symbol:tklSymbolsStr.split(";")){
+				lists = RegexUtil.getListMatcher(sellNumStr, "已售(.*?)件");
+				if (lists.size() > 0) {
+					sellNum = (lists.get(0))[0];
+				}
+
+				for (String symbol : tklSymbolsStr.split(";")) {
 					String reg = symbol + ".*" + symbol;
 					Pattern pattern = Pattern.compile(reg);
 					Matcher matcher = pattern.matcher(tklStr);
 					if (matcher.find()) {
-						lists=RegexUtil.getListMatcher(tklStr, symbol+"(.*?)"+symbol);
-						if(lists.size()>0){
-							tkl=symbol+(lists.get(0))[0]+symbol;
+						lists = RegexUtil.getListMatcher(tklStr, symbol + "(.*?)" + symbol);
+						if (lists.size() > 0) {
+							tkl = symbol + (lists.get(0))[0] + symbol;
 						}
 						break;
 					}
 				}
-				if(StringUtil.isNotEmpty(quanHou)){
-					quan=Float.parseFloat(price)-Float.parseFloat(quanHou)+"";
+				if (StringUtil.isNotEmpty(quanHou)) {
+					quan = Float.parseFloat(price) - Float.parseFloat(quanHou) + "";
 				}
-				
+
 				tkInfoTask.setSign(sign);
 				tkInfoTask.setProductImgUrl(imgUrl);
 				tkInfoTask.setShopName("");
@@ -172,26 +182,30 @@ public class TaskControl {
 					tkInfoTask.setQuanMianzhi(Double.parseDouble(quan));
 				}
 				tkInfoTask.setCommision(((double) (Math.round(Double.parseDouble(commission) * 100)) / 100));
-				if(StringUtil.isEmpty(quanHou)){
-					tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(price) * 100)) / 100));
-				}else{
-					tkInfoTask.setRate(((double) (Math.round(Double.parseDouble(commission)/Double.parseDouble(quanHou) * 100)) / 100));
+				if (StringUtil.isEmpty(quanHou)) {
+					tkInfoTask.setRate(
+							((double) (Math.round(Double.parseDouble(commission) / Double.parseDouble(price) * 100))
+									/ 100));
+				} else {
+					tkInfoTask.setRate(
+							((double) (Math.round(Double.parseDouble(commission) / Double.parseDouble(quanHou) * 100))
+									/ 100));
 				}
-				int sellNumInt=0;
-	            if(sellNum.contains("万")){
-	            	sellNumInt=(int)(Float.parseFloat(sellNum.replace("万", ""))*10000);
-	            }else{
-	            	sellNumInt=Integer.parseInt(sellNum);
-	            }
+				int sellNumInt = 0;
+				if (sellNum.contains("万")) {
+					sellNumInt = (int) (Float.parseFloat(sellNum.replace("万", "")) * 10000);
+				} else {
+					sellNumInt = Integer.parseInt(sellNum);
+				}
 				tkInfoTask.setSales(sellNumInt);
 				tkInfoTask.setStatus(0);
 				tkInfoTask.setType(2);
 				tkInfoTask.setCreateTime(new Date());
-				tkInfoTask.setUpdateTime(new Date());				
+				tkInfoTask.setUpdateTime(new Date());
 			} catch (Exception e) {
 				e.printStackTrace();
-			}			
-			
+			}
+
 			map = new HashMap<>();
 			map.put("imgUrl", tkInfoTask.getProductImgUrl());
 			map.put("shopName", tkInfoTask.getShopName());
@@ -208,8 +222,8 @@ public class TaskControl {
 			map.put("tklquan", tkInfoTask.getQuanCode());
 			map.put("quanMianzhi", "" + tkInfoTask.getQuanMianzhi());
 			map.put("status", "1");
-		}else{
-			logger.info(sign+"APP端尚未返回");
+		} else {
+			logger.info(sign + "APP端尚未返回");
 		}
 		return map;
 	}

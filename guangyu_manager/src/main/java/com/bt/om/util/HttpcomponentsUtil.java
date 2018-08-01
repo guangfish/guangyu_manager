@@ -417,5 +417,55 @@ public final class HttpcomponentsUtil {
 		response.close();
 		return body;
 	}
+	
+	public static String sendHttpsJson(String params, String url)
+			throws KeyManagementException, NoSuchAlgorithmException, ClientProtocolException, IOException {
+		String body = "";
+		// 采用绕过验证的方式处理https请求
+		SSLContext sslcontext = createIgnoreVerifySSL();
+
+		// 设置协议http和https对应的处理socket链接工厂的对象
+		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+				.register("http", PlainConnectionSocketFactory.INSTANCE)
+				.register("https", new SSLConnectionSocketFactory(sslcontext)).build();
+		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+		HttpClients.custom().setConnectionManager(connManager);
+
+		// 创建自定义的httpclient对象
+		CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+		// CloseableHttpClient client = HttpClients.createDefault();
+
+		// 创建post方式请求对象
+		HttpPost httpPost = new HttpPost(url);
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(DEFAULT_SOCKET_TIMEOUT)
+				.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
+				.setConnectionRequestTimeout(DEFAULT_CONNECTION_REQUEST_TIMEOUT).build();
+		httpPost.setConfig(requestConfig);
+		
+		String charSet = "UTF-8";
+    	StringEntity stringEntity = new StringEntity(params, charSet);
+
+		// 设置参数到请求对象中
+		httpPost.setEntity(stringEntity);
+
+		// 设置header信息
+		// 指定报文头【Content-type】、【User-Agent】
+		httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpPost.setHeader("Accept", "application/json"); 
+    	httpPost.setHeader("Content-Type", "application/json");
+
+		// 执行请求操作，并拿到结果（同步阻塞）
+		CloseableHttpResponse response = client.execute(httpPost);
+		// 获取结果实体
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			// 按指定编码转换结果实体为String类型
+			body = EntityUtils.toString(entity, DEFAULT_ENCODE);
+		}
+		EntityUtils.consume(entity);
+		// 释放链接
+		response.close();
+		return body;
+	}
 
 }
