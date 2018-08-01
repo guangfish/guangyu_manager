@@ -176,7 +176,7 @@ public class AppApiController extends BasicController {
 								// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
 								productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
 										productTitleTmp.lastIndexOf("("));
-							} catch (Exception e) { 
+							} catch (Exception e) {  
 								logger.info(productTitleTmp);
 								e.printStackTrace();
 							}
