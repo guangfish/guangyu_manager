@@ -116,13 +116,23 @@ public class AppApiController extends BasicController {
 		}
 		// 启动网页爬虫、手机爬虫混合逻辑
 		else if ("4".equals(appCrawlSwitch)) {
-			int randomInt = NumberUtil.getRandomInt(0, 1);
-			if(randomInt==0){
-				logger.info("执行APP爬虫逻辑");
-				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
-			}else{
-				logger.info("执行WEB爬虫逻辑");
+//			//随机任务分配模式
+//			int randomInt = NumberUtil.getRandomInt(0, 1);
+//			if(randomInt==0){
+//				logger.info("执行APP爬虫逻辑");
+//				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+//			}else{
+//				logger.info("执行WEB爬虫逻辑");
+//				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+//			}
+			
+			//按队列大小分配模式
+			if(Queue.getSize()>=2){
+				logger.info("APP爬从队列尺寸大于2，执行WEB爬虫逻辑");
 				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
+			}else{
+				logger.info("APP爬从队列尺寸小于2，执行APP爬虫逻辑");
+				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
 		}
 
