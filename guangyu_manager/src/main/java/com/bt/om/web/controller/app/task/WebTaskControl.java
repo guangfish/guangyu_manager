@@ -62,7 +62,7 @@ public class WebTaskControl {
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
 
-		// 队列中任务小于3时入队列
+		//队列中任务小于3时入队列，这里的逻辑应该不会执行，因为前面AppApiController中已经过滤了一下了
 		if (WebQueue.getSize() < 3) {
 			// 任务入队列
 			WebQueue.put(tkInfoTask);

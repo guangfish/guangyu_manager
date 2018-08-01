@@ -10,7 +10,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 public class Queue {
 	private static final Logger logger = Logger.getLogger(Queue.class);
 	// 初始化队列，定义队列长度
-	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("Queue", ProducerType.SINGLE, 256,
+	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("Queue", ProducerType.SINGLE, 10,
 			new BlockingWaitStrategy());
 
 	public static void put(TkInfoTask tkInfoTask) {

@@ -16,6 +16,7 @@ import com.bt.om.util.NumberUtil;
 import com.bt.om.util.RegexUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
+import com.bt.om.util.TaobaoUtil;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.app.task.Queue;
 import com.bt.om.web.controller.app.task.TaskControl;
@@ -111,26 +112,28 @@ public class AppApiController extends BasicController {
 			productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 		}
 		// 仅标题、关键词API查询的逻辑
-		else if ("3".equals(appCrawlSwitch)) { 
+		else if ("3".equals(appCrawlSwitch)) {
 			productInfoVo = apiLogic(productUrl, pageNo, size);
 		}
 		// 启动网页爬虫、手机爬虫混合逻辑
 		else if ("4".equals(appCrawlSwitch)) {
-//			//随机任务分配模式
-//			int randomInt = NumberUtil.getRandomInt(0, 1);
-//			if(randomInt==0){
-//				logger.info("执行APP爬虫逻辑");
-//				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
-//			}else{
-//				logger.info("执行WEB爬虫逻辑");
-//				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
-//			}
-			
-			//按队列大小分配模式
-			if(Queue.getSize()>=2){
+			// //随机任务分配模式
+			// int randomInt = NumberUtil.getRandomInt(0, 1);
+			// if(randomInt==0){
+			// logger.info("执行APP爬虫逻辑");
+			// productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr,
+			// pageNo, size);
+			// }else{
+			// logger.info("执行WEB爬虫逻辑");
+			// productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr,
+			// pageNo, size);
+			// }
+
+			// 按队列大小分配模式
+			if (Queue.getSize() >= 2) {
 				logger.info("APP爬从队列尺寸大于2，执行WEB爬虫逻辑");
 				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
-			}else{
+			} else {
 				logger.info("APP爬从队列尺寸小于2，执行APP爬虫逻辑");
 				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
@@ -146,98 +149,105 @@ public class AppApiController extends BasicController {
 	// 手机爬从的逻辑
 	private ProductInfoVo appCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		try{
-		// 是淘口令请求时的逻辑
-		if (ifTkl(productUrl, tklSymbolsStr)) {
-			logger.info("用户发送的是淘口令请求");
-			String productUrlRedis = null;
-			Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
-			if (productUrlRedisObj != null) {
-				productUrlRedis = productUrlRedisObj.toString();
-			}
-			// 如果redis里有搜索过的商品名称，则直接通过API获取数据
-			if (productUrlRedis != null) {
-				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
-			} else {
-				// 用正则去匹配标题，可能会匹配错误
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
-				String productUrlTmp = productUrl;
-				String productTitle = (lists.get(0))[0];
-				String productTitleTmp = (lists.get(0))[0];
-				long queueSize = Queue.getSize();
-				logger.info("队列长度==" + queueSize);
-				// 队列长度大于3的话，直接走api接口
-				if (queueSize >= 3) {
-					if (lists.size() > 0) {
-						// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-						jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
-						// 特殊淘口令链接的处理
-						if (productTitleTmp.contains("这个#手聚App团购#宝贝不错")) {
-							try {
-								// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-								// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-								productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
-										productTitleTmp.lastIndexOf("("));
-							} catch (Exception e) {  
-								logger.info(productTitleTmp);
-								e.printStackTrace();
-							}
-						}
-						productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
-					}
+		try {
+			// 是淘口令请求时的逻辑
+			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
+				logger.info("用户发送的是淘口令请求");
+				String productUrlRedis = null;
+				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
+				if (productUrlRedisObj != null) {
+					productUrlRedis = productUrlRedisObj.toString();
+				}
+				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
+				if (productUrlRedis != null) {
+					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
-					// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							logger.info("启动线程，通过API获取商品数据");
-							ProductInfoVo productInfoVoApi = null;
-							String ptitle = productTitle;
-							// 特殊淘口令链接的处理
-							if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+					// 用正则去匹配标题，可能会匹配错误
+					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+					// 【(.*?)】http"
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+					String productUrlTmp = productUrl;
+					String productTitle = (lists.get(0))[0];
+					String productTitleTmp = (lists.get(0))[0];
+					long queueSize = Queue.getSize();
+					logger.info("队列长度==" + queueSize);
+					// 队列长度大于3的话，直接走api接口
+					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+					int queueLength = Integer.parseInt(queueLengthControl);
+					if (queueSize >= queueLength) {
+						if (lists.size() > 0) {
+							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
+							// 特殊淘口令链接的处理，根据不同情况这里增加其他逻辑
+							if (productTitleTmp.contains("这个#手聚App团购#宝贝不错")) {
 								try {
 									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
 									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-									ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
-											productTitle.lastIndexOf("("));
+									productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
+											productTitleTmp.lastIndexOf("("));
 								} catch (Exception e) {
-									logger.info(productTitle);
+									logger.info(productTitleTmp);
 									e.printStackTrace();
 								}
 							}
-							productInfoVoApi = productInfoApi(ptitle, 1, 30);
-							jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
+							productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
 						}
-					}).start();
+					} else {
+						// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								logger.info("启动线程，通过API获取商品数据");
+								ProductInfoVo productInfoVoApi = null;
+								String ptitle = productTitle;
+								// 特殊淘口令链接的处理
+								if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+									try {
+										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+										ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
+												productTitle.lastIndexOf("("));
+									} catch (Exception e) {
+										logger.info(productTitle);
+										e.printStackTrace();
+									}
+								}
+								productInfoVoApi = productInfoApi(ptitle, 1, 30);
+								jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
+							}
+						}).start();
 
-					productInfoVo = productInfoAppCrawl(userId, productUrl);
-					if (productInfoVo.getData() == null) {
-						if (lists.size() > 0) {
-							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+						productInfoVo = productInfoAppCrawl(userId, productUrl);
+						if (productInfoVo.getData() == null) {
+							if (lists.size() > 0) {
+								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+								// 从redis中获取提前通过线程获得的结果
+								productInfoVo = (ProductInfoVo) (jedisPool.getFromCache("obj", productUrl.hashCode()));
 
-							productInfoVo = (ProductInfoVo) (jedisPool.getFromCache("obj", productUrl.hashCode()));
-
+							}
 						}
 					}
 				}
 			}
-		}
-		// 请求为URL时的逻辑
-		else if (keyParser(productUrl, tklSymbolsStr)) {
-			productInfoVo = productInfoWebCrawl(userId, productUrl);
-			if (productInfoVo.getData() == null) {
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
-				if (lists.size() > 0) {
-					productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+			// 请求为URL时的逻辑
+			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
+				// 走网页爬虫逻辑，APP爬虫不支持按url搜索
+				productInfoVo = productInfoWebCrawl(userId, productUrl);
+				// 爬不到数据就走api接口
+				if (productInfoVo.getData() == null) {
+					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+					if (lists.size() > 0) {
+						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+					}
 				}
 			}
-		}
-		// 请求为标题或关键词的逻辑
-		else {
-			productInfoVo = productInfoApi(productUrl, pageNo, size);
-		}
-		}catch(Exception e){
+			// 请求为标题或关键词的逻辑
+			else {
+				productInfoVo = productInfoApi(productUrl, pageNo, size);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -247,7 +257,8 @@ public class AppApiController extends BasicController {
 	// 网页爬虫的逻辑
 	private ProductInfoVo webCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		if (ifTkl(productUrl, tklSymbolsStr)) {
+		//淘口令请求
+		if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
 			String productUrlRedis = null;
 			Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
 			if (productUrlRedisObj != null) {
@@ -259,11 +270,15 @@ public class AppApiController extends BasicController {
 				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 			} else {
 				// 用正则去匹配标题，可能会匹配错误
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
+				String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+				List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
 				String productTitle = (lists.get(0))[0];
 				long queueSize = WebQueue.getSize();
 				logger.info("队列长度==" + queueSize);
-				if (queueSize >= 3) {
+				String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+				int queueLength = Integer.parseInt(queueLengthControl);
+				//队列长度操作预设阈值时，就走API接口
+				if (queueSize >= queueLength) {
 					if (lists.size() > 0) {
 						// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 						jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
@@ -308,10 +323,11 @@ public class AppApiController extends BasicController {
 			}
 		}
 		// 请求为URL时的逻辑
-		else if (keyParser(productUrl, tklSymbolsStr)) {
+		else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
 			productInfoVo = productInfoWebCrawl(userId, productUrl);
 			if (productInfoVo.getData() == null) {
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, "【(.*?)】http");
+				String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+				List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
 				if (lists.size() > 0) {
 					productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
 				}
@@ -341,9 +357,10 @@ public class AppApiController extends BasicController {
 			if (!imgUrl.contains("http:")) {
 				imgUrl = "http:" + imgUrl;
 			}
-			
-			logger.info("淘口令解析返回的图片地址="+imgUrl);
 
+			logger.info("淘口令解析返回的图片地址=" + imgUrl);
+
+			//需转换的淘口令，即用户提交上来的淘口令
 			String tklOld = "";
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 			List<String[]> lists = null;
@@ -359,10 +376,10 @@ public class AppApiController extends BasicController {
 					break;
 				}
 			}
-			
-			logger.info("淘口令解析返回的图片地址保存到redis Key为="+tklOld.hashCode());
+
+			logger.info("淘口令解析返回的图片地址保存到redis Key为=" + tklOld.hashCode());
 			// 把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
-			if (StringUtil.isNotEmpty(imgUrl)) {				
+			if (StringUtil.isNotEmpty(imgUrl)) {
 				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
 			}
 
@@ -586,8 +603,8 @@ public class AppApiController extends BasicController {
 
 			Map<String, String> map = new HashMap<>();
 			ProductInfo productInfo = new ProductInfo();
-//			CrawlTask crawlTask = new CrawlTask();
-			WebTaskControl webTaskControl=new WebTaskControl();
+			// CrawlTask crawlTask = new CrawlTask();
+			WebTaskControl webTaskControl = new WebTaskControl();
 			Map<String, String> resultMap = null;
 			// 如果是淘宝搜索的参数是商品地址
 			if ("taobao".equals(platform)) {
@@ -597,8 +614,8 @@ public class AppApiController extends BasicController {
 			else if ("jd".equals(platform)) {
 				resultMap = webTaskControl.getProduct(uriProductId);
 			}
-			
-			if(resultMap!=null){
+
+			if (resultMap != null) {
 				String productId = "";
 				String productInfoUrl = "";
 				if ("taobao".equals(platform)) {
@@ -616,7 +633,7 @@ public class AppApiController extends BasicController {
 				String productImgUrl = resultMap.get("imgUrl");
 				productInfo.setProductImgUrl(productImgUrl);
 
-				String shopName =resultMap.get("shopName");
+				String shopName = resultMap.get("shopName");
 				productInfo.setShopName(shopName);
 				String productName = resultMap.get("productName");
 				productInfo.setProductName(productName);
@@ -715,11 +732,11 @@ public class AppApiController extends BasicController {
 					fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
 				}
 				map.put("fanliMultiple", fanliMultiple + "");
-			}else {
+			} else {
 				productInfoVo.setStatus("6");
 				productInfoVo.setDesc("未查到商品信息");
 				return productInfoVo;
-			}		
+			}
 
 			List<Map<String, String>> list = new ArrayList<>();
 			list.add(map);
@@ -782,7 +799,7 @@ public class AppApiController extends BasicController {
 					} else {
 						tkurl = mapDataBean.getUrl();
 					}
-					
+
 					float actualCommission = 0f;
 					double actualPrice = 0d;
 					double incomeRate = Double.parseDouble(mapDataBean.getCommission_rate()) / 100;
@@ -799,9 +816,9 @@ public class AppApiController extends BasicController {
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
-					
-					String tklStr = TaoKouling.createTkl("https:" + tkurl, "【预估返:"+actualCommission+"】"+mapDataBean.getTitle(),
-							mapDataBean.getPict_url());
+
+					String tklStr = TaoKouling.createTkl("https:" + tkurl,
+							"【预估返:" + actualCommission + "】" + mapDataBean.getTitle(), mapDataBean.getPict_url());
 					if (StringUtil.isNotEmpty(tklStr)) {
 						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
@@ -862,56 +879,14 @@ public class AppApiController extends BasicController {
 		return productInfoVo;
 	}
 
-	@RequestMapping(value = "/sendTask", method = { RequestMethod.POST, RequestMethod.GET })
-	@ResponseBody
-	public Model sendTask(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String tkl = request.getParameter("url");
-		TaskControl taskControl = new TaskControl();
-		taskControl.sendTask(tkl);
-		return model;
-	}
+//	@RequestMapping(value = "/sendTask", method = { RequestMethod.POST, RequestMethod.GET })
+//	@ResponseBody
+//	public Model sendTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+//		String tkl = request.getParameter("url");
+//		TaskControl taskControl = new TaskControl();
+//		taskControl.sendTask(tkl);
+//		return model;
+//	}
 
-	/**
-	 * 
-	 * @param conetnt
-	 *            搜索的字符串
-	 * @param tklSymbolsStr
-	 *            淘口令符号“€;￥;《”
-	 * @return
-	 */
-	private boolean keyParser(String conetnt, String tklSymbolsStr) {
-		if (conetnt.contains("jd.com") || conetnt.contains("taobao.com") || conetnt.contains("tmall.com")) {
-			return true;
-		} else {
-			String[] tklSymbols = tklSymbolsStr.split(";");
-			for (String symbol : tklSymbols) {
-				String reg = symbol + ".*" + symbol;
-				Pattern pattern = Pattern.compile(reg);
-				Matcher matcher = pattern.matcher(conetnt);
-				if (matcher.find()) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * @param conetnt
-	 * @param tklSymbolsStr
-	 * @return
-	 */
-	private boolean ifTkl(String conetnt, String tklSymbolsStr) {
-		String[] tklSymbols = tklSymbolsStr.split(";");
-		for (String symbol : tklSymbols) {
-			String reg = symbol + ".*" + symbol;
-			Pattern pattern = Pattern.compile(reg);
-			Matcher matcher = pattern.matcher(conetnt);
-			if (matcher.find()) {
-				return true;
-			}
-		}
-		return false;
-	}
+	
 }

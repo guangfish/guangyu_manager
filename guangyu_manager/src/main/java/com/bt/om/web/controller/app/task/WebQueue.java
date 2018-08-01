@@ -15,8 +15,10 @@ import com.lmax.disruptor.dsl.ProducerType;
 public class WebQueue {
 	private static final Logger logger = Logger.getLogger(WebQueue.class);
 	// 初始化队列，定义队列长度
-	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("WebQueue", ProducerType.SINGLE, 256,
+	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("WebQueue", ProducerType.SINGLE, 10,
 			new BlockingWaitStrategy());
+	
+	//初始化浏览器爬虫
 	static{
 		new ProductUrlTrans();
 	}

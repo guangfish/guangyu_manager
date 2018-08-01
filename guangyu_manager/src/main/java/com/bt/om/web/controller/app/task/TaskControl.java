@@ -78,7 +78,7 @@ public class TaskControl {
 		tkInfoTask.setCreateTime(new Date());
 		tkInfoTask.setUpdateTime(new Date());
 
-		// 队列中任务小于3时入队列
+		// 队列中任务小于3时入队列，这里的逻辑应该不会执行，因为前面AppApiController中已经过滤了一下了
 		if (Queue.getSize() < 3) {
 			// 任务入队列
 			Queue.put(tkInfoTask);
@@ -93,11 +93,11 @@ public class TaskControl {
 
 	private Map<String, String> loadData(String sign) {
 		String data = "";
+		//根据sign从redis中获取APP推送的结果数据
 		Object dataObj = jedisPool.getFromCache("", sign);
 		if (dataObj != null) {
 			data = (String) dataObj;
 		}
-		// TkInfoTask tkInfoTask = tkInfoTaskService.selectBySign(sign);
 		Map<String, String> map = null;
 		if (StringUtil.isNotEmpty(data)) {
 			logger.info("从redis中查询到APP端推送的数据");
@@ -106,12 +106,14 @@ public class TaskControl {
 			TkInfoTask tkInfoTask = new TkInfoTask();
 			try {
 				String tklStr = appCrawlBean.getData();
+				//判断结果返回的数据中是否爬到了数据，如果没有则置状态为0，然后返回
 				if (StringUtil.isEmpty(tklStr)) {
 					map = new HashMap<>();
 					map.put("status", "0");
 					return map;
 				}
 
+				//用转换前的淘口令获取图片地址
 				String tklOld = appCrawlBean.getTklStr();
 				Object imgUrlObj = jedisPool.getFromCache("", tklOld.hashCode());
 				String imgUrl = "";
@@ -134,6 +136,7 @@ public class TaskControl {
 				String quan = "0";
 				String tkl = "";
 				String tkLink = "";
+				//以下的正则如果淘宝联盟发生了改变，那么这里也要改表
 				List<String[]> lists = RegexUtil.getListMatcher(tklStr, "【在售价】(.*?)元");
 				if (lists.size() > 0) {
 					price = (lists.get(0))[0];
