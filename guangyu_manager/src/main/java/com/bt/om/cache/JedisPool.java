@@ -100,12 +100,10 @@ public class JedisPool {
                     } else {
                         jedis.setex(cacheName, seconds, v);
                     }
-                    jedis.close();
                 } catch (Exception e) {
-                	if(jedis!=null){
-                		jedis.close();
-                	}
                     logger.error("cache " + getCacheName(type, key) + " socket error。");
+                }finally{
+                	returnResource(jedis);
                 }
             }
         }
@@ -132,14 +130,12 @@ public class JedisPool {
             if (null == v){
                 return null;
             }
-            jedis.close();
             return this.getDeserialization(v);
         } catch (Exception e) {
-        	if(jedis!=null){
-        		jedis.close();
-        	}
             logger.debug("cache " + getCacheName(type, key) + " error。");
             return null;
+        }finally{
+        	returnResource(jedis);
         }
     }
     
@@ -158,14 +154,30 @@ public class JedisPool {
      * @return
      */
     private byte[] getSerializable(Object value) {
+    	ByteArrayOutputStream buffer=null;    	
+    	ObjectOutputStream oos =null;
         try {
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(buffer);
+            buffer = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(buffer);
             oos.writeObject(value);
             return buffer.toByteArray();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             logger.error("ERROR:", e);
+        }finally{
+        	if(oos!=null){
+        		try {
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        	if(buffer!=null){
+        		try {
+					buffer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
         }
         return null;
     }

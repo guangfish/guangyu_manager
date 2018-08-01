@@ -465,6 +465,7 @@ public final class HttpcomponentsUtil {
 		EntityUtils.consume(entity);
 		// 释放链接
 		response.close();
+		client.close();
 		return body;
 	}
 
