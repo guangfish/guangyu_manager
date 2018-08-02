@@ -96,10 +96,10 @@
   background-color: #fff5f5;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text {
-  height: 1.04rem;
+  height: 2.04rem;
   color: #aeaeae;
-  font-size: .32rem;
-  line-height: .38rem;
+  font-size: .42rem;
+  line-height: .68rem;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text em {
   padding-right: 4rem;
