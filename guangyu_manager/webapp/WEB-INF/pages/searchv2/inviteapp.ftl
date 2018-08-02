@@ -37,10 +37,10 @@
 						<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
-									<h2>邀请规则</h2><br/>
+									<h2 align="center">邀请规则</h2><br/>
 								</div>
 								<div class="mui-cont-text limit_text">
-									1. 底部菜单栏"个人中心->我的邀请码"，点击获得邀请码，发送给朋友；
+									1. 逛鱼首页右上方，点击"复制邀请码"按钮，发送给朋友；
 								</div>
 								<div class="mui-cont-text limit_text">
 									2. 好友通过您的邀请码注册后，Ta即永久成为你的会员；
@@ -49,12 +49,14 @@
 									3. 未来Ta领券下单后，平台将会奖励你每笔订单佣金的20%至100%(简单讲：朋友订单返现20元，那么你最多能得到平台20元的奖励)；
 								</div>	
 								<div class="mui-cont-box">
+							<!--
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit">
 									<h2 align="center">加客服微信，申请为超级会员</h2>
 								</div>
 								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>								
 							</a>
+							-->
 						</div>											
 							</a>
 						</div>							
