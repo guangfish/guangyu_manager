@@ -129,19 +129,19 @@
 							    <div class="mui-cont-tit ">
 									<h2>问题1：逛鱼搜索是否安全？</h2>
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									答：网站通过HTTPS加密传输，信息安全有保障；逛鱼搜索不需要您输入任何密码，无隐私泄露问题。
 								</div>
 								<div class="mui-cont-tit ">
 									<h2>问题2：申请提现后，什么时候能到账？</h2>
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									答：工作日2小时内到账，节假日暂不处理转账。
 								</div>
 								<div class="mui-cont-tit ">
 									<h2>问题3：经常找不到逛鱼网站</h2>
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									答：如果用手机浏览器访问，建议保存成书签；如果在微信打开网站，建议把网站“置顶”或设置成“浮窗”。
 								</div>	
 								<div class="mui-cont-tit ">
@@ -164,30 +164,30 @@
 							    <div class="mui-cont-tit ">
 									<h2 align="center">提现须知</h2><br/>
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									1.每月仅28日开启提现功能，提取金额为"我的钱包"显示金额
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									2.【我的钱包】显示"上月订单返现"+"邀请奖励"+"订单奖励"+"我的红包"
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									3.【订单返现】为未提现的所有订单返现，计算方式为未提现的所有订单返现的累加
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									4.【订单奖励】我的逛友获得并提取订单返现后，那么做为邀请人就会得到逛鱼平台的订单奖励，奖励幅度为好友订单返现的20%至100%（按每订单计算）
 								</div>
-								<div style="height:0.6rem;"></div>
-								<div class="mui-cont-text limit_text">
+								<div style="height:1.4rem;"></div>
+								<div class="mui-cont-text">
 									5.【邀请奖励】我邀请了好友使用逛鱼，并且好友成功通过逛鱼完成购买并完成提现，那么作为邀请人就可以获得逛鱼平台奖励给你的30元封顶的随机邀请奖励
 								</div>
-								<div style="height:0.6rem;"></div>
-								<div class="mui-cont-text limit_text">
+								<div style="height:1.4rem;"></div>
+								<div class="mui-cont-text">
 									6.【我的红包】注册逛鱼可获得随机红包；按用户活跃程度，不定期可获得随机活跃红包
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									7.除每月28日开启提现功能外，"我的钱包"余额为0不可提现，仅红包不可单独提现
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									8.提现金额最迟不超过1个工作日到达您的支付宝账户
 								</div>	
 							</a>
