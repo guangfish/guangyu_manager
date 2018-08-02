@@ -16,4 +16,6 @@ public interface ITkOrderInputService {
     public void updateByOrderId(TkOrderInput record);
     
     public void truncateTkOrderInput();
+    
+    public void deleteByAccount(String account);
 }

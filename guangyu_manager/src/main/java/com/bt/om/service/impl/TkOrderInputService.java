@@ -39,4 +39,9 @@ public class TkOrderInputService implements ITkOrderInputService {
 	public void truncateTkOrderInput() {
 		tkOrderInputMapper.truncateTkOrderInput();
 	}
+	
+	@Override
+	public void deleteByAccount(String account) {
+		tkOrderInputMapper.deleteByAccount(account);
+	}
 }

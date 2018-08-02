@@ -43,7 +43,7 @@ public class MaterialSearch {
 		try {
 			rsp = client.execute(req);
 			retStr = rsp.getBody();
-			System.out.println(retStr);
+//			System.out.println(retStr);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		}

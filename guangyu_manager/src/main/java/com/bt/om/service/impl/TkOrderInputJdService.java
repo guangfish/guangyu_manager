@@ -19,19 +19,24 @@ public class TkOrderInputJdService implements ITkOrderInputJdService {
 	public List<TkOrderInputJd> selectByOrderId(String sign) {
 		return tkOrderInputJdMapper.selectByOrderId(sign);
 	}
-	
+
 	@Override
-	public TkOrderInputJd selectByMap(Map<String,Object> map){
+	public TkOrderInputJd selectByMap(Map<String, Object> map) {
 		return tkOrderInputJdMapper.selectByMap(map);
 	}
-	
+
 	@Override
 	public void insert(TkOrderInputJd tkOrderInputJd) {
 		tkOrderInputJdMapper.insert(tkOrderInputJd);
 	}
-	
+
 	@Override
 	public void truncateTkOrderInputJd() {
 		tkOrderInputJdMapper.truncateTkOrderInputJd();
+	}
+
+	@Override
+	public void deleteByAccount(String account) {
+		tkOrderInputJdMapper.deleteByAccount(account);
 	}
 }

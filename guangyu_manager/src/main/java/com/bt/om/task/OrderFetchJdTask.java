@@ -163,7 +163,9 @@ public class OrderFetchJdTask {
 					+ DateUtil.dateFormate(new Date(), DateUtil.DEFAULT_PATTERN) + ".csv";
 			List<TkOrderInputJd> tkOrderInputJdList = readJdReport(filePath);
 
-			tkOrderInputJdService.truncateTkOrderInputJd();
+//			tkOrderInputJdService.truncateTkOrderInputJd();
+			
+			tkOrderInputJdService.deleteByAccount(ConfigUtil.getString("jd.account"));
 			for (TkOrderInputJd tkOrderInputJd : tkOrderInputJdList) {
 				tkOrderInputJdService.insert(tkOrderInputJd);
 			}
@@ -227,6 +229,7 @@ public class OrderFetchJdTask {
 				tkOrderInputJd.setPid(items[28]);
 				tkOrderInputJd.setSiteApp(items[29]);
 				tkOrderInputJd.setUpdateTime(new Date());
+				tkOrderInputJd.setAccount(ConfigUtil.getString("jd.account"));
 
 				tkOrderInputJdList.add(tkOrderInputJd);
 			}			

@@ -13,4 +13,6 @@ public interface ITkOrderInputJdService {
 	public void insert(TkOrderInputJd tkOrderInputJd);
 
 	public void truncateTkOrderInputJd();
+	
+	public void deleteByAccount(String account);
 }

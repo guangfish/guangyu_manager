@@ -436,7 +436,8 @@ public class AppApiController extends BasicController {
 				try {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
-					logger.error(e.getMessage());
+					logger.info(productInfo.getProductId()+"已入库");
+//					logger.error(e.getMessage());
 				}
 
 				// 插入搜索记录
@@ -665,7 +666,8 @@ public class AppApiController extends BasicController {
 				try {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
-					logger.error(e.getMessage());
+					logger.info(productInfo.getProductId()+"已入库");
+//					logger.error(e.getMessage());
 				}
 
 				// 插入搜索记录

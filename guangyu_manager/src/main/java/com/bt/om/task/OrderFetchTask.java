@@ -154,8 +154,10 @@ public class OrderFetchTask {
 			String filePath=ConfigUtil.getString("report.file.path")+"TaokeDetail-"+DateUtil.dateFormate(new Date(),DateUtil.CHINESE_PATTERN)+".xls";						
 			List<TkOrderInput> tkOrderInputList = readTaobaoReport(filePath);
 
-			// 先清空表中数据，然后再插入数据
-			tkOrderInputService.truncateTkOrderInput();
+//			// 先清空表中数据，然后再插入数据
+//			tkOrderInputService.truncateTkOrderInput();
+			//先删除本台服务器配置的淘宝联盟账号下的订单数据
+			tkOrderInputService.deleteByAccount(ConfigUtil.getString("alimama.account"));
 			for (TkOrderInput tkOrderInput : tkOrderInputList) {
 				tkOrderInputService.insert(tkOrderInput);
 			}
@@ -305,6 +307,7 @@ public class OrderFetchTask {
 				tkOrderInput.setAdName(hssfCell31.getStringCellValue());
 				
 				tkOrderInput.setUpdateTime(new Date());
+				tkOrderInput.setAccount(ConfigUtil.getString("alimama.account"));
 				
 				tkOrderInputList.add(tkOrderInput);
 			}			
