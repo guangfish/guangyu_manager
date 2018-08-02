@@ -27,11 +27,7 @@
 <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
 <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/static/frontv2/css/help/help.css">
-<!-- 头部 -->
-	<div class=" mui-bar mui-bar-nav mui-search-box">
-		<a href="javascript:void(0);"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-	</div>
+<link rel="stylesheet" type="text/css" href="/static/frontv2/css/about-app/help.css">
 	<!-- 主要内容 -->
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
@@ -47,7 +43,7 @@
 									逛鱼是一个搜优惠券、拿返利的工具，支持淘宝、京东。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>逛鱼是团队</h2>
+									<h2>逛鱼团队</h2>
 								</div>
 								<div class="mui-cont-text limit_text">
 									逛鱼是有技术人员主导开发的一款APP工具；我们不拿这款APP作为盈利产品。

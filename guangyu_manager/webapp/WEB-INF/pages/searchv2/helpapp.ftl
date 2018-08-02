@@ -27,11 +27,8 @@
 <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
 <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/static/frontv2/css/help/help.css">
-<!-- 头部 -->
-	<div class=" mui-bar mui-bar-nav mui-search-box">
-		<a href="javascript:void(0);"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-	</div>
+<link rel="stylesheet" type="text/css" href="/static/frontv2/css/help-app/help.css">
+
 	<!-- 主要内容 -->
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
@@ -40,6 +37,7 @@
 				<a style="text-decoration: none;" data-id="#jd" class="mui-event-tap">京东使用</a>
 				<a style="text-decoration: none;" data-id="#orderid" class="mui-event-tap">找订单号</a>
 				<!--<a style="text-decoration: none;" data-id="#cjhy" class="mui-event-tap">超级会员</a>-->
+				<a style="text-decoration: none;" data-id="#draw" class="mui-event-tap">提现须知</a>
 				<a style="text-decoration: none;" data-id="#faq" class="mui-event-tap">常见提问</a>				
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
@@ -156,6 +154,41 @@
 							</a>
 						</div>							
 					</div>
+					
+					<div id="draw" class="mui-event-cont disn">
+						<div class="mui-cont-box">
+							<a style="text-decoration: none;" href="#">
+							    <div class="mui-cont-tit ">
+									<h2>提现须知</h2><br/>
+								</div>
+								<div class="mui-cont-text limit_text">
+									1.每月仅28日开启提现功能，提取金额为"我的钱包"显示金额
+								</div>
+								<div class="mui-cont-text limit_text">
+									2.【我的钱包】显示"上月订单返现"+"邀请奖励"+"订单奖励"+"我的红包"
+								</div>
+								<div class="mui-cont-text limit_text">
+									3.【订单返现】为未提现的所有订单返现，计算方式为未提现的所有订单返现的累加
+								</div>
+								<div class="mui-cont-text limit_text">
+									4.【订单奖励】我的逛友获得并提取订单返现后，那么做为邀请人就会得到逛鱼平台的订单奖励，奖励幅度为好友订单返现的20%至100%（按每订单计算）
+								</div>
+								<div class="mui-cont-text limit_text">
+									5.【邀请奖励】我邀请了好友使用逛鱼，并且好友成功通过逛鱼完成购买并完成提现，那么作为邀请人就可以获得逛鱼平台奖励给你的30元封顶的随机邀请奖励
+								</div>
+								<div class="mui-cont-text limit_text">
+									6.【我的红包】注册逛鱼可获得随机红包；按用户活跃程度，不定期可获得随机活跃红包
+								</div>
+								<div class="mui-cont-text limit_text">
+									7.除每月28日开启提现功能外，"我的钱包"余额为0不可提现，仅红包不可单独提现
+								</div>
+								<div class="mui-cont-text limit_text">
+									8.提现金额最迟不超过1个工作日到达您的支付宝账户
+								</div>	
+							</a>
+						</div>				
+					</div>
+					
 					<div id="cjhy" class="mui-event-cont disn">
 						<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
@@ -178,10 +211,9 @@
 								</div>
 								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>								
 							</a>
-						</div>											
-							</a>
-						</div>							
-					</div>
+						</div>				
+					</div>																				
+					
 				</div>
 			</div>
 			

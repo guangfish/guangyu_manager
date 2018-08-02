@@ -1,0 +1,107 @@
+@import "../common/nav.css";
+.disn {
+  display: none;
+}
+.mui-content.mui-event-box {
+  padding-top: 0rem;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-title {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  background-color: #fff;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-title a {
+  display: inline-block;
+  margin-left: .72rem;
+  padding: .4rem .1rem;
+  font-size: .37rem;
+  color: #aeaeae;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1          
+			   flex: 1;
+  text-align: center;
+  margin: 0 .1rem;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-title a.active {
+  color: #010101;
+  font-weight: bold;
+  border-bottom: .06rem solid #ff6402;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-title:after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  content: '';
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  background-color: #c8c7cc;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont {
+  padding-top: 1.2rem;
+  padding-bottom: 40px;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box {
+  background-color: #fff;
+  padding: .46rem .38rem ;
+  margin-bottom: .28rem;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a {
+  display: inline-block;
+  width: 100%;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .eventImg {
+  text-align: center;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .eventImg img {
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit {
+  position: relative;
+  margin: .3rem 0 .23rem 0;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit h2 {
+  font-size: .5rem;
+  color: #010101;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 1.74rem;
+  height: .55rem;
+  line-height: .55rem;
+  border: solid 1px #9fd0d3;
+  color: #00aeda;
+  font-size: .32rem;
+  text-align: center;
+  border-radius: 0.09rem;
+  background-color: #effeff;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit.mui-started span {
+  border: solid 1px #ffae95;
+  color: #ff6402;
+  background-color: #fff5f5;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text {
+  height: 1.04rem;
+  color: #aeaeae;
+  font-size: .32rem;
+  line-height: .38rem;
+}
+.mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text em {
+  padding-right: 4rem;
+  display: inline-block;
+}

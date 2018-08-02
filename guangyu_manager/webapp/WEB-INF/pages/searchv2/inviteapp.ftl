@@ -27,11 +27,7 @@
 <script type="text/javascript" src="/static/front/js/js/layer/layer.js"></script>
 <script type="text/javascript" src="/static/front/js/js/public.core.js"></script>
 
-<link rel="stylesheet" type="text/css" href="/static/frontv2/css/help/help.css">
-<!-- 头部 -->
-	<div class=" mui-bar mui-bar-nav mui-search-box">
-		<a href="javascript:void(0);"><img src="/static/frontv2/img/guangfish/logo-cn.png" class="mui-logo2"></a>
-	</div>
+<link rel="stylesheet" type="text/css" href="/static/frontv2/css/invite-app/help.css">
 	<!-- 主要内容 -->
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
