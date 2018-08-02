@@ -122,9 +122,13 @@ public class UserOrderMatchTask {
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
 							int agencyRewardRate = 0;
-							if (commission3 >= 30) {
+							//佣金大于10元是，用最小的订单奖励比例
+							String commissionRewardMoneyStr=GlobalVariable.resourceMap.get("commission_reward_money");
+							int commissionRewardMoney=Integer.parseInt(commissionRewardMoneyStr);
+							if (commission3 >= commissionRewardMoney) {
 								agencyRewardRate = minAgencyRewardRate;
 							} else {
+								//佣金小于10时，订单奖励范围最小20%，最大为订单奖励比例最小值+最大值
 								agencyRewardRate = minAgencyRewardRate + NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
 							}
 							userOrder.setCommissionReward(

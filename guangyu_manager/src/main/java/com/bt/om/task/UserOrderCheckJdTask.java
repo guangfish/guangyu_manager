@@ -157,7 +157,10 @@ public class UserOrderCheckJdTask {
 
 							userOrder1.setStatus1(status1);
 							int agencyRewardRate = 0;
-							if (commission3 >= 30) {
+							//佣金大于10元是，用最小的订单奖励比例
+							String commissionRewardMoneyStr=GlobalVariable.resourceMap.get("commission_reward_money");
+							int commissionRewardMoney=Integer.parseInt(commissionRewardMoneyStr);
+							if (commission3 >= commissionRewardMoney) {
 								agencyRewardRate = minAgencyRewardRate;
 							} else {
 								agencyRewardRate = minAgencyRewardRate + NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
