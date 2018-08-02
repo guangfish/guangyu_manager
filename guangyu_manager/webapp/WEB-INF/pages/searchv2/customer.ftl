@@ -37,7 +37,7 @@
 								<div class="mui-cont-box">					    
 								<div class="eventImg" align="center"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>	
 								<div class="mui-cont-tit">
-									<h2 align="center">服务时间：周一至周六9:00-18:00</h2>
+									<h2 align="center">服务时间：周一至周五9:00-18:00</h2>
 								</div>																	
 						</div>							
 					</div>

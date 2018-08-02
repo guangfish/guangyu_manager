@@ -124,6 +124,9 @@
 						<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
+									<h2 align="center">常见问题</h2><br/>
+								</div>
+							    <div class="mui-cont-tit ">
 									<h2>问题1：逛鱼搜索是否安全？</h2>
 								</div>
 								<div class="mui-cont-text limit_text">
@@ -159,7 +162,7 @@
 						<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
-									<h2>提现须知</h2><br/>
+									<h2 align="center">提现须知</h2><br/>
 								</div>
 								<div class="mui-cont-text limit_text">
 									1.每月仅28日开启提现功能，提取金额为"我的钱包"显示金额
@@ -173,9 +176,11 @@
 								<div class="mui-cont-text limit_text">
 									4.【订单奖励】我的逛友获得并提取订单返现后，那么做为邀请人就会得到逛鱼平台的订单奖励，奖励幅度为好友订单返现的20%至100%（按每订单计算）
 								</div>
+								<div style="height:0.6rem;"></div>
 								<div class="mui-cont-text limit_text">
 									5.【邀请奖励】我邀请了好友使用逛鱼，并且好友成功通过逛鱼完成购买并完成提现，那么作为邀请人就可以获得逛鱼平台奖励给你的30元封顶的随机邀请奖励
 								</div>
+								<div style="height:0.6rem;"></div>
 								<div class="mui-cont-text limit_text">
 									6.【我的红包】注册逛鱼可获得随机红包；按用户活跃程度，不定期可获得随机活跃红包
 								</div>

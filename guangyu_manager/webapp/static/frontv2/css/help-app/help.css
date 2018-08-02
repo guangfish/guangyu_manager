@@ -70,7 +70,7 @@
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit {
   position: relative;
-  margin: .3rem 0 .23rem 0;
+  margin: .6rem 0 .23rem 0;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-tit h2 {
   font-size: .5rem;
@@ -96,10 +96,10 @@
   background-color: #fff5f5;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text {
-  height: 1.04rem;
+  height: 1.8rem;
   color: #aeaeae;
-  font-size: .32rem;
-  line-height: .38rem;
+  font-size: .42rem;
+  line-height: .68rem;
 }
 .mui-content.mui-event-box .mui-main-event .mui-event-cont .mui-cont-box a .mui-cont-text em {
   padding-right: 4rem;
