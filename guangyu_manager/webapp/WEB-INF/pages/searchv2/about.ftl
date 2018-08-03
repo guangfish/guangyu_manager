@@ -7,12 +7,19 @@
 	<meta name="description" content=""/>
 	<meta name="keywords" content=""/>
 	<meta name="format-detection" content="telephone=no,email=no">
+	<link rel="stylesheet" type="text/css" href="/static/frontv2/css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="/static/frontv2/css/mui.min.css">
+	<script type="text/javascript" src="/static/frontv2/js/jquery-1.8.3.min.js"></script>
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
 	<title>关于逛鱼</title>	
 </head>
 <body>
+
+<script type="text/javascript" src="/static/frontv2/js/mui/mui.min.js"></script>
+<script type="text/javascript" src="/static/frontv2/js/swiper.min.js"></script>
+<script type="text/javascript" src="/static/frontv2/js/common.js"></script>
+
 
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/about-app/help.css">
 	<!-- 主要内容 -->
