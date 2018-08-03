@@ -130,11 +130,13 @@ public class AppApiController extends BasicController {
 			// }
 
 			// 按队列大小分配模式
-			if (Queue.getSize() >= 2) {
-				logger.info("APP爬从队列尺寸大于2，执行WEB爬虫逻辑");
+			String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+			int queueLength = Integer.parseInt(queueLengthControl);
+			if (Queue.getSize() >= queueLength) {
+				logger.info("APP爬从队列尺寸大于"+queueLength+"，执行WEB爬虫逻辑");
 				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			} else {
-				logger.info("APP爬从队列尺寸小于2，执行APP爬虫逻辑");
+				logger.info("APP爬从队列尺寸小于"+queueLength+"，执行APP爬虫逻辑");
 				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
 		}
@@ -277,8 +279,8 @@ public class AppApiController extends BasicController {
 				logger.info("队列长度==" + queueSize);
 				String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 				int queueLength = Integer.parseInt(queueLengthControl);
-				//队列长度操作预设阈值时，就走API接口
-				if (queueSize >= queueLength) {
+				//队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
+				if (queueSize >= queueLength+1) {
 					if (lists.size() > 0) {
 						// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 						jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
