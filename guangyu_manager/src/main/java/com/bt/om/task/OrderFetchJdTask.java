@@ -91,8 +91,8 @@ public class OrderFetchJdTask {
 //		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 //	}
 
-	@Scheduled(cron = "0 0/2 * * * ?")
-//	@Scheduled(cron = "0 0/20 7-23 * * ?")
+//	@Scheduled(cron = "0 0/2 * * * ?")
+	@Scheduled(cron = "0 0/20 7-23 * * ?")
 	public void orderJdFetchTask() {
 		String ifRun = GlobalVariable.resourceMap.get("OrderFetchJdTask");
 		if ("1".equals(ifRun)) {
