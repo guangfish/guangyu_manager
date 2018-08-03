@@ -3,6 +3,7 @@ package com.bt.om.web.controller.app;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -18,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.adtime.common.lang.StringUtil;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.AppDownload;
+import com.bt.om.entity.AppDownloadLogs;
+import com.bt.om.service.IAppDownloadLogsService;
 import com.bt.om.service.IAppDownloadService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
@@ -44,6 +48,8 @@ public class AppCommonController extends BasicController {
 	private JedisPool jedisPool;
 	@Autowired
 	private IAppDownloadService appDownloadService;
+	@Autowired
+	private IAppDownloadLogsService appDownloadLogsService;
 
 	// 获取验证码
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
@@ -106,6 +112,33 @@ public class AppCommonController extends BasicController {
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		model.addAttribute("response", commonVo);
 		return model;
+	}
+	
+	@RequestMapping(value = "/fd", method = RequestMethod.GET)
+	public String firstDownload(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String returl="";
+		String andoridDownloadUrl=GlobalVariable.resourceMap.get("android_download_url");
+		String iosDownloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
+		String ua = request.getHeader("User-Agent");
+		String ip = request.getRemoteAddr();
+		if(StringUtil.isNotEmpty(ua)){
+			AppDownloadLogs appDownloadLogs=new AppDownloadLogs();
+			ua=ua.toLowerCase();
+			appDownloadLogs.setIp(ip);
+			appDownloadLogs.setDownloadTime(new Date());
+			if(ua.contains("android")){
+				appDownloadLogs.setDevice("android");				
+				returl="redirect:"+andoridDownloadUrl;
+			}else if(ua.contains("iphone")||ua.contains("ipad")){
+				appDownloadLogs.setDevice("ios");				
+				returl="redirect:"+iosDownloadUrl;
+			}else{
+				appDownloadLogs.setDevice("other");
+				returl="redirect:"+andoridDownloadUrl;
+			}
+			appDownloadLogsService.insert(appDownloadLogs);
+		}
+		return returl;
 	}
 	
 	@RequestMapping(value = "/download", method = RequestMethod.POST)
