@@ -150,7 +150,7 @@
 									6、打开逛鱼APP，提交绑定订单号</br>
 									7、等待订单匹配，订单匹配最快1小时，最迟次日
 								</div>	
-								<div style="height:5.4rem;"></div>
+								<div style="height:4.4rem;"></div>
 								<div class="mui-cont-tit ">
 									<h2>问题4：我下单了，逛鱼里怎么没显示订单和返现？</h2>
 								</div>
