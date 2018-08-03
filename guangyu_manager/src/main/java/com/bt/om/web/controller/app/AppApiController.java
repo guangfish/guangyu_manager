@@ -129,7 +129,7 @@ public class AppApiController extends BasicController {
 			// pageNo, size);
 			// }
 
-			// 按队列大小分配模式
+			// 按队列大小分配模式，手机爬虫优先，当手机爬虫队列超过阈值时就走web爬虫
 			String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 			int queueLength = Integer.parseInt(queueLengthControl);
 			if (Queue.getSize() >= queueLength) {
@@ -172,11 +172,12 @@ public class AppApiController extends BasicController {
 					String productTitle = (lists.get(0))[0];
 					String productTitleTmp = (lists.get(0))[0];
 					long queueSize = Queue.getSize();
-					logger.info("队列长度==" + queueSize);
+					
 					// 队列长度大于3的话，直接走api接口
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 					int queueLength = Integer.parseInt(queueLengthControl);
 					if (queueSize >= queueLength) {
+						logger.info("APP爬虫队列长度=" + queueSize+",走API接口");
 						if (lists.size() > 0) {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
@@ -188,7 +189,7 @@ public class AppApiController extends BasicController {
 									productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
 											productTitleTmp.lastIndexOf("("));
 								} catch (Exception e) {
-									logger.info(productTitleTmp);
+									logger.info("特殊标题分析错误，标题为【"+productTitleTmp+"】");
 									e.printStackTrace();
 								}
 							}
@@ -210,7 +211,7 @@ public class AppApiController extends BasicController {
 										ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
 												productTitle.lastIndexOf("("));
 									} catch (Exception e) {
-										logger.info(productTitle);
+										logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
 										e.printStackTrace();
 									}
 								}
@@ -276,11 +277,11 @@ public class AppApiController extends BasicController {
 				List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
 				String productTitle = (lists.get(0))[0];
 				long queueSize = WebQueue.getSize();
-				logger.info("队列长度==" + queueSize);
 				String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 				int queueLength = Integer.parseInt(queueLengthControl);
 				//队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
 				if (queueSize >= queueLength+1) {
+					logger.info("WEB爬虫队列长度=" + queueSize+",走API接口");
 					if (lists.size() > 0) {
 						// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 						jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
@@ -293,7 +294,7 @@ public class AppApiController extends BasicController {
 								productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
 										productTitle.lastIndexOf("("));
 							} catch (Exception e) {
-								logger.info(productTitle);
+								logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
 								e.printStackTrace();
 							}
 						}
@@ -314,7 +315,7 @@ public class AppApiController extends BasicController {
 									productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
 											productTitle.lastIndexOf("("));
 								} catch (Exception e) {
-									logger.info(productTitle);
+									logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
 									e.printStackTrace();
 								}
 							}
@@ -360,7 +361,7 @@ public class AppApiController extends BasicController {
 				imgUrl = "http:" + imgUrl;
 			}
 
-			logger.info("淘口令解析返回的图片地址=" + imgUrl);
+			logger.info("淘口令解析返回的图片地址【" + imgUrl+"】");
 
 			//需转换的淘口令，即用户提交上来的淘口令
 			String tklOld = "";
@@ -379,7 +380,7 @@ public class AppApiController extends BasicController {
 				}
 			}
 
-			logger.info("淘口令解析返回的图片地址保存到redis Key为=" + tklOld.hashCode());
+//			logger.info("淘口令解析返回的图片地址保存到redis Key为=" + tklOld.hashCode());
 			// 把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
 			if (StringUtil.isNotEmpty(imgUrl)) {
 				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
@@ -438,7 +439,7 @@ public class AppApiController extends BasicController {
 				try {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
-					logger.info(productInfo.getProductId()+"已入库");
+//					logger.info(productInfo.getProductId()+"已入库");
 //					logger.error(e.getMessage());
 				}
 

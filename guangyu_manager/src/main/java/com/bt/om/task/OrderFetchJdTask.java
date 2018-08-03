@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -61,6 +62,7 @@ public class OrderFetchJdTask {
 
 	private static WebDriver driver;
 	private static String baseUrl = "https://media.jd.com";
+	private static String downloadUrl = "https://media.jd.com/rest/report/detail";
 
 	private static int sleepTimeBegin = 1000;
 	private static int sleepTimeEnd = 2000;
@@ -91,8 +93,8 @@ public class OrderFetchJdTask {
 //		driver.manage().timeouts().implicitlyWait(1500, TimeUnit.MILLISECONDS);
 //	}
 
-//	@Scheduled(cron = "0 0/2 * * * ?")
-	@Scheduled(cron = "0 0/20 7-23 * * ?")
+	@Scheduled(cron = "0 0/2 * * * ?")
+//	@Scheduled(cron = "0 0/20 7-23 * * ?")
 	public void orderJdFetchTask() {
 		String ifRun = GlobalVariable.resourceMap.get("OrderFetchJdTask");
 		if ("1".equals(ifRun)) {
@@ -113,6 +115,17 @@ public class OrderFetchJdTask {
 		try {
 //			driver.navigate().refresh();
 //			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin * 2, sleepTimeEnd * 2));
+			
+			//先登录
+			driver.get(baseUrl);
+			WebElement iframe = driver.findElement(By.id("indexIframe"));
+	        driver.switchTo().frame(iframe);
+			String setValueJS =";document.getElementById('loginname').value='"+ConfigUtil.getString("jd.account","chj8023")+"';document.getElementById('nloginpwd').value='"+ConfigUtil.getString("jd.password","aineness3300656")+"';document.getElementById('paipaiLoginSubmit').click();";
+			((JavascriptExecutor) driver).executeScript(setValueJS);	
+			driver.switchTo().defaultContent();
+			Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
+			driver.get(downloadUrl);
+			Thread.sleep(NumberUtil.getRandomNumber(10000, 20000));
 			
 			try {
 				WebElement element0 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div[2]/a"));
@@ -172,7 +185,7 @@ public class OrderFetchJdTask {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			driver.navigate().refresh();
+//			driver.navigate().refresh();
 			return;
 		}
 	}
