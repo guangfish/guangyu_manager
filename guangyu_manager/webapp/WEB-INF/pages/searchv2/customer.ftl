@@ -16,7 +16,7 @@
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
-	<title>客服</title>	
+	<title>专属客服</title>	
 </head>
 <body>
 
@@ -35,7 +35,7 @@
 					<div id="taobao" class="mui-event-cont">
 						<div class="mui-cont-box">
 								<div class="mui-cont-box">					    
-								<div class="eventImg" align="center"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>	
+								<div class="eventImg" align="center"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.jpg" alt=""></div>	
 								<div class="mui-cont-tit">
 									<h2 align="center">服务时间：周一至周五9:00-18:00</h2>
 								</div>																	
