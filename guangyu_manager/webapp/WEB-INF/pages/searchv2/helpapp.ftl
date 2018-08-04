@@ -153,7 +153,13 @@
 									答：逛鱼不提供历史订单查询，用户提现后自动删除用户订单信息，只保留用户的总节省金额。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题5：逛鱼使用的流程是什么样的？</h2>
+									<h2>问题5：我的想比价查询？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：淘宝支持比价查询，您可以复制商品标题搜索，京东不支持比价查询。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题6：逛鱼使用的流程是什么样的？</h2>
 								</div>
 								<div class="mui-cont-text">
 									1、复制淘宝商品的链接或标题</br>
@@ -166,7 +172,7 @@
 								</div>	
 								<div style="height:4.4rem;"></div>
 								<div class="mui-cont-tit ">
-									<h2>问题6：我下单了，逛鱼里怎么没显示订单和返现？</h2>
+									<h2>问题7：我下单了，逛鱼里怎么没显示订单和返现？</h2>
 								</div>
 								<div class="mui-cont-text">
 								    跑单的几种情况：<br/><br/>
