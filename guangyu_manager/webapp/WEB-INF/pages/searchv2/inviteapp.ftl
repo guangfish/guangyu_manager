@@ -45,7 +45,7 @@
 								<div class="mui-cont-text limit_text">
 									2. 好友通过您的邀请码注册后，Ta即永久成为你的逛友；
 								</div>
-								<div class="mui-cont-text limit_text">
+								<div class="mui-cont-text">
 									3. 未来Ta领券下单后，您会获得30元封顶的邀请奖励，另外平台还会奖励你每笔订单返现的20%至100%(简单讲：朋友订单返现20元，那么你最多能得到平台20元的订单奖励)；
 								</div>	
 								<div class="mui-cont-box">
