@@ -120,7 +120,7 @@ public class AppCommonController extends BasicController {
 		String andoridDownloadUrl=GlobalVariable.resourceMap.get("android_download_url");
 		String iosDownloadUrl=GlobalVariable.resourceMap.get("ios_download_url");
 		String ua = request.getHeader("User-Agent");
-		String ip = request.getRemoteAddr();
+		String ip = RequestUtil.getRealIp(request);
 		if(StringUtil.isNotEmpty(ua)){
 			AppDownloadLogs appDownloadLogs=new AppDownloadLogs();
 			ua=ua.toLowerCase();
