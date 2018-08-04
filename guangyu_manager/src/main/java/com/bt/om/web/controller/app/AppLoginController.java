@@ -105,16 +105,19 @@ public class AppLoginController extends BasicController {
 			registerVo.setDesc("登陆成功");
 			Map<String, String> data = new HashMap<>();
 
-			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-			if ("android".equals(app)) {
-				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-			} else if ("ios".equals(app)) {
-				downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
-			}
+//			String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+//			if ("android".equals(app)) {
+//				downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+//			} else if ("ios".equals(app)) {
+//				downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
+//			}
+			
+			//APP下载的短链接地址
+			String appDownloadUrl = GlobalVariable.resourceMap.get("app_download_url");
 
 			String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
 			// inviteCodeInfo="邀请您加入逛鱼搜索，搜索淘宝、京东优惠券，拿返利！先领券，再购物，更划算！#Enter#-------------\r\n邀请好友成为会员，享永久平台奖励，邀请越多赚的越多！\r\n-------------\r\n下载链接：#URL#\r\n-------------\r\n邀请码：Ʊ#myInviteCode#Ʊ";
-			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl)
+			inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", appDownloadUrl)
 					.replace("#myInviteCode#", user.getMyInviteCode());
 
 			data.put("userId", SecurityUtil1.encrypts(mobile));
@@ -240,15 +243,18 @@ public class AppLoginController extends BasicController {
 			return model;
 		}
 
-		String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-		if ("android".equals(app)) {
-			downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
-		} else if ("ios".equals(app)) {
-			downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
-		}
+//		String downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+//		if ("android".equals(app)) {
+//			downloadUrl = GlobalVariable.resourceMap.get("android_download_url");
+//		} else if ("ios".equals(app)) {
+//			downloadUrl = GlobalVariable.resourceMap.get("ios_download_url");
+//		}
+		
+		//APP下载的短链接地址
+		String appDownloadUrl = GlobalVariable.resourceMap.get("app_download_url");
 
 		String inviteCodeInfo = GlobalVariable.resourceMap.get("invite_info");
-		inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", downloadUrl)
+		inviteCodeInfo = inviteCodeInfo.replace("#Enter#", "\r\n").replace("#URL#", appDownloadUrl)
 				.replace("#myInviteCode#", user.getMyInviteCode());
 
 		registerVo.setStatus("0");
@@ -330,12 +336,12 @@ public class AppLoginController extends BasicController {
 		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
 		if ("1".equals(canDrawSwitch)) {
 			String day = DateUtil.dateFormate(new Date(), "dd");
-			String canDrawDay = GlobalVariable.resourceMap.get("can_draw_day");
-			if (canDrawDay.equals(day)) {
+			String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+			if (canDrawDays.contains(day)) {
 				canDraw = "true";
 			} else {
 				canDraw = "false";
-				reason = "亲！每月" + canDrawDay + "日开启提现功能。";
+				reason = "亲！每月" + canDrawDays + "日开启提现功能。";
 			}
 		}
 

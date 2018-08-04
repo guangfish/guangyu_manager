@@ -195,7 +195,7 @@
 								-->
 								<div style="height:0.6rem;"></div>
 								<div class="mui-cont-text">
-									1.每月仅28日开启提现功能，提取金额为"我的钱包"显示金额
+									1.每月仅${canDrawDays?if_exists}日开启提现功能，提取金额为"我的钱包"显示金额
 								</div>
 								<div class="mui-cont-text">
 									2.【我的钱包】显示"上月订单返现"+"邀请奖励"+"订单奖励"+"我的红包"

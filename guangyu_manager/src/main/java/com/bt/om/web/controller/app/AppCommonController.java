@@ -175,7 +175,8 @@ public class AppCommonController extends BasicController {
 	
 	@RequestMapping(value = "/help", method = { RequestMethod.GET, RequestMethod.POST })
 	public String help(Model model, HttpServletRequest request) {
-//		return "redirect:https://h5.m.taobao.com/mlapp/olist.html?spm=a2141.7756461.2.6";
+		String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+		model.addAttribute("canDrawDays",canDrawDays);
 		return "searchv2/helpapp";
 	}
 	
