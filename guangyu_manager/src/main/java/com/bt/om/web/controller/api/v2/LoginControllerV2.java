@@ -26,6 +26,7 @@ import com.bt.om.entity.User;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
@@ -183,7 +184,9 @@ public class LoginControllerV2 extends BasicController {
 				invitation.setBeInviterMobile(mobile);
 				invitation.setStatus(1);
 				invitation.setReward(1);
-				invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));
+//				invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));
+				//5-30元的随机奖励
+				invitation.setMoney(NumberUtil.getRandomInt(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))-25, Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))));
 				invitation.setCreateTime(new Date());
 				invitation.setUpdateTime(new Date());
 

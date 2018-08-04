@@ -23,6 +23,7 @@ import com.bt.om.enums.ResultCode;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
+import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
 import com.bt.om.vo.web.ResultVo;
 import com.bt.om.web.BasicController;
@@ -99,7 +100,9 @@ public class InvitationController extends BasicController {
 		invitation.setBeInviterMobile(mobileFriend);
 		invitation.setStatus(1);
 		invitation.setReward(1);
-		invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));		
+//		invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));		
+		//5-30元的随机奖励
+		invitation.setMoney(NumberUtil.getRandomInt(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))-25, Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))));
 		invitation.setCreateTime(new Date());
 		invitation.setUpdateTime(new Date());
 		

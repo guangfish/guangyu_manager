@@ -14,7 +14,7 @@
 			</form>
 			<span class="btn btn-submit">提交</span>
 			<div class="login_p">
-				每邀请一个朋友并通过逛鱼搜索完成一单购买任务后即可得到<font color="red">${reward?if_exists}</font>元奖励
+				每邀请一个朋友并通过逛鱼搜索完成一单购买任务后即可得到封顶<font color="red">${reward?if_exists}</font>元奖励
 			</div>
 		</div>
 		<!-- 底部菜单栏 -->
