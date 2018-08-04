@@ -127,7 +127,7 @@
 									<h2 align="center">常见问题</h2><br/>
 								</div>
 								-->
-								<div style="height:1.4rem;"></div>
+								<div style="height:0.6rem;"></div>
 							    <div class="mui-cont-tit ">
 									<h2>问题1：逛鱼搜索是否安全？</h2>
 								</div>
@@ -187,7 +187,7 @@
 									<h2 align="center">提现须知</h2><br/>
 								</div>
 								-->
-								<div style="height:1.4rem;"></div>
+								<div style="height:0.6rem;"></div>
 								<div class="mui-cont-text">
 									1.每月仅28日开启提现功能，提取金额为"我的钱包"显示金额
 								</div>
