@@ -139,7 +139,19 @@
 									答：申请提现后一个工作日内到账，节假日暂不处理转账。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题3：逛鱼使用的流程是什么样的？</h2>
+									<h2>问题3：为什么需要提交订单号？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：订单号属于个人隐私，在用户没有授权的情况下我们不主动通过技术手段去获取订单号。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题4：我的历史订单那里查询？</h2>
+								</div>
+								<div class="mui-cont-text limit_text">
+									答：逛鱼不提供历史订单查询，用户提现后自动删除用户订单信息，只保留用户的总节省金额。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题5：逛鱼使用的流程是什么样的？</h2>
 								</div>
 								<div class="mui-cont-text">
 									1、复制淘宝商品的链接或标题</br>
@@ -152,7 +164,7 @@
 								</div>	
 								<div style="height:4.4rem;"></div>
 								<div class="mui-cont-tit ">
-									<h2>问题4：我下单了，逛鱼里怎么没显示订单和返现？</h2>
+									<h2>问题6：我下单了，逛鱼里怎么没显示订单和返现？</h2>
 								</div>
 								<div class="mui-cont-text">
 								    跑单的几种情况：<br/><br/>
