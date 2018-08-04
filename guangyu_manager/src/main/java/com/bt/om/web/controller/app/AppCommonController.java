@@ -181,11 +181,15 @@ public class AppCommonController extends BasicController {
 	
 	@RequestMapping(value = "/customer", method = { RequestMethod.GET, RequestMethod.POST })
 	public String customer(Model model, HttpServletRequest request) {
+		model.addAttribute("kefuWeixin", GlobalVariable.resourceMap.get("kefu_weixin"));
+		model.addAttribute("kefuWeixinQrcodeUrl", GlobalVariable.resourceMap.get("kefu_weixin_qrcode_url"));
 		return "searchv2/customer";
 	}
 	
 	@RequestMapping(value = "/kefu", method = { RequestMethod.GET, RequestMethod.POST })
 	public String kefu(Model model, HttpServletRequest request) {
+		model.addAttribute("kefuWeixin", GlobalVariable.resourceMap.get("kefu_weixin"));
+		model.addAttribute("kefuWeixinQrcodeUrl", GlobalVariable.resourceMap.get("kefu_weixin_qrcode_url"));
 		return "searchv2/customer";
 	}
 	
