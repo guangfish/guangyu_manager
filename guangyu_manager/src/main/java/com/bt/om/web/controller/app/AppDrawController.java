@@ -34,6 +34,7 @@ import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserOrderTmpService;
 import com.bt.om.service.IUserService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.MailUtil;
 import com.bt.om.util.SecurityUtil1;
@@ -577,6 +578,19 @@ public class AppDrawController extends BasicController {
 
 		jedis.del(userId);
 		jedis.close();
+		
+		//若开启提现，判断提现日期
+		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+		if ("1".equals(canDrawSwitch)) {
+			String day = DateUtil.formatDate(new Date(), "dd");
+			String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+			if (!canDrawDays.contains(day)) {
+				orderDrawVo.setStatus("7");
+				orderDrawVo.setDesc("未到提现时间");
+				model.addAttribute("response", orderDrawVo);
+				return model;
+			}
+		}
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();
