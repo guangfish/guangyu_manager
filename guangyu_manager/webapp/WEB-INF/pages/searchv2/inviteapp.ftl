@@ -49,14 +49,14 @@
 									3. 未来Ta领券下单后，您会获得30元封顶的邀请奖励，另外平台还会奖励你每笔订单返现的20%至100%(简单讲：朋友订单返现20元，那么你最多能得到平台20元的订单奖励)；
 								</div>	
 								<div class="mui-cont-box">
-							<!--
+
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit">
-									<h2 align="center">加客服微信，申请为超级会员</h2>
+									<h2 align="center"></h2>
 								</div>
-								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/wx-kefu.png" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://i1.bvimg.com/656709/e1412ac19fc93b9e.jpg" alt=""></div>								
 							</a>
-							-->
+
 						</div>											
 							</a>
 						</div>							
