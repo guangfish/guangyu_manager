@@ -147,11 +147,15 @@ public class AppCommonController extends BasicController {
 		AppDownloadVo appDownloadVo = new AppDownloadVo();
 		InputStream is;
 		String version = "1.0.0";
+		String appOs="android";
 		try {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			version = obj.get("version").getAsString();
+			if(obj.get("appOs")!=null){
+				appOs=obj.get("appOs").getAsString();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -161,6 +165,7 @@ public class AppCommonController extends BasicController {
 			map.put("link", appDownload.getAddress());
 			map.put("version", appDownload.getVersion() + "");
 			map.put("ifForce", appDownload.getIfForce()+"");
+			map.put("describe", appDownload.getDescribe());
 			appDownloadVo.setStatus("0");
 			appDownloadVo.setDesc("获取新版本成功");
 			appDownloadVo.setData(map);
