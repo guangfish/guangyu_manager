@@ -291,6 +291,7 @@ public class AppApiController extends BasicController {
 					String productTitle = "";
 					if(tklObject!=null){
 						productTitle = tklObject.get("content").getAsString();
+						System.out.println("淘口令解析后的标题="+productTitle);
 					}
 					long queueSize = WebQueue.getSize();
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
