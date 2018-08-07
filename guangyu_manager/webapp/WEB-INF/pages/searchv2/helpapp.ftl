@@ -152,28 +152,28 @@
 								<div class="mui-cont-text">
 									答：好友通过逛鱼搜索有效完成<font color="red">商品购买</font>并<font color="red">提现成功</font>后奖励才会到账，否则好友会处于<font color="red">"未激活"</font>状态。
 								</div>
-								<div style="height:4.4rem;"></div>
+								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-tit ">
 									<h2>问题5：什么是订单奖励？</h2>
 								</div>
 								<div class="mui-cont-text">
 									答：订单奖励是为了持续激励推广者通过不懈努力邀请好友使用逛鱼而设立的平台奖励，简单讲：好友获得返现，作为邀请者一样也能得到奖励。
 								</div>
-								<div style="height:3.4rem;"></div>
+								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-tit ">
 									<h2>问题6：为什么需要提交订单号？</h2>
 								</div>
 								<div class="mui-cont-text">
 									答：订单号属于个人<font color="red">隐私</font>，在用户没有授权的情况下我们不主动通过技术手段去获取订单号，因为在用户未知的情况下获取订单号属<font color="red">违法</font>操作。
 								</div>
-								<div style="height:4.4rem;"></div>
+								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-tit ">
 									<h2>问题7：我的历史订单那里查询？</h2>
 								</div>
 								<div class="mui-cont-text">
 									答：逛鱼不提供历史订单查询，用户提现后自动删除用户订单信息，只保留用户的总节省金额，如果用户对提现大的订单有疑问，可<font color="red" onclick="location.href='/app/api/kefu'">联系客服</font>处理。
 								</div>
-								<div style="height:4.4rem;"></div>
+								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-tit ">
 									<h2>问题8：逛鱼使用的流程是什么样的？</h2>
 								</div>
