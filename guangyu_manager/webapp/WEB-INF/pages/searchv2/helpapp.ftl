@@ -50,9 +50,9 @@
 									<h2>Step-1 淘宝商品标题or链接拷贝</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/400929575348c039.jpg" alt=""></div>	
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-tb-1.jpg" alt=""></div>	
 								<div style="height:0.2rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/82e82cca19e851ab.jpg" alt=""></div>							
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-tb-2.jpg" alt=""></div>							
 							</a>
 						</div>
 						<div class="mui-cont-box">
@@ -61,7 +61,7 @@
 									<h2>Step-2 打开逛鱼APP搜索商品</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/4cb3f8b352b31327.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-tb-3.jpg" alt=""></div>								
 							</a>
 						</div>
 						<div class="mui-cont-box">
@@ -70,7 +70,7 @@
 									<h2>Step-3 打开手机淘宝完成购买</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/d4449055e96c59fb.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-tb-4.jpg" alt=""></div>								
 							</a>
 						</div>
 						<div class="mui-cont-box">
@@ -79,7 +79,7 @@
 									<h2>Step-4 打开逛鱼完成订单绑定</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/7d0c17d96e3d9d69.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-tb-5.jpg" alt=""></div>								
 							</a>
 						</div>																
 					</div>
@@ -90,7 +90,7 @@
 									<h2>Step-1 京东商品链接拷贝</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i2.bvimg.com/656709/4eac9fdfdfbab6bd.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-jd-1.jpg" alt=""></div>								
 							</a>
 						</div>	
 						<div class="mui-cont-box">
@@ -99,7 +99,7 @@
 									<h2>Step-2 打开逛鱼APP搜索商品</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/4cb3f8b352b31327.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-jd-1.jpg" alt=""></div>								
 							</a>
 						</div>	
 						<div class="mui-cont-box">
@@ -108,7 +108,7 @@
 									<h2>Step-3 打开手机淘宝完成购买</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/d4449055e96c59fb.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-jd-1.jpg" alt=""></div>								
 							</a>
 						</div>	
 						<div class="mui-cont-box">
@@ -117,7 +117,7 @@
 									<h2>Step-4 打开逛鱼完成订单绑定</h2>
 								</div>
 								<div style="height:0.4rem;"></div>
-								<div class="eventImg"><img class="eventImg" src="http://i4.bvimg.com/656709/7d0c17d96e3d9d69.jpg" alt=""></div>								
+								<div class="eventImg"><img class="eventImg" src="http://help.guangfish.com/imgs/app-help-jd-1.jpg" alt=""></div>								
 							</a>
 						</div>	
 					</div>
