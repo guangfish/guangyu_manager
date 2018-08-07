@@ -140,6 +140,13 @@ public class AppApiController extends BasicController {
 				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
 		}
+		
+		if(productInfoVo==null){
+			productInfoVo=new ProductInfoVo();
+			productInfoVo.setDesc("未查到商品信息");
+			productInfoVo.setStatus("10");
+			productInfoVo.setData(new ItemVo());
+		}
 
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -276,7 +283,10 @@ public class AppApiController extends BasicController {
 					// 用正则去匹配标题，可能会匹配错误
 					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
 					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-					String productTitle = (lists.get(0))[0];
+					String productTitle = "";
+					if(lists.size() > 0){
+						productTitle = (lists.get(0))[0];
+					}
 					long queueSize = WebQueue.getSize();
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 					int queueLength = Integer.parseInt(queueLengthControl);
