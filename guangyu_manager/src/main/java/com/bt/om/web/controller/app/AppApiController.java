@@ -133,10 +133,10 @@ public class AppApiController extends BasicController {
 			String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 			int queueLength = Integer.parseInt(queueLengthControl);
 			if (Queue.getSize() >= queueLength) {
-				logger.info("APP爬从队列尺寸大于"+queueLength+"，执行WEB爬虫逻辑");
+				logger.info("APP爬从队列尺寸大于" + queueLength + "，执行WEB爬虫逻辑");
 				productInfoVo = webCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			} else {
-				logger.info("APP爬从队列尺寸小于"+queueLength+"，执行APP爬虫逻辑");
+				logger.info("APP爬从队列尺寸小于" + queueLength + "，执行APP爬虫逻辑");
 				productInfoVo = appCrawlLogic(userId, productUrl, tklSymbolsStr, pageNo, size);
 			}
 		}
@@ -172,12 +172,12 @@ public class AppApiController extends BasicController {
 					String productTitle = (lists.get(0))[0];
 					String productTitleTmp = (lists.get(0))[0];
 					long queueSize = Queue.getSize();
-					
+
 					// 队列长度大于3的话，直接走api接口
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
 					int queueLength = Integer.parseInt(queueLengthControl);
 					if (queueSize >= queueLength) {
-						logger.info("APP爬虫队列长度=" + queueSize+",走API接口");
+						logger.info("APP爬虫队列长度=" + queueSize + ",走API接口");
 						if (lists.size() > 0) {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
@@ -189,7 +189,7 @@ public class AppApiController extends BasicController {
 									productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
 											productTitleTmp.lastIndexOf("("));
 								} catch (Exception e) {
-									logger.info("特殊标题分析错误，标题为【"+productTitleTmp+"】");
+									logger.info("特殊标题分析错误，标题为【" + productTitleTmp + "】");
 									e.printStackTrace();
 								}
 							}
@@ -211,7 +211,7 @@ public class AppApiController extends BasicController {
 										ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
 												productTitle.lastIndexOf("("));
 									} catch (Exception e) {
-										logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
+										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
 										e.printStackTrace();
 									}
 								}
@@ -260,49 +260,29 @@ public class AppApiController extends BasicController {
 	// 网页爬虫的逻辑
 	private ProductInfoVo webCrawlLogic(String userId, String productUrl, String tklSymbolsStr, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		//淘口令请求
-		if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
-			String productUrlRedis = null;
-			Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
-			if (productUrlRedisObj != null) {
-				productUrlRedis = productUrlRedisObj.toString();
-			}
+		try {
+			// 淘口令请求
+			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
+				String productUrlRedis = null;
+				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
+				if (productUrlRedisObj != null) {
+					productUrlRedis = productUrlRedisObj.toString();
+				}
 
-			// 如果redis里有搜索过的商品名称，则直接通过API获取数据
-			if (StringUtil.isNotEmpty(productUrlRedis)) {
-				productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
-			} else {
-				// 用正则去匹配标题，可能会匹配错误
-				String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-				String productTitle = (lists.get(0))[0];
-				long queueSize = WebQueue.getSize();
-				String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
-				int queueLength = Integer.parseInt(queueLengthControl);
-				//队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
-				if (queueSize >= queueLength+1) {
-					logger.info("WEB爬虫队列长度=" + queueSize+",走API接口");
-					if (lists.size() > 0) {
-						// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-						jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
-
-						// 特殊淘口令链接的处理
-						if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
-							try {
-								// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-								// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-								productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
-										productTitle.lastIndexOf("("));
-							} catch (Exception e) {
-								logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
-								e.printStackTrace();
-							}
-						}
-						productInfoVo = productInfoApi(productTitle, pageNo, size);
-					}
+				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
+				if (StringUtil.isNotEmpty(productUrlRedis)) {
+					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
-					productInfoVo = productInfoWebCrawl(userId, productUrl);
-					if (productInfoVo.getData() == null) {
+					// 用正则去匹配标题，可能会匹配错误
+					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+					String productTitle = (lists.get(0))[0];
+					long queueSize = WebQueue.getSize();
+					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+					int queueLength = Integer.parseInt(queueLengthControl);
+					// 队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
+					if (queueSize >= queueLength + 1) {
+						logger.info("WEB爬虫队列长度=" + queueSize + ",走API接口");
 						if (lists.size() > 0) {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
@@ -315,28 +295,52 @@ public class AppApiController extends BasicController {
 									productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
 											productTitle.lastIndexOf("("));
 								} catch (Exception e) {
-									logger.info("特殊标题分析错误，标题为【"+productTitle+"】");
+									logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
 									e.printStackTrace();
 								}
 							}
 							productInfoVo = productInfoApi(productTitle, pageNo, size);
 						}
+					} else {
+						productInfoVo = productInfoWebCrawl(userId, productUrl);
+						if (productInfoVo.getData() == null) {
+							if (lists.size() > 0) {
+								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+
+								// 特殊淘口令链接的处理
+								if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+									try {
+										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+										productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
+												productTitle.lastIndexOf("("));
+									} catch (Exception e) {
+										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
+										e.printStackTrace();
+									}
+								}
+								productInfoVo = productInfoApi(productTitle, pageNo, size);
+							}
+						}
 					}
 				}
 			}
-		}
-		// 请求为URL时的逻辑
-		else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
-			productInfoVo = productInfoWebCrawl(userId, productUrl);
-			if (productInfoVo.getData() == null) {
-				String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-				List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-				if (lists.size() > 0) {
-					productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+			// 请求为URL时的逻辑
+			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
+				productInfoVo = productInfoWebCrawl(userId, productUrl);
+				if (productInfoVo.getData() == null) {
+					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+					if (lists.size() > 0) {
+						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+					}
 				}
+			} else {
+				productInfoVo = productInfoApi(productUrl, pageNo, size);
 			}
-		} else {
-			productInfoVo = productInfoApi(productUrl, pageNo, size);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return productInfoVo;
@@ -361,9 +365,9 @@ public class AppApiController extends BasicController {
 				imgUrl = "http:" + imgUrl;
 			}
 
-			logger.info("淘口令解析返回的图片地址【" + imgUrl+"】");
+			logger.info("淘口令解析返回的图片地址【" + imgUrl + "】");
 
-			//需转换的淘口令，即用户提交上来的淘口令
+			// 需转换的淘口令，即用户提交上来的淘口令
 			String tklOld = "";
 			String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
 			List<String[]> lists = null;
@@ -380,7 +384,7 @@ public class AppApiController extends BasicController {
 				}
 			}
 
-//			logger.info("淘口令解析返回的图片地址保存到redis Key为=" + tklOld.hashCode());
+			// logger.info("淘口令解析返回的图片地址保存到redis Key为=" + tklOld.hashCode());
 			// 把通过淘口令解析返回的图片暂时放到redis中，等爬虫任务返回时关联图片
 			if (StringUtil.isNotEmpty(imgUrl)) {
 				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
@@ -439,8 +443,8 @@ public class AppApiController extends BasicController {
 				try {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
-//					logger.info(productInfo.getProductId()+"已入库");
-//					logger.error(e.getMessage());
+					// logger.info(productInfo.getProductId()+"已入库");
+					// logger.error(e.getMessage());
 				}
 
 				// 插入搜索记录
@@ -669,8 +673,8 @@ public class AppApiController extends BasicController {
 				try {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
-					logger.info(productInfo.getProductId()+"已入库");
-//					logger.error(e.getMessage());
+					logger.info(productInfo.getProductId() + "已入库");
+					// logger.error(e.getMessage());
 				}
 
 				// 插入搜索记录
@@ -884,14 +888,15 @@ public class AppApiController extends BasicController {
 		return productInfoVo;
 	}
 
-//	@RequestMapping(value = "/sendTask", method = { RequestMethod.POST, RequestMethod.GET })
-//	@ResponseBody
-//	public Model sendTask(Model model, HttpServletRequest request, HttpServletResponse response) {
-//		String tkl = request.getParameter("url");
-//		TaskControl taskControl = new TaskControl();
-//		taskControl.sendTask(tkl);
-//		return model;
-//	}
+	// @RequestMapping(value = "/sendTask", method = { RequestMethod.POST,
+	// RequestMethod.GET })
+	// @ResponseBody
+	// public Model sendTask(Model model, HttpServletRequest request,
+	// HttpServletResponse response) {
+	// String tkl = request.getParameter("url");
+	// TaskControl taskControl = new TaskControl();
+	// taskControl.sendTask(tkl);
+	// return model;
+	// }
 
-	
 }
