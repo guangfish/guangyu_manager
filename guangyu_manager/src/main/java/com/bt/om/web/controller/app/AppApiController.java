@@ -162,6 +162,8 @@ public class AppApiController extends BasicController {
 			// 是淘口令请求时的逻辑
 			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
 				logger.info("用户发送的是淘口令请求");
+				//解析淘口令
+				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
 				String productUrlRedis = null;
 				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
 				if (productUrlRedisObj != null) {
@@ -171,13 +173,14 @@ public class AppApiController extends BasicController {
 				if (productUrlRedis != null) {
 					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
-					// 用正则去匹配标题，可能会匹配错误
-					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-					// 【(.*?)】http"
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+//					// 用正则去匹配标题，可能会匹配错误
+//					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+//					// 【(.*?)】http"
+//					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+					
 					String productUrlTmp = productUrl;
-					String productTitle = (lists.get(0))[0];
-					String productTitleTmp = (lists.get(0))[0];
+					String productTitle = tklObject!=null?tklObject.get("content").getAsString():"";
+					String productTitleTmp = productTitle;
 					long queueSize = Queue.getSize();
 
 					// 队列长度大于3的话，直接走api接口
@@ -185,7 +188,7 @@ public class AppApiController extends BasicController {
 					int queueLength = Integer.parseInt(queueLengthControl);
 					if (queueSize >= queueLength) {
 						logger.info("APP爬虫队列长度=" + queueSize + ",走API接口");
-						if (lists.size() > 0) {
+						if (tklObject!=null) {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
 							// 特殊淘口令链接的处理，根据不同情况这里增加其他逻辑
@@ -227,9 +230,9 @@ public class AppApiController extends BasicController {
 							}
 						}).start();
 
-						productInfoVo = productInfoAppCrawl(userId, productUrl);
+						productInfoVo = productInfoAppCrawl(userId, productUrl,tklObject);
 						if (productInfoVo.getData() == null) {
-							if (lists.size() > 0) {
+							if (tklObject!=null) {
 								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 								// 从redis中获取提前通过线程获得的结果
@@ -243,15 +246,15 @@ public class AppApiController extends BasicController {
 			// 请求为URL时的逻辑
 			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
 				// 走网页爬虫逻辑，APP爬虫不支持按url搜索
-				productInfoVo = productInfoWebCrawl(userId, productUrl);
-				// 爬不到数据就走api接口
-				if (productInfoVo.getData() == null) {
-					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-					if (lists.size() > 0) {
-						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
-					}
-				}
+				productInfoVo = productInfoWebCrawl(userId, productUrl,null);
+//				// 爬不到数据就走api接口
+//				if (productInfoVo.getData() == null) {
+//					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+//					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+//					if (lists.size() > 0) {
+//						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+//					}
+//				}
 			}
 			// 请求为标题或关键词的逻辑
 			else {
@@ -270,6 +273,8 @@ public class AppApiController extends BasicController {
 		try {
 			// 淘口令请求
 			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
+				//解析淘口令
+				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
 				String productUrlRedis = null;
 				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
 				if (productUrlRedisObj != null) {
@@ -280,12 +285,12 @@ public class AppApiController extends BasicController {
 				if (StringUtil.isNotEmpty(productUrlRedis)) {
 					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
 				} else {
-					// 用正则去匹配标题，可能会匹配错误
-					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+//					// 用正则去匹配标题，可能会匹配错误
+//					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+//					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
 					String productTitle = "";
-					if(lists.size() > 0){
-						productTitle = (lists.get(0))[0];
+					if(tklObject!=null){
+						productTitle = tklObject.get("content").getAsString();
 					}
 					long queueSize = WebQueue.getSize();
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
@@ -293,7 +298,7 @@ public class AppApiController extends BasicController {
 					// 队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
 					if (queueSize >= queueLength + 1) {
 						logger.info("WEB爬虫队列长度=" + queueSize + ",走API接口");
-						if (lists.size() > 0) {
+						if (tklObject!=null) {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 
@@ -312,9 +317,9 @@ public class AppApiController extends BasicController {
 							productInfoVo = productInfoApi(productTitle, pageNo, size);
 						}
 					} else {
-						productInfoVo = productInfoWebCrawl(userId, productUrl);
+						productInfoVo = productInfoWebCrawl(userId, productUrl,tklObject);
 						if (productInfoVo.getData() == null) {
-							if (lists.size() > 0) {
+							if (tklObject!=null) {
 								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 
@@ -338,14 +343,14 @@ public class AppApiController extends BasicController {
 			}
 			// 请求为URL时的逻辑
 			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
-				productInfoVo = productInfoWebCrawl(userId, productUrl);
-				if (productInfoVo.getData() == null) {
-					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-					if (lists.size() > 0) {
-						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
-					}
-				}
+				productInfoVo = productInfoWebCrawl(userId, productUrl,null);
+//				if (productInfoVo.getData() == null) {
+//					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
+//					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
+//					if (lists.size() > 0) {
+//						productInfoVo = productInfoApi((lists.get(0))[0], pageNo, size);
+//					}
+//				}
 			} else {
 				productInfoVo = productInfoApi(productUrl, pageNo, size);
 			}
@@ -364,12 +369,21 @@ public class AppApiController extends BasicController {
 	}
 
 	// APP爬虫任务
-	public ProductInfoVo productInfoAppCrawl(String userId, String tklStr) {
+	public ProductInfoVo productInfoAppCrawl(String userId, String tklStr,JsonObject tklObject) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
-			String productUrl = TaoKouling.parserTklApp(tklStr);
-			String imgUrl = (productUrl.split(";;"))[1];
-			productUrl = (productUrl.split(";;"))[0];
+			String productUrl="";
+			String imgUrl="";
+			if(tklObject!=null){
+				productUrl=tklObject.get("url").getAsString();
+				imgUrl=tklObject.get("thumb_pic_url").getAsString();
+			}else{
+				productInfoVo.setStatus("11");
+				productInfoVo.setDesc("淘口令解析失败");
+				productInfoVo.setData(new ItemVo());
+				return productInfoVo;
+			}
+
 			// 接口返回的图片地址可能是没有http前缀
 			if (!imgUrl.contains("http:")) {
 				imgUrl = "http:" + imgUrl;
@@ -547,7 +561,7 @@ public class AppApiController extends BasicController {
 	}
 
 	// 浏览器爬虫任务
-	public ProductInfoVo productInfoWebCrawl(String userId, String productUrl) {
+	public ProductInfoVo productInfoWebCrawl(String userId, String productUrl,JsonObject tklObject) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
 			// 判断productUrl是否为淘口令，如果是淘口令通过接口获取商品链接
@@ -558,7 +572,12 @@ public class AppApiController extends BasicController {
 				Pattern pattern0 = Pattern.compile(reg0);
 				Matcher matcher0 = pattern0.matcher(productUrl);
 				if (matcher0.find()) {
-					productUrl = TaoKouling.parserTkl(productUrl);
+					if(tklObject!=null){
+						productUrl=tklObject.get("url").getAsString();
+					}else{
+						productUrl=null;
+					}
+//					productUrl = TaoKouling.parserTkl(productUrl);
 					logger.info("通过淘口令转换获得的商品链接==>" + productUrl);
 					if (StringUtils.isEmpty(productUrl)) {
 						productInfoVo.setStatus("3");
