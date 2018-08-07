@@ -33,16 +33,17 @@
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
 			<div class="mui-event-title tab_links">
-			    <a style="text-decoration: none;" data-id="#draw" class="mui-event-tap active">提现须知</a>
-				<a style="text-decoration: none;" data-id="#taobao" class="mui-event-tap">淘宝使用</a>
+			    
+				<a style="text-decoration: none;" data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
 				<a style="text-decoration: none;" data-id="#jd" class="mui-event-tap">京东使用</a>
 				<a style="text-decoration: none;" data-id="#orderid" class="mui-event-tap">找订单号</a>
-				<!--<a style="text-decoration: none;" data-id="#cjhy" class="mui-event-tap">超级会员</a>-->				
-				<a style="text-decoration: none;" data-id="#faq" class="mui-event-tap">常见提问</a>				
+				<!--<a style="text-decoration: none;" data-id="#cjhy" class="mui-event-tap">超级会员</a>-->	
+				<a style="text-decoration: none;" data-id="#draw" class="mui-event-tap">提现须知</a>			
+				<a style="text-decoration: none;" data-id="#faq" class="mui-event-tap">常见问题</a>				
 			</div>
 			<div id="pullrefresh" class="mui-scroll-wrapper scroll-refresh">
 				<div class="mui-scroll">
-					<div id="taobao" class="mui-event-cont disn">
+					<div id="taobao" class="mui-event-cont">
 					    <div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
 							    <div class="mui-cont-tit ">
@@ -218,7 +219,7 @@
 						</div>							
 					</div>
 					
-					<div id="draw" class="mui-event-cont">
+					<div id="draw" class="mui-event-cont disn">
 						<div class="mui-cont-box">
 							<a style="text-decoration: none;" href="#">
 							    <!--
