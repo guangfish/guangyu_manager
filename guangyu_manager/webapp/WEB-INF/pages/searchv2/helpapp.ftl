@@ -127,7 +127,7 @@
 									<h2 align="center">常见问题</h2><br/>
 								</div>
 								-->
-								<div style="height:0.6rem;"></div>
+								
 							    <div class="mui-cont-tit ">
 									<h2>问题1：逛鱼搜索是否安全？</h2>
 								</div>
@@ -138,34 +138,40 @@
 									<h2>问题2：申请提现后，什么时候能到账？</h2>
 								</div>
 								<div class="mui-cont-text">
-									答：申请提现后一个工作日内到账，节假日暂不处理转账。
+									答：申请提现后<font color="red">一个工作日</font>内到账，<font color="red">节假日</font>不处理转账。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题3：什么时候才能得到邀请奖励？</h2>
+									<h2>问题3：为什么这个月只能提上个月的订单返现？</h2>
 								</div>
 								<div class="mui-cont-text">
-									答：好友通过逛鱼搜索有效完成商品购买并提现成功后奖励才会到账，否则好友会处于"未激活"状态。
+									答：淘宝、京东未给逛鱼结算时，逛鱼无法为用户提前结算。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题4：什么是订单奖励？</h2>
+									<h2>问题4：什么时候才能得到邀请奖励？</h2>
+								</div>
+								<div class="mui-cont-text">
+									答：好友通过逛鱼搜索有效完成<font color="red">商品购买</font>并<font color="red">提现成功</font>后奖励才会到账，否则好友会处于<font color="red">"未激活"</font>状态。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题5：什么是订单奖励？</h2>
 								</div>
 								<div class="mui-cont-text">
 									答：订单奖励是为了持续激励推广者通过不懈努力邀请好友使用逛鱼而设立的平台奖励，简单讲：好友获得返现，作为邀请者一样也能得到奖励。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题5：为什么需要提交订单号？</h2>
+									<h2>问题6：为什么需要提交订单号？</h2>
 								</div>
-								<div class="mui-cont-text limit_text">
-									答：订单号属于个人隐私，在用户没有授权的情况下我们不主动通过技术手段去获取订单号。
-								</div>
-								<div class="mui-cont-tit ">
-									<h2>问题6：我的历史订单那里查询？</h2>
-								</div>
-								<div class="mui-cont-text limit_text">
-									答：逛鱼不提供历史订单查询，用户提现后自动删除用户订单信息，只保留用户的总节省金额。
+								<div class="mui-cont-text">
+									答：订单号属于个人<font color="red">隐私</font>，在用户没有授权的情况下我们不主动通过技术手段去获取订单号，因为在用户未知的情况下获取订单号属<font color="red">违法</font>操作。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题7：逛鱼使用的流程是什么样的？</h2>
+									<h2>问题7：我的历史订单那里查询？</h2>
+								</div>
+								<div class="mui-cont-text">
+									答：逛鱼不提供历史订单查询，用户提现后自动删除用户订单信息，只保留用户的总节省金额，如果用户对提现大的订单有疑问，可<font color="red" onclick="location.href='/app/api/kefu'">联系客服</font>处理。
+								</div>
+								<div class="mui-cont-tit ">
+									<h2>问题8：逛鱼使用的流程是什么样的？</h2>
 								</div>
 								<div class="mui-cont-text">
 									1、复制淘宝商品的链接或标题</br>
@@ -178,13 +184,13 @@
 								</div>	
 								<div style="height:4.4rem;"></div>
 								<div class="mui-cont-tit ">
-									<h2>问题8：已确认收货的订单失效了？</h2>
+									<h2>问题9：已确认收货的订单失效了？</h2>
 								</div>
 								<div class="mui-cont-text limit_text">
 									答：这种是维权订单，是确认收货之后去申请退款了，属失效订单。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题9：我下单了，逛鱼里怎么没显示订单和返现？</h2>
+									<h2>问题10：我下单了，逛鱼里怎么没显示订单和返现？</h2>
 								</div>
 								<div class="mui-cont-text">
 								    跑单的几种情况：<br/><br/>
@@ -213,24 +219,24 @@
 									2.【订单返现】从上次提现开始至现在所有未提现的订单返现的累加。
 								</div>
 								<div class="mui-cont-text">
-									3.【订单奖励】我的逛友获得并提取订单返现后，那么做为邀请人就会得到逛鱼平台的订单奖励，奖励幅度为好友订单返现的20%至100%（按每订单计算）。
+									3.【订单奖励】我的逛友获得并提取订单返现后，那么做为邀请人就会得到逛鱼平台的订单奖励，奖励幅度为好友订单返现的<font color="red">20%至100%</font>（按每订单计算）。
 								</div>
 								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-text">
-									4.【邀请奖励】我邀请了好友使用逛鱼，并且好友成功通过逛鱼完成购买并完成提现，那么作为邀请人就可以获得逛鱼平台奖励给你的30元封顶的随机邀请奖励。
+									4.【邀请奖励】我邀请了好友使用逛鱼，并且好友成功通过逛鱼完成购买并完成提现，那么作为邀请人就可以获得逛鱼平台奖励给你的<font color="red">30元封顶</font>的随机邀请奖励。
 								</div>
 								<div style="height:1.4rem;"></div>
 								<div class="mui-cont-text">
 									5.【我的红包】注册逛鱼可获得随机红包；按用户活跃程度，不定期可获得随机活跃红包。
 								</div>
 								<div class="mui-cont-text">
-									6.每月${canDrawDays?if_exists}日开启提现功能，可提取金额为"我的钱包"显示金额。
+									6.每月<font color="red">${canDrawDays?if_exists}日</font>开启提现功能，可提取金额为"我的钱包"显示金额。
 								</div>
 								<div class="mui-cont-text">
-									7."我的钱包"余额为0时不可提现；仅红包不可提现。
+									7."我的钱包"余额为0时不可提现；仅红包时不可提现。
 								</div>
 								<div class="mui-cont-text">
-									8.提现金额最迟不超过1个工作日到达您的支付宝账户。
+									8.提现金额最迟不超过<font color="red">1个工作日</font>到达您的支付宝账户。
 								</div>	
 							</a>
 						</div>				
