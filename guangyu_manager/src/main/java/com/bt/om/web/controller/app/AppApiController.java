@@ -320,7 +320,9 @@ public class AppApiController extends BasicController {
 					} else {
 						productInfoVo = productInfoWebCrawl(userId, productUrl,tklObject);
 						if (productInfoVo.getData() == null) {
+							logger.info("PC爬不到数据，走API接口==="+productTitle);
 							if (tklObject!=null) {
+								logger.info("1");
 								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 
