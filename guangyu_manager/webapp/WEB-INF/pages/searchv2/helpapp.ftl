@@ -141,7 +141,7 @@
 									答：申请提现后<font color="red">一个工作日</font>内到账，<font color="red">节假日</font>不处理转账。
 								</div>
 								<div class="mui-cont-tit ">
-									<h2>问题3：为什么这个月只能提上个月的订单返现？</h2>
+									<h2>问题3：为什么只能提上月的订单返现？</h2>
 								</div>
 								<div class="mui-cont-text">
 									答：淘宝、京东未给逛鱼结算时，逛鱼无法为用户提前结算。
