@@ -754,6 +754,7 @@ public class AppApiController extends BasicController {
 			} else {
 				productInfoVo.setStatus("6");
 				productInfoVo.setDesc("未查到商品信息");
+				productInfoVo.setData(new ItemVo());
 				return productInfoVo;
 			}
 
