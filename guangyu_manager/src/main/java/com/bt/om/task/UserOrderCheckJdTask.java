@@ -173,7 +173,7 @@ public class UserOrderCheckJdTask {
 							userOrderService.updateByPrimaryKey(userOrder1);
 						}
 					} else {
-						logger.info("订单" + userOrder1.getOrderId() + "未从京东导入、或订单不存在");
+//						logger.info("订单" + userOrder1.getOrderId() + "未从京东导入、或订单不存在");
 					}
 				}
 			} else {

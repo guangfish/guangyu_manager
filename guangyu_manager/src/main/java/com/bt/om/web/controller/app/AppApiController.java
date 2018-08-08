@@ -905,7 +905,9 @@ public class AppApiController extends BasicController {
 
 					map.put("fanliMultiple", fanliMultiple + "");
 
-					list.add(map);
+					if((int)actualCommission>0){
+						list.add(map);
+					}					
 				}
 
 				ItemVo itemVo = new ItemVo();
