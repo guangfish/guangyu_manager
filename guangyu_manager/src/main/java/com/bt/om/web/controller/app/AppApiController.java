@@ -844,9 +844,17 @@ public class AppApiController extends BasicController {
 							quan = m.group(1);
 							map.put("quanMianzhi", quan);
 						}
-						tkurl = mapDataBean.getCoupon_share_url();
+						if(!tkurl.contains("http")){
+							tkurl = "https"+mapDataBean.getCoupon_share_url();
+						}else{
+							tkurl = mapDataBean.getCoupon_share_url();
+						}						
 					} else {
-						tkurl = mapDataBean.getUrl();
+						if(!tkurl.contains("http")){
+							tkurl = "https"+mapDataBean.getUrl();
+						}else{
+							tkurl = mapDataBean.getUrl();
+						}					
 					}
 					
 					map.put("tkUrl",tkurl);
