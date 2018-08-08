@@ -192,7 +192,7 @@ public class AppApiController extends BasicController {
 							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
 							// 特殊淘口令链接的处理，根据不同情况这里增加其他逻辑
-							if (productTitleTmp.contains("这个#手聚App团购#宝贝不错")) {
+							if (productTitleTmp.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
 								try {
 									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
 									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -214,7 +214,7 @@ public class AppApiController extends BasicController {
 								ProductInfoVo productInfoVoApi = null;
 								String ptitle = productTitle;
 								// 特殊淘口令链接的处理
-								if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+								if (productTitle.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
 									try {
 										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
 										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -291,7 +291,7 @@ public class AppApiController extends BasicController {
 					String productTitle = "";
 					if(tklObject!=null){
 						productTitle = tklObject.get("content").getAsString();
-						System.out.println("淘口令解析后的标题="+productTitle);
+						logger.info("淘口令解析后获得的商品标题==>"+productTitle);
 					}
 					long queueSize = WebQueue.getSize();
 					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
@@ -304,7 +304,7 @@ public class AppApiController extends BasicController {
 							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 
 							// 特殊淘口令链接的处理
-							if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+							if (productTitle.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
 								try {
 									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
 									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -319,15 +319,15 @@ public class AppApiController extends BasicController {
 						}
 					} else {
 						productInfoVo = productInfoWebCrawl(userId, productUrl,tklObject);
+						//网页爬虫爬不到数据，走API接口
 						if (productInfoVo.getData().getItems().size() <= 0) {
-							logger.info("PC爬不到数据，走API接口==="+productTitle);
-							if (tklObject!=null) {
-								logger.info("1");
+							logger.info("网页爬虫爬不到数据，走API接口");
+							if (tklObject!=null) {								
 								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
 								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
 
 								// 特殊淘口令链接的处理
-								if (productTitle.contains("这个#手聚App团购#宝贝不错")) {
+								if (productTitle.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
 									try {
 										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
 										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
@@ -340,8 +340,6 @@ public class AppApiController extends BasicController {
 								}
 								productInfoVo = productInfoApi(productTitle, pageNo, size);
 							}
-						}else{
-							logger.info("222222222222222"+productTitle);
 						}
 					}
 				}
@@ -868,7 +866,9 @@ public class AppApiController extends BasicController {
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
 
-					tkurl="https:"+tkurl;
+					if(!tkurl.startsWith("http")){
+						tkurl="https:"+tkurl;
+					}					
 					map.put("tkUrl",tkurl);
 					
 					String tklStr = TaoKouling.createTkl(tkurl,
@@ -928,20 +928,10 @@ public class AppApiController extends BasicController {
 				productInfoVo.setData(itemVo);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("通过API接口查询不到商品，标题为==>"+productUrl);
+//			e.printStackTrace();
 		}
 		return productInfoVo;
 	}
-
-	// @RequestMapping(value = "/sendTask", method = { RequestMethod.POST,
-	// RequestMethod.GET })
-	// @ResponseBody
-	// public Model sendTask(Model model, HttpServletRequest request,
-	// HttpServletResponse response) {
-	// String tkl = request.getParameter("url");
-	// TaskControl taskControl = new TaskControl();
-	// taskControl.sendTask(tkl);
-	// return model;
-	// }
 
 }
