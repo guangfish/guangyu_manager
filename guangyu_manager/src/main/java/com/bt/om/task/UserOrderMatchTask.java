@@ -149,7 +149,7 @@ public class UserOrderMatchTask {
 							userOrderTmpService.update(userOrderTmp);
 						}
 					} else {
-						logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");
+//						logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");
 					}
 				}
 			} else {
@@ -284,7 +284,7 @@ public class UserOrderMatchTask {
 							userOrderTmpService.update(userOrderTmp);
 						}
 					} else {
-						logger.info("订单" + userOrderTmp.getOrderId() + "未从京东联盟导入、或订单不存在");
+//						logger.info("订单" + userOrderTmp.getOrderId() + "未从京东联盟导入、或订单不存在");
 					}
 				}
 			} else {

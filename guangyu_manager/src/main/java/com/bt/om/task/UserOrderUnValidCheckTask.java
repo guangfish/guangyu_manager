@@ -70,7 +70,7 @@ public class UserOrderUnValidCheckTask {
 						logger.info("淘宝订单"+userOrder1.getOrderId()+"状态更新为订单失效");
 					}
 				}else{
-					logger.info("订单" + userOrder1.getOrderId() + "未从阿里妈妈导入、或订单不存在");
+//					logger.info("订单" + userOrder1.getOrderId() + "未从阿里妈妈导入、或订单不存在");
 				}
 		    }
 		}else{
