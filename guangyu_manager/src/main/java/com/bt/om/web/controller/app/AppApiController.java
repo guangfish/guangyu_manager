@@ -494,8 +494,10 @@ public class AppApiController extends BasicController {
 
 				if (StringUtil.isNotEmpty(tklquan)) {
 					map.put("tkl", tklquan);
+					map.put("tkUrl", couponLink);
 				} else {
 					map.put("tkl", tkl);
+					map.put("tkUrl", tkLink);
 				}
 
 				float pre = Float.parseFloat(NumberUtil.formatFloat(
@@ -730,9 +732,11 @@ public class AppApiController extends BasicController {
 				if ("taobao".equals(platform)) {
 					if (StringUtil.isNotEmpty(tklquan)) {
 						map.put("tkl", tklquan);
+						map.put("tkUrl", couponLink);
 					} else {
 						map.put("tkl", tkl);
-					}
+						map.put("tkUrl", tkLink);
+					}					
 				} else {
 					map.put("tkl", tkLink);
 				}
@@ -844,6 +848,8 @@ public class AppApiController extends BasicController {
 					} else {
 						tkurl = mapDataBean.getUrl();
 					}
+					
+					map.put("tkUrl",tkurl);
 
 					float actualCommission = 0f;
 					double actualPrice = 0d;
