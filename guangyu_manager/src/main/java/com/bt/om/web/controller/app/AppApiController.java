@@ -203,6 +203,7 @@ public class AppApiController extends BasicController {
 									e.printStackTrace();
 								}
 							}
+							logger.info("通过API接口查询商品信息，商品标题==>"+productTitle);
 							productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
 						}
 					} else {
@@ -225,6 +226,7 @@ public class AppApiController extends BasicController {
 										e.printStackTrace();
 									}
 								}
+								logger.info("通过API接口查询商品信息，商品标题==>"+productTitle);
 								productInfoVoApi = productInfoApi(ptitle, 1, 30);
 								jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
 							}
@@ -315,6 +317,7 @@ public class AppApiController extends BasicController {
 									e.printStackTrace();
 								}
 							}
+							logger.info("通过API接口查询商品信息，商品标题==>"+productTitle);
 							productInfoVo = productInfoApi(productTitle, pageNo, size);
 						}
 					} else {
@@ -338,6 +341,7 @@ public class AppApiController extends BasicController {
 										e.printStackTrace();
 									}
 								}
+								logger.info("通过API接口查询商品信息，商品标题==>"+productTitle);
 								productInfoVo = productInfoApi(productTitle, pageNo, size);
 							}
 						}
