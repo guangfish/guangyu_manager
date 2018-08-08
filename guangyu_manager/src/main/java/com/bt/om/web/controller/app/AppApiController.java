@@ -843,21 +843,13 @@ public class AppApiController extends BasicController {
 						if (m.find()) {
 							quan = m.group(1);
 							map.put("quanMianzhi", quan);
-						}
-						if(!tkurl.contains("http")){
-							tkurl = "https"+mapDataBean.getCoupon_share_url();
-						}else{
-							tkurl = mapDataBean.getCoupon_share_url();
 						}						
-					} else {
-						if(!tkurl.contains("http")){
-							tkurl = "https"+mapDataBean.getUrl();
-						}else{
-							tkurl = mapDataBean.getUrl();
-						}					
+						tkurl = mapDataBean.getCoupon_share_url();					
+					} else {					
+						tkurl = mapDataBean.getUrl();					
 					}
 					
-					map.put("tkUrl",tkurl);
+					
 
 					float actualCommission = 0f;
 					double actualPrice = 0d;
@@ -876,7 +868,10 @@ public class AppApiController extends BasicController {
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
 
-					String tklStr = TaoKouling.createTkl("https:" + tkurl,
+					tkurl="https:"+tkurl;
+					map.put("tkUrl",tkurl);
+					
+					String tklStr = TaoKouling.createTkl(tkurl,
 							"【预估返:" + actualCommission + "】" + mapDataBean.getTitle(), mapDataBean.getPict_url());
 					if (StringUtil.isNotEmpty(tklStr)) {
 						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
