@@ -420,6 +420,8 @@ public class AppLoginController extends BasicController {
 			float hongbao = user.getHongbao();
 
 			double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
+			//最小起提金额
+			int drawMoneyMin=Integer.parseInt(GlobalVariable.resourceMap.get("draw_money_min"));
 			if ("true".equals(canDraw)) {
 				System.out.println(totalMoney - tmCommission);
 				if ((int)(totalMoney - tmCommission) <= 0) {
@@ -429,6 +431,9 @@ public class AppLoginController extends BasicController {
 					} else {
 						reason = "我的钱包空空的！";
 					}
+				}else if((int)(totalMoney - tmCommission) > 0 && (int)(totalMoney - tmCommission) < drawMoneyMin){
+					canDraw = "false";
+					reason = "最小起提金额为"+drawMoneyMin+"元！";
 				}
 			}
 			totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
