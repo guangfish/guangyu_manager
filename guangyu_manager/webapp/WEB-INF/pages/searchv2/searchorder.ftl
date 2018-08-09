@@ -120,7 +120,7 @@
 											</div>											
 										</a>
 									</li>
-								  </#list>	
+								  </#list>	 
 								  </#if>	
 								</ul>
 							</div>
