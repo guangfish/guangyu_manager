@@ -249,7 +249,7 @@
 									6.每月<font color="red">${canDrawDays?if_exists}日</font>开启提现功能，可提取金额为"我的钱包"显示金额。
 								</div>
 								<div class="mui-cont-text">
-									7."我的钱包"余额为0时不可提现；仅红包时不可提现。
+									7."我的钱包"余额为<font color="red">0</font>时不可提现；仅红包时不可提现；小于起提金额<font color="red">${drawMoneyMin?if_exists}</font>元时不可提现。
 								</div>
 								<div class="mui-cont-text">
 									8.提现金额最迟不超过<font color="red">1个工作日</font>到达您的支付宝账户。

@@ -181,7 +181,9 @@ public class AppCommonController extends BasicController {
 	@RequestMapping(value = "/help", method = { RequestMethod.GET, RequestMethod.POST })
 	public String help(Model model, HttpServletRequest request) {
 		String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+		String drawMoneyMin = GlobalVariable.resourceMap.get("draw_money_min");
 		model.addAttribute("canDrawDays",canDrawDays);
+		model.addAttribute("drawMoneyMin",drawMoneyMin);
 		return "searchv2/helpapp";
 	}
 	
