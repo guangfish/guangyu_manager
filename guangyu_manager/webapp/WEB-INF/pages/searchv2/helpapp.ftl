@@ -35,7 +35,7 @@
 			<div class="mui-event-title tab_links">
 			    
 				<a style="text-decoration: none;" data-id="#taobao" class="mui-event-tap active">淘宝使用</a>
-				<a style="text-decoration: none;" data-id="#jd" class="mui-event-tap">京东使用</a>
+				<!--<a style="text-decoration: none;" data-id="#jd" class="mui-event-tap">京东使用</a>-->
 				<a style="text-decoration: none;" data-id="#orderid" class="mui-event-tap">找订单号</a>
 				<!--<a style="text-decoration: none;" data-id="#cjhy" class="mui-event-tap">超级会员</a>-->	
 				<a style="text-decoration: none;" data-id="#draw" class="mui-event-tap">提现须知</a>			
