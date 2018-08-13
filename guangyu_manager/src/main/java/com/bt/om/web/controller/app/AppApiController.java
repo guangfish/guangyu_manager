@@ -935,7 +935,7 @@ public class AppApiController extends BasicController {
 			}
 		} catch (Exception e) {
 			logger.info("通过API接口查询不到商品，标题为==>"+productUrl);
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 		return productInfoVo;
 	}
