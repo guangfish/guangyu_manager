@@ -830,7 +830,12 @@ public class AppApiController extends BasicController {
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
-					map.put("sellNum", mapDataBean.getVolume().intValue() + "");
+					if(mapDataBean.getVolume()!=null){
+						map.put("sellNum", mapDataBean.getVolume().intValue() + "");
+					}else{
+						map.put("sellNum", "");
+					}
+					
 
 					String quan = "";
 					if (StringUtil.isNotEmpty(mapDataBean.getCoupon_info())) {
