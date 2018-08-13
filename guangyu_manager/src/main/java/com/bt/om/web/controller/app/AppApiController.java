@@ -834,7 +834,7 @@ public class AppApiController extends BasicController {
 					if(mapDataBean.getVolume()!=null){
 						map.put("sellNum", mapDataBean.getVolume().intValue() + "");
 					}else{
-						map.put("sellNum", "0");
+						map.put("sellNum", mapDataBean.getTk_total_sales());
 					}
 					
 
