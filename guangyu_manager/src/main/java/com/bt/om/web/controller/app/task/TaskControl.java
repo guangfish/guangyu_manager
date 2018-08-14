@@ -149,6 +149,7 @@ public class TaskControl {
 				if (lists.size() > 0) {
 					tkLink = (lists.get(0))[0];
 				}
+				logger.info("下单链接=="+tkLink);
 				lists = RegexUtil.getListMatcher(commissionStr, "（预计￥(.*?)）");
 				if (lists.size() > 0) {
 					commission = (lists.get(0))[0];
