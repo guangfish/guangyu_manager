@@ -93,7 +93,7 @@ public class ProductUrlTrans {
 			init();
 			// scheduleTaobao();
 			scheduleJd();
-			scheduleTaobaoLogin();
+//			scheduleTaobaoLogin();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
 				driver = new ChromeDriver();
