@@ -111,7 +111,10 @@ public class TaskControl {
 					map = new HashMap<>();
 					map.put("status", "0");
 					return map;
+				}else{
+					tklStr=tklStr.replace("\n", "");
 				}
+				logger.info(tklStr);
 
 				//用转换前的淘口令获取图片地址
 				String tklOld = appCrawlBean.getTklStr();
