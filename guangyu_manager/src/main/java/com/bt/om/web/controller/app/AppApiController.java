@@ -495,12 +495,11 @@ public class AppApiController extends BasicController {
 				map.put("price", "" + price);
 
 				if (StringUtil.isNotEmpty(tklquan)) {
-					map.put("tkl", tklquan);
-					map.put("tkUrl", couponLink);
+					map.put("tkl", tklquan);					
 				} else {
 					map.put("tkl", tkl);
-					map.put("tkUrl", tkLink);
 				}
+				map.put("tkUrl", tkLink);
 
 				float pre = Float.parseFloat(NumberUtil.formatFloat(
 						incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
