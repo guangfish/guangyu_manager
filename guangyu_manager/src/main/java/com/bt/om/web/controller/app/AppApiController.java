@@ -421,14 +421,16 @@ public class AppApiController extends BasicController {
 				jedisPool.putInCache("", tklOld.hashCode(), imgUrl, 60);
 			}
 
-			Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
-			String puri = urlMap0.get("puri");
 			String productId = "";
-			try {
-				productId = puri.substring(puri.lastIndexOf("/") + 2, puri.lastIndexOf("."));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			Map<String, String> urlMap0 = StringUtil.urlSplit(tklObject.get("url").getAsString());
+			productId=urlMap0.get("id");
+			
+//			String puri = urlMap0.get("puri");
+//			try {
+//				productId = puri.substring(puri.lastIndexOf("/") + 2, puri.lastIndexOf("."));
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}			
 
 			String platform = "taobao";
 			Map<String, String> map = new HashMap<>();
