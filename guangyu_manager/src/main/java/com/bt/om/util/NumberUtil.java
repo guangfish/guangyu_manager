@@ -471,6 +471,10 @@ public class NumberUtil {
     public static String format(double value) {
         return TWO_DECIMAL_PLACE.format(value);
     }
+    
+    public static String format(float value) {
+        return TWO_DECIMAL_PLACE.format(value);
+    }
 
     public static String format(int decimalPlace, String value) {
         if (StringUtil.isEmpty(value)) {
