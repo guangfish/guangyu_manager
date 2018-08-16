@@ -340,6 +340,7 @@ public class AppLoginController extends BasicController {
 				JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 				if (obj.get("userId") != null) {
 					userId = obj.get("userId").getAsString();
+					logger.info(userId);
 					userId = SecurityUtil1.decrypts(userId);
 					logger.info(userId);
 				}else{
