@@ -477,7 +477,7 @@ public class AppApiController extends BasicController {
 					productInfoService.insertProductInfo(productInfo);
 				} catch (Exception e) {
 					// logger.info(productInfo.getProductId()+"已入库");
-					// logger.error(e.getMessage());
+					 e.printStackTrace();
 				}
 
 				// 插入搜索记录
