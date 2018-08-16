@@ -341,6 +341,9 @@ public class AppLoginController extends BasicController {
 				if (obj.get("userId") != null) {
 					userId = obj.get("userId").getAsString();
 					userId = SecurityUtil1.decrypts(userId);
+					logger.info(userId);
+				}else{
+					logger.info("userId 为空");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
