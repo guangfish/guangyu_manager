@@ -459,14 +459,14 @@ public class AppLoginController extends BasicController {
 					}
 				}
 				totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
-				data.put("totalMoney", totalMoney + "");// 总共可提现金额
+				data.put("totalMoney", NumberUtil.format(totalMoney));// 总共可提现金额
 				data.put("orderMoney", NumberUtil.format(tCommission));// 订单可提金额
 				data.put("inviteReward", NumberUtil.format(inviteReward));// 邀请奖励金额
 				data.put("platformReward", NumberUtil.format(platformReward));// 平台订单奖励金额
 				data.put("hongbao", NumberUtil.format(user.getHongbao()));// 我的红包
 				data.put("friendNum", friendNum + "");// 通过我的邀请码注册的好友数
 				data.put("orderNum", canDrawOrderNum + "");// 可提现订单数
-				data.put("totalBuySave", cash + "");// 累计购物已省
+				data.put("totalBuySave", NumberUtil.format(cash));// 累计购物已省
 				// data.put("inviteCode", user.getMyInviteCode());// 我的邀请码
 				// data.put("userType", user.getAccountType() + "");//
 				// 账号类型1：普通会员
