@@ -171,13 +171,12 @@ public class AppApiController extends BasicController {
 				}
 				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
 				if (productUrlRedis != null) {
-					productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
-				} else {
-//					// 用正则去匹配标题，可能会匹配错误
-//					String productNameRegex = GlobalVariable.resourceMap.get("productName_regex");
-//					// 【(.*?)】http"
-//					List<String[]> lists = RegexUtil.getListMatcher(productUrl, productNameRegex);
-					
+					productInfoVo = (ProductInfoVo) jedisPool.getFromCache("",
+							productUrlRedis.hashCode() + pageNo);
+					if(productInfoVo==null){
+						productInfoVo = productInfoApi(productUrlRedis, pageNo, size);
+					}					
+				} else {					
 					String productUrlTmp = productUrl;
 					String productTitle = tklObject!=null?tklObject.get("content").getAsString():"";
 					String productTitleTmp = productTitle;
@@ -204,7 +203,17 @@ public class AppApiController extends BasicController {
 								}
 							}
 							logger.info("通过API接口查询商品信息，商品标题==>"+productTitle);
-							productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
+							
+							productInfoVo = (ProductInfoVo) jedisPool.getFromCache("",
+									productTitleTmp.hashCode() + pageNo);
+							if (productInfoVo == null) {
+								productInfoVo = productInfoApi(productTitleTmp, pageNo, size);
+								if (productInfoVo != null) {
+									// 把查询到的数据保存在Redis中，保留12小时
+									jedisPool.putInCache("", productTitleTmp.hashCode() + pageNo, productInfoVo,
+											12 * 60 * 60);
+								}
+							}
 						}
 					} else {
 						// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
@@ -231,8 +240,12 @@ public class AppApiController extends BasicController {
 								jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
 							}
 						}).start();
-
-						productInfoVo = productInfoAppCrawl(userId, productUrl,tklObject);
+						
+						productInfoVo=(ProductInfoVo)jedisPool.getFromCache("", productUrl.hashCode());
+						if(productInfoVo==null){
+							productInfoVo = productInfoAppCrawl(userId, productUrl,tklObject);
+						}
+						
 						if (productInfoVo.getData().getItems().size() <= 0) {
 							if (tklObject!=null) {
 								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
@@ -241,6 +254,10 @@ public class AppApiController extends BasicController {
 								productInfoVo = (ProductInfoVo) (jedisPool.getFromCache("obj", productUrl.hashCode()));
 
 							}
+						}else{
+							// 把查询到的数据保存在Redis中，保留12小时
+							jedisPool.putInCache("", productUrl.hashCode(), productInfoVo,
+									12 * 60 * 60);
 						}
 					}
 				}
@@ -260,7 +277,15 @@ public class AppApiController extends BasicController {
 			}
 			// 请求为标题或关键词的逻辑
 			else {
-				productInfoVo = productInfoApi(productUrl, pageNo, size);
+				productInfoVo=(ProductInfoVo)jedisPool.getFromCache("", productUrl.hashCode()+pageNo);
+				if(productInfoVo==null){
+					productInfoVo = productInfoApi(productUrl, pageNo, size);
+					if(productInfoVo!=null){
+					  // 把查询到的数据保存在Redis中，保留12小时
+					  jedisPool.putInCache("", productUrl.hashCode()+pageNo, productInfoVo,
+							12 * 60 * 60);
+					}
+				}				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
