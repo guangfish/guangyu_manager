@@ -407,7 +407,7 @@ public class ProductUrlTrans {
 			PageUtils.scrollToElementAndClick(element1, jdDriver);
 
 			// 点击选择推广类型、推广位名称
-			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
+			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin*10, sleepTimeEnd*4));
 			jdDriver.findElement(By.xpath("//*[@id='adtTypeDiv']/div[2]/label[4]")).click();
 			Thread.sleep(NumberUtil.getRandomNumber(sleepTimeBegin, sleepTimeEnd));
 			jdDriver.findElement(By.xpath("//*[@id='spaceName']/option[2]")).click();
