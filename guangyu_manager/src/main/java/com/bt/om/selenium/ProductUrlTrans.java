@@ -338,7 +338,7 @@ public class ProductUrlTrans {
 
 	private static void getJdTKUrl(TkInfoTask tkInfoTask) throws Exception {
 		try {
-			jdDriver.navigate().refresh();
+			jdDriver.navigate().back();
 			
 			jdDriver.findElement(By.id("keyword")).clear();
 			jdDriver.findElement(By.id("keyword")).sendKeys(tkInfoTask.getProductUrl());
