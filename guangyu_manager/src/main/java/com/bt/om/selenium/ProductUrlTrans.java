@@ -338,7 +338,7 @@ public class ProductUrlTrans {
 
 	private static void getJdTKUrl(TkInfoTask tkInfoTask) throws Exception {
 		try {
-			jdDriver.navigate().back();
+			jdDriver.navigate().to("https://media.jd.com/gotoadv/goods?pageSize=50");
 			
 			jdDriver.findElement(By.id("keyword")).clear();
 			jdDriver.findElement(By.id("keyword")).sendKeys(tkInfoTask.getProductUrl());
@@ -444,7 +444,8 @@ public class ProductUrlTrans {
 			tkInfoTask.setStatus(1);
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
 			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
-			jdDriver.navigate().refresh();
+//			jdDriver.navigate().refresh();
+			jdDriver.navigate().to("https://media.jd.com/gotoadv/goods?pageSize=50");
 			return;
 		}
 	}
