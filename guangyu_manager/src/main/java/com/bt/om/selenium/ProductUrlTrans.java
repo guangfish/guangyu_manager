@@ -338,6 +338,8 @@ public class ProductUrlTrans {
 
 	private static void getJdTKUrl(TkInfoTask tkInfoTask) throws Exception {
 		try {
+			jdDriver.navigate().refresh();
+			
 			jdDriver.findElement(By.id("keyword")).clear();
 			jdDriver.findElement(By.id("keyword")).sendKeys(tkInfoTask.getProductUrl());
 			jdDriver.findElement(By.xpath("//*[@id='b_search']")).click();
