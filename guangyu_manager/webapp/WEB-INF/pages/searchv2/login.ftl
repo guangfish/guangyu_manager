@@ -22,7 +22,7 @@
 			<span class="btn btn-submit">登录</span>
 			<div class="login_p">
 				<a href="/v2/login?toUrl=${toUrl?if_exists}" class="btn tel_login">短信登录</a>
-				<a href="/v2/register?toUrl=${toUrl?if_exists}" class="btn">轻松注册</a>
+				<!--<a href="/v2/register?toUrl=${toUrl?if_exists}" class="btn">轻松注册</a>-->
 			</div>
 		</div>
 		<!-- 底部菜单栏 -->
