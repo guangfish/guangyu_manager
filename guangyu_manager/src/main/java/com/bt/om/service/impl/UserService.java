@@ -1,5 +1,7 @@
 package com.bt.om.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class UserService implements IUserService {
 	@Override
 	public User selectByMobile(String mobile) {
 		return userMapper.selectByMobile(mobile);
+	}
+	
+	@Override
+	public List<User> selectByAlipay(String alipay) {
+		return userMapper.selectByAlipay(alipay);
 	}
 
 	@Override

@@ -312,12 +312,18 @@ public class AppLoginController extends BasicController {
 
 		User user = userService.selectByMobile(userId);
 		if (user != null) {
-			user.setAlipay(alipay);
-			user.setWeixin(weixin);
-			user.setUpdateTime(new Date());
-			userService.update(user);
-			commonVo.setStatus("0");
-			commonVo.setDesc("更新成功");
+			List<User> users = userService.selectByAlipay(alipay);
+			if (users != null && users.size() > 0) {
+				commonVo.setStatus("1");
+				commonVo.setDesc("该支付宝账号已被绑定");
+			} else {
+				user.setAlipay(alipay);
+				user.setWeixin(weixin);
+				user.setUpdateTime(new Date());
+				userService.update(user);
+				commonVo.setStatus("0");
+				commonVo.setDesc("更新成功");
+			}
 		} else {
 			commonVo.setStatus("1");
 			commonVo.setDesc("更新失败");
@@ -343,7 +349,7 @@ public class AppLoginController extends BasicController {
 					logger.info(userId);
 					userId = SecurityUtil1.decrypts(userId);
 					logger.info(userId);
-				}else{
+				} else {
 					logger.info("userId 为空");
 				}
 			} catch (Exception e) {
@@ -366,7 +372,7 @@ public class AppLoginController extends BasicController {
 
 			String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
-			logger.info("用户手机号=="+userId);
+			logger.info("用户手机号==" + userId);
 			User user = userService.selectByMobile(userId);
 			if (user != null) {
 				logger.info("用户对象不为空");

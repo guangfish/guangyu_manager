@@ -1,5 +1,7 @@
 package com.bt.om.mapper;
 
+import java.util.List;
+
 import com.bt.om.entity.User;
 
 public interface UserMapper {
@@ -40,6 +42,8 @@ public interface UserMapper {
 	int updateByPrimaryKey(User record);
 
 	User selectByMobile(String mobile);
+	
+	List<User> selectByAlipay(String alipay);
 	
 	User selectByTaInviteCode(String taInviteCode);
 	
