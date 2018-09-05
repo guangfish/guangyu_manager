@@ -16,6 +16,7 @@ import com.bt.om.entity.TkInfoTask;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.app.task.Queue;
+import com.bt.om.web.controller.app.task.WebQueue;
 import com.bt.om.web.controller.app.vo.AppCrawlBean;
 import com.bt.om.web.controller.app.vo.AppCrawlTaskBean;
 
@@ -29,7 +30,7 @@ public class AppCawalTaskController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;
 
-	// 获取验证码 
+	 
 	@RequestMapping(value = "/getTask", method = RequestMethod.POST)
 	@ResponseBody
 	public AppCrawlTaskBean getTask(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -63,6 +64,44 @@ public class AppCawalTaskController extends BasicController {
 
 		String sign = appCrawlBean.getSign();
 		jedisPool.putInCache("", sign, data, 60);
+
+		return model;
+	}
+	
+	//京东爬虫任务获取请求
+	@RequestMapping(value = "/getJdTask", method = RequestMethod.POST)
+	@ResponseBody
+	public AppCrawlTaskBean getJdTask(Model model, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("收到JD任务获取请求");
+		AppCrawlTaskBean appCrawlTaskBean = null;
+		TkInfoTask tkInfoTask = null;
+		Object object = WebQueue.get();
+		appCrawlTaskBean = new AppCrawlTaskBean();
+		if (object != null) {
+			tkInfoTask = (TkInfoTask) object;
+			appCrawlTaskBean.setStatus("1");
+			appCrawlTaskBean.setSign(tkInfoTask.getSign());
+			appCrawlTaskBean.setTklStr(tkInfoTask.getProductUrl());
+			logger.info("队列有任务返回");
+		} else {
+			appCrawlTaskBean.setSign("");
+			appCrawlTaskBean.setStatus("0");
+			appCrawlTaskBean.setTklStr("");
+			logger.info("队列中无任务");
+		}
+		return appCrawlTaskBean;
+	}
+	
+	@RequestMapping(value = "/pushJdData", method = RequestMethod.POST)
+	@ResponseBody
+	public Model pushJdData(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String data = request.getParameter("data");
+		logger.info("收到JD端任务结果数据推送");
+		logger.info(data);
+		TkInfoTask tkInfoTask = GsonUtil.GsonToBean(data, TkInfoTask.class);
+
+		String sign = tkInfoTask.getSign();
+		jedisPool.putInCache("", sign, tkInfoTask, 60);
 
 		return model;
 	}

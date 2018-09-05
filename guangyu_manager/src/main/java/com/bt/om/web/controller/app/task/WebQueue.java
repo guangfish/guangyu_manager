@@ -18,10 +18,10 @@ public class WebQueue {
 	final static DisruptorQueueImpl queue = new DisruptorQueueImpl("WebQueue", ProducerType.SINGLE, 8,
 			new BlockingWaitStrategy());
 	
-	//初始化浏览器爬虫
-	static{
-		new ProductUrlTrans();
-	}
+//	//初始化浏览器爬虫
+//	static{
+//		new ProductUrlTrans();
+//	}
 
 	public static DisruptorQueueImpl getQueue(){
 		return queue;

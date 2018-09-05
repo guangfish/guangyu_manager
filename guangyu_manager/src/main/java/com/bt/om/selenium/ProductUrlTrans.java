@@ -96,15 +96,15 @@ public class ProductUrlTrans {
 //			scheduleTaobaoLogin();
 			System.setProperty(key, value);
 			if ("on".equals(ConfigUtil.getString("is_test_evn"))) {
-				driver = new ChromeDriver();
+//				driver = new ChromeDriver();
 				jdDriver = new ChromeDriver();
 			} else {
-				driver = new FirefoxDriver();
+//				driver = new FirefoxDriver();
 				jdDriver = new FirefoxDriver();
 			}
-			driver.get(baseUrl);
+//			driver.get(baseUrl);
 			jdDriver.get(jdBaseUrl);
-			driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
+//			driver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
 			jdDriver.manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
 		}
 	}
@@ -337,9 +337,7 @@ public class ProductUrlTrans {
 	}
 
 	private static void getJdTKUrl(TkInfoTask tkInfoTask) throws Exception {
-		try {
-			jdDriver.navigate().to("https://media.jd.com/gotoadv/goods?pageSize=50");
-			
+		try {			
 			jdDriver.findElement(By.id("keyword")).clear();
 			jdDriver.findElement(By.id("keyword")).sendKeys(tkInfoTask.getProductUrl());
 			jdDriver.findElement(By.xpath("//*[@id='b_search']")).click();
@@ -445,7 +443,6 @@ public class ProductUrlTrans {
 //			tkInfoTaskService.insertTkInfoTask(tkInfoTask);
 			jedisPool.putInCache("", tkInfoTask.getSign(), tkInfoTask, 60);
 //			jdDriver.navigate().refresh();
-			jdDriver.navigate().to("https://media.jd.com/gotoadv/goods?pageSize=50");
 			return;
 		}
 	}
