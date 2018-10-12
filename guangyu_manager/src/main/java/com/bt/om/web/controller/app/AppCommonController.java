@@ -34,6 +34,7 @@ import com.bt.om.service.IDrawCashService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
+import com.bt.om.util.NumberUtil;
 import com.bt.om.util.RequestUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.TaobaoSmsNewUtil;
@@ -312,11 +313,12 @@ public class AppCommonController extends BasicController {
 			for (DrawCash drawCash : drawCashList) {
 				Map<String, String> map = new HashMap<>();
 				map.put("drawTime", DateUtil.formatDate(drawCash.getCreateTime(), DateUtil.CHINESE_PATTERN));
-				map.put("drawMoney",
-						((drawCash.getCash() == null ? 0 : drawCash.getCash())
-								+ (drawCash.getReward() == null ? 0d : drawCash.getReward())
-								+ (drawCash.getOrderReward() == null ? 0 : drawCash.getOrderReward())
-								+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao())) + "");
+				double drawMoney = ((drawCash.getCash() == null ? 0 : drawCash.getCash())
+						+ (drawCash.getReward() == null ? 0d : drawCash.getReward())
+						+ (drawCash.getOrderReward() == null ? 0 : drawCash.getOrderReward())
+						+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao()));
+
+				map.put("drawMoney", Float.parseFloat(NumberUtil.formatDouble(drawMoney , "0.00")) + "");
 				list.add(map);
 			}
 			ItemVo itemVo = new ItemVo();
