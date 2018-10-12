@@ -299,53 +299,57 @@ public class AppCommonController extends BasicController {
 			return model;
 		}
 
-			SearchDataVo vo = SearchUtil.getVoForList(Integer.parseInt(pageNo),Integer.parseInt(size));
-			
-			if (StringUtil.isNotEmpty(mobile)) {
-				vo.putSearchParam("mobile", mobile, mobile);
+		SearchDataVo vo = SearchUtil.getVoForList(Integer.parseInt(pageNo), Integer.parseInt(size));
+
+		if (StringUtil.isNotEmpty(mobile)) {
+			vo.putSearchParam("mobile", mobile, mobile);
+		}
+		drawCashService.selectDrawCashList(vo);
+		@SuppressWarnings("unchecked")
+		List<DrawCash> drawCashList = (List<DrawCash>) vo.getList();
+		if (drawCashList != null && drawCashList.size() > 0) {
+			List<Map<String, String>> list = new ArrayList<>();
+			for (DrawCash drawCash : drawCashList) {
+				Map<String, String> map = new HashMap<>();
+				map.put("drawTime", DateUtil.formatDate(drawCash.getCreateTime(), DateUtil.CHINESE_PATTERN));
+				map.put("drawMoney",
+						((drawCash.getCash() == null ? 0 : drawCash.getCash())
+								+ (drawCash.getReward() == null ? 0d : drawCash.getReward())
+								+ (drawCash.getOrderReward() == null ? 0 : drawCash.getOrderReward())
+								+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao())) + "");
+				list.add(map);
 			}
-			drawCashService.selectDrawCashList(vo);
-			@SuppressWarnings("unchecked")
-			List<DrawCash> drawCashList = (List<DrawCash>) vo.getList();
-			if(drawCashList!=null && drawCashList.size()>0 ){				
-				List<Map<String, String>> list = new ArrayList<>();
-				for(DrawCash drawCash:drawCashList){
-					Map<String, String> map = new HashMap<>();
-					map.put("drawTime", DateUtil.formatDate(drawCash.getCreateTime(),DateUtil.CHINESE_PATTERN));
-					map.put("drawMoney", (drawCash.getCash()+drawCash.getReward()+drawCash.getOrderReward()+drawCash.getHongbao())+"");
-					list.add(map);
-				}
-				ItemVo itemVo = new ItemVo();
-				itemVo.setItems(list);
-				itemVo.setCurPage(Integer.parseInt(pageNo));
-				itemVo.setTotalSize(vo.getCount());
-				long maxPage=0;
-				boolean ifHasNextPage=false;
-				if(vo.getCount()%vo.getSize()==0){
-					maxPage=vo.getCount() / vo.getSize();
-				}else{
-					maxPage=vo.getCount() / vo.getSize()+1;
-				}
-				if(maxPage>Long.parseLong(pageNo)){
-					ifHasNextPage=true;
-				}else{
-					ifHasNextPage=false;
-				}		
-				itemVo.setMaxPage(maxPage);
-				itemVo.setHasNext(ifHasNextPage);
-				itemVo.setTotalSize(vo.getCount());				
-				drawCashVo.setData(itemVo);
-				
-				drawCashVo.setStatus("0");
-				drawCashVo.setDesc("查询成功");
-				model.addAttribute("response", drawCashVo);
-			}else{
-				drawCashVo.setStatus("2");
-				drawCashVo.setDesc("还没有提现记录");
-				drawCashVo.setData(new ItemVo());
-				model.addAttribute("response", drawCashVo);
-				return model;
+			ItemVo itemVo = new ItemVo();
+			itemVo.setItems(list);
+			itemVo.setCurPage(Integer.parseInt(pageNo));
+			itemVo.setTotalSize(vo.getCount());
+			long maxPage = 0;
+			boolean ifHasNextPage = false;
+			if (vo.getCount() % vo.getSize() == 0) {
+				maxPage = vo.getCount() / vo.getSize();
+			} else {
+				maxPage = vo.getCount() / vo.getSize() + 1;
 			}
+			if (maxPage > Long.parseLong(pageNo)) {
+				ifHasNextPage = true;
+			} else {
+				ifHasNextPage = false;
+			}
+			itemVo.setMaxPage(maxPage);
+			itemVo.setHasNext(ifHasNextPage);
+			itemVo.setTotalSize(vo.getCount());
+			drawCashVo.setData(itemVo);
+
+			drawCashVo.setStatus("0");
+			drawCashVo.setDesc("查询成功");
+			model.addAttribute("response", drawCashVo);
+		} else {
+			drawCashVo.setStatus("2");
+			drawCashVo.setDesc("还没有提现记录");
+			drawCashVo.setData(new ItemVo());
+			model.addAttribute("response", drawCashVo);
+			return model;
+		}
 
 		return model;
 	}
