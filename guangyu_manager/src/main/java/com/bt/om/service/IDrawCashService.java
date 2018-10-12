@@ -22,4 +22,6 @@ public interface IDrawCashService {
 	void confimPayment(Integer id) throws Exception;
 	
 	double getSumByMobile(Map<String, Object> searchMap);
+	
+	 public void selectDrawCashList(SearchDataVo vo);
 }

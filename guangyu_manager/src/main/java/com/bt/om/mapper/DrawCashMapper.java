@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.bt.om.entity.DrawCash;
+import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.UserOrder;
 
 public interface DrawCashMapper {
@@ -59,4 +60,8 @@ public interface DrawCashMapper {
 	int updateUserOrderStatus2AndStatus3(@Param("id") Integer id, @Param("sysDate") Date sysDate);
 	
 	double getSumByMobile(Map<String, Object> searchMap);
+	
+	int selectDrawCashListCount(Map<String, Object> searchMap);
+
+    List<DrawCash> selectDrawCashList(Map<String, Object> searchMap, RowBounds rowBounds);
 }

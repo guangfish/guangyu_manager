@@ -320,4 +320,23 @@
 			</if>			
 		</where>
 	</select>
+	
+	<select id="selectDrawCashListCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from draw_cash WHERE 1=1	
+		<if test="mobile != null">
+		    and mobile = #{mobile,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="selectDrawCashList" parameterType="map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from draw_cash WHERE 1=1
+		<if test="mobile != null">
+			and mobile = #{mobile,jdbcType=VARCHAR}
+		</if>
+		order by id desc
+	</select>
 </mapper>
