@@ -13,6 +13,7 @@ public class ItemVo implements Serializable{
 	private long maxPage=1;
 	private boolean hasNext=false;
 	private String mall = "";
+	private String ifJump="yes";
 	private List<Map<String, String>> items=new ArrayList<>();
 	public long getTotalSize() {
 		return totalSize;
@@ -43,6 +44,12 @@ public class ItemVo implements Serializable{
 	}
 	public void setMall(String mall) {
 		this.mall = mall;
+	}	
+	public String getIfJump() {
+		return ifJump;
+	}
+	public void setIfJump(String ifJump) {
+		this.ifJump = ifJump;
 	}
 	public List<Map<String, String>> getItems() {
 		return items;

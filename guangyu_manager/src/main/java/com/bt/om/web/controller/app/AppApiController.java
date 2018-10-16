@@ -946,6 +946,7 @@ public class AppApiController extends BasicController {
 
 				itemVo.setItems(list);
 				itemVo.setMall("taobao");
+				itemVo.setIfJump("no");
 				itemVo.setCurPage((int) pageNo);
 				long maxPage = 0;
 				boolean ifHasNextPage = false;

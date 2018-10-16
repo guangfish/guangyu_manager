@@ -93,7 +93,13 @@ public class AppProductSearchController extends BasicController {
 	public ProductInfoVo productInfoApi(String key, int pageNo, int size) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
-			String retStr = MaterialSearch.materialSearch(key, pageNo, size);
+			String retStr="";
+			String cat="16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
+			if("".equals(key)){
+				retStr = MaterialSearch.materialSearch(key,cat, pageNo, size);
+			}else{
+				retStr = MaterialSearch.materialSearch(key, pageNo, size);
+			}
 			logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
