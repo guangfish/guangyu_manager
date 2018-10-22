@@ -78,10 +78,10 @@ public class AppProductSearchController extends BasicController {
 			key="";
 		}
 
-		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key+"_"+size);
+		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key+"_"+pageNo);
 		if(productInfoVoObj==null){
 			productInfoVo = productInfoApi(key, pageNo, size);
-			jedisPool.putInCache("productSearch", key+"_"+size, productInfoVo, 60*60);
+			jedisPool.putInCache("productSearch", key+"_"+pageNo, productInfoVo, 60*60);
 		}else{
 			productInfoVo=(ProductInfoVo)productInfoVoObj;
 		}
