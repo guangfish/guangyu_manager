@@ -13,12 +13,14 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bt.om.cache.JedisPool;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
@@ -40,10 +42,12 @@ import com.google.gson.JsonObject;
 @Controller
 @RequestMapping(value = "/app/api")
 public class AppProductSearchController extends BasicController {
+	@Autowired
+	private JedisPool jedisPool;
 
 	@RequestMapping(value = "/productSearch", method = RequestMethod.POST)
 	@ResponseBody
-	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
+	public Model productSearch(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = null;
 		String key = null;
 		int pageNo = 1;
@@ -74,7 +78,14 @@ public class AppProductSearchController extends BasicController {
 			key="";
 		}
 
-		productInfoVo = productInfoApi(key, pageNo, size);
+		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key+"_"+size);
+		if(productInfoVoObj==null){
+			productInfoVo = productInfoApi(key, pageNo, size);
+			jedisPool.putInCache("productSearch", key+"_"+size, productInfoVo, 60*60);
+		}else{
+			productInfoVo=(ProductInfoVo)productInfoVoObj;
+		}
+		
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
 			productInfoVo.setDesc("未查到商品信息");
