@@ -372,7 +372,7 @@ public class AppLoginController extends BasicController {
 
 			String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
-			logger.info("用户手机号==" + userId);
+//			logger.info("用户手机号==" + userId);
 			User user = userService.selectByMobile(userId);
 			if (user != null) {
 				logger.info("用户对象不为空");
@@ -410,10 +410,13 @@ public class AppLoginController extends BasicController {
 				double totalCommission = 0;
 				float tCommission = 0;
 				double thisMonthCommission = 0;
+				double lastMonthCommission = 0;
 				float tmCommission = 0;
+				float lmCommission = 0;
 				List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(userId);
 				// List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 				String thisMonth = DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN);
+				String lastMonth = DateUtil.dateFormate(DateUtil.getBeforeMonth(new Date()), DateUtil.MONTH_PATTERN);
 				for (UserOrder userOrder : userOrderList) {
 					if ("订单结算".equals(userOrder.getOrderStatus())) {
 						canDrawOrderNum = canDrawOrderNum + 1;
@@ -422,11 +425,17 @@ public class AppLoginController extends BasicController {
 							thisMonthCommission = thisMonthCommission
 									+ userOrder.getCommission3() * userOrder.getFanliMultiple();
 						}
+						if (lastMonth.equals(DateUtil.dateFormate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))) {
+							lastMonthCommission = lastMonthCommission
+									+ userOrder.getCommission3() * userOrder.getFanliMultiple();
+						}
+						
 						// userOrderCanDrawList.add(userOrder);
 					}
 				}
 				tCommission = ((float) (Math.round(totalCommission * 100)) / 100);
 				tmCommission = ((float) (Math.round(thisMonthCommission * 100)) / 100);
+				lmCommission = ((float) (Math.round(lastMonthCommission * 100)) / 100);
 
 				// 累计购物已省
 				Map<String, Object> map = new HashMap<>();
@@ -464,7 +473,18 @@ public class AppLoginController extends BasicController {
 						reason = "最小起提金额为" + drawMoneyMin + "元！";
 					}
 				}
-				totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
+				int thisDay=Integer.parseInt(DateUtil.dateFormate(new Date(), "dd"));
+				//1-28日之间，显示的余额为总预估收入-本月预估收入-上月预估收入
+				if(thisDay>=1 && thisDay<28){
+					totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission - lmCommission) * 100)) / 100);
+					System.out.println(totalMoney);
+					System.out.println(tmCommission);
+					System.out.println(lmCommission);
+				}
+				//28-31日之间，显示余额为总预估收入-本月预估收入，此次上月收入以结算
+				else{
+					totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission) * 100)) / 100);
+				}				
 				data.put("totalMoney", NumberUtil.format(totalMoney));// 总共可提现金额
 				data.put("orderMoney", NumberUtil.format(tCommission));// 订单可提金额
 				data.put("inviteReward", NumberUtil.format(inviteReward));// 邀请奖励金额
