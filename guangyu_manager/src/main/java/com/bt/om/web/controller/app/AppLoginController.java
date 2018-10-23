@@ -477,7 +477,7 @@ public class AppLoginController extends BasicController {
 				}
 				
 				//1-28日之间，显示的余额为总预估收入-本月预估收入-上月预估收入
-				if(thisDay>=1 && thisDay<21){
+				if(thisDay>=1 && thisDay<28){
 					totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission - lmCommission) * 100)) / 100);
 					System.out.println("1-28日之间(包括1日不包括28日)，显示的余额为总预估收入-本月预估收入-上月预估收入");
 					System.out.println("总预估收入="+totalMoney);
