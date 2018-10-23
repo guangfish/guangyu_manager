@@ -469,7 +469,7 @@ public class AppLoginController extends BasicController {
 				platformReward = ((float) (Math.round(platformReward * 100)) / 100);
 				tmPlatformReward = ((float) (Math.round(thisMonthPlatformReward * 100)) / 100);
 				lmPlatformReward = ((float) (Math.round(lastMonthPlatformReward * 100)) / 100);
-				if(thisDay>=1 && thisDay<28){
+				if(thisDay>=1 && thisDay<21){
 					System.out.println("1-28日之间(包括1日不包括28日)，显示的订单奖励为总预估订单奖励-本月预估订单奖励-上月预估订单奖励");
 					System.out.println("总预估订单奖励="+platformReward);
 					System.out.println("本月预估订单奖励="+tmPlatformReward);
@@ -504,7 +504,7 @@ public class AppLoginController extends BasicController {
 				}
 				
 				//1-28日之间，显示的余额为总预估收入-本月预估收入-上月预估收入
-				if(thisDay>=1 && thisDay<28){
+				if(thisDay>=1 && thisDay<21){
 					totalMoney = ((double) (Math.round((totalMoney + hongbao - tmCommission - lmCommission-tmPlatformReward-lmPlatformReward) * 100)) / 100);
 					System.out.println("1-28日之间(包括1日不包括28日)，显示的余额为总预估收入-本月预估收入-上月预估收入");
 					System.out.println("总预估收入="+totalMoney);
