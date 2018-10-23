@@ -580,17 +580,17 @@ public class AppDrawController extends BasicController {
 		jedis.close();
 		
 		//若开启提现，判断提现日期
-		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
-		if ("1".equals(canDrawSwitch)) {
-			String day = DateUtil.formatDate(new Date(), "dd");
-			String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
-			if (!canDrawDays.contains(day)) {
-				orderDrawVo.setStatus("7");
-				orderDrawVo.setDesc("未到提现时间");
-				model.addAttribute("response", orderDrawVo);
-				return model;
-			}
-		}
+//		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+//		if ("1".equals(canDrawSwitch)) {
+//			String day = DateUtil.formatDate(new Date(), "dd");
+//			String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+//			if (!canDrawDays.contains(day)) {
+//				orderDrawVo.setStatus("7");
+//				orderDrawVo.setDesc("未到提现时间");
+//				model.addAttribute("response", orderDrawVo);
+//				return model;
+//			}
+//		}
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();
@@ -622,19 +622,32 @@ public class AppDrawController extends BasicController {
 		List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 		double totalCommission = 0;
 		double thisMonthCommission = 0;
+		double lastMonthCommission = 0;
 		int productNums = 0;
+		int thisDay=Integer.parseInt(com.bt.om.util.DateUtil.dateFormate(new Date(), "dd"));
 		if (userOrderList != null && userOrderList.size() > 0) {
 			productNums = userOrderList.size();
 			String thisMonth=DateUtil.formatDate(new Date(), DateUtil.MONTH_PATTERN);
+			String lastMonth = com.bt.om.util.DateUtil.dateFormate(com.bt.om.util.DateUtil.getBeforeMonth(new Date()), DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
 				//总共订单的返利金额  
 				totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
 				if(thisMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
 					//本月产生的订单金额
-					thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-				}else{
-					userOrderCanDrawList.add(userOrder); 
+					thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();					
 				}
+				else if(lastMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
+					//上月产生的订单金额
+					lastMonthCommission = lastMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
+					if(thisDay>=1 && thisDay<28){
+					}else{
+						userOrderCanDrawList.add(userOrder); 
+					}
+				}
+				//上月之前的订单都可以提现
+				else{
+					userOrderCanDrawList.add(userOrder); 
+				}				
 			}
 		}
 
@@ -649,8 +662,13 @@ public class AppDrawController extends BasicController {
 		drawCash.setMobile(userId);
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
-		//排除本月订单金额后可提现的金额
-		drawCash.setCash(totalCommission - thisMonthCommission);
+		//1-28日之间，提现的余额为总预估收入-本月预估收入-上月预估收入
+		if(thisDay>=1 && thisDay<28){
+			drawCash.setCash(totalCommission - thisMonthCommission - lastMonthCommission);
+		}else{
+			drawCash.setCash(totalCommission - thisMonthCommission); 
+		}
+		
 		drawCash.setReward(reward);
 		drawCash.setOrderReward(orderReward);
 		if(user.getHongbao()>0){
