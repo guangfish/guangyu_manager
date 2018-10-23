@@ -358,17 +358,17 @@ public class AppLoginController extends BasicController {
 
 			String canDraw = "true";
 			String reason = "";
-			String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
-			if ("1".equals(canDrawSwitch)) {
-				String day = DateUtil.dateFormate(new Date(), "dd");
-				String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
-				if (canDrawDays.contains(day)) {
-					canDraw = "true";
-				} else {
-					canDraw = "false";
-					reason = "亲！每月" + canDrawDays + "日开启提现功能。";
-				}
-			}
+//			String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+//			if ("1".equals(canDrawSwitch)) {
+//				String day = DateUtil.dateFormate(new Date(), "dd");
+//				String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+//				if (canDrawDays.contains(day)) {
+//					canDraw = "true";
+//				} else {
+//					canDraw = "false";
+//					reason = "亲！每月" + canDrawDays + "日开启提现功能。";
+//				}
+//			}
 
 			String tklSymbols = GlobalVariable.resourceMap.get("tkl.symbol");
 
