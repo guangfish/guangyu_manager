@@ -639,7 +639,7 @@ public class AppDrawController extends BasicController {
 				else if(lastMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
 					//上月产生的订单金额
 					lastMonthCommission = lastMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					if(thisDay>=1 && thisDay<28){
+					if(thisDay>=1 && thisDay<21){
 					}else{
 						userOrderCanDrawList.add(userOrder); 
 					}
@@ -663,7 +663,7 @@ public class AppDrawController extends BasicController {
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
 		//1-28日之间，提现的余额为总预估收入-本月预估收入-上月预估收入
-		if(thisDay>=1 && thisDay<28){
+		if(thisDay>=1 && thisDay<21){
 			drawCash.setCash(totalCommission - thisMonthCommission - lastMonthCommission);
 		}else{
 			drawCash.setCash(totalCommission - thisMonthCommission); 
