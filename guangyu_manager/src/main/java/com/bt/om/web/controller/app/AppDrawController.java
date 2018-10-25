@@ -79,8 +79,8 @@ public class AppDrawController extends BasicController {
 		ResultVo resultVo = new ResultVo();
 		String userId = "";
 		String orderStatus = "1";
-		int pageNo=1;
-		int size=30;
+		int pageNo = 1;
+		int size = 30;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -91,12 +91,12 @@ public class AppDrawController extends BasicController {
 			}
 			if (obj.get("orderStatus") != null) {
 				orderStatus = obj.get("orderStatus").getAsString();
-				if("1".equals(orderStatus)){
-					orderStatus="订单结算";
-				}else if("3".equals(orderStatus)){
-					orderStatus="订单失效";
-				}else{
-					orderStatus="订单付款";
+				if ("1".equals(orderStatus)) {
+					orderStatus = "订单结算";
+				} else if ("3".equals(orderStatus)) {
+					orderStatus = "订单失效";
+				} else {
+					orderStatus = "订单付款";
 				}
 			}
 			if (obj.get("pageNo") != null) {
@@ -127,132 +127,143 @@ public class AppDrawController extends BasicController {
 			model.addAttribute("response", resultVo);
 			return model;
 		}
-		
-		SearchDataVo vo = SearchUtil.getVoForList(pageNo,size);
-		if(StringUtil.isNotEmpty(orderStatus)){
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
+		if (StringUtil.isNotEmpty(orderStatus)) {
 			vo.putSearchParam("orderStatus", orderStatus, orderStatus);
 		}
-		if(StringUtil.isNotEmpty(userId)){
+		if (StringUtil.isNotEmpty(userId)) {
 			vo.putSearchParam("mobile", userId, userId);
 		}
-		
+
 		List<Map<String, String>> list = new ArrayList<>();
-		
+
 		userOrderService.selectByMobileAndOrderStatus(vo);
 		@SuppressWarnings("unchecked")
-		List<UserOrder> userOrderList=(List<UserOrder>)vo.getList();
-		for(UserOrder userOrder:userOrderList){
+		List<UserOrder> userOrderList = (List<UserOrder>) vo.getList();
+		for (UserOrder userOrder : userOrderList) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
 			map.put("productName", userOrder.getProductInfo());
-			map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-					? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
+			map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus())) ? ("￥" + userOrder.getCommission3())
+					: "￥" + (userOrder.getCommission3())));
 
 			map.put("multiple", "" + userOrder.getFanliMultiple());
 			map.put("orderStatus", userOrder.getOrderStatus());
 			map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
 			list.add(map);
 		}
-		
-		ItemVo itemVo=new ItemVo();
-		
+
+		ItemVo itemVo = new ItemVo();
+
 		itemVo.setItems(list);
 		itemVo.setCurPage(pageNo);
-		long maxPage=0;
-		boolean ifHasNextPage=false;
-		if(vo.getCount()%vo.getSize()==0){
-			maxPage=vo.getCount() / vo.getSize();
-		}else{
-			maxPage=vo.getCount() / vo.getSize()+1;
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
 		}
-		if(maxPage>pageNo){
-			ifHasNextPage=true;
-		}else{
-			ifHasNextPage=false;
-		}		
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
 		itemVo.setMaxPage(maxPage);
 		itemVo.setHasNext(ifHasNextPage);
 		itemVo.setTotalSize(vo.getCount());
-		
+
 		resultVo.setData(itemVo);
 
-//		
-//		try {
-//			List<UserOrder> userOrderList = userOrderService.selectAllOrderByMobile(userId);
-//			List<UserOrder> userOrderSettleList = new ArrayList<>();// 结算订单列表
-//			List<UserOrder> userOrderPayList = new ArrayList<>();// 付款订单列表
-//			List<UserOrder> userOrderNoValidList = new ArrayList<>();// 失效订单列表
-//			for (UserOrder userOrder : userOrderList) {
-//				if ("订单结算".equals(userOrder.getOrderStatus())) {
-//					userOrderSettleList.add(userOrder);
-//				} else if ("订单失效".equals(userOrder.getOrderStatus())) {
-//					userOrderNoValidList.add(userOrder);
-//				} else {
-//					userOrderPayList.add(userOrder);
-//				}
-//			}
-//
-//			// 结算订单
-//			if ("1".equals(orderStatus)) {
-//				if (userOrderSettleList != null && userOrderSettleList.size() > 0) {
-//					for (UserOrder userOrder : userOrderSettleList) {
-//						HashMap<String, String> map = new HashMap<>();
-//						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
-//						map.put("productName", userOrder.getProductInfo());
-//						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-//								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
-//
-//						map.put("multiple", "" + userOrder.getFanliMultiple());
-//						map.put("orderStatus", userOrder.getOrderStatus());
-//						map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
-//						list.add(map);
-//					}
-//					resultVo.setResultSize(userOrderSettleList.size());
-//				}
-//			}
-//			// 付款订单
-//			else if ("2".equals(orderStatus)) {
-//				if (userOrderPayList != null && userOrderPayList.size() > 0) {
-//					for (UserOrder userOrder : userOrderPayList) {
-//						HashMap<String, String> map = new HashMap<>();
-//						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
-//						map.put("productName", userOrder.getProductInfo());
-//						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-//								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
-//
-//						map.put("multiple", "" + userOrder.getFanliMultiple());
-//						map.put("orderStatus", userOrder.getOrderStatus());
-//						map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
-//						list.add(map);
-//					}
-//					resultVo.setResultSize(userOrderPayList.size());
-//				}
-//			}
-//			// 失效订单
-//			else if ("3".equals(orderStatus)) {
-//				if (userOrderNoValidList != null && userOrderNoValidList.size() > 0) {
-//					for (UserOrder userOrder : userOrderNoValidList) {
-//						HashMap<String, String> map = new HashMap<>();
-//						map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" : userOrder.getProductImgUrl());
-//						map.put("productName", userOrder.getProductInfo());
-//						map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-//								? ("￥" + userOrder.getCommission3()) : "￥" + (userOrder.getCommission3())));
-//
-//						map.put("multiple", "" + userOrder.getFanliMultiple());
-//						map.put("orderStatus", userOrder.getOrderStatus());
-//						map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
-//						list.add(map);
-//					}
-//					resultVo.setResultSize(userOrderNoValidList.size());
-//				}
-//			}
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		resultVo.setData(list);
-		
+		//
+		// try {
+		// List<UserOrder> userOrderList =
+		// userOrderService.selectAllOrderByMobile(userId);
+		// List<UserOrder> userOrderSettleList = new ArrayList<>();// 结算订单列表
+		// List<UserOrder> userOrderPayList = new ArrayList<>();// 付款订单列表
+		// List<UserOrder> userOrderNoValidList = new ArrayList<>();// 失效订单列表
+		// for (UserOrder userOrder : userOrderList) {
+		// if ("订单结算".equals(userOrder.getOrderStatus())) {
+		// userOrderSettleList.add(userOrder);
+		// } else if ("订单失效".equals(userOrder.getOrderStatus())) {
+		// userOrderNoValidList.add(userOrder);
+		// } else {
+		// userOrderPayList.add(userOrder);
+		// }
+		// }
+		//
+		// // 结算订单
+		// if ("1".equals(orderStatus)) {
+		// if (userOrderSettleList != null && userOrderSettleList.size() > 0) {
+		// for (UserOrder userOrder : userOrderSettleList) {
+		// HashMap<String, String> map = new HashMap<>();
+		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
+		// userOrder.getProductImgUrl());
+		// map.put("productName", userOrder.getProductInfo());
+		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
+		// ? ("￥" + userOrder.getCommission3()) : "￥" +
+		// (userOrder.getCommission3())));
+		//
+		// map.put("multiple", "" + userOrder.getFanliMultiple());
+		// map.put("orderStatus", userOrder.getOrderStatus());
+		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
+		// DateUtil.CHINESE_PATTERN));
+		// list.add(map);
+		// }
+		// resultVo.setResultSize(userOrderSettleList.size());
+		// }
+		// }
+		// // 付款订单
+		// else if ("2".equals(orderStatus)) {
+		// if (userOrderPayList != null && userOrderPayList.size() > 0) {
+		// for (UserOrder userOrder : userOrderPayList) {
+		// HashMap<String, String> map = new HashMap<>();
+		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
+		// userOrder.getProductImgUrl());
+		// map.put("productName", userOrder.getProductInfo());
+		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
+		// ? ("￥" + userOrder.getCommission3()) : "￥" +
+		// (userOrder.getCommission3())));
+		//
+		// map.put("multiple", "" + userOrder.getFanliMultiple());
+		// map.put("orderStatus", userOrder.getOrderStatus());
+		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
+		// DateUtil.CHINESE_PATTERN));
+		// list.add(map);
+		// }
+		// resultVo.setResultSize(userOrderPayList.size());
+		// }
+		// }
+		// // 失效订单
+		// else if ("3".equals(orderStatus)) {
+		// if (userOrderNoValidList != null && userOrderNoValidList.size() > 0)
+		// {
+		// for (UserOrder userOrder : userOrderNoValidList) {
+		// HashMap<String, String> map = new HashMap<>();
+		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
+		// userOrder.getProductImgUrl());
+		// map.put("productName", userOrder.getProductInfo());
+		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
+		// ? ("￥" + userOrder.getCommission3()) : "￥" +
+		// (userOrder.getCommission3())));
+		//
+		// map.put("multiple", "" + userOrder.getFanliMultiple());
+		// map.put("orderStatus", userOrder.getOrderStatus());
+		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
+		// DateUtil.CHINESE_PATTERN));
+		// list.add(map);
+		// }
+		// resultVo.setResultSize(userOrderNoValidList.size());
+		// }
+		// }
+		//
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		//
+		// resultVo.setData(list);
+
 		model.addAttribute("response", resultVo);
 		return model;
 	}
@@ -263,9 +274,9 @@ public class AppDrawController extends BasicController {
 	public Model friendList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
 		String userId = "";
-		int status=1;
-		int pageNo=1;
-		int size=30;
+		int status = 1;
+		int pageNo = 1;
+		int size = 30;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -291,24 +302,24 @@ public class AppDrawController extends BasicController {
 		}
 
 		List<Map<String, String>> list = new ArrayList<>();
-		
-		SearchDataVo vo = SearchUtil.getVoForList(pageNo,size);
-		if(StringUtil.isNotEmpty(userId)){
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
+		if (StringUtil.isNotEmpty(userId)) {
 			vo.putSearchParam("beInviterMobile", userId, userId);
 		}
-		if(status==1){
-			vo.putSearchParam("status", status+"", status);
-		}else if(status==2){
-			vo.putSearchParam("status", status+"", status);
+		if (status == 1) {
+			vo.putSearchParam("status", status + "", status);
+		} else if (status == 2) {
+			vo.putSearchParam("status", status + "", status);
 			vo.putSearchParam("reward", "1", 1);
-		}else if(status==3){
+		} else if (status == 3) {
 			vo.putSearchParam("status", "2", 2);
 			vo.putSearchParam("reward", "2", 2);
 		}
 		invitationService.selectByMobileFriend(vo);
 		@SuppressWarnings("unchecked")
-		List<Invitation> invitationList=(List<Invitation>)vo.getList();
-		for(Invitation invit : invitationList){
+		List<Invitation> invitationList = (List<Invitation>) vo.getList();
+		for (Invitation invit : invitationList) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put("mobile", invit.getBeInviterMobile());
 			map.put("status", invit.getStatus() == 1 ? "未激活" : "已激活");
@@ -317,46 +328,150 @@ public class AppDrawController extends BasicController {
 			map.put("inviteTime", DateUtil.formatDate(invit.getCreateTime(), DateUtil.CHINESE_PATTERN));// 邀请时间
 			list.add(map);
 		}
-		
-		ItemVo itemVo=new ItemVo();
-		
+
+		ItemVo itemVo = new ItemVo();
+
 		itemVo.setItems(list);
 		itemVo.setCurPage(pageNo);
-		long maxPage=0;
-		boolean ifHasNextPage=false;
-		if(vo.getCount()%vo.getSize()==0){
-			maxPage=vo.getCount() / vo.getSize();
-		}else{
-			maxPage=vo.getCount() / vo.getSize()+1;
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
 		}
-		if(maxPage>pageNo){
-			ifHasNextPage=true;
-		}else{
-			ifHasNextPage=false;
-		}		
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
 		itemVo.setMaxPage(maxPage);
 		itemVo.setHasNext(ifHasNextPage);
 		itemVo.setTotalSize(vo.getCount());
-		
+
 		resultVo.setData(itemVo);
 
-//		Invitation invitation = new Invitation();
-//		invitation.setBeInviterMobile(userId);
-//		List<Invitation> invitationList = invitationService.findByMobileFriend(invitation);
-//		if (invitationList != null && invitationList.size() > 0) {
-//			for (Invitation invit : invitationList) {
-//				HashMap<String, String> map = new HashMap<>();
-//				map.put("mobile", invit.getBeInviterMobile());
-//				map.put("status", invit.getStatus() == 1 ? "未激活" : "已激活");
-//				map.put("ifreward", invit.getReward() == 1 ? "未领取" : "已领取");
-//				map.put("rewardMoney", invit.getMoney() + ""); // 奖励金额
-//				map.put("inviteTime", DateUtil.formatDate(invit.getCreateTime(), DateUtil.CHINESE_PATTERN));// 邀请时间
-//				list.add(map);
-//			}
-//		}
-//
-//		resultVo.setData(list);
-		
+		// Invitation invitation = new Invitation();
+		// invitation.setBeInviterMobile(userId);
+		// List<Invitation> invitationList =
+		// invitationService.findByMobileFriend(invitation);
+		// if (invitationList != null && invitationList.size() > 0) {
+		// for (Invitation invit : invitationList) {
+		// HashMap<String, String> map = new HashMap<>();
+		// map.put("mobile", invit.getBeInviterMobile());
+		// map.put("status", invit.getStatus() == 1 ? "未激活" : "已激活");
+		// map.put("ifreward", invit.getReward() == 1 ? "未领取" : "已领取");
+		// map.put("rewardMoney", invit.getMoney() + ""); // 奖励金额
+		// map.put("inviteTime", DateUtil.formatDate(invit.getCreateTime(),
+		// DateUtil.CHINESE_PATTERN));// 邀请时间
+		// list.add(map);
+		// }
+		// }
+		//
+		// resultVo.setData(list);
+
+		model.addAttribute("response", resultVo);
+		return model;
+	}
+
+	// 查询好友列表
+	@RequestMapping(value = "/friendlistNew", method = RequestMethod.POST)
+	@ResponseBody
+	public Model friendListNew(Model model, HttpServletRequest request, HttpServletResponse response) {
+		ResultVo resultVo = new ResultVo();
+		String userId = "";
+		int status = 1;
+		int pageNo = 1;
+		int size = 30;
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+			}
+			if (obj.get("status") != null) {
+				status = obj.get("status").getAsInt();
+			}
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsInt();
+			}
+			if (obj.get("size") != null) {
+				size = obj.get("size").getAsInt();
+			}
+		} catch (IOException e) {
+			resultVo.setStatus("1");
+			resultVo.setDesc("系统繁忙，请稍后再试");
+			model.addAttribute("response", resultVo);
+			return model;
+		}
+
+		List<Map<String, String>> list = new ArrayList<>();
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
+		if (StringUtil.isNotEmpty(userId)) {
+			vo.putSearchParam("beInviterMobile", userId, userId);
+		}
+		if (status == 1) {
+			vo.putSearchParam("status", status + "", status);
+		} else if (status == 2) {
+
+		} else if (status == 3) {
+			User user = userService.selectByMobile(userId);
+			vo.putSearchParam("taInviteCode", user.getMyInviteCode(), user.getMyInviteCode());
+		}
+
+		if (status == 1 || status == 2) {
+			invitationService.selectByMobileFriend(vo);
+			@SuppressWarnings("unchecked")
+			List<Invitation> invitationList = (List<Invitation>) vo.getList();
+			for (Invitation invit : invitationList) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("mobile", invit.getBeInviterMobile());
+				map.put("status", invit.getStatus() == 1 ? "未激活" : "已激活");
+				map.put("ifreward", invit.getReward() == 1 ? "未领取" : "已领取");
+				map.put("rewardMoney", invit.getMoney() + ""); // 奖励金额
+				map.put("inviteTime", DateUtil.formatDate(invit.getCreateTime(), DateUtil.CHINESE_PATTERN));// 邀请时间
+				list.add(map);
+			}
+		} else {
+			userOrderService.getByInviteCode(vo);
+
+			@SuppressWarnings("unchecked")
+			List<UserOrder> userOrderList = (List<UserOrder>) vo.getList();
+			for (UserOrder userOrder : userOrderList) {
+				HashMap<String, String> map = new HashMap<>();
+				map.put("mobile", userOrder.getMobile());// 会员手机号
+				map.put("commission", userOrder.getCommission3() + "");// 会员订单返现金额
+				map.put("orderReward", userOrder.getCommissionReward() + "");// 订单奖励金额
+				map.put("orderRewardRate", userOrder.getCommissionRewardRate() + ""); // 订单奖励金额百分比
+				list.add(map);
+			}
+		}
+
+		ItemVo itemVo = new ItemVo();
+
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
+		}
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+
+		resultVo.setData(itemVo);
+
 		model.addAttribute("response", resultVo);
 		return model;
 	}
@@ -367,8 +482,8 @@ public class AppDrawController extends BasicController {
 	public Model orderRewardList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
 		String userId = "";
-		int pageNo=1;
-		int size=30;
+		int pageNo = 1;
+		int size = 30;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -389,18 +504,18 @@ public class AppDrawController extends BasicController {
 			model.addAttribute("response", resultVo);
 			return model;
 		}
-		
+
 		User user = userService.selectByMobile(userId);
 		List<Map<String, String>> list = new ArrayList<>();
-		
-		SearchDataVo vo = SearchUtil.getVoForList(pageNo,size);
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
 		vo.putSearchParam("taInviteCode", user.getMyInviteCode(), user.getMyInviteCode());
 
 		userOrderService.getByInviteCode(vo);
-		
+
 		@SuppressWarnings("unchecked")
-		List<UserOrder> userOrderList = (List<UserOrder>)vo.getList();
-		for(UserOrder userOrder : userOrderList){
+		List<UserOrder> userOrderList = (List<UserOrder>) vo.getList();
+		for (UserOrder userOrder : userOrderList) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put("mobile", userOrder.getMobile());// 会员手机号
 			map.put("commission", userOrder.getCommission3() + "");// 会员订单返现金额
@@ -408,44 +523,47 @@ public class AppDrawController extends BasicController {
 			map.put("orderRewardRate", userOrder.getCommissionRewardRate() + ""); // 订单奖励金额百分比
 			list.add(map);
 		}
-		
-		ItemVo itemVo=new ItemVo();
-		
+
+		ItemVo itemVo = new ItemVo();
+
 		itemVo.setItems(list);
 		itemVo.setCurPage(pageNo);
-		long maxPage=0;
-		boolean ifHasNextPage=false;
-		if(vo.getCount()%vo.getSize()==0){
-			maxPage=vo.getCount() / vo.getSize();
-		}else{
-			maxPage=vo.getCount() / vo.getSize()+1;
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
 		}
-		if(maxPage>pageNo){
-			ifHasNextPage=true;
-		}else{
-			ifHasNextPage=false;
-		}		
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
 		itemVo.setMaxPage(maxPage);
 		itemVo.setHasNext(ifHasNextPage);
 		itemVo.setTotalSize(vo.getCount());
-		
+
 		resultVo.setData(itemVo);
-		
-//		List<UserOrder> userOrderList = userOrderService.selectByInviteCode(user.getMyInviteCode());
-//
-//		if (userOrderList != null && userOrderList.size() > 0) {
-//			for (UserOrder userOrder : userOrderList) {
-//				HashMap<String, String> map = new HashMap<>();
-//				map.put("mobile", userOrder.getMobile());// 会员手机号
-//				map.put("commission", userOrder.getCommission3() + "");// 会员订单返现金额
-//				map.put("orderReward", userOrder.getCommissionReward() + "");// 订单奖励金额
-//				map.put("orderRewardRate", userOrder.getCommissionRewardRate() + ""); // 订单奖励金额百分比
-//				list.add(map);
-//			}
-//		}
-//
-//		resultVo.setData(list);
-		
+
+		// List<UserOrder> userOrderList =
+		// userOrderService.selectByInviteCode(user.getMyInviteCode());
+		//
+		// if (userOrderList != null && userOrderList.size() > 0) {
+		// for (UserOrder userOrder : userOrderList) {
+		// HashMap<String, String> map = new HashMap<>();
+		// map.put("mobile", userOrder.getMobile());// 会员手机号
+		// map.put("commission", userOrder.getCommission3() + "");// 会员订单返现金额
+		// map.put("orderReward", userOrder.getCommissionReward() + "");//
+		// 订单奖励金额
+		// map.put("orderRewardRate", userOrder.getCommissionRewardRate() + "");
+		// // 订单奖励金额百分比
+		// list.add(map);
+		// }
+		// }
+		//
+		// resultVo.setData(list);
+
 		model.addAttribute("response", resultVo);
 		return model;
 	}
@@ -578,19 +696,20 @@ public class AppDrawController extends BasicController {
 
 		jedis.del(userId);
 		jedis.close();
-		
-		//若开启提现，判断提现日期
-//		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
-//		if ("1".equals(canDrawSwitch)) {
-//			String day = DateUtil.formatDate(new Date(), "dd");
-//			String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
-//			if (!canDrawDays.contains(day)) {
-//				orderDrawVo.setStatus("7");
-//				orderDrawVo.setDesc("未到提现时间");
-//				model.addAttribute("response", orderDrawVo);
-//				return model;
-//			}
-//		}
+
+		// 若开启提现，判断提现日期
+		// String canDrawSwitch =
+		// GlobalVariable.resourceMap.get("can_draw_switch");
+		// if ("1".equals(canDrawSwitch)) {
+		// String day = DateUtil.formatDate(new Date(), "dd");
+		// String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+		// if (!canDrawDays.contains(day)) {
+		// orderDrawVo.setStatus("7");
+		// orderDrawVo.setDesc("未到提现时间");
+		// model.addAttribute("response", orderDrawVo);
+		// return model;
+		// }
+		// }
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();
@@ -618,36 +737,38 @@ public class AppDrawController extends BasicController {
 
 		// 订单返现
 		List<UserOrder> userOrderList = userOrderService.selectByMobile(userId);
-		//可提现的订单
+		// 可提现的订单
 		List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 		double totalCommission = 0;
 		double thisMonthCommission = 0;
 		double lastMonthCommission = 0;
 		int productNums = 0;
-		int thisDay=Integer.parseInt(com.bt.om.util.DateUtil.dateFormate(new Date(), "dd"));
+		int thisDay = Integer.parseInt(com.bt.om.util.DateUtil.dateFormate(new Date(), "dd"));
 		if (userOrderList != null && userOrderList.size() > 0) {
 			productNums = userOrderList.size();
-			String thisMonth=DateUtil.formatDate(new Date(), DateUtil.MONTH_PATTERN);
-			String lastMonth = com.bt.om.util.DateUtil.dateFormate(com.bt.om.util.DateUtil.getBeforeMonth(new Date()), DateUtil.MONTH_PATTERN);
+			String thisMonth = DateUtil.formatDate(new Date(), DateUtil.MONTH_PATTERN);
+			String lastMonth = com.bt.om.util.DateUtil.dateFormate(com.bt.om.util.DateUtil.getBeforeMonth(new Date()),
+					DateUtil.MONTH_PATTERN);
 			for (UserOrder userOrder : userOrderList) {
-				//总共订单的返利金额  
+				// 总共订单的返利金额
 				totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-				if(thisMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
-					//本月产生的订单金额
-					thisMonthCommission = thisMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();					
-				}
-				else if(lastMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))){
-					//上月产生的订单金额
-					lastMonthCommission = lastMonthCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
-					if(thisDay>=1 && thisDay<28){
-					}else{
-						userOrderCanDrawList.add(userOrder); 
+				if (thisMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))) {
+					// 本月产生的订单金额
+					thisMonthCommission = thisMonthCommission
+							+ userOrder.getCommission3() * userOrder.getFanliMultiple();
+				} else if (lastMonth.equals(DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.MONTH_PATTERN))) {
+					// 上月产生的订单金额
+					lastMonthCommission = lastMonthCommission
+							+ userOrder.getCommission3() * userOrder.getFanliMultiple();
+					if (thisDay >= 1 && thisDay < 28) {
+					} else {
+						userOrderCanDrawList.add(userOrder);
 					}
 				}
-				//上月之前的订单都可以提现
-				else{
-					userOrderCanDrawList.add(userOrder); 
-				}				
+				// 上月之前的订单都可以提现
+				else {
+					userOrderCanDrawList.add(userOrder);
+				}
 			}
 		}
 
@@ -662,23 +783,23 @@ public class AppDrawController extends BasicController {
 		drawCash.setMobile(userId);
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
-		//1-28日之间，提现的余额为总预估收入-本月预估收入-上月预估收入
-		if(thisDay>=1 && thisDay<28){
+		// 1-28日之间，提现的余额为总预估收入-本月预估收入-上月预估收入
+		if (thisDay >= 1 && thisDay < 28) {
 			drawCash.setCash(totalCommission - thisMonthCommission - lastMonthCommission);
-		}else{
-			drawCash.setCash(totalCommission - thisMonthCommission); 
+		} else {
+			drawCash.setCash(totalCommission - thisMonthCommission);
 		}
-		
+
 		drawCash.setReward(reward);
 		drawCash.setOrderReward(orderReward);
-		if(user.getHongbao()>0){
+		if (user.getHongbao() > 0) {
 			drawCash.setHongbao(user.getHongbao());
 		}
 		drawCash.setCreateTime(new Date());
 		drawCash.setUpdateTime(new Date());
 		drawCashService.insert(drawCash);
-		
-		//更新用户红包金额
+
+		// 更新用户红包金额
 		user.setHongbao(0f);
 		user.setUpdateTime(new Date());
 		userService.updateHongbao(user);
