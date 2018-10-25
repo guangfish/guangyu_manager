@@ -458,23 +458,25 @@ public class AppLoginController extends BasicController {
 				float hongbao = user.getHongbao();
 
 				double totalMoney = ((double) (Math.round((tCommission + inviteReward + platformReward) * 100)) / 100);
+				
 				// 最小起提金额
 				int drawMoneyMin = Integer.parseInt(GlobalVariable.resourceMap.get("draw_money_min"));
-				if ("true".equals(canDraw)) {
-					System.out.println(totalMoney - tmCommission);
-					if ((int) (totalMoney - tmCommission) <= 0) {
-						canDraw = "false";
-						if (hongbao > 0) {
-							reason = "亲！我的钱包中只有红包，红包不能单独提现，等有返现或奖励时再提吧。";
-						} else {
-							reason = "我的钱包空空的！";
-						}
-					} else if ((int) (totalMoney - tmCommission) > 0
-							&& (int) (totalMoney - tmCommission) < drawMoneyMin) {
-						canDraw = "false";
-						reason = "最小起提金额为" + drawMoneyMin + "元！";
-					}
-				}
+				
+//				if ("true".equals(canDraw)) {
+//					System.out.println(totalMoney - tmCommission);
+//					if ((int) (totalMoney - tmCommission) <= 0) {
+//						canDraw = "false";
+//						if (hongbao > 0) {
+//							reason = "亲！我的钱包中只有红包，红包不能单独提现，等有返现或奖励时再提吧。";
+//						} else {
+//							reason = "我的钱包空空的！";
+//						}
+//					} else if ((int) (totalMoney - tmCommission) > 0
+//							&& (int) (totalMoney - tmCommission) < drawMoneyMin) {
+//						canDraw = "false";
+//						reason = "最小起提金额为" + drawMoneyMin + "元！";
+//					}
+//				}
 				
 				//1-28日之间，显示的余额为总预估收入-本月预估收入-上月预估收入
 				if(thisDay>=1 && thisDay<28){
@@ -490,7 +492,13 @@ public class AppLoginController extends BasicController {
 					System.out.println("28-31日之间，显示余额为总预估收入-本月预估收入，此次上月收入已结算");
 					System.out.println("总预估收入="+totalMoney);
 					System.out.println("本月预估收入="+tmCommission);
-				}				
+				}
+				
+				if(totalMoney < drawMoneyMin){
+					canDraw = "false";
+					reason = "最小起提金额为" + drawMoneyMin + "元！";
+				}
+				
 				data.put("totalMoney", NumberUtil.format(totalMoney));// 总共可提现金额
 				data.put("orderMoney", NumberUtil.format(tCommission));// 订单可提金额
 				data.put("inviteReward", NumberUtil.format(inviteReward));// 邀请奖励金额
