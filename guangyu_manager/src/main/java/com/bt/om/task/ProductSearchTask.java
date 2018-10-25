@@ -19,10 +19,10 @@ public class ProductSearchTask {
 	private JedisPool jedisPool;
 
 	// 每隔一段时间获取一次佣金信息
-	@Scheduled(cron = "0 0 14 * * ?")
+	@Scheduled(cron = "0 0 1 * * ?")
 	public void productSearch() {
 		logger.info("根据keys定时查询商品信息");
-	    String [] keys={"","女装","男装","母婴","数码","洗护","彩妆","家具","食品","箱包","家电","百货","运动","配饰","鞋子","萌宠","汽车用品"};		
+	    String [] keys={"","女装","男装","母婴","数码","洗护","彩妆","家居","食品","箱包","家电","百货","运动","配饰","鞋子","萌宠","汽车用品"};		
 	    int pages=30;
         try{
         	for(String key:keys){
