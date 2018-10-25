@@ -68,7 +68,7 @@ public class AppApiController extends BasicController {
 		String userId = "";
 		String productUrl = "";
 		int pageNo = 1;
-		int size = 30;
+		int size = 10;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -83,9 +83,9 @@ public class AppApiController extends BasicController {
 			if (obj.get("pageNo") != null) {
 				pageNo = obj.get("pageNo").getAsInt();
 			}
-			if (obj.get("size") != null) {
-				size = obj.get("size").getAsInt();
-			}
+//			if (obj.get("size") != null) {
+//				size = obj.get("size").getAsInt();
+//			}
 		} catch (IOException e) {
 			productInfoVo.setStatus("1");
 			productInfoVo.setDesc("系统繁忙，请稍后再试");
