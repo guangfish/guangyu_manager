@@ -440,6 +440,7 @@ public class AppDrawController extends BasicController {
 
 			@SuppressWarnings("unchecked")
 			List<UserOrder> userOrderList = (List<UserOrder>) vo.getList();
+			System.out.println(userOrderList.size());
 			for (UserOrder userOrder : userOrderList) {
 				HashMap<String, String> map = new HashMap<>();
 				map.put("mobile", userOrder.getMobile());// 会员手机号
