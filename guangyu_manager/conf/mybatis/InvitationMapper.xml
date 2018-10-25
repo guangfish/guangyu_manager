@@ -236,9 +236,14 @@
 		from invitation WHERE 1=1
 		and inviter_mobile =
 		#{beInviterMobile,jdbcType=VARCHAR}
-		<if test="status != null">
-			and status = #{status,jdbcType=INTEGER}
-		</if>
+		<choose>
+			<when test="status != null">
+                and status = #{status,jdbcType=INTEGER}
+			</when>
+			<otherwise>
+                and status != 1 
+			</otherwise>
+		</choose>
 		<if test="reward != null">
 			and reward = #{reward,jdbcType=INTEGER}
 		</if>
