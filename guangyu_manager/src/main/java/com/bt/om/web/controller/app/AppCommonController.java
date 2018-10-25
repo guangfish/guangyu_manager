@@ -27,10 +27,14 @@ import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.AppDownload;
 import com.bt.om.entity.AppDownloadLogs;
 import com.bt.om.entity.DrawCash;
+import com.bt.om.entity.Hotword;
+import com.bt.om.entity.Invitation;
 import com.bt.om.entity.User;
+import com.bt.om.entity.UserOrder;
 import com.bt.om.service.IAppDownloadLogsService;
 import com.bt.om.service.IAppDownloadService;
 import com.bt.om.service.IDrawCashService;
+import com.bt.om.service.IHotwordService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
@@ -44,6 +48,7 @@ import com.bt.om.web.controller.api.v2.vo.AppDownloadVo;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.bt.om.web.controller.app.vo.DrawCashVo;
 import com.bt.om.web.controller.app.vo.ItemVo;
+import com.bt.om.web.controller.app.vo.ResultVo;
 import com.bt.om.web.util.SearchUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -66,6 +71,8 @@ public class AppCommonController extends BasicController {
 	private IUserService userService;
 	@Autowired
 	private IDrawCashService drawCashService;
+	@Autowired
+	private IHotwordService hotwordService;
 
 	// 获取验证码
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
@@ -318,7 +325,7 @@ public class AppCommonController extends BasicController {
 						+ (drawCash.getOrderReward() == null ? 0 : drawCash.getOrderReward())
 						+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao()));
 
-				map.put("drawMoney", Float.parseFloat(NumberUtil.formatDouble(drawMoney , "0.00")) + "");
+				map.put("drawMoney", Float.parseFloat(NumberUtil.formatDouble(drawMoney, "0.00")) + "");
 				list.add(map);
 			}
 			ItemVo itemVo = new ItemVo();
@@ -353,6 +360,30 @@ public class AppCommonController extends BasicController {
 			return model;
 		}
 
+		return model;
+	}
+
+	// 查询热搜词列表
+	@RequestMapping(value = "/hotword", method = RequestMethod.POST)
+	@ResponseBody
+	public Model hotword(Model model, HttpServletRequest request, HttpServletResponse response) {
+		ResultVo resultVo = new ResultVo();
+		List<Map<String, String>> list = new ArrayList<>();
+		List<Hotword> hotwordList = hotwordService.selectAll();
+		for (Hotword hotword : hotwordList) {
+			HashMap<String, String> map = new HashMap<>();
+			map.put("word", hotword.getWord());
+			list.add(map);
+		}
+		ItemVo itemVo = new ItemVo();
+
+		itemVo.setItems(list);
+		itemVo.setCurPage(1);
+		itemVo.setMaxPage(1);
+		itemVo.setHasNext(false);
+		itemVo.setTotalSize(hotwordList.size());
+		resultVo.setData(itemVo);
+		model.addAttribute("response", resultVo);
 		return model;
 	}
 
