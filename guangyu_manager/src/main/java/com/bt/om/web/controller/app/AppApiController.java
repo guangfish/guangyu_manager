@@ -52,7 +52,7 @@ import org.springframework.web.bind.annotation.*;
 public class AppApiController extends BasicController {
 	private static final Logger logger = Logger.getLogger(AppApiController.class);
 	@Autowired
-	private JedisPool jedisPool;
+	private JedisPool jedisPool; 
 
 	@Autowired
 	private IProductInfoService productInfoService;
