@@ -68,7 +68,7 @@ public class AppApiController extends BasicController {
 		String userId = "";
 		String productUrl = "";
 		int pageNo = 1;
-		int size = 10;
+		int size = 20;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
