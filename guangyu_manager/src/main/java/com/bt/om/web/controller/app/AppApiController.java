@@ -844,7 +844,7 @@ public class AppApiController extends BasicController {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		try {
 			String retStr = MaterialSearch.materialSearch(productUrl, pageNo, size);
-			logger.info(retStr);
+//			logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
