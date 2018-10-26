@@ -44,7 +44,7 @@ public class ProductSearchUtil {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-					map.put("imgUrl", mapDataBean.getPict_url());
+					map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
