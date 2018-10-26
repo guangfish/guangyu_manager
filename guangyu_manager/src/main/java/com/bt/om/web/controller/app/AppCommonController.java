@@ -364,12 +364,22 @@ public class AppCommonController extends BasicController {
 	}
 
 	// 查询热搜词列表
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/hotword", method = RequestMethod.POST)
 	@ResponseBody
 	public Model hotword(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
 		List<Map<String, String>> list = new ArrayList<>();
-		List<Hotword> hotwordList = hotwordService.selectAll();
+
+		List<Hotword> hotwordList = null;
+		Object hotwordListObj = jedisPool.getFromCache("", "hotword");
+		if (hotwordListObj != null) {
+			hotwordList = (List<Hotword>) hotwordListObj;
+		} else {
+			hotwordList = hotwordService.selectAll();
+			jedisPool.putNoTimeInCache("", "hotword", hotwordList);
+		}
+
 		for (Hotword hotword : hotwordList) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put("word", hotword.getWord());

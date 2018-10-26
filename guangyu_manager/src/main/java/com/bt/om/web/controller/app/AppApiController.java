@@ -907,12 +907,15 @@ public class AppApiController extends BasicController {
 					}					
 					map.put("tkUrl",tkurl);
 					
-					String tklStr = TaoKouling.createTkl(tkurl,
-							"【预估返:" + actualCommission + "】" + mapDataBean.getTitle(), mapDataBean.getPict_url());
-					if (StringUtil.isNotEmpty(tklStr)) {
-						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
-						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
-					}
+//					String tklStr = TaoKouling.createTkl(tkurl,
+//							"【预估返:" + actualCommission + "】" + mapDataBean.getTitle(), mapDataBean.getPict_url());
+//					if (StringUtil.isNotEmpty(tklStr)) {
+//						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+//						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
+//					}
+					map.put("title", mapDataBean.getTitle());
+					map.put("pictUrl", mapDataBean.getPict_url());
+					
 
 					float pre = Float.parseFloat(NumberUtil.formatDouble(
 							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
@@ -940,6 +943,21 @@ public class AppApiController extends BasicController {
 					if((int)actualCommission>0){
 						list.add(map);
 					}					
+				}
+				for(Map<String, String> map:list){
+					Thread thread=new Thread(new Runnable(){
+						@Override
+						public void run() { 
+							String tklStr = TaoKouling.createTkl(map.get("tkUrl"),
+									map.get("title"), map.get("pictUrl"));
+							if (StringUtil.isNotEmpty(tklStr)) {
+								TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+								map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
+							}
+						}
+					});
+					thread.start();
+					thread.join();
 				}
 
 				ItemVo itemVo = new ItemVo();

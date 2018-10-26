@@ -66,4 +66,5 @@ public class GlobalVariable {
 //			resourceMap.put(date, "10");
 //		}
 	}
+	
 }
