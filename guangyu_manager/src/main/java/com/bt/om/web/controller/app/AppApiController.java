@@ -865,7 +865,7 @@ public class AppApiController extends BasicController {
 //						map.put("imgUrl", mapDataBean.getPict_url());
 //					}
 					
-					map.put("imgUrl", mapDataBean.getPict_url()+"_180x180.jpg");
+					map.put("imgUrl", mapDataBean.getPict_url()+"_290x290.jpg");
 					
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());

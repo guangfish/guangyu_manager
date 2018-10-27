@@ -18,7 +18,7 @@ public class ProductSearchTask {
 	@Autowired
 	private JedisPool jedisPool;
 
-	@Scheduled(cron = "0 0 20 * * ?")
+	@Scheduled(cron = "0 30 21 * * ?")
 	public void productSearch() {
 		logger.info("根据keys定时查询商品信息");
 		String[] keys = { "", "女装", "男装", "母婴", "数码", "洗护", "彩妆", "家居", "食品", "箱包", "家电", "百货", "运动", "配饰", "鞋子", "萌宠",
