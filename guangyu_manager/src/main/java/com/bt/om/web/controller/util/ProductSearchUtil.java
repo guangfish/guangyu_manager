@@ -1,13 +1,23 @@
-package com.bt.om.taobao.api;
+package com.bt.om.web.controller.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.web.context.ContextLoader;
+
+import com.bt.om.cache.JedisPool;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.taobao.api.MapDataBean;
+import com.bt.om.taobao.api.MaterialSearch;
+import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.TaoKouling;
+import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
@@ -17,10 +27,9 @@ import com.bt.om.web.controller.app.vo.ProductInfoVo;
 public class ProductSearchUtil {
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(String key, int pageNo, int size) {
+	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String key, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
 		try {
-			productInfoVo = new ProductInfoVo();
 			long startTime = System.currentTimeMillis();
 			String retStr = "";
 			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
@@ -44,7 +53,16 @@ public class ProductSearchUtil {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-					map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
+					if (mapDataBean.getSmall_images() != null) {
+						if (mapDataBean.getSmall_images().getString().length <= 0) {
+							map.put("imgUrl", mapDataBean.getPict_url());
+						} else {
+							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
+						}
+					} else {
+						map.put("imgUrl", mapDataBean.getPict_url());
+					}
+
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
@@ -91,12 +109,19 @@ public class ProductSearchUtil {
 					}
 					map.put("tkUrl", tkurl);
 
-					String tklStr = TaoKouling.createTkl(tkurl,
-							"【预估返:" + actualCommission + "】" + mapDataBean.getTitle(), mapDataBean.getPict_url());
-					if (StringUtil.isNotEmpty(tklStr)) {
-						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
-						map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
-					}
+					// String tklStr = TaoKouling.createTkl(tkurl,
+					// "【预估返:" + actualCommission + "】" +
+					// mapDataBean.getTitle(), mapDataBean.getPict_url());
+					// if (StringUtil.isNotEmpty(tklStr)) {
+					// TklResponse tklResponse = GsonUtil.GsonToBean(tklStr,
+					// TklResponse.class);
+					// map.put("tkl",
+					// tklResponse.getTbk_tpwd_create_response().getData().getModel());
+					// }
+
+					map.put("title", mapDataBean.getTitle());
+					map.put("pictUrl", mapDataBean.getPict_url());
+					map.put("productId", mapDataBean.getNum_iid() + "");
 
 					float pre = Float.parseFloat(NumberUtil.formatDouble(
 							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
@@ -126,6 +151,52 @@ public class ProductSearchUtil {
 					}
 				}
 
+				BlockingQueue<Map<String, String>> queue = new LinkedBlockingQueue<>();
+				for (Map<String, String> map : list) {
+					queue.put(map);
+				}
+
+				// 启动固定线程数据模式
+				for (int i = 0; i < 10; i++) {
+					System.out.println("启动线程" + i);
+					Thread thread = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							Map<String, String> map = null;
+							Object redisTklObj = null;
+							String tklStr = "";
+							while (true) {
+								try {
+									map = queue.remove();
+									redisTklObj = jedisPool.getFromCache("tkl", map.get("productId"));
+									if (redisTklObj != null) {
+										System.out.println(map.get("productId")+"缓存命中了。。。");
+										tklStr = (String) redisTklObj;
+										map.put("tkl", tklStr);
+									} else {
+										tklStr = TaoKouling.createTkl(map.get("tkUrl"), map.get("title"),
+												map.get("pictUrl"));
+										if (StringUtil.isNotEmpty(tklStr)) {
+											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+											map.put("tkl",
+													tklResponse.getTbk_tpwd_create_response().getData().getModel());
+											jedisPool.putInCache("tkl", map.get("productId"),
+													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
+													Integer.parseInt(GlobalVariable.resourceMap.get("tkl_valid_time")) * 24 * 60 * 60);
+										}
+									}
+								} catch (Exception e) {
+//									e.printStackTrace();
+									// 抛出异常代表线程结束
+									break;
+								}
+							}
+						}
+					});
+					thread.start();
+					thread.join();
+				}
+
 				ItemVo itemVo = new ItemVo();
 
 				itemVo.setItems(list);
@@ -147,6 +218,7 @@ public class ProductSearchUtil {
 				itemVo.setHasNext(ifHasNextPage);
 				itemVo.setTotalSize(total_results);
 
+				productInfoVo = new ProductInfoVo();
 				productInfoVo.setData(itemVo);
 			}
 			System.out.println("解析数据封装对象" + (System.currentTimeMillis() - startTime));

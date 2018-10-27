@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bt.om.cache.JedisPool;
-import com.bt.om.taobao.api.ProductSearchUtil;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.app.vo.ItemVo;
 import com.bt.om.web.controller.app.vo.ProductInfoVo;
+import com.bt.om.web.controller.util.ProductSearchUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -59,19 +59,21 @@ public class AppProductSearchController extends BasicController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
-		
-		if("全部".equals(key)){
-			key="";
+
+		if ("全部".equals(key)) {
+			key = "";
 		}
 
-		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key+"_"+pageNo);
-		if(productInfoVoObj==null){
-			productInfoVo = ProductSearchUtil.productInfoApi(key, pageNo, size);
-			jedisPool.putInCache("productSearch", key+"_"+pageNo, productInfoVo, 60*60);
-		}else{
-			productInfoVo=(ProductInfoVo)productInfoVoObj;
+		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key + "_" + pageNo);
+		if (productInfoVoObj == null) {
+			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool, key, pageNo, size);
+			if(productInfoVo != null){
+				jedisPool.putInCache("productSearch", key + "_" + pageNo, productInfoVo, 24 * 60 * 60);
+			}			
+		} else {
+			productInfoVo = (ProductInfoVo) productInfoVoObj;
 		}
-		
+
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
 			productInfoVo.setDesc("未查到商品信息");
@@ -80,7 +82,7 @@ public class AppProductSearchController extends BasicController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
-		
+
 		model.addAttribute("response", productInfoVo);
 
 		return model;

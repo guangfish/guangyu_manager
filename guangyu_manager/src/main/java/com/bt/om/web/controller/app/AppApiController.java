@@ -841,7 +841,7 @@ public class AppApiController extends BasicController {
 
 	// 通过淘宝API查询商品信息
 	public ProductInfoVo productInfoApi(String productUrl, int pageNo, int size) {
-		ProductInfoVo productInfoVo = new ProductInfoVo();
+		ProductInfoVo productInfoVo = null;
 		try {
 			String retStr = MaterialSearch.materialSearch(productUrl, pageNo, size);
 //			logger.info(retStr);
@@ -855,7 +855,16 @@ public class AppApiController extends BasicController {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-					map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
+					if (mapDataBean.getSmall_images() != null) {
+						if (mapDataBean.getSmall_images().getString().length <= 0) {
+							map.put("imgUrl", mapDataBean.getPict_url());
+						} else {
+							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
+						}
+					} else {
+						map.put("imgUrl", mapDataBean.getPict_url());
+					}
+					
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
@@ -917,6 +926,7 @@ public class AppApiController extends BasicController {
 //					}
 					map.put("title", mapDataBean.getTitle());
 					map.put("pictUrl", mapDataBean.getPict_url());
+					map.put("productId", mapDataBean.getNum_iid()+"");
 					
 
 					float pre = Float.parseFloat(NumberUtil.formatDouble(
@@ -963,7 +973,7 @@ public class AppApiController extends BasicController {
 							while (true) {
 								try {
 									map = queue.remove();
-									redisTklObj = jedisPool.getFromCache("tkl", map.get("imgUrl"));
+									redisTklObj = jedisPool.getFromCache("tkl", map.get("productId"));
 									if (redisTklObj != null) {
 										System.out.println("缓存命中了。。。");
 										tklStr = (String) redisTklObj;
@@ -974,7 +984,7 @@ public class AppApiController extends BasicController {
 										if (StringUtil.isNotEmpty(tklStr)) {
 											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 											map.put("tkl", tklResponse.getTbk_tpwd_create_response().getData().getModel());
-											jedisPool.putInCache("tkl", map.get("imgUrl"), tklResponse.getTbk_tpwd_create_response().getData().getModel(), 7 * 24 * 60 * 60);
+											jedisPool.putInCache("tkl", map.get("productId"), tklResponse.getTbk_tpwd_create_response().getData().getModel(), 7 * 24 * 60 * 60);
 										}								
 									}									
 								} catch (Exception e) {
@@ -1028,6 +1038,7 @@ public class AppApiController extends BasicController {
 				itemVo.setHasNext(ifHasNextPage);
 				itemVo.setTotalSize(total_results);
 
+				productInfoVo = new ProductInfoVo();
 				productInfoVo.setData(itemVo);
 			}
 		} catch (Exception e) {
