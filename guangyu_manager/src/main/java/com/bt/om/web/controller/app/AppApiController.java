@@ -855,15 +855,17 @@ public class AppApiController extends BasicController {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-					if (mapDataBean.getSmall_images() != null) {
-						if (mapDataBean.getSmall_images().getString().length <= 0) {
-							map.put("imgUrl", mapDataBean.getPict_url());
-						} else {
-							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
-						}
-					} else {
-						map.put("imgUrl", mapDataBean.getPict_url());
-					}
+//					if (mapDataBean.getSmall_images() != null) {
+//						if (mapDataBean.getSmall_images().getString().length <= 0) {
+//							map.put("imgUrl", mapDataBean.getPict_url());
+//						} else {
+//							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
+//						}
+//					} else {
+//						map.put("imgUrl", mapDataBean.getPict_url());
+//					}
+					
+					map.put("imgUrl", mapDataBean.getPict_url()+"_180x180.jpg");
 					
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
