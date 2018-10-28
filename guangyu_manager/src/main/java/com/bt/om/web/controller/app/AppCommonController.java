@@ -35,6 +35,7 @@ import com.bt.om.service.IAppDownloadLogsService;
 import com.bt.om.service.IAppDownloadService;
 import com.bt.om.service.IDrawCashService;
 import com.bt.om.service.IHotwordService;
+import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
@@ -73,6 +74,8 @@ public class AppCommonController extends BasicController {
 	private IDrawCashService drawCashService;
 	@Autowired
 	private IHotwordService hotwordService;
+	@Autowired
+	private IInvitationService invitationService;
 
 	// 获取验证码
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
@@ -264,13 +267,50 @@ public class AppCommonController extends BasicController {
 			return model;
 		}
 
-		User user = userService.selectByMobile(mobile);
+		Invitation invitation = new Invitation();
+
+		// 判断邀请码是否存在
+		User user = userService.selectByMyInviteCode(inviteCode);
+		if (user == null) {
+			commonVo.setStatus("1");
+			commonVo.setDesc("该邀请码不存在");
+			model.addAttribute("response", commonVo);
+			return model;
+		}
+
+		invitation.setInviterMobile(user.getMobile());
+
+		// 判断用户是否已绑定邀请码
+		user = userService.selectByMobile(mobile);
+		if (StringUtil.isNotEmpty(user.getTaInviteCode())) {
+			commonVo.setStatus("1");
+			commonVo.setDesc("账号已有绑定邀请码了");
+			model.addAttribute("response", commonVo);
+			return model;
+		}
+
 		user.setTaInviteCode(inviteCode);
 		user.setUpdateTime(new Date());
 		userService.update(user);
 
+		// 邀请表里插入一条邀请记录
+		invitation.setBeInviterMobile(mobile);
+		invitation.setStatus(1);
+		invitation.setReward(1);
+		// 5-30元的随机奖励
+		invitation
+				.setMoney(NumberUtil.getRandomInt(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")) - 25,
+						Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))));
+		invitation.setCreateTime(new Date());
+		invitation.setUpdateTime(new Date());
+		try {
+			invitationService.insert(invitation);
+		} catch (Exception e) {
+
+		}
+
 		commonVo.setStatus("0");
-		commonVo.setDesc("邀请码更新成功");
+		commonVo.setDesc("邀请码绑定成功");
 		model.addAttribute("response", commonVo);
 		return model;
 	}

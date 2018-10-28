@@ -47,5 +47,7 @@ public interface UserMapper {
 	
 	User selectByTaInviteCode(String taInviteCode);
 	
+	User selectByMyInviteCode(String myInviteCode);
+	
 	int updateHongbao(User record);
 }

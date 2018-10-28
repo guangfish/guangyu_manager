@@ -13,6 +13,8 @@ public interface IUserService {
 	
 	public User selectByTaInviteCode(String taInviteCode);
 	
+	public User selectByMyInviteCode(String myInviteCode);
+	
 	public void updateHongbao(User user);
 	
 	public void update(User user);

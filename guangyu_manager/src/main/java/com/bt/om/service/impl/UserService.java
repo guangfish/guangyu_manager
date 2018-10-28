@@ -35,6 +35,11 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
+	public User selectByMyInviteCode(String myInviteCode) {
+		return userMapper.selectByMyInviteCode(myInviteCode);
+	}
+	
+	@Override
 	public void updateHongbao(User user) {
 		userMapper.updateHongbao(user);
 	}

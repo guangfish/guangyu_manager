@@ -247,6 +247,13 @@
     where my_invite_code = #{taInviteCode,jdbcType=VARCHAR}
   </select>
   
+  <select id="selectByMyInviteCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where my_invite_code = #{myInviteCode,jdbcType=VARCHAR}
+  </select>
+  
   <update id="updateHongbao" parameterType="com.bt.om.entity.User">
     update user
     set 
