@@ -304,7 +304,10 @@ public class AppCommonController extends BasicController {
 		invitation.setCreateTime(new Date());
 		invitation.setUpdateTime(new Date());
 		try {
-			invitationService.insert(invitation);
+			String mobile1 = invitationService.haveInvitation(invitation);
+			if (StringUtils.isEmpty(mobile1)) {
+				invitationService.insert(invitation);
+			}
 		} catch (Exception e) {
 
 		}
