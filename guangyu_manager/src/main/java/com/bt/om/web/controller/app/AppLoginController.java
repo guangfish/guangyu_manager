@@ -236,7 +236,7 @@ public class AppLoginController extends BasicController {
 					invitation.setReward(1);
 					// 5-30元的随机奖励
 					invitation.setMoney(NumberUtil.getRandomInt(
-							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")) - 25,
+							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))/2,
 							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))));
 					// invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));
 					invitation.setCreateTime(new Date());
