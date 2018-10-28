@@ -28,7 +28,7 @@ public class MaterialSearch {
 		// req.setStartPrice(10L);
 		// req.setIsOverseas(false);
 		// req.setIsTmall(false);
-		req.setSort("total_sales");
+		req.setSort("tk_total_sales_desc");
 		// req.setItemloc("杭州");
 		// req.setCat("16,18");
 		req.setQ(key);
@@ -66,7 +66,7 @@ public class MaterialSearch {
 		// req.setStartPrice(10L);
 		// req.setIsOverseas(false);
 		// req.setIsTmall(false);
-		req.setSort("total_sales");
+		req.setSort("tk_total_sales_desc");
 		// req.setItemloc("杭州");
 		req.setCat(cat);
 //		req.setQ(key);
