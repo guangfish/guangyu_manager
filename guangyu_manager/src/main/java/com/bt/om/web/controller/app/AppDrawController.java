@@ -187,13 +187,12 @@ public class AppDrawController extends BasicController {
 	}
 	
 	private String getRealOrderStatus(UserOrder userOrder){
-		int thisDay=Integer.parseInt(DateUtil.formatDate(new Date(), "dd"));
-		if(thisDay>=1 && thisDay<28){
-			
+		int betweenDays = com.bt.om.util.DateUtil.getBetweenDays(userOrder.getCreateTime(),new Date());
+		if(betweenDays>= (28+30)){
+			return "已核验";
 		}else{
-			
-		}
-		return "订单结算-已核验";
+			return "未核验";
+		}		
 	}
 
 	// 查询好友列表
