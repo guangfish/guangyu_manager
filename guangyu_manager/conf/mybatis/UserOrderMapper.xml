@@ -562,6 +562,12 @@
 		</if>
 		<if test="orderStatus == '历史订单'">
 			and status3 = 3 and order_status = '订单结算'
+		</if>	
+		<if test="orderStatus == '订单失效'">
+			and order_status = #{orderStatus,jdbcType=VARCHAR}			
+		</if>
+		<if test="orderStatus == '订单付款'">
+			and order_status = #{orderStatus,jdbcType=VARCHAR}			
 		</if>		
 		order by id desc
 	</select>
@@ -576,6 +582,12 @@
 		</if>
 		<if test="orderStatus == '历史订单'">
 			and status3 = 3 and order_status = '订单结算'
+		</if>
+		<if test="orderStatus == '订单失效'">
+			and order_status = #{orderStatus,jdbcType=VARCHAR}			
+		</if>
+		<if test="orderStatus == '订单付款'">
+			and order_status = #{orderStatus,jdbcType=VARCHAR}			
 		</if>		
 		order by id desc
 	</select>
