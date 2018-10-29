@@ -188,7 +188,8 @@ public class AppDrawController extends BasicController {
 	
 	private String getRealOrderStatus(UserOrder userOrder){
 		int betweenDays = com.bt.om.util.DateUtil.getBetweenDays(userOrder.getCreateTime(),new Date());
-		if(betweenDays>= (28+30)){
+		//订单时间距离当前时间30天，就认为定单已核验
+		if(betweenDays>= (30)){
 			return "已核验";
 		}else{
 			return "未核验";

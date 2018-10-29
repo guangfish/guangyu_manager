@@ -21,7 +21,11 @@ import com.bt.om.service.ITkOrderInputService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserOrderTmpService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.taobao.api.ProductApi;
+import com.bt.om.taobao.api.product.ProductInfoVo;
+import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
+import com.bt.om.util.StringUtil;
 
 /**
  * 用户订单匹配
@@ -61,11 +65,26 @@ public class UserOrderMatchTask {
 						double commission = 0;
 						double commission3 = 0;
 						int status1 = 1;
+						String productInfoStr="";
+						ProductInfoVo productInfoVo=null;
 						for (TkOrderInput tkOrderInput : tkOrderInputList) {
 							UserOrder userOrder = new UserOrder();
 							userOrder.setBelong(1);
 							userOrder.setMobile(userOrderTmp.getMobile());
 							userOrder.setProductId(tkOrderInput.getProductId());
+							
+							//调用淘宝商品信息查询接口，根据商品ID获取商品图片
+							productInfoStr = ProductApi.getProductInfo(tkOrderInput.getProductId());
+							if (StringUtil.isNotEmpty(productInfoStr)) {
+								productInfoVo = GsonUtil.GsonToBean(productInfoStr, ProductInfoVo.class);
+								try {
+									userOrder.setProductImgUrl(productInfoVo.getTbk_item_info_get_response()
+											.getResults().getN_tbk_item().get(0).getPict_url() + "_200x200.jpg");
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+							
 							userOrder.setOrderId(userOrderTmp.getOrderId());
 							userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
 							userOrder.setRate(tkOrderInput.getCommissionRate());
@@ -147,6 +166,9 @@ public class UserOrderMatchTask {
 							// 更新状态
 							userOrderTmp.setStatus(2);
 							userOrderTmpService.update(userOrderTmp);
+							
+							productInfoStr="";
+							
 						}
 					} else {
 //						logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");

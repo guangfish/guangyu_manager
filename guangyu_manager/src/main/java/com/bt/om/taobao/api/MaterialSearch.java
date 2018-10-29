@@ -9,10 +9,7 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.TbkDgMaterialOptionalRequest;
 import com.taobao.api.response.TbkDgMaterialOptionalResponse;
 
-public class MaterialSearch {
-	private static String serverUrl = "https://eco.taobao.com/router/rest";
-	private static String appKey = "24736090";
-	private static String appSecret = "8759042d314ec30a88a0d6e9668e7bfe";
+public class MaterialSearch extends BaseApi{
 
 	public static String materialSearch(String key,long pageNo,long size) {
 		String retStr = "";
