@@ -95,8 +95,10 @@ public class AppDrawController extends BasicController {
 					orderStatus = "订单结算";
 				} else if ("3".equals(orderStatus)) {
 					orderStatus = "订单失效";
-				} else {
+				} else if("2".equals(orderStatus)){
 					orderStatus = "订单付款";
+				}else{
+					orderStatus="历史订单";
 				}
 			}
 			if (obj.get("pageNo") != null) {
@@ -120,7 +122,6 @@ public class AppDrawController extends BasicController {
 			return model;
 		}
 
-		// 手机号码必须验证
 		if (StringUtils.isEmpty(orderStatus)) {
 			resultVo.setStatus("3");
 			resultVo.setDesc("请提交订单状态");
@@ -149,7 +150,12 @@ public class AppDrawController extends BasicController {
 					: "￥" + (userOrder.getCommission3())));
 
 			map.put("multiple", "" + userOrder.getFanliMultiple());
-			map.put("orderStatus", userOrder.getOrderStatus());
+			//订单结算状态，区分已核验、未核验
+			if("订单结算".equals(userOrder.getOrderStatus())){
+				map.put("orderStatus", getRealOrderStatus(userOrder));
+			}else{
+				map.put("orderStatus", userOrder.getOrderStatus());
+			}			
 			map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
 			list.add(map);
 		}
@@ -176,96 +182,18 @@ public class AppDrawController extends BasicController {
 
 		resultVo.setData(itemVo);
 
-		//
-		// try {
-		// List<UserOrder> userOrderList =
-		// userOrderService.selectAllOrderByMobile(userId);
-		// List<UserOrder> userOrderSettleList = new ArrayList<>();// 结算订单列表
-		// List<UserOrder> userOrderPayList = new ArrayList<>();// 付款订单列表
-		// List<UserOrder> userOrderNoValidList = new ArrayList<>();// 失效订单列表
-		// for (UserOrder userOrder : userOrderList) {
-		// if ("订单结算".equals(userOrder.getOrderStatus())) {
-		// userOrderSettleList.add(userOrder);
-		// } else if ("订单失效".equals(userOrder.getOrderStatus())) {
-		// userOrderNoValidList.add(userOrder);
-		// } else {
-		// userOrderPayList.add(userOrder);
-		// }
-		// }
-		//
-		// // 结算订单
-		// if ("1".equals(orderStatus)) {
-		// if (userOrderSettleList != null && userOrderSettleList.size() > 0) {
-		// for (UserOrder userOrder : userOrderSettleList) {
-		// HashMap<String, String> map = new HashMap<>();
-		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
-		// userOrder.getProductImgUrl());
-		// map.put("productName", userOrder.getProductInfo());
-		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-		// ? ("￥" + userOrder.getCommission3()) : "￥" +
-		// (userOrder.getCommission3())));
-		//
-		// map.put("multiple", "" + userOrder.getFanliMultiple());
-		// map.put("orderStatus", userOrder.getOrderStatus());
-		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
-		// DateUtil.CHINESE_PATTERN));
-		// list.add(map);
-		// }
-		// resultVo.setResultSize(userOrderSettleList.size());
-		// }
-		// }
-		// // 付款订单
-		// else if ("2".equals(orderStatus)) {
-		// if (userOrderPayList != null && userOrderPayList.size() > 0) {
-		// for (UserOrder userOrder : userOrderPayList) {
-		// HashMap<String, String> map = new HashMap<>();
-		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
-		// userOrder.getProductImgUrl());
-		// map.put("productName", userOrder.getProductInfo());
-		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-		// ? ("￥" + userOrder.getCommission3()) : "￥" +
-		// (userOrder.getCommission3())));
-		//
-		// map.put("multiple", "" + userOrder.getFanliMultiple());
-		// map.put("orderStatus", userOrder.getOrderStatus());
-		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
-		// DateUtil.CHINESE_PATTERN));
-		// list.add(map);
-		// }
-		// resultVo.setResultSize(userOrderPayList.size());
-		// }
-		// }
-		// // 失效订单
-		// else if ("3".equals(orderStatus)) {
-		// if (userOrderNoValidList != null && userOrderNoValidList.size() > 0)
-		// {
-		// for (UserOrder userOrder : userOrderNoValidList) {
-		// HashMap<String, String> map = new HashMap<>();
-		// map.put("imgUrl", userOrder.getProductImgUrl() == null ? "" :
-		// userOrder.getProductImgUrl());
-		// map.put("productName", userOrder.getProductInfo());
-		// map.put("commission", ((!"订单结算".equals(userOrder.getOrderStatus()))
-		// ? ("￥" + userOrder.getCommission3()) : "￥" +
-		// (userOrder.getCommission3())));
-		//
-		// map.put("multiple", "" + userOrder.getFanliMultiple());
-		// map.put("orderStatus", userOrder.getOrderStatus());
-		// map.put("orderTime", DateUtil.formatDate(userOrder.getCreateTime(),
-		// DateUtil.CHINESE_PATTERN));
-		// list.add(map);
-		// }
-		// resultVo.setResultSize(userOrderNoValidList.size());
-		// }
-		// }
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		//
-		// resultVo.setData(list);
-
 		model.addAttribute("response", resultVo);
 		return model;
+	}
+	
+	private String getRealOrderStatus(UserOrder userOrder){
+		int thisDay=Integer.parseInt(DateUtil.formatDate(new Date(), "dd"));
+		if(thisDay>=1 && thisDay<28){
+			
+		}else{
+			
+		}
+		return "订单结算-已核验";
 	}
 
 	// 查询好友列表
