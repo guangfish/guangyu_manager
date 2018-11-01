@@ -117,4 +117,9 @@ public class UserOrderService implements IUserOrderService {
 			vo.setList(new ArrayList<UserOrder>());
 		}
 	}
+	
+	@Override
+	public List<UserOrder> selectPicUrlIsNull() {
+		return userOrderMapper.selectPicUrlIsNull();
+	}
 }

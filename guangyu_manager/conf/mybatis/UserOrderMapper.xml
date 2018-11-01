@@ -592,4 +592,12 @@
 		order by id desc
 	</select>
 	
+	<select id="selectPicUrlIsNull" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_order
+		where product_img_url is null
+	</select>
+	
 </mapper>

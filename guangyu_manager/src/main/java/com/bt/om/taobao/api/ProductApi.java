@@ -26,7 +26,7 @@ public class ProductApi extends BaseApi{
 	}
 	
 	public static void main(String[] args) {
-		String retStr=getProductInfo("557195724988");
+		String retStr=getProductInfo("25387123410");
 		ProductInfoVo ProductInfoVo=GsonUtil.GsonToBean(retStr, ProductInfoVo.class);
 		System.out.println(ProductInfoVo.getTbk_item_info_get_response().getResults().getN_tbk_item().get(0).getPict_url());
 		

@@ -75,4 +75,6 @@ public interface UserOrderMapper {
     int getByInviteCodeCount(Map<String, Object> searchMap);
 
     List<UserOrder> getByInviteCodeList(Map<String, Object> searchMap, RowBounds rowBounds);
+    
+    List<UserOrder> selectPicUrlIsNull();
 }

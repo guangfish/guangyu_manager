@@ -30,4 +30,6 @@ public interface IUserOrderService {
     public void selectByMobileAndOrderStatus(SearchDataVo vo);
     
     public void getByInviteCode(SearchDataVo vo);
+    
+    public List<UserOrder> selectPicUrlIsNull();
 }
