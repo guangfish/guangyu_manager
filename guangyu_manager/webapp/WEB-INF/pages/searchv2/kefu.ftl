@@ -1,9 +1,11 @@
 <@model.webheadsearchv2 />
 <link rel="stylesheet" type="text/css" href="/static/frontv2/css/help/help.css">
 <!-- 头部 -->
+    <!--
 	<header class="mui-bar mui-bar-nav">
 		<button class="mui-action-back mui-btn mui-btn-blue mui-btn-link mui-btn-nav mui-pull-left"><span class="mui-icon mui-icon-left-nav"></span>个人中心</button>
 	</header>
+	-->
 	<!-- 主要内容 -->
 	<div class="mui-content mui-event-box">
 		<div class="mui-main-event">
@@ -24,6 +26,7 @@
 		</div>
 	</div>
 	<!-- 底部菜单栏 -->
+	<!--
 	<nav class="mui-bar mui-bar-tab new-bar">
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/search">
 			<span class="mui-icon mui-icon-index "></span>
@@ -46,5 +49,6 @@
 			<span class="mui-tab-label">我的</span>
 		</a>
 	</nav>
+	-->
 	
 <@model.webendsearchv2 />
