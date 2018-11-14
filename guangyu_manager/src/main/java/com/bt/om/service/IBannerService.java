@@ -10,4 +10,6 @@ public interface IBannerService {
 	public List<Banner> selectForApp(Integer type);
 	
 	public List<Banner> selectCampaign(Integer size);
+	
+	public List<Banner> selectForXcx(Integer type);
 }

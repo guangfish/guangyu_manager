@@ -3,6 +3,10 @@ package com.bt.om.web.controller.xcx;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bt.om.cache.JedisPool;
+import com.bt.om.entity.Banner;
+import com.bt.om.service.IBannerService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.RequestUtil;
 import com.bt.om.util.TaobaoSmsNewUtil;
+import com.bt.om.web.controller.api.v2.vo.BannerVo;
 import com.bt.om.web.controller.api.v2.vo.CommonVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,6 +40,8 @@ public class XcxBaseController {
 
 	@Autowired
 	private JedisPool jedisPool;
+	@Autowired
+	private IBannerService bannerService;
 
 	@RequestMapping(value = "/getSmsCode", method = RequestMethod.POST)
 	@ResponseBody
@@ -88,7 +97,7 @@ public class XcxBaseController {
 		return model;
 	}
 
-	public String getVcode(int size) {
+	private String getVcode(int size) {
 		String retNum = "";
 		// 定义验证码的范围
 		// String codeStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -99,6 +108,30 @@ public class XcxBaseController {
 			retNum += codeStr.charAt(r.nextInt(codeStr.length()));
 		}
 		return retNum;
+	}
+	
+	@RequestMapping(value = "/banner", method = RequestMethod.POST)
+	@ResponseBody
+	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {
+		BannerVo bannerVo = new BannerVo();
+		bannerVo.setDesc("获取成功");
+		bannerVo.setStatus("0");
+		List<Banner> bannerList = bannerService.selectForApp(1);
+		if (bannerList != null && bannerList.size() > 0) {
+			List<Map<String, String>> list = new ArrayList<>();
+			for (Banner banner : bannerList) {
+				Map<String, String> map = new HashMap<>();
+				map.put("imgUrl", banner.getImgUrl());
+				map.put("link", banner.getLink());
+				map.put("title", banner.getTitle() == null ? "" : banner.getTitle());
+				map.put("width", banner.getWidth());
+				map.put("height", banner.getHight());
+				list.add(map);
+			}
+			bannerVo.setData(list);
+		}
+		model.addAttribute("response", bannerVo);
+		return model;
 	}
 
 }

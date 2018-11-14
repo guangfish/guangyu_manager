@@ -47,4 +47,6 @@ public interface BannerMapper {
 	List<Banner> selectForApp(Integer type);
 	
 	List<Banner> selectCampaign(Integer size);
+	
+	List<Banner> selectForXcx(Integer type);
 }

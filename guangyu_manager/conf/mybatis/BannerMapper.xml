@@ -267,4 +267,10 @@
     <include refid="Base_Column_List" />
     from banner where status=1 and type = 2 limit #{size,jdbcType=INTEGER}
   </select>
+  
+  <select id="selectForXcx" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from banner where status=1 and paltform=3 and type = #{type,jdbcType=INTEGER}
+  </select>
 </mapper>
