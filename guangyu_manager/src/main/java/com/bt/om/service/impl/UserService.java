@@ -1,6 +1,7 @@
 package com.bt.om.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,10 @@ public class UserService implements IUserService {
 	@Override
 	public void update(User user) {
 		userMapper.updateByPrimaryKey(user);
+	}
+	
+	@Override
+	public User selectByTaobaoIdAndPid(Map<String,String> map){
+		return userMapper.selectByTaobaoIdAndPid(map);
 	}
 }

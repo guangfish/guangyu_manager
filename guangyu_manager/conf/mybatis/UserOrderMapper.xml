@@ -600,4 +600,12 @@
 		where product_img_url is null
 	</select>
 	
+	<select id="selectTaoBaoOrderByMobile" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_order
+		where mobile = #{mobile,jdbcType=VARCHAR} and belong=1
+	</select>
+	
 </mapper>

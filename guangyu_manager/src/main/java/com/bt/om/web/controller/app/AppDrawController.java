@@ -536,6 +536,36 @@ public class AppDrawController extends BasicController {
 			model.addAttribute("response", commonVo);
 			return model;
 		}
+		
+		String orderTaobaoId=orderId.substring(16, 18) + orderId.substring(14, 16);
+		User user=userService.selectByMobile(userId);
+		//判断用户账号淘宝ID已存在的情况下，订单号是否属于当前用户
+		if(StringUtil.isNotEmpty(user.getTaobaoId())){			
+			if(!orderTaobaoId.equals(user.getTaobaoId())){
+				commonVo.setStatus("5");
+				commonVo.setDesc("请提交属于您的订单号");
+				model.addAttribute("response", commonVo);
+				return model;
+			}
+		}
+		//判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
+		else{
+			String taobaoPidsStr = GlobalVariable.resourceMap.get("taobao_pids");
+			String [] taobaoPids=taobaoPidsStr.split(",");
+			for(String pid:taobaoPids){
+				Map<String,String> map =new HashMap<>();
+				map.put("taobaoId", orderTaobaoId);
+				map.put("pid", pid);
+				User userTaobaoIdAndPid=userService.selectByTaobaoIdAndPid(map);
+				if(userTaobaoIdAndPid==null){
+					user.setTaobaoId(orderTaobaoId);
+					user.setPid(pid);
+					user.setUpdateTime(new Date());
+					userService.update(user);
+					break;
+				}
+			}			
+		}
 
 		UserOrderTmp userOrderTmp = new UserOrderTmp();
 		userOrderTmp.setOrderId(orderId);

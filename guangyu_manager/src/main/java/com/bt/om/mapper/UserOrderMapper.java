@@ -77,4 +77,6 @@ public interface UserOrderMapper {
     List<UserOrder> getByInviteCodeList(Map<String, Object> searchMap, RowBounds rowBounds);
     
     List<UserOrder> selectPicUrlIsNull();
+    
+    List<UserOrder> selectTaoBaoOrderByMobile(String mobile);
 }
