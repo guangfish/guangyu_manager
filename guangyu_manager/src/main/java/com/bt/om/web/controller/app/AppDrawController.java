@@ -546,7 +546,7 @@ public class AppDrawController extends BasicController {
 				commonVo.setDesc("请提交属于您的订单号");
 				model.addAttribute("response", commonVo);
 				return model;
-			}
+			} 
 		}
 		//判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
 		else{
