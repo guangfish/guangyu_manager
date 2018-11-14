@@ -61,6 +61,7 @@
 				/api/** = anon
 				/v2/** = anon
 				/app/** = anon
+				/xcx/** = anon
 				/throwThree*= anon
 				/throwThree/*= anon
 				<!-- /index*=roles[ADMIN]

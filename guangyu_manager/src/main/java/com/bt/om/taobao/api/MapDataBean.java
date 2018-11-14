@@ -29,6 +29,8 @@ public class MapDataBean {
 	private Long user_type;
 	private Long volume;
 	private String zk_final_price;
+	private String short_title;
+	private String category_name;
 
 	public String getCommission_rate() {
 		return commission_rate;
@@ -252,6 +254,22 @@ public class MapDataBean {
 
 	public void setZk_final_price(String zk_final_price) {
 		this.zk_final_price = zk_final_price;
+	}
+
+	public String getShort_title() {
+		return short_title;
+	}
+
+	public void setShort_title(String short_title) {
+		this.short_title = short_title;
+	}
+
+	public String getCategory_name() {
+		return category_name;
+	}
+
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
 	}
 
 }

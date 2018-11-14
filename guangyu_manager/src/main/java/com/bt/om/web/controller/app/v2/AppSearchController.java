@@ -1,5 +1,8 @@
-package com.bt.om.web.controller.util;
+package com.bt.om.web.controller.app.v2;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +12,17 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.web.context.ContextLoader;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.bt.om.cache.JedisPool;
 import com.bt.om.system.GlobalVariable;
@@ -20,55 +33,102 @@ import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
+import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.controller.app.vo.ItemVo;
 import com.bt.om.web.controller.app.vo.ProductInfoVo;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-public class ProductSearchUtil {
+@RestController
+@RequestMapping(value = "/app/api/v2")
+public class AppSearchController {
+	private static final Logger logger = Logger.getLogger(AppSearchController.class);
+	@Autowired
+	private JedisPool jedisPool;
+
+	// 搜索页商品搜索接口
+	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+		ProductInfoVo productInfoVo = new ProductInfoVo();
+		model.addAttribute("response", productInfoVo);
+		String userId = "";
+		String productUrl = "";
+		int pageNo = 1;
+		int size = 20;
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+			}
+			if (obj.get("productUrl") != null) {
+				productUrl = obj.get("productUrl").getAsString();
+			}
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsInt();
+			}
+		} catch (IOException e) {
+			productInfoVo.setStatus("1");
+			productInfoVo.setDesc("系统繁忙，请稍后再试");
+			productInfoVo.setData(new ItemVo());
+			return model;
+		}
+
+		// 商品标题、淘口令非空验证
+		if (StringUtils.isEmpty(productUrl)) {
+			productInfoVo.setStatus("2");
+			productInfoVo.setDesc("商品标题或淘口令为空");
+			productInfoVo.setData(new ItemVo());
+			return model;
+		}
+
+		//通过淘宝API方式查询商品信息
+		productInfoVo = apiLogic(productUrl, pageNo, size);
+
+		if (productInfoVo == null) {
+			productInfoVo = new ProductInfoVo();
+			productInfoVo.setDesc("未查到商品信息");
+			productInfoVo.setStatus("10");
+			productInfoVo.setData(new ItemVo());
+		}
+
+		model.addAttribute("response", productInfoVo);
+		return model;
+	}
+
+	// api接口的逻辑
+	private ProductInfoVo apiLogic(String productUrl, int pageNo, int size) {
+		ProductInfoVo productInfoVo = null;
+		productInfoVo = productInfoApi(productUrl, pageNo, size);
+		return productInfoVo;
+	}
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String key, int pageNo, int size) {
+	public ProductInfoVo productInfoApi(String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
 		try {
-			long startTime = System.currentTimeMillis();
-			String retStr = "";
-			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
-			if ("".equals(key)) {
-				retStr = MaterialSearch.materialSearch(key, cat, pageNo, size);
-			} else {
-				retStr = MaterialSearch.materialSearch(key, pageNo, size);
-			}
-			System.out.println("调用接口执行时间" + (System.currentTimeMillis() - startTime));
-
-			startTime = System.currentTimeMillis();
+			String retStr = MaterialSearch.materialSearch(productUrl, pageNo, size);
+			// logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
-			System.out.println("解析返回数据时间" + (System.currentTimeMillis() - startTime));
 			long total_results = materialSearchVo.getTbk_dg_material_optional_response().getTotal_results();
 			List<Map<String, String>> list = new ArrayList<>();
 
-			startTime = System.currentTimeMillis();
 			if (mapDataBeanList != null && mapDataBeanList.size() > 0) {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-//					if (mapDataBean.getSmall_images() != null) {
-//						if (mapDataBean.getSmall_images().getString().length <= 0) {
-//							map.put("imgUrl", mapDataBean.getPict_url());
-//						} else {
-//							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
-//						}
-//					} else {
-//						map.put("imgUrl", mapDataBean.getPict_url());
-//					}
-					
-					map.put("imgUrl", mapDataBean.getPict_url()+"_290x290.jpg");
+					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
 
-					map.put("shopType", mapDataBean.getUser_type()+"");//卖家类型，0表示集市，1表示商城
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
-					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
+					map.put("reservePrice", Float.parseFloat(mapDataBean.getReserve_price()) + "");//原价
+					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");//折后价
 					if (mapDataBean.getVolume() != null) {
 						map.put("sellNum", mapDataBean.getVolume().intValue() + "");
 					} else {
@@ -112,16 +172,6 @@ public class ProductSearchUtil {
 					}
 					map.put("tkUrl", tkurl);
 
-					// String tklStr = TaoKouling.createTkl(tkurl,
-					// "【预估返:" + actualCommission + "】" +
-					// mapDataBean.getTitle(), mapDataBean.getPict_url());
-					// if (StringUtil.isNotEmpty(tklStr)) {
-					// TklResponse tklResponse = GsonUtil.GsonToBean(tklStr,
-					// TklResponse.class);
-					// map.put("tkl",
-					// tklResponse.getTbk_tpwd_create_response().getData().getModel());
-					// }
-
 					map.put("title", mapDataBean.getTitle());
 					map.put("pictUrl", mapDataBean.getPict_url());
 					map.put("productId", mapDataBean.getNum_iid() + "");
@@ -129,25 +179,6 @@ public class ProductSearchUtil {
 					float pre = Float.parseFloat(NumberUtil.formatDouble(
 							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
 					map.put("per", pre + "");
-
-					float fanliMultiple = 1;
-					if (actualCommission <= 1) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1"));
-					} else if (actualCommission > 1 && actualCommission <= 5) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.1-5"));
-					} else if (actualCommission > 5 && actualCommission <= 10) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.5-10"));
-					} else if (actualCommission > 10 && actualCommission <= 50) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.10-50"));
-					} else if (actualCommission > 50 && actualCommission <= 100) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.50-100"));
-					} else if (actualCommission > 100 && actualCommission <= 500) {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.100-500"));
-					} else {
-						fanliMultiple = Float.parseFloat(GlobalVariable.resourceMap.get("fanli.multiple.500"));
-					}
-
-					map.put("fanliMultiple", fanliMultiple + "");
 
 					if ((int) actualCommission > 0) {
 						list.add(map);
@@ -161,7 +192,6 @@ public class ProductSearchUtil {
 
 				// 启动固定线程数据模式
 				for (int i = 0; i < 10; i++) {
-					System.out.println("启动线程" + i);
 					Thread thread = new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -173,7 +203,7 @@ public class ProductSearchUtil {
 									map = queue.remove();
 									redisTklObj = jedisPool.getFromCache("tkl", map.get("productId"));
 									if (redisTklObj != null) {
-										System.out.println(map.get("productId")+"缓存命中了。。。");
+										System.out.println("缓存命中了。。。");
 										tklStr = (String) redisTklObj;
 										map.put("tkl", tklStr);
 									} else {
@@ -185,11 +215,11 @@ public class ProductSearchUtil {
 													tklResponse.getTbk_tpwd_create_response().getData().getModel());
 											jedisPool.putInCache("tkl", map.get("productId"),
 													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
-													Integer.parseInt(GlobalVariable.resourceMap.get("tkl_valid_time")) * 24 * 60 * 60);
+													7 * 24 * 60 * 60);
 										}
 									}
 								} catch (Exception e) {
-//									e.printStackTrace();
+									// e.printStackTrace();
 									// 抛出异常代表线程结束
 									break;
 								}
@@ -201,9 +231,9 @@ public class ProductSearchUtil {
 				}
 
 				ItemVo itemVo = new ItemVo();
-
 				itemVo.setItems(list);
 				itemVo.setMall("taobao");
+				itemVo.setIfJump("no");
 				itemVo.setCurPage((int) pageNo);
 				long maxPage = 0;
 				boolean ifHasNextPage = false;
@@ -224,16 +254,10 @@ public class ProductSearchUtil {
 				productInfoVo = new ProductInfoVo();
 				productInfoVo.setData(itemVo);
 			}
-			System.out.println("解析数据封装对象" + (System.currentTimeMillis() - startTime));
 		} catch (Exception e) {
+			logger.info("通过API接口查询不到商品，标题为==>" + productUrl);
 			e.printStackTrace();
 		}
 		return productInfoVo;
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
