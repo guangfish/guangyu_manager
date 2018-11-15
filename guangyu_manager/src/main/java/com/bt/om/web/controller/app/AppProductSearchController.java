@@ -91,10 +91,6 @@ public class AppProductSearchController extends BasicController {
 		System.out.println(userId+"="+pid);
 
 		String redisKey=pid+"_"+key + "_" + pageNo;
-		System.out.println(redisKey);
-		redisKey=redisKey.hashCode()+"";
-		System.out.println(redisKey);
-		
 		Object productInfoVoObj = jedisPool.getFromCache("productSearch", redisKey);
 		if (productInfoVoObj == null) {
 			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,pid, key, pageNo, size);
