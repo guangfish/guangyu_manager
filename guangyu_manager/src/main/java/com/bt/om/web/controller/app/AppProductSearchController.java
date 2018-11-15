@@ -40,6 +40,7 @@ public class AppProductSearchController extends BasicController {
 	@RequestMapping(value = "/productSearch", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productSearch(Model model, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("热卖商品搜索接口");
 		ProductInfoVo productInfoVo = null;
 		String userId="";
 		String mobile="";
@@ -96,6 +97,7 @@ public class AppProductSearchController extends BasicController {
 				jedisPool.putInCache("productSearch", pid+"_"+key + "_" + pageNo, productInfoVo, 24 * 60 * 60);
 			}			
 		} else {
+			System.out.println(pid+"_"+key + "_" + pageNo+"对象缓存命中");
 			productInfoVo = (ProductInfoVo) productInfoVoObj;
 		}
 
