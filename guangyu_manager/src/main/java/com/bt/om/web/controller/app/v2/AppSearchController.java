@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bt.om.cache.JedisPool;
+import com.bt.om.entity.User;
+import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
@@ -46,6 +48,8 @@ public class AppSearchController {
 	private static final Logger logger = Logger.getLogger(AppSearchController.class);
 	@Autowired
 	private JedisPool jedisPool;
+	@Autowired
+	private IUserService userService;
 
 	// 搜索页商品搜索接口
 	@RequestMapping(value = "/productInfo", method = RequestMethod.POST)
@@ -87,7 +91,7 @@ public class AppSearchController {
 		}
 
 		//通过淘宝API方式查询商品信息
-		productInfoVo = apiLogic(productUrl, pageNo, size);
+		productInfoVo = apiLogic(userId,productUrl, pageNo, size);
 
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
@@ -101,17 +105,26 @@ public class AppSearchController {
 	}
 
 	// api接口的逻辑
-	private ProductInfoVo apiLogic(String productUrl, int pageNo, int size) {
+	private ProductInfoVo apiLogic(String userId,String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		productInfoVo = productInfoApi(productUrl, pageNo, size);
+		productInfoVo = productInfoApi(userId,productUrl, pageNo, size);
 		return productInfoVo;
 	}
 
 	// 通过淘宝API查询商品信息
-	public ProductInfoVo productInfoApi(String productUrl, int pageNo, int size) {
+	public ProductInfoVo productInfoApi(String userId,String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
+		String pid="";
+		if(StringUtil.isNotEmpty(userId)){
+			User user=userService.selectByMobile(userId);
+			if(user!=null){
+				if(StringUtil.isNotEmpty(user.getPid())){
+					pid=user.getPid();
+				}								
+			}
+		}		
 		try {
-			String retStr = MaterialSearch.materialSearch(productUrl, pageNo, size);
+			String retStr = MaterialSearch.materialSearch(productUrl,pid, pageNo, size);
 			// logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()

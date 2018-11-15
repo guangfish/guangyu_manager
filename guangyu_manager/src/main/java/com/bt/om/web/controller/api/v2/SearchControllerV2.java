@@ -241,7 +241,7 @@ public class SearchControllerV2 extends BasicController {
 			searchRecord.setUpdateTime(new Date());
 			searchRecordService.insert(searchRecord);
 
-			String retStr = MaterialSearch.materialSearch(key, pageNo, size);
+			String retStr = MaterialSearch.materialSearch(key,"", pageNo, size);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();

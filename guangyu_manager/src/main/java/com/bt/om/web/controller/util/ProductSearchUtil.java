@@ -1,6 +1,7 @@
 package com.bt.om.web.controller.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.springframework.web.context.ContextLoader;
 
 import com.bt.om.cache.JedisPool;
 import com.bt.om.system.GlobalVariable;
@@ -27,16 +26,16 @@ import com.bt.om.web.controller.app.vo.ProductInfoVo;
 public class ProductSearchUtil {
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String key, int pageNo, int size) {
+	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String pid,String key, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
 		try {
 			long startTime = System.currentTimeMillis();
 			String retStr = "";
 			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
 			if ("".equals(key)) {
-				retStr = MaterialSearch.materialSearch(key, cat, pageNo, size);
+				retStr = MaterialSearch.materialSearch(key, cat,pid, pageNo, size);
 			} else {
-				retStr = MaterialSearch.materialSearch(key, pageNo, size);
+				retStr = MaterialSearch.materialSearch(key,pid, pageNo, size);
 			}
 			System.out.println("调用接口执行时间" + (System.currentTimeMillis() - startTime));
 
@@ -64,11 +63,18 @@ public class ProductSearchUtil {
 //					}
 					
 					map.put("imgUrl", mapDataBean.getPict_url()+"_290x290.jpg");
+					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
+						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
+					} else {
+						map.put("smallImgUrls", "");
+					}
 
 					map.put("shopType", mapDataBean.getUser_type()+"");//卖家类型，0表示集市，1表示商城
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
-					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");
+					map.put("productShortName", mapDataBean.getShort_title());
+					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");  //折后价
+					map.put("reservePrice", Float.parseFloat(mapDataBean.getReserve_price()) + "");  //原价
 					if (mapDataBean.getVolume() != null) {
 						map.put("sellNum", mapDataBean.getVolume().intValue() + "");
 					} else {

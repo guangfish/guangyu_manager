@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.adtime.common.lang.StringUtil;
 import com.bt.om.cache.JedisPool;
+import com.bt.om.entity.User;
+import com.bt.om.service.IUserService;
+import com.bt.om.util.SecurityUtil1;
 import com.bt.om.web.BasicController;
 import com.bt.om.web.controller.app.vo.ItemVo;
 import com.bt.om.web.controller.app.vo.ProductInfoVo;
@@ -30,11 +34,15 @@ import com.google.gson.JsonObject;
 public class AppProductSearchController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;
+	@Autowired
+	private IUserService userService;
 
 	@RequestMapping(value = "/productSearch", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productSearch(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = null;
+		String userId="";
+		String mobile="";
 		String key = null;
 		int pageNo = 1;
 		int size = 30;
@@ -42,6 +50,11 @@ public class AppProductSearchController extends BasicController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+				mobile = userId;
+			}
 			if (obj.get("key") != null) {
 				key = obj.get("key").getAsString();
 			}
@@ -63,12 +76,24 @@ public class AppProductSearchController extends BasicController {
 		if ("全部".equals(key)) {
 			key = "";
 		}
+		
+		String pid="";
+		if(StringUtil.isNotEmpty(mobile)){
+			User user=userService.selectByMobile(mobile);
+			if(user!=null){
+				if(StringUtil.isNotEmpty(user.getPid())){
+					pid=user.getPid();
+				}								
+			}
+		}		
+		
+		System.out.println(userId+"="+pid);
 
-		Object productInfoVoObj = jedisPool.getFromCache("productSearch", key + "_" + pageNo);
+		Object productInfoVoObj = jedisPool.getFromCache("productSearch", pid+"_"+key + "_" + pageNo);
 		if (productInfoVoObj == null) {
-			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool, key, pageNo, size);
+			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,pid, key, pageNo, size);
 			if(productInfoVo != null){
-				jedisPool.putInCache("productSearch", key + "_" + pageNo, productInfoVo, 24 * 60 * 60);
+				jedisPool.putInCache("productSearch", pid+"_"+key + "_" + pageNo, productInfoVo, 24 * 60 * 60);
 			}			
 		} else {
 			productInfoVo = (ProductInfoVo) productInfoVoObj;

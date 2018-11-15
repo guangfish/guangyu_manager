@@ -2,6 +2,7 @@ package com.bt.om.taobao.api;
 
 import java.util.Arrays;
 
+import com.adtime.common.lang.StringUtil;
 import com.bt.om.util.GsonUtil;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -11,7 +12,7 @@ import com.taobao.api.response.TbkDgMaterialOptionalResponse;
 
 public class MaterialSearch extends BaseApi{
 
-	public static String materialSearch(String key,long pageNo,long size) {
+	public static String materialSearch(String key,String pid,long pageNo,long size) {
 		String retStr = "";
 		TaobaoClient client = new DefaultTaobaoClient(serverUrl, appKey, appSecret);
 		TbkDgMaterialOptionalRequest req = new TbkDgMaterialOptionalRequest();
@@ -31,7 +32,13 @@ public class MaterialSearch extends BaseApi{
 		req.setQ(key);
 		//req.setHasCoupon(true);
 		// req.setIp("13.2.33.4");
-		req.setAdzoneId(176864894L);
+		if(StringUtil.isNotEmpty(pid)){
+			System.out.println("使用用户绑定的PID查询商品="+pid);
+			req.setAdzoneId(Long.parseLong(pid));
+		}else{
+			System.out.println("使用系统默认的PID查询商品=176864894");
+			req.setAdzoneId(176864894L);
+		}
 		// req.setNeedFreeShipment(true);
 		// req.setNeedPrepay(true);
 		// req.setIncludePayRate30(true);
@@ -49,7 +56,7 @@ public class MaterialSearch extends BaseApi{
 		return retStr;
 	}
 	
-	public static String materialSearch(String key,String cat,long pageNo,long size) {
+	public static String materialSearch(String key,String cat,String pid,long pageNo,long size) {
 		String retStr = "";
 		TaobaoClient client = new DefaultTaobaoClient(serverUrl, appKey, appSecret);
 		TbkDgMaterialOptionalRequest req = new TbkDgMaterialOptionalRequest();
@@ -69,7 +76,14 @@ public class MaterialSearch extends BaseApi{
 //		req.setQ(key);
 		//req.setHasCoupon(true);
 		// req.setIp("13.2.33.4");
-		req.setAdzoneId(176864894L);
+		if(StringUtil.isNotEmpty(pid)){
+			System.out.println("使用用户绑定的PID查询商品="+pid);
+			req.setAdzoneId(Long.parseLong(pid));
+		}else{
+			System.out.println("使用系统默认的PID查询商品=176864894");
+			req.setAdzoneId(176864894L);
+		}
+		
 		// req.setNeedFreeShipment(true);
 		// req.setNeedPrepay(true);
 		// req.setIncludePayRate30(true);
@@ -88,7 +102,7 @@ public class MaterialSearch extends BaseApi{
 	}
 
 	public static void main(String[] args) {
-		String retStr = materialSearch("","16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703",1l,20l);
+		String retStr = materialSearch("","16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703","",1l,20l);
 
 		MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 		System.out.println(materialSearchVo.getTbk_dg_material_optional_response().getResult_list().getMap_data().get(0).getPict_url());
