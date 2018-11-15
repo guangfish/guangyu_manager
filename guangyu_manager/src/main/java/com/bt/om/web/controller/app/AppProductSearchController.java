@@ -91,6 +91,7 @@ public class AppProductSearchController extends BasicController {
 		System.out.println(userId+"="+pid);
 
 		String redisKey=pid+"_"+key + "_" + pageNo;
+		System.out.println(redisKey);
 		redisKey=redisKey.hashCode()+"";
 		System.out.println(redisKey);
 		
