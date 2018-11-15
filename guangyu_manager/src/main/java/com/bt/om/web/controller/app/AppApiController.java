@@ -53,7 +53,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppApiController extends BasicController {
 	private static final Logger logger = Logger.getLogger(AppApiController.class);
 	@Autowired

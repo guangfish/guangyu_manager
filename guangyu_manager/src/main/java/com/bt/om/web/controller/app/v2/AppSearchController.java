@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 @RestController
-@RequestMapping(value = "/app/api/v2")
+@RequestMapping(value = "/app/api")
 public class AppSearchController {
 	private static final Logger logger = Logger.getLogger(AppSearchController.class);
 	@Autowired
@@ -137,9 +138,15 @@ public class AppSearchController {
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
 					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
+					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
+						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
+					} else {
+						map.put("smallImgUrls", "");
+					}
 
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
+					map.put("productShortName", mapDataBean.getShort_title());
 					map.put("reservePrice", Float.parseFloat(mapDataBean.getReserve_price()) + "");//原价
 					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");//折后价
 					if (mapDataBean.getVolume() != null) {
@@ -272,5 +279,66 @@ public class AppSearchController {
 			e.printStackTrace();
 		}
 		return productInfoVo;
+	}
+	
+	@RequestMapping(value = "/getTkl", method = RequestMethod.POST)
+	@ResponseBody
+	public Model getTkl(Model model, HttpServletRequest request, HttpServletResponse response) {
+		com.bt.om.web.controller.xcx.util.ProductInfoVo productInfoVo = new com.bt.om.web.controller.xcx.util.ProductInfoVo();
+		String userId = "";
+		String productId = "";
+		String tkUrl = "";
+		String title = "";
+		String imgUrl = "";
+		String mobile="";
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+				mobile = userId;
+			}
+			if (obj.get("productId") != null) {
+				productId = obj.get("productId").getAsString();
+			}
+			if (obj.get("tkUrl") != null) {
+				tkUrl = obj.get("tkUrl").getAsString();
+			}
+			if (obj.get("title") != null) {
+				title = obj.get("title").getAsString();
+			}
+			if (obj.get("imgUrl") != null) {
+				imgUrl = obj.get("imgUrl").getAsString();
+			}
+		} catch (IOException e) {
+			productInfoVo.setStatus("1");
+			productInfoVo.setDesc("系统繁忙，请稍后再试");
+			productInfoVo.setData(new com.bt.om.web.controller.xcx.util.ItemVo());
+			model.addAttribute("response", productInfoVo);
+			return model;
+		}		
+
+		Object redisTklObj = jedisPool.getFromCache("tkl", productId);
+		String tkl = "";
+		if (redisTklObj != null) {
+			logger.info(productId + "淘口令缓存命中");
+			tkl = (String) redisTklObj;
+		} else {
+			String tklStr = TaoKouling.createTkl(tkUrl, title, imgUrl);
+			if (StringUtil.isNotEmpty(tklStr)) {
+				TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+				tkl = tklResponse.getTbk_tpwd_create_response().getData().getModel();
+				jedisPool.putInCache("tkl", productId, tklResponse.getTbk_tpwd_create_response().getData().getModel(),
+						7 * 24 * 60 * 60);
+			}
+		}
+
+		productInfoVo.setData(new com.bt.om.web.controller.xcx.util.ItemVo());
+		productInfoVo.getData().setTkl(tkl);
+		model.addAttribute("response", productInfoVo);
+
+		return model;
 	}
 }
