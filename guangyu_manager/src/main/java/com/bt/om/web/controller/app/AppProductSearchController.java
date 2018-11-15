@@ -90,11 +90,15 @@ public class AppProductSearchController extends BasicController {
 		
 		System.out.println(userId+"="+pid);
 
-		Object productInfoVoObj = jedisPool.getFromCache("productSearch", pid+"_"+key + "_" + pageNo);
+		String redisKey=pid+"_"+key + "_" + pageNo;
+		redisKey=redisKey.hashCode()+"";
+		System.out.println(redisKey);
+		
+		Object productInfoVoObj = jedisPool.getFromCache("productSearch", redisKey);
 		if (productInfoVoObj == null) {
 			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,pid, key, pageNo, size);
 			if(productInfoVo != null){
-				jedisPool.putInCache("productSearch", pid+"_"+key + "_" + pageNo, productInfoVo, 24 * 60 * 60);
+				jedisPool.putInCache("productSearch", redisKey, productInfoVo, 24 * 60 * 60);
 			}			
 		} else {
 			System.out.println(pid+"_"+key + "_" + pageNo+"对象缓存命中");
