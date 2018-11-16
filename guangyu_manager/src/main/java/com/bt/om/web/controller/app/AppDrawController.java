@@ -55,7 +55,7 @@ import redis.clients.jedis.ShardedJedis;
  * 列表、提现类Controller
  */
 @Controller
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppDrawController extends BasicController {
 	@Autowired
 	private IUserOrderService userOrderService;

@@ -60,7 +60,7 @@ import redis.clients.jedis.ShardedJedis;
  * 通用Controller
  */
 @Controller
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppCommonController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;

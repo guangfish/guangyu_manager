@@ -24,7 +24,7 @@ import com.bt.om.web.controller.api.v2.vo.BannerVo;
  * banner获取Controller
  */
 @Controller
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppBannerController extends BasicController {
 	@Autowired
 	private IBannerService bannerService;

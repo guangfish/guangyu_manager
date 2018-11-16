@@ -44,7 +44,7 @@ import redis.clients.jedis.ShardedJedis;
  * APP登陆、注册Controller
  */
 @Controller
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppLoginController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;

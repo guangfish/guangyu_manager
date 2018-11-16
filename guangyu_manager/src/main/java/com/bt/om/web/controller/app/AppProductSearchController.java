@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
  * 商品按关键词搜索Controller
  */
 @Controller
-@RequestMapping(value = "/app/api")
+@RequestMapping(value = "/app/api/v1")
 public class AppProductSearchController extends BasicController {
 	@Autowired
 	private JedisPool jedisPool;
