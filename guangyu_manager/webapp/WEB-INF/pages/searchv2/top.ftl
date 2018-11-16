@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-	<meta name="description" content="搜索淘宝、京东所有商品返利信息，帮助用户节省每一分钱。【花钱也能赚钱、让逛鱼带你飞】"/>
-	<meta name="keywords" content="逛鱼搜索,逛鱼网,逛鱼返利,返利,折扣 ,佣金 ,淘宝,天猫 ,京东,消费 ,优惠 ,discounts, promotions,coupons"/>
+	<meta name="description" content=""/>
+	<meta name="keywords" content=""/>
 	<meta name="format-detection" content="telephone=no,email=no">
 	<link rel="shortcut icon" href="/static/front/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="/static/frontv2/css/normalize.css">
@@ -16,7 +16,7 @@
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
-	<title>逛鱼网 | 全网搜券拿返利的网站，支持淘宝、京东</title>	
+	<title>逛鱼网 </title>	
 </head>
 <body>
 

@@ -51,7 +51,7 @@
 								<p><span class="mui-inventory">券:&nbsp;${productInfo.couponMiane?if_exists}</span><span style="position: absolute;right: 0;text-align: center;" class="mui-inventory">余${productInfo.couponRest?if_exists}张&nbsp;&nbsp;</span></p>
 								
 								<div style="margin-top: 12px">
-									<span>领券省:&nbsp;<em class="mui-first-payment">${productInfo.couponQuan?if_exists}元</em></span><span style="position: absolute;right: 0;text-align: center;">再返现:&nbsp;<em  class="mui-first-payment"><#if (productInfo.commission?exists)>${productInfo.commission*rate}元</#if>&nbsp;&nbsp;</em></span>
+									<span>领券省:&nbsp;<em class="mui-first-payment">${productInfo.couponQuan?if_exists}元</em></span>
 								</div>								
 								<!--<p class="mui-buy-gift">购买该商品预估可额外获得${productInfo.fanli?if_exists}倍返现奖励</p>-->
 							</div>
@@ -65,18 +65,11 @@
 		
 		<!-- 底部内容 -->
 		<div class="mui-cont-box">
-			<div class="f_content">
-				<!--<a><img style="color: red;width:60px;height:60px" src="/static/frontv2/img/guangfish/favicon.png" alt=""></a>-->
-				<div class="text-center">
-					<p>一个购物拿返利的神器，花钱还能赚钱，支持淘宝、京东。</p>
-					<p>90%的商品背后商家都设置了返现，返现比例最高可达80%以上，只是大家平时购物的时候不知道这个信息，逛鱼搜索不仅是一个搜返利的工具，也是一个拿返现的工具。</p>
-					<p>工具非常适用于喜欢网上购物、希望获得优惠的朋友。</p>
-				</div>
-			</div>
+
 			<div class="mui-footer-tel">
 				<p><img style="width:120px;height:120px" src="http://help.guangfish.com/imgs/gzh.jpg"></p>	
-				<span>©2018 杭州特为网络科技有限公司 版权所有</span><br/>
-				<span>浙ICP备33011002013316号</span>	
+				<span>©2018 慈溪特为网络科技有限公司 版权所有</span><br/>
+				<span>浙ICP备17058741号-2</span>	
 			</div>	
 		</div>
 				
@@ -90,6 +83,7 @@
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
+		<!--
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-order"></span>
 			<span class="mui-tab-label">订单</span>
@@ -102,6 +96,7 @@
 			<span class="mui-icon mui-icon-help1"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
+		-->
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/my">
 			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">我的</span>
@@ -133,38 +128,6 @@
     $("#pullTips").remove();
   }
 
-  var B = setInterval(function(){
-	    $
-						.ajax({
-							type : "post",
-							url : "/api/notice", 
-							contentType : "application/json",
-							dataType : "json",// 返回json格式的数据
-							timeout : 30000, 
-							success : function(data) {
-								console.log('请求到的数据为：', data)
-								if(JSON.stringify(data) != "{}"){
-								  for(var i = 0; i < data.ret.length; i++){
-								    //alert(data.ret[i].type + " " + data.ret[i].content);
-								    var notice = $.cookie('guangfishnotice'+data.ret[i].id);
-								    if(!notice){
-								      if(data.ret[i].type==2){
-								        Core.Dialog.note({'title':data.ret[i].title,'content':data.ret[i].content,'btn':['<div style="font-size:12px;">知道了</div>'],'callback':function(){}})
-								      }else{
-								        Core.Dialog.msg(data.ret[i].content,data.ret[i].noticeTime);
-								      }
-								      $.cookie('guangfishnotice'+data.ret[i].id, 'notice', { expires: data.ret[i].expires, path: '/',domain:'${cookieDomain?if_exists}'});
-								      break;
-								    }								    
-								  }
-								}
-							},
-							error : function(XMLHttpRequest, textStatus,
-									errorThrown) {
-								console.log('请求失败')
-							}
-						});
-	  },15000);
 </script>
 
 <script>
@@ -339,7 +302,7 @@
 					var myInner ="";
 					if (JSON.stringify(data) == "{}") {
 					  $("#pullTips").remove();
-					  myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">该商品无返利</div></div>';
+					  myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">未找到商品信息</div></div>';
 					  $(".search-page").append(myInner);
 					}else{
 					  var status=data.ret.result.status;
@@ -396,9 +359,6 @@
 								<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+title+'</h2>\
 								<p style="margin-top: 10px">商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
 								<p style="margin-top: 10px"><span class="mui-bodycolor">价格:&nbsp;'+price+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+sellNum+'件&nbsp;&nbsp;</span></p>\
-								<div style="margin-top: 12px">\
-									<span>预估返现:&nbsp;<em class="mui-first-payment">'+money+'</em></span>\
-								</div>\
 							</div>\
 						</a>';
 						}else{
@@ -409,7 +369,7 @@
 								<p style="margin-top: 10px">商店名:&nbsp;<span class="mui-bodycolor">'+shop+'</span></p>\
 								<p style="margin-top: 10px"><span class="mui-bodycolor">价格:&nbsp;'+price+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;'+sellNum+'件&nbsp;&nbsp;</span></p>\
 								<div style="margin-top: 12px">\
-									<span>领券省:&nbsp;<em class="mui-first-payment">'+quanMianzhi+'</em></span><span style="position: absolute;right: 0;text-align: center;">再返现:&nbsp;<em class="mui-first-payment">'+money+'&nbsp;&nbsp;</em></span>\
+									<span>领券省:&nbsp;<em class="mui-first-payment">'+quanMianzhi+'</em></span>\
 								</div>\
 							</div>\
 						</a>';
@@ -460,7 +420,7 @@
 						var o = data.list;
 						if(!o){
 						   $("#pullTips").remove();
-					       var myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">该商品无返利</div></div>';
+					       var myInner = '<div id="pullTips" class="mui-pull-tips"><div class="mui-pull-caption">未找到商品信息</div></div>';
 					       $(".search-page").append(myInner);
 						   return;
 						}else{
@@ -516,7 +476,7 @@
 									<p><span class="mui-bodycolor">现价:&nbsp;'+zkPrice+'元'+del+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件&nbsp;&nbsp;</span></p>\
 									<p><span class="mui-inventory">券:&nbsp;'+list.couponMiane+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">余<span class="mui-inventory">'+couponRest+'张&nbsp;&nbsp;</span></p>\
 									<div style="margin-top: 12px">\
-										<span>领券省:&nbsp;<em class="mui-first-payment">'+list.couponQuan+'元</em></span><span style="position: absolute;right: 0;text-align: center;">再返现:&nbsp;<em class="mui-first-payment">'+list.actualCommission+'元&nbsp;&nbsp;&nbsp;</em></span>\
+										<span>领券省:&nbsp;<em class="mui-first-payment">'+list.couponQuan+'元</em></span>\
 									</div>\
 								</div>\
 							  </a>';
@@ -527,9 +487,6 @@
 									<h2 style="white-space: pre-wrap;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;" class="mui-body-tit">'+imgstr+list.productName+'</h2>\
 									<p style="margin-top: 3px">商店名:&nbsp;<span class="mui-inventory">'+list.shopName+'</span></p>\
 									<p><span class="mui-bodycolor">现价:&nbsp;'+zkPrice+'元'+del+'</span><span style="position: absolute;right: 0;text-align: center;" class="mui-adorn">月销量:&nbsp;<span class="mui-adorn">'+list.monthSales+'件&nbsp;&nbsp;</span></p>\
-									<div style="margin-top: 12px">\
-										<span>预估返现:&nbsp;<em class="mui-first-payment">'+list.actualCommission+'元</em></span>\
-									</div>\
 								</div>\
 							  </a>';
 							}							

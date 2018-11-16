@@ -25,6 +25,7 @@
 								<i class="ic_save"></i>累计购物已省<font color="red">￥${cash?if_exists}</font>
 							</a>
 						</li>
+						<!--
 						<#if (user.accountType == 2)>
 						<li class="mui-table-view-cell">
 							<a style="text-decoration: none;" class="mui-navigate-right" href="javascript:void(0);" id='copy' onclick="copyInviteCode()">
@@ -33,7 +34,9 @@
 							</a>
 						</li>
 						</#if>
+						-->
 					</ul>
+					<!--
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<a style="text-decoration: none;" class="mui-navigate-right" href="/v2/myinvitation">
@@ -48,6 +51,7 @@
 						</li>
 						</#if>
 					</ul>	
+					-->
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
 							<a style="text-decoration: none;" class="mui-navigate-right" href="javascript:void(0);">
@@ -78,6 +82,7 @@
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
+		<!--
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-order"></span>
 			<span class="mui-tab-label">订单</span>
@@ -90,6 +95,7 @@
 			<span class="mui-icon mui-icon-help1"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
+		-->
 		<a style="text-decoration: none;" class="mui-tab-item  mui-active" href="/v2/my">
 			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">我的</span>

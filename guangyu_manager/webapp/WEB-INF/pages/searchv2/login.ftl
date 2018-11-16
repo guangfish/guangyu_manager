@@ -31,6 +31,7 @@
 			<span class="mui-icon mui-icon-index "></span>
 			<span class="mui-tab-label">首页</span>
 		</a>
+		<!--
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/order">
 			<span class="mui-icon mui-icon-order"></span>
 			<span class="mui-tab-label">订单</span>
@@ -43,6 +44,7 @@
 			<span class="mui-icon mui-icon-help1"></span>
 			<span class="mui-tab-label">帮助</span>
 		</a>
+		-->
 		<a style="text-decoration: none;" class="mui-tab-item" href="/v2/my">
 			<span class="mui-icon mui-icon-self"></span>
 			<span class="mui-tab-label">我的</span>
