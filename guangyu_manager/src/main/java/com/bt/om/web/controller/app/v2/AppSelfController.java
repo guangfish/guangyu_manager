@@ -83,6 +83,7 @@ public class AppSelfController {
 		String userId = "";
 		String alipay = "";
 		String weixin = "";
+		String realname="";
 		InputStream is;
 		try {
 			is = request.getInputStream();
@@ -98,6 +99,9 @@ public class AppSelfController {
 			if (obj.get("weixin") != null) {
 				weixin = obj.get("weixin").getAsString();
 			}
+			if (obj.get("realname") != null) {
+				realname = obj.get("realname").getAsString();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,6 +115,7 @@ public class AppSelfController {
 			} else {
 				user.setAlipay(alipay);
 				user.setWeixin(weixin);
+				user.setRealname(realname);
 				user.setUpdateTime(new Date());
 				userService.update(user);
 				commonVo.setStatus("0");
@@ -276,7 +281,7 @@ public class AppSelfController {
 				data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-				if (StringUtil.isEmpty(user.getAlipay())) {
+				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
