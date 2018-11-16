@@ -45,10 +45,11 @@ public class XcxProductSearchUtil {
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
 					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
+					map.put("imgBigUrl", mapDataBean.getPict_url() + "_800x800.jpg");
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
 						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
 					} else {
-						map.put("smallImgUrls", "");
+						map.put("smallImgUrls", "["+mapDataBean.getPict_url() + "_800x800.jpg"+"]");
 					}
 
 					map.put("shopType", mapDataBean.getUser_type() + "");// 卖家类型，0表示集市，1表示商城
