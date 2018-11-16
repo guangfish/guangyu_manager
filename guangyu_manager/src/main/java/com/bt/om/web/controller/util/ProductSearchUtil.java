@@ -15,6 +15,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
@@ -26,16 +27,27 @@ import com.bt.om.web.controller.app.vo.ProductInfoVo;
 public class ProductSearchUtil {
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String pid,String key, int pageNo, int size) {
+	public static ProductInfoVo productInfoApi(JedisPool jedisPool,String userId,String pid,String key, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
 		try {
 			long startTime = System.currentTimeMillis();
 			String retStr = "";
 			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
+			SearchVo searchVo=new SearchVo();
+			searchVo.setKey(key);
+			searchVo.setCat(cat);
+			if(StringUtil.isNotEmpty(pid)){
+				searchVo.setPid(pid);
+			}else{
+				searchVo.setPid("176864894");
+			}			
+			searchVo.setPage(pageNo);
+			searchVo.setSize(size);
+			searchVo.setHasCoupon(1);
 			if ("".equals(key)) {
-				retStr = MaterialSearch.materialSearch(key, cat,pid, pageNo, size);
+				retStr = MaterialSearch.materialSearch(searchVo);
 			} else {
-				retStr = MaterialSearch.materialSearch(key,pid, pageNo, size);
+				retStr = MaterialSearch.materialSearch(searchVo);
 			}
 			System.out.println("调用接口执行时间" + (System.currentTimeMillis() - startTime));
 
@@ -112,6 +124,17 @@ public class ProductSearchUtil {
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
+					
+					if(StringUtil.isEmpty(userId)){
+						map.put("showCommission", "no");
+					}else{
+						map.put("showCommission", "yes");
+					}
+					if(StringUtil.isEmpty(userId)){
+						map.put("showCoupon", "yes");
+					}else{
+						map.put("showCoupon", "yes");
+					}
 
 					if (!tkurl.startsWith("http")) {
 						tkurl = "https:" + tkurl;

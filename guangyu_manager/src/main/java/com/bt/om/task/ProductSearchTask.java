@@ -29,7 +29,7 @@ public class ProductSearchTask {
 				logger.info("product key=" + key);
 				for (int i = 1; i <= pages; i++) {
 					logger.info("product key page=" + key + "_" + i);
-					ProductInfoVo productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,"",key, i, 30);
+					ProductInfoVo productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,"","",key, i, 30);
 					if (productInfoVo != null) {
 						jedisPool.putInCache("productSearch", key + "_" + i, productInfoVo, 24 * 60 * 60);
 					}else{

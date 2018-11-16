@@ -46,7 +46,7 @@ public class AppProductSearchController extends BasicController {
 		String mobile="";
 		String key = null;
 		int pageNo = 1;
-		int size = 30;
+		int size = 20;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
@@ -62,9 +62,9 @@ public class AppProductSearchController extends BasicController {
 			if (obj.get("pageNo") != null) {
 				pageNo = obj.get("pageNo").getAsInt();
 			}
-			if (obj.get("size") != null) {
-				size = obj.get("size").getAsInt();
-			}
+//			if (obj.get("size") != null) {
+//				size = obj.get("size").getAsInt();
+//			}
 		} catch (IOException e) {
 			productInfoVo = new ProductInfoVo();
 			productInfoVo.setStatus("1");
@@ -93,7 +93,7 @@ public class AppProductSearchController extends BasicController {
 		String redisKey=pid+"_"+key + "_" + pageNo;
 		Object productInfoVoObj = jedisPool.getFromCache("productSearch", redisKey);
 		if (productInfoVoObj == null) {
-			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,pid, key, pageNo, size);
+			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool,userId,pid, key, pageNo, size);
 			if(productInfoVo != null){
 				jedisPool.putInCache("productSearch", redisKey, productInfoVo, 24 * 60 * 60);
 			}			

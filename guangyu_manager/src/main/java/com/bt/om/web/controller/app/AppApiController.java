@@ -11,6 +11,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
@@ -865,7 +866,12 @@ public class AppApiController extends BasicController {
 		}
 		System.out.println(userId+"="+pid);
 		try {
-			String retStr = MaterialSearch.materialSearch(productUrl,pid, pageNo, size);
+			SearchVo searchVo=new SearchVo();
+			searchVo.setKey(productUrl);
+			searchVo.setPid(pid);
+			searchVo.setPage(pageNo);
+			searchVo.setSize(size);
+			String retStr = MaterialSearch.materialSearch(searchVo);
 			// logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()

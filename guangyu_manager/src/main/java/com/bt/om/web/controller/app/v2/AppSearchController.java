@@ -32,6 +32,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.GsonUtil;
@@ -125,8 +126,17 @@ public class AppSearchController {
 			}
 		}		
 		try {
-			String retStr = MaterialSearch.materialSearch(productUrl,pid, pageNo, size);
-			// logger.info(retStr);
+			SearchVo searchVo=new SearchVo();
+			searchVo.setKey(productUrl);
+			if(StringUtil.isNotEmpty(pid)){
+				searchVo.setPid(pid);
+			}else{
+				searchVo.setPid("176864894");
+			}	
+			searchVo.setPage(pageNo);
+			searchVo.setSize(size);
+			String retStr = MaterialSearch.materialSearch(searchVo);
+			logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
@@ -186,6 +196,17 @@ public class AppSearchController {
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
+					
+					if(StringUtil.isEmpty(userId)){
+						map.put("showCommission", "no");
+					}else{
+						map.put("showCommission", "yes");
+					}
+					if(StringUtil.isEmpty(userId)){
+						map.put("showCoupon", "yes");
+					}else{
+						map.put("showCoupon", "yes");
+					}
 
 					if (!tkurl.startsWith("http")) {
 						tkurl = "https:" + tkurl;

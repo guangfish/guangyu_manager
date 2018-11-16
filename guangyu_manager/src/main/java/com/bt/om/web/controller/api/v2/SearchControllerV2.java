@@ -26,6 +26,7 @@ import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearch;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.taobao.api.coupon.CouponBean;
@@ -241,7 +242,12 @@ public class SearchControllerV2 extends BasicController {
 			searchRecord.setUpdateTime(new Date());
 			searchRecordService.insert(searchRecord);
 
-			String retStr = MaterialSearch.materialSearch(key,"", pageNo, size);
+			SearchVo searchVo=new SearchVo();
+			searchVo.setKey(key);
+			searchVo.setPid("");
+			searchVo.setPage(pageNo);
+			searchVo.setSize(size);
+			String retStr = MaterialSearch.materialSearch(searchVo);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
