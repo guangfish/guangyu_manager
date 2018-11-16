@@ -30,8 +30,6 @@ import com.bt.om.web.controller.api.v2.vo.RegisterVo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import redis.clients.jedis.ShardedJedis;
-
 @Controller
 @RequestMapping(value = "/app/api")
 public class AppLoginAndRegisterController {
@@ -65,25 +63,22 @@ public class AppLoginAndRegisterController {
 		}
 
 		if (!"13732203065".equals(mobile)) {
-			ShardedJedis jedis = jedisPool.getResource();
-			String smscode = jedis.get(mobile);
-			if (StringUtil.isEmpty(smscode)) {
+			Object smscodeObj = jedisPool.getFromCache("", mobile);
+			if (smscodeObj == null) {
 				registerVo.setStatus("1");
 				registerVo.setDesc("短信验证码已过期");
 				model.addAttribute("response", registerVo);
-				jedis.close();
 				return model;
 			}
+			String smscode = (String) smscodeObj;
 			if (!smscode.equalsIgnoreCase(code)) {
 				registerVo.setStatus("2");
 				registerVo.setDesc("短信验证码不正确");
 				model.addAttribute("response", registerVo);
-				jedis.close();
 				return model;
 			} else {
-				jedis.del(mobile);
+				jedisPool.delete("", mobile);
 			}
-			jedis.close();
 		} else {
 			if (!"123456".equalsIgnoreCase(code)) {
 				registerVo.setStatus("2");
@@ -123,7 +118,7 @@ public class AppLoginAndRegisterController {
 			return model;
 		}
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
 	public Model register(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -162,25 +157,28 @@ public class AppLoginAndRegisterController {
 			e.printStackTrace();
 		}
 
-		ShardedJedis jedis = jedisPool.getResource();
-		String smscode = jedis.get(mobile);
+		Object smscodeObj = jedisPool.getFromCache("", mobile);
+		if (smscodeObj == null) {
+			registerVo.setStatus("1");
+			registerVo.setDesc("短信验证码已过期");
+			model.addAttribute("response", registerVo);
+			return model;
+		}
+		String smscode = (String) smscodeObj;
 		if (StringUtil.isEmpty(smscode)) {
 			registerVo.setStatus("1");
 			registerVo.setDesc("短信验证码已过期");
 			model.addAttribute("response", registerVo);
-			jedis.close();
 			return model;
 		}
 		if (!smscode.equalsIgnoreCase(code)) {
 			registerVo.setStatus("2");
 			registerVo.setDesc("短信验证码不正确");
 			model.addAttribute("response", registerVo);
-			jedis.close();
 			return model;
 		} else {
-			jedis.del(mobile);
+			jedisPool.delete("", mobile);
 		}
-		jedis.close();
 
 		User user = new User();
 		user.setMobile(mobile);
@@ -194,7 +192,7 @@ public class AppLoginAndRegisterController {
 		user.setMyInviteCode(myInviteCode);
 		user.setAccountType(2);
 		user.setSex(sex);
-		//注册时分配默认的PID
+		// 注册时分配默认的PID
 		user.setPid(GlobalVariable.resourceMap.get("taobao_default_pid"));
 		String hongbaoMin = GlobalVariable.resourceMap.get("register_hongbao_min");
 		String hongbaoMax = GlobalVariable.resourceMap.get("register_hongbao_max");
@@ -214,7 +212,7 @@ public class AppLoginAndRegisterController {
 					invitation.setReward(1);
 					// 5-30元的随机奖励
 					invitation.setMoney(NumberUtil.getRandomInt(
-							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))/2,
+							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")) / 2,
 							Integer.parseInt(GlobalVariable.resourceMap.get("reward.money"))));
 					// invitation.setMoney(Integer.parseInt(GlobalVariable.resourceMap.get("reward.money")));
 					invitation.setCreateTime(new Date());
