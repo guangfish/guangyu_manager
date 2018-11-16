@@ -54,8 +54,6 @@ import com.bt.om.web.util.SearchUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import redis.clients.jedis.ShardedJedis;
-
 @Controller
 @RequestMapping(value = "/app/api")
 public class AppSelfController {
@@ -638,6 +636,7 @@ public class AppSelfController {
 	public Model draw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
 		String userId = "";
+		String mobile = "";
 		String code = "";
 		User user = null;
 		try {
@@ -646,8 +645,8 @@ public class AppSelfController {
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
-				userId = SecurityUtil1.decrypts(userId);
-				user = userService.selectByMobile(userId);
+				mobile = SecurityUtil1.decrypts(userId);
+				user = userService.selectByMobile(mobile);
 			}
 			if (obj.get("code") != null) {
 				code = obj.get("code").getAsString();
@@ -674,14 +673,20 @@ public class AppSelfController {
 			return model;
 		}
 
-		ShardedJedis jedis = jedisPool.getResource();
-		String vcodejds = jedis.get(userId);
+		Object smscodeObj = jedisPool.getFromCache("", mobile);
+		if (smscodeObj == null) {
+			orderDrawVo.setStatus("4");
+			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		String vcodejds = (String) smscodeObj;
 		// 短信验证码已过期
 		if (StringUtils.isEmpty(vcodejds)) {
 			orderDrawVo.setStatus("4");
 			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
 			model.addAttribute("response", orderDrawVo);
-			jedis.close();
 			return model;
 		}
 
@@ -690,12 +695,10 @@ public class AppSelfController {
 			orderDrawVo.setStatus("5");
 			orderDrawVo.setDesc("短信验证码验证失败");
 			model.addAttribute("response", orderDrawVo);
-			jedis.close();
 			return model;
 		}
 
-		jedis.del(userId);
-		jedis.close();
+		jedisPool.delete("", mobile);
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();
