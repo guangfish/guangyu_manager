@@ -33,9 +33,7 @@ public class ProductSearchUtil {
 			long startTime = System.currentTimeMillis();
 			String retStr = "";
 			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
-			SearchVo searchVo=new SearchVo();
-			searchVo.setKey(key);
-			searchVo.setCat(cat);
+			SearchVo searchVo=new SearchVo();						
 			if(StringUtil.isNotEmpty(pid)){
 				searchVo.setPid(pid);
 			}else{
@@ -45,8 +43,10 @@ public class ProductSearchUtil {
 			searchVo.setSize(size);
 			searchVo.setHasCoupon(1);
 			if ("".equals(key)) {
+				searchVo.setCat(cat);
 				retStr = MaterialSearch.materialSearch(searchVo);
 			} else {
+				searchVo.setKey(key);
 				retStr = MaterialSearch.materialSearch(searchVo);
 			}
 			System.out.println("调用接口执行时间" + (System.currentTimeMillis() - startTime));
