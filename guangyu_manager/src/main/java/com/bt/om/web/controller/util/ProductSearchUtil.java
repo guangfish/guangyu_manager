@@ -32,12 +32,15 @@ public class ProductSearchUtil {
 		try {
 			long startTime = System.currentTimeMillis();
 			String retStr = "";
-			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
+			//"16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
+			String cat = GlobalVariable.resourceMap.get("taobao_search_cat");
+			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
 			SearchVo searchVo=new SearchVo();						
 			if(StringUtil.isNotEmpty(pid)){
 				searchVo.setPid(pid);
 			}else{
-				searchVo.setPid("176864894");
+				//用户在没有登陆状态下，默认广告位ID
+				searchVo.setPid(defalutPid);
 			}			
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);

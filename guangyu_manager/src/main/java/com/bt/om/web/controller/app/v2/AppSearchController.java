@@ -126,17 +126,19 @@ public class AppSearchController {
 			}
 		}		
 		try {
+			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
 			SearchVo searchVo=new SearchVo();
 			searchVo.setKey(productUrl);
 			if(StringUtil.isNotEmpty(pid)){
 				searchVo.setPid(pid);
 			}else{
-				searchVo.setPid("176864894");
+				//用户在没有登陆状态下，默认广告位ID
+				searchVo.setPid(defalutPid);
 			}	
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
 			String retStr = MaterialSearch.materialSearch(searchVo);
-			logger.info(retStr);
+//			logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
