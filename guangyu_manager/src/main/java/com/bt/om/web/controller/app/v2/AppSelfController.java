@@ -732,11 +732,12 @@ public class AppSelfController {
 		double thisMonthCommission = 0;
 		double lastMonthCommission = 0;
 		int productNums = 0;
-		int thisDay = Integer.parseInt(com.bt.om.util.DateUtil.dateFormate(new Date(), "dd"));
+		int thisDay = Integer.parseInt(DateUtil.dateFormate(new Date(), "dd"));
 		if (userOrderList != null && userOrderList.size() > 0) {
 			productNums = userOrderList.size();
 			String thisMonth = DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN);
 			String lastMonth = DateUtil.dateFormate(DateUtil.getBeforeMonth(new Date()), DateUtil.MONTH_PATTERN);
+			System.out.println(userOrderList.size());
 			for (UserOrder userOrder : userOrderList) {
 				// 总共订单的返利金额
 				totalCommission = totalCommission + userOrder.getCommission3() * userOrder.getFanliMultiple();
@@ -759,7 +760,7 @@ public class AppSelfController {
 				}
 			}
 		}
-
+        System.out.println("totalCommission="+totalCommission);
 		if (totalCommission <= 0 && orderReward <= 0 && reward <= 0) {
 			orderDrawVo.setStatus("6");
 			orderDrawVo.setDesc("可提现金额为0");
