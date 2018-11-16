@@ -34,14 +34,13 @@ public class ProductSearchUtil {
 			String retStr = "";
 			//"16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
 			String cat = GlobalVariable.resourceMap.get("taobao_search_cat");
+			//用户在没有登陆状态下，默认广告位ID
 			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
 			SearchVo searchVo=new SearchVo();						
-			if(StringUtil.isNotEmpty(pid)){
-				searchVo.setPid(pid);
-			}else{
-				//用户在没有登陆状态下，默认广告位ID
-				searchVo.setPid(defalutPid);
-			}			
+			if(StringUtil.isEmpty(pid)){
+				pid=defalutPid;
+			}	
+			searchVo.setPid(pid);
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
 			searchVo.setHasCoupon(1);
@@ -67,16 +66,7 @@ public class ProductSearchUtil {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
-//					if (mapDataBean.getSmall_images() != null) {
-//						if (mapDataBean.getSmall_images().getString().length <= 0) {
-//							map.put("imgUrl", mapDataBean.getPict_url());
-//						} else {
-//							map.put("imgUrl", mapDataBean.getSmall_images().getString()[0]);
-//						}
-//					} else {
-//						map.put("imgUrl", mapDataBean.getPict_url());
-//					}
-					
+					map.put("pid", pid);
 					map.put("imgUrl", mapDataBean.getPict_url()+"_290x290.jpg");
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
 						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
@@ -203,9 +193,9 @@ public class ProductSearchUtil {
 							while (true) {
 								try {
 									map = queue.remove();
-									redisTklObj = jedisPool.getFromCache("tkl", map.get("productId"));
+									redisTklObj = jedisPool.getFromCache("tkl", map.get("pid")+"_"+map.get("productId"));
 									if (redisTklObj != null) {
-										System.out.println(map.get("productId")+"缓存命中了。。。");
+										System.out.println(map.get("pid")+"_"+map.get("productId")+"缓存命中了。。。");
 										tklStr = (String) redisTklObj;
 										map.put("tkl", tklStr);
 									} else {
@@ -215,7 +205,7 @@ public class ProductSearchUtil {
 											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 											map.put("tkl",
 													tklResponse.getTbk_tpwd_create_response().getData().getModel());
-											jedisPool.putInCache("tkl", map.get("productId"),
+											jedisPool.putInCache("tkl", map.get("pid")+"_"+map.get("productId"),
 													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
 													Integer.parseInt(GlobalVariable.resourceMap.get("tkl_valid_time")) * 24 * 60 * 60);
 										}

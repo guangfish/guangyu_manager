@@ -122,19 +122,18 @@ public class AppSearchController {
 			if(user!=null){
 				if(StringUtil.isNotEmpty(user.getPid())){
 					pid=user.getPid();
-				}								
+				}
 			}
 		}		
 		try {
+			//用户在没有登陆状态下，默认广告位ID
 			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
 			SearchVo searchVo=new SearchVo();
 			searchVo.setKey(productUrl);
-			if(StringUtil.isNotEmpty(pid)){
-				searchVo.setPid(pid);
-			}else{
-				//用户在没有登陆状态下，默认广告位ID
-				searchVo.setPid(defalutPid);
-			}	
+			if(StringUtil.isEmpty(pid)){
+				pid=defalutPid;
+			}
+			searchVo.setPid(pid);
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
 			String retStr = MaterialSearch.materialSearch(searchVo);
@@ -149,6 +148,7 @@ public class AppSearchController {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
 					Map<String, String> map = new HashMap<>();
+					map.put("pid", pid);
 					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
 						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
@@ -244,9 +244,9 @@ public class AppSearchController {
 							while (true) {
 								try {
 									map = queue.remove();
-									redisTklObj = jedisPool.getFromCache("tkl", map.get("productId"));
+									redisTklObj = jedisPool.getFromCache("tkl", map.get("pid")+"_"+map.get("productId"));
 									if (redisTklObj != null) {
-										System.out.println("缓存命中了。。。");
+										System.out.println(map.get("pid")+"_"+map.get("productId")+"缓存命中了。。。");
 										tklStr = (String) redisTklObj;
 										map.put("tkl", tklStr);
 									} else {
@@ -256,7 +256,7 @@ public class AppSearchController {
 											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 											map.put("tkl",
 													tklResponse.getTbk_tpwd_create_response().getData().getModel());
-											jedisPool.putInCache("tkl", map.get("productId"),
+											jedisPool.putInCache("tkl", map.get("pid")+"_"+map.get("productId"),
 													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
 													7 * 24 * 60 * 60);
 										}
