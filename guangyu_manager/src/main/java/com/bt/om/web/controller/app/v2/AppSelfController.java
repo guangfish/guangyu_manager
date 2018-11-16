@@ -702,7 +702,7 @@ public class AppSelfController {
 
 		// 查询奖励邀请及奖励金额
 		Invitation invitationVo = new Invitation();
-		invitationVo.setInviterMobile(userId);
+		invitationVo.setInviterMobile(mobile);
 		invitationVo.setStatus(2);
 		invitationVo.setReward(1);
 		List<Invitation> invitationList = invitationService.selectInvitationList(invitationVo);
@@ -725,7 +725,7 @@ public class AppSelfController {
 		}
 
 		// 订单返现
-		List<UserOrder> userOrderList = userOrderService.selectByMobile(userId);
+		List<UserOrder> userOrderList = userOrderService.selectByMobile(mobile);
 		// 可提现的订单
 		List<UserOrder> userOrderCanDrawList = new ArrayList<>();
 		double totalCommission = 0;
@@ -769,7 +769,7 @@ public class AppSelfController {
 		}
 
 		DrawCash drawCash = new DrawCash();
-		drawCash.setMobile(userId);
+		drawCash.setMobile(mobile);
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
 		// 1-28日之间，提现的余额为总预估收入-本月预估收入-上月预估收入
