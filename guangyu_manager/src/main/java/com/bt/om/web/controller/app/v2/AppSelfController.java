@@ -281,7 +281,8 @@ public class AppSelfController {
 				data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
+//				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
+				if (StringUtil.isEmpty(user.getAlipay())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
@@ -569,6 +570,7 @@ public class AppSelfController {
 
 		// 订单号长度
 		int orderLength = orderId.length();
+		String desc="";
 		// 淘宝订单号处理
 		if (orderLength == 18) {
 			String orderTaobaoId = orderId.substring(16, 18) + orderId.substring(14, 16);
@@ -577,9 +579,11 @@ public class AppSelfController {
 			if (StringUtil.isNotEmpty(user.getTaobaoId())) {
 				if (!orderTaobaoId.equals(user.getTaobaoId())) {
 					commonVo.setStatus("5");
-					commonVo.setDesc("请提交属于您的订单号");
+					commonVo.setDesc("提交的订单号可能不属于您！如有疑问请联系客服加微信：ruth0520");
 					model.addAttribute("response", commonVo);
 					return model;
+				}else{
+					desc="系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
 				}
 			}
 			// 判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
@@ -597,18 +601,20 @@ public class AppSelfController {
 						user.setPid(pid);
 						user.setUpdateTime(new Date());
 						userService.update(user);
+						desc="系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
 						break;
 					}
 					cnt = cnt + 1;
 				}
 				if (cnt == taobaoPids.length) {
+					desc="订单绑定发生异常，请联系客服处理，加微信：ruth0520";
 					logger.info("找不到合适的广告位ID+淘宝ID后4位的匹配关系，用户手机号为=" + user.getMobile());
 				}
 			}
 		}
 		// 京东订单号处理
 		else if (orderLength == 11) {
-
+           desc="订单号保存成功";
 		}
 
 		UserOrderTmp userOrderTmp = new UserOrderTmp();
@@ -625,11 +631,11 @@ public class AppSelfController {
 		try {
 			userOrderTmpService.insert(userOrderTmp);
 			commonVo.setStatus("0");
-			commonVo.setDesc("订单保存成功");
+			commonVo.setDesc(desc);
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 			commonVo.setStatus("4");
-			commonVo.setDesc("请勿重复提交订单号");
+			commonVo.setDesc("该订单号已存在");
 		}
 		model.addAttribute("response", commonVo);
 		return model;
