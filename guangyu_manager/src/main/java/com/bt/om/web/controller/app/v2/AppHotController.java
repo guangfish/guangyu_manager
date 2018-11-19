@@ -40,6 +40,8 @@ public class AppHotController {
 	public Model productSearch(Model model, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("热卖商品搜索接口");
 		ProductInfoVo productInfoVo = null;
+		String version="";
+		String app="";
 		String userId = "";
 		String mobile = "";
 		String key = null;
@@ -49,6 +51,12 @@ public class AppHotController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);

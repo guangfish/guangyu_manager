@@ -80,6 +80,7 @@ public class AppSelfController {
 	@ResponseBody
 	public Model userUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
+		String version ="";
 		String userId = "";
 		String alipay = "";
 		String weixin = "";
@@ -89,6 +90,9 @@ public class AppSelfController {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -136,12 +140,20 @@ public class AppSelfController {
 	public Model drawstats(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		try {
+			String version="";
+			String app="";
 			String userId = "";
 			InputStream is;
 			try {
 				is = request.getInputStream();
 				Gson gson = new Gson();
 				JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+				if (obj.get("version") != null) {
+					version = obj.get("version").getAsString();
+				}
+				if (obj.get("app") != null) {
+					app = obj.get("app").getAsString();
+				}
 				if (obj.get("userId") != null) {
 					userId = obj.get("userId").getAsString();
 					logger.info(userId);
@@ -306,6 +318,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model searchList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
+		String version="";
+		String app="";
 		String userId = "";
 		String orderStatus = "1";
 		int pageNo = 1;
@@ -314,6 +328,12 @@ public class AppSelfController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -430,6 +450,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model friendListNew(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
+		String version="";
+		String app="";
 		String userId = "";
 		int status = 1;
 		int pageNo = 1;
@@ -438,6 +460,12 @@ public class AppSelfController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -533,12 +561,20 @@ public class AppSelfController {
 	@ResponseBody
 	public Model orderSave(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
+		String version="";
+		String app="";
 		String userId = "";
 		String orderId = "";
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -588,7 +624,7 @@ public class AppSelfController {
 			}
 			// 判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
 			else {
-				String taobaoPidsStr = GlobalVariable.resourceMap.get("taobao_pids");
+				String taobaoPidsStr = ConfigUtil.getString("alimama.abigpush.pids", "176864894");
 				String[] taobaoPids = taobaoPidsStr.split(",");
 				int cnt = 0;
 				for (String pid : taobaoPids) {
@@ -646,6 +682,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model draw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
+		String version="";
+		String app="";
 		String userId = "";
 		String mobile = "";
 		String code = "";
@@ -654,6 +692,12 @@ public class AppSelfController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				mobile = SecurityUtil1.decrypts(userId);
@@ -872,6 +916,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model userInviteUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
+		String version="";
+		String app="";
 		String inviteCode = "";
 		String userId = "";
 		String mobile = "";
@@ -879,6 +925,12 @@ public class AppSelfController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -966,6 +1018,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model drawRecord(Model model, HttpServletRequest request, HttpServletResponse response) {
 		DrawCashVo drawCashVo = new DrawCashVo();
+		String version="";
+		String app="";
 		String userId = "";
 		String mobile = "";
 		String pageNo = "1";
@@ -974,6 +1028,12 @@ public class AppSelfController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -1054,6 +1114,8 @@ public class AppSelfController {
 	@RequestMapping(value = "/hotword", method = RequestMethod.POST)
 	@ResponseBody
 	public Model hotword(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String version="";
+		String app="";
 		ResultVo resultVo = new ResultVo();
 		List<Map<String, String>> list = new ArrayList<>();
 

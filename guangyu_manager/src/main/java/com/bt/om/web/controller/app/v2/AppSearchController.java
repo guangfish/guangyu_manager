@@ -35,6 +35,7 @@ import com.bt.om.taobao.api.MaterialSearchVo;
 import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
@@ -59,6 +60,8 @@ public class AppSearchController {
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		model.addAttribute("response", productInfoVo);
+		String version="";
+		String app="";
 		String userId = "";
 		String productUrl = "";
 		int pageNo = 1;
@@ -67,6 +70,12 @@ public class AppSearchController {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -92,8 +101,8 @@ public class AppSearchController {
 			return model;
 		}
 
-		//通过淘宝API方式查询商品信息
-		productInfoVo = apiLogic(userId,productUrl, pageNo, size);
+		// 通过淘宝API方式查询商品信息
+		productInfoVo = apiLogic(userId, productUrl, pageNo, size);
 
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
@@ -107,37 +116,37 @@ public class AppSearchController {
 	}
 
 	// api接口的逻辑
-	private ProductInfoVo apiLogic(String userId,String productUrl, int pageNo, int size) {
+	private ProductInfoVo apiLogic(String userId, String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		productInfoVo = productInfoApi(userId,productUrl, pageNo, size);
+		productInfoVo = productInfoApi(userId, productUrl, pageNo, size);
 		return productInfoVo;
 	}
 
 	// 通过淘宝API查询商品信息
-	public ProductInfoVo productInfoApi(String userId,String productUrl, int pageNo, int size) {
+	public ProductInfoVo productInfoApi(String userId, String productUrl, int pageNo, int size) {
 		ProductInfoVo productInfoVo = null;
-		String pid="";
-		if(StringUtil.isNotEmpty(userId)){
-			User user=userService.selectByMobile(userId);
-			if(user!=null){
-				if(StringUtil.isNotEmpty(user.getPid())){
-					pid=user.getPid();
+		String pid = "";
+		if (StringUtil.isNotEmpty(userId)) {
+			User user = userService.selectByMobile(userId);
+			if (user != null) {
+				if (StringUtil.isNotEmpty(user.getPid())) {
+					pid = user.getPid();
 				}
 			}
-		}		
+		}
 		try {
-			//用户在没有登陆状态下，默认广告位ID
-			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
-			SearchVo searchVo=new SearchVo();
+			// 用户在没有登陆状态下，默认广告位ID
+			String defalutPid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+			SearchVo searchVo = new SearchVo();
 			searchVo.setKey(productUrl);
-			if(StringUtil.isEmpty(pid)){
-				pid=defalutPid;
+			if (StringUtil.isEmpty(pid)) {
+				pid = defalutPid;
 			}
 			searchVo.setPid(pid);
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
 			String retStr = MaterialSearch.materialSearch(searchVo);
-//			logger.info(retStr);
+			// logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
@@ -159,8 +168,8 @@ public class AppSearchController {
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("productShortName", mapDataBean.getShort_title());
-					map.put("reservePrice", Float.parseFloat(mapDataBean.getReserve_price()) + "");//原价
-					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");//折后价
+					map.put("reservePrice", Float.parseFloat(mapDataBean.getReserve_price()) + "");// 原价
+					map.put("price", Float.parseFloat(mapDataBean.getZk_final_price()) + "");// 折后价
 					if (mapDataBean.getVolume() != null) {
 						map.put("sellNum", mapDataBean.getVolume().intValue() + "");
 					} else {
@@ -198,15 +207,15 @@ public class AppSearchController {
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
 					map.put("commission", actualCommission + "");
-					
-					if(StringUtil.isEmpty(userId)){
+
+					if (StringUtil.isEmpty(userId)) {
 						map.put("showCommission", "no");
-					}else{
+					} else {
 						map.put("showCommission", "yes");
 					}
-					if(StringUtil.isEmpty(userId)){
+					if (StringUtil.isEmpty(userId)) {
 						map.put("showCoupon", "yes");
-					}else{
+					} else {
 						map.put("showCoupon", "yes");
 					}
 
@@ -244,9 +253,10 @@ public class AppSearchController {
 							while (true) {
 								try {
 									map = queue.remove();
-									redisTklObj = jedisPool.getFromCache("tkl", map.get("pid")+"_"+map.get("productId"));
+									redisTklObj = jedisPool.getFromCache("tkl",
+											map.get("pid") + "_" + map.get("productId"));
 									if (redisTklObj != null) {
-										System.out.println(map.get("pid")+"_"+map.get("productId")+"缓存命中了。。。");
+										System.out.println(map.get("pid") + "_" + map.get("productId") + "缓存命中了。。。");
 										tklStr = (String) redisTklObj;
 										map.put("tkl", tklStr);
 									} else {
@@ -256,7 +266,7 @@ public class AppSearchController {
 											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 											map.put("tkl",
 													tklResponse.getTbk_tpwd_create_response().getData().getModel());
-											jedisPool.putInCache("tkl", map.get("pid")+"_"+map.get("productId"),
+											jedisPool.putInCache("tkl", map.get("pid") + "_" + map.get("productId"),
 													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
 													7 * 24 * 60 * 60);
 										}
@@ -303,21 +313,29 @@ public class AppSearchController {
 		}
 		return productInfoVo;
 	}
-	
+
 	@RequestMapping(value = "/getTkl", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getTkl(Model model, HttpServletRequest request, HttpServletResponse response) {
 		com.bt.om.web.controller.xcx.util.ProductInfoVo productInfoVo = new com.bt.om.web.controller.xcx.util.ProductInfoVo();
+		String version ="";
+		String app="";
 		String userId = "";
 		String productId = "";
 		String tkUrl = "";
 		String title = "";
 		String imgUrl = "";
-		String mobile="";
+		String mobile = "";
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				userId = SecurityUtil1.decrypts(userId);
@@ -341,19 +359,23 @@ public class AppSearchController {
 			productInfoVo.setData(new com.bt.om.web.controller.xcx.util.ItemVo());
 			model.addAttribute("response", productInfoVo);
 			return model;
-		}		
-		
-		String pid="";
-		if(StringUtil.isNotEmpty(userId)){
-			User user=userService.selectByMobile(userId);
-			if(user!=null){
-				if(StringUtil.isNotEmpty(user.getPid())){
-					pid=user.getPid();
+		}
+
+		String pid = "";
+		if (StringUtil.isNotEmpty(userId)) {
+			User user = userService.selectByMobile(userId);
+			if (user != null) {
+				if (StringUtil.isNotEmpty(user.getPid())) {
+					pid = user.getPid();
 				}
 			}
 		}
 
-		Object redisTklObj = jedisPool.getFromCache("tkl", pid+"_"+productId);
+		if (StringUtil.isEmpty(pid)) {
+			pid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}
+
+		Object redisTklObj = jedisPool.getFromCache("tkl", pid + "_" + productId);
 		String tkl = "";
 		if (redisTklObj != null) {
 			logger.info(productId + "淘口令缓存命中");
@@ -363,8 +385,8 @@ public class AppSearchController {
 			if (StringUtil.isNotEmpty(tklStr)) {
 				TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 				tkl = tklResponse.getTbk_tpwd_create_response().getData().getModel();
-				jedisPool.putInCache("tkl", pid+"_"+productId, tklResponse.getTbk_tpwd_create_response().getData().getModel(),
-						7 * 24 * 60 * 60);
+				jedisPool.putInCache("tkl", pid + "_" + productId,
+						tklResponse.getTbk_tpwd_create_response().getData().getModel(), 7 * 24 * 60 * 60);
 			}
 		}
 

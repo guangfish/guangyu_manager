@@ -59,11 +59,19 @@ public class AppBaseController {
 	public Model getSmsCode(Model model, HttpServletRequest request, HttpServletResponse response) {
 		String remoteIp = RequestUtil.getRealIp(request);
 		CommonVo commonVo = new CommonVo();
+		String version="";
+		String app="";
 		String mobile = "";
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
 			mobile = obj.get("mobile").getAsString();
 		} catch (IOException e) {
 			commonVo.setStatus("1");
@@ -124,6 +132,8 @@ public class AppBaseController {
 	@RequestMapping(value = "/banner", method = RequestMethod.POST)
 	@ResponseBody
 	public Model list(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String version="";
+		String app="";
 		BannerVo bannerVo = new BannerVo();
 		bannerVo.setDesc("获取成功");
 		bannerVo.setStatus("0");

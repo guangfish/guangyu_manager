@@ -23,6 +23,7 @@ import com.bt.om.entity.User;
 import com.bt.om.service.IInvitationService;
 import com.bt.om.service.IUserService;
 import com.bt.om.system.GlobalVariable;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
@@ -45,6 +46,7 @@ public class AppLoginAndRegisterController {
 	@ResponseBody
 	public Model login(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
+		String version = "";
 		String app = "android";
 		String mobile = "";
 		String code = "";
@@ -53,6 +55,9 @@ public class AppLoginAndRegisterController {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
 			if (obj.get("app") != null) {
 				app = obj.get("app").getAsString();
 			}
@@ -62,7 +67,7 @@ public class AppLoginAndRegisterController {
 			e.printStackTrace();
 		}
 
-		if (!"13732203065".equals(mobile)) {
+		if (!"13732203065".equals(mobile) && !"13777351924".equals(mobile)) {
 			Object smscodeObj = jedisPool.getFromCache("", mobile);
 			if (smscodeObj == null) {
 				registerVo.setStatus("1");
@@ -123,6 +128,7 @@ public class AppLoginAndRegisterController {
 	@ResponseBody
 	public Model register(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
+		String version = "";
 		String app = "android";
 		String inviteCode = "";
 		String mobile = "";
@@ -135,6 +141,9 @@ public class AppLoginAndRegisterController {
 			is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
 			if (obj.get("app") != null) {
 				app = obj.get("app").getAsString();
 			}
@@ -187,18 +196,21 @@ public class AppLoginAndRegisterController {
 		user.setWeixin(weixin);
 		user.setCreateTime(new Date());
 		user.setUpdateTime(new Date());
-		String myInviteCode = (String.valueOf(((mobile + "1qaz2wsx").hashCode()))).replace("-", "");
+		String myInviteCode = "2"+(String.valueOf(((mobile + "1qaz2wsx").hashCode()))).replace("-", "");
 		user.setTaInviteCode(inviteCode);
 		user.setMyInviteCode(myInviteCode);
 		user.setAccountType(2);
 		user.setSex(sex);
 		// 注册时分配默认的PID
-		user.setPid(GlobalVariable.resourceMap.get("taobao_default_pid"));
-		String hongbaoMin = GlobalVariable.resourceMap.get("register_hongbao_min");
-		String hongbaoMax = GlobalVariable.resourceMap.get("register_hongbao_max");
-		user.setHongbao((float) (Math.round(
-				NumberUtil.getRandomNumberFloat(Integer.parseInt(hongbaoMin), Integer.parseInt(hongbaoMax)) * 100))
-				/ 100);
+		user.setPid(ConfigUtil.getString("alimama.abigpush.default.pid", "176864894"));
+		//注册送随机红包
+//		String hongbaoMin = GlobalVariable.resourceMap.get("register_hongbao_min");
+//		String hongbaoMax = GlobalVariable.resourceMap.get("register_hongbao_max");
+//		user.setHongbao((float) (Math.round(
+//				NumberUtil.getRandomNumberFloat(Integer.parseInt(hongbaoMin), Integer.parseInt(hongbaoMax)) * 100))
+//				/ 100);
+		//注册不送红包
+		user.setHongbao(0f);
 
 		try {
 			userService.insert(user);

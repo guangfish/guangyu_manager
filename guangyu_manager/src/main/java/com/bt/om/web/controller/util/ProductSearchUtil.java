@@ -18,6 +18,7 @@ import com.bt.om.taobao.api.MaterialSearchVo;
 import com.bt.om.taobao.api.SearchVo;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
@@ -35,7 +36,7 @@ public class ProductSearchUtil {
 			//"16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
 			String cat = GlobalVariable.resourceMap.get("taobao_search_cat");
 			//用户在没有登陆状态下，默认广告位ID
-			String defalutPid=GlobalVariable.resourceMap.get("taobao_default_pid");
+			String defalutPid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
 			SearchVo searchVo=new SearchVo();						
 			if(StringUtil.isEmpty(pid)){
 				pid=defalutPid;
@@ -251,11 +252,6 @@ public class ProductSearchUtil {
 			e.printStackTrace();
 		}
 		return productInfoVo;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

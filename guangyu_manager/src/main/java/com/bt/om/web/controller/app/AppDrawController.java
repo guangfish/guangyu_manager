@@ -550,7 +550,7 @@ public class AppDrawController extends BasicController {
 		}
 		//判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
 		else{
-			String taobaoPidsStr = GlobalVariable.resourceMap.get("taobao_pids");
+			String taobaoPidsStr = ConfigUtil.getString("alimama.abigpush.pids");
 			String [] taobaoPids=taobaoPidsStr.split(",");
 			for(String pid:taobaoPids){
 				Map<String,String> map =new HashMap<>();
