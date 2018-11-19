@@ -342,8 +342,18 @@ public class AppSearchController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}		
+		
+		String pid="";
+		if(StringUtil.isNotEmpty(userId)){
+			User user=userService.selectByMobile(userId);
+			if(user!=null){
+				if(StringUtil.isNotEmpty(user.getPid())){
+					pid=user.getPid();
+				}
+			}
+		}
 
-		Object redisTklObj = jedisPool.getFromCache("tkl", productId);
+		Object redisTklObj = jedisPool.getFromCache("tkl", pid+"_"+productId);
 		String tkl = "";
 		if (redisTklObj != null) {
 			logger.info(productId + "淘口令缓存命中");
@@ -353,7 +363,7 @@ public class AppSearchController {
 			if (StringUtil.isNotEmpty(tklStr)) {
 				TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 				tkl = tklResponse.getTbk_tpwd_create_response().getData().getModel();
-				jedisPool.putInCache("tkl", productId, tklResponse.getTbk_tpwd_create_response().getData().getModel(),
+				jedisPool.putInCache("tkl", pid+"_"+productId, tklResponse.getTbk_tpwd_create_response().getData().getModel(),
 						7 * 24 * 60 * 60);
 			}
 		}
