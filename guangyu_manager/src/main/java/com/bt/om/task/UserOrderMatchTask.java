@@ -140,6 +140,7 @@ public class UserOrderMatchTask {
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
+							userOrder.setSettleStatus(1);
 							int agencyRewardRate = 0;
 							//佣金大于10元是，用最小的订单奖励比例
 							String commissionRewardMoneyStr=GlobalVariable.resourceMap.get("commission_reward_money");
@@ -282,6 +283,7 @@ public class UserOrderMatchTask {
 							userOrder.setStatus1(status1);
 							userOrder.setStatus2(1);
 							userOrder.setStatus3(1);
+							userOrder.setSettleStatus(1);
 							int agencyRewardRate = 0;
 							if (commission3 >= 30) {
 								agencyRewardRate = minAgencyRewardRate;
