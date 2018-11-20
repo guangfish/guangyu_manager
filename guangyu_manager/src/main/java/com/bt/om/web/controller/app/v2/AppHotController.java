@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.User;
 import com.bt.om.service.IUserService;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.controller.app.vo.ItemVo;
@@ -93,7 +94,10 @@ public class AppHotController {
 				}
 			}
 		}
-
+		
+		if(StringUtil.isEmpty(pid)){
+			pid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}	
 		System.out.println(userId + "=" + pid);
 
 		String redisKey = pid + "_" + key + "_" + pageNo;

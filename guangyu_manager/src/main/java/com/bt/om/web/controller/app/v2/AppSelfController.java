@@ -712,6 +712,15 @@ public class AppSelfController {
 			model.addAttribute("response", orderDrawVo);
 			return model;
 		}
+		
+		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
+		if(canDrawSwitch.equals("1")){
+			//暂时关闭提现
+			orderDrawVo.setStatus("1");
+			orderDrawVo.setDesc("暂时不可提现");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}		
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {

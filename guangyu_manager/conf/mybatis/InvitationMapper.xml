@@ -249,4 +249,10 @@
 		</if>
 		order by id desc
 	</select>
+	
+	<select id="selectManualInviteJiangli" parameterType="map" resultMap="BaseResultMap">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		FROM invitation WHERE inviter_mobile=#{mobile,jdbcType=VARCHAR} AND `status`=2 AND reward=1
+	</select>
 </mapper>

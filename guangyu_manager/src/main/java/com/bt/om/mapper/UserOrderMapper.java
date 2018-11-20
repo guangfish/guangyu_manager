@@ -79,4 +79,10 @@ public interface UserOrderMapper {
     List<UserOrder> selectPicUrlIsNull();
     
     List<UserOrder> selectTaoBaoOrderByMobile(String mobile);
+    
+    //手工统计订单返现
+    List<UserOrder> selectManualOrderFanli(Map<String, String> map);
+    //手工统计订单奖励
+    List<UserOrder> selectManualOrderJiangli(Map<String, String> map);
+    
 }

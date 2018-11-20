@@ -615,6 +615,6 @@ public class DateUtil {
     }
     
     public static void main(String[] args){
-    	System.out.println(get2BeforeMonth(new Date()));
+    	System.out.println(DateUtil.dateFormate(new Date(), "yyyy-MM")+"-01 00:00:00");
     }
 }

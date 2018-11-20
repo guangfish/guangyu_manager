@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.bt.om.entity.Invitation;
+import com.bt.om.entity.UserOrder;
 
 public interface InvitationMapper {
     /**
@@ -56,5 +57,6 @@ public interface InvitationMapper {
 
     List<Invitation> selectByMobileFriendList(Map<String, Object> searchMap, RowBounds rowBounds);
 	
-	
+  //手工统计邀请奖励
+    List<Invitation> selectManualInviteJiangli(Map<String, String> map);
 }
