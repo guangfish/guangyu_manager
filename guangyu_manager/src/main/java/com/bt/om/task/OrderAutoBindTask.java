@@ -22,8 +22,8 @@ import com.bt.om.mapper.UserOrderTmpMapper;
 /**
  * 
  * @author Lenovo 淘宝订单自动绑定任务
- * 定时从tk_order_input表中查询数据，自动绑定订单，把未绑定的订单保存到user_order_tmp表中
- * 然后有用户订单匹配任务去生产用户订单信息 userOrderMatchTask
+ *         定时从tk_order_input表中查询数据，自动绑定订单，把未绑定的订单保存到user_order_tmp表中
+ *         然后有用户订单匹配任务去生产用户订单信息 userOrderMatchTask
  *
  */
 @Component
@@ -42,28 +42,30 @@ public class OrderAutoBindTask {
 		try {
 			List<TkOrderInput> tkOrderInputList = tkOrderInputMapper.selectAll();
 			for (TkOrderInput tkOrderInput : tkOrderInputList) {
-				String orderId = tkOrderInput.getOrderId();
-				String taobaoId = getTaobaoId(orderId);
-				String adId = tkOrderInput.getAdId();
-				Map<String, String> map = new HashMap<>();
-				map.put("taobaoId", taobaoId);
-				map.put("pid", adId);
-				User user = userMapper.selectByTaobaoIdAndPid(map);
-				if (user != null) {
-					UserOrderTmp userOrderTmp = new UserOrderTmp();
-					userOrderTmp.setMobile(user.getMobile());
-					userOrderTmp.setBelong(1);
-					userOrderTmp.setOrderId(orderId);
-					userOrderTmp.setCreateTime(new Date());
-					userOrderTmp.setUpdateTime(new Date());
-					userOrderTmp.setStatus(1);
-					try {
-						userOrderTmpMapper.insert(userOrderTmp);
-					} catch (Exception e) {
-						logger.error("订单号:" + orderId + "已存在");
+				if (!"订单失效".equals(tkOrderInput.getOrderStatus())) {
+					String orderId = tkOrderInput.getOrderId();
+					String taobaoId = getTaobaoId(orderId);
+					String adId = tkOrderInput.getAdId();
+					Map<String, String> map = new HashMap<>();
+					map.put("taobaoId", taobaoId);
+					map.put("pid", adId);
+					User user = userMapper.selectByTaobaoIdAndPid(map);
+					if (user != null) {
+						UserOrderTmp userOrderTmp = new UserOrderTmp();
+						userOrderTmp.setMobile(user.getMobile());
+						userOrderTmp.setBelong(1);
+						userOrderTmp.setOrderId(orderId);
+						userOrderTmp.setCreateTime(new Date());
+						userOrderTmp.setUpdateTime(new Date());
+						userOrderTmp.setStatus(1);
+						try {
+							userOrderTmpMapper.insert(userOrderTmp);
+						} catch (Exception e) {
+							logger.error("订单号:" + orderId + "已存在");
+						}
+					} else {
+						logger.info("通过订单号、广告位ID找不到用户。" + "订单号:" + orderId + " PID:" + adId);
 					}
-				} else {
-					logger.info("通过订单号、广告位ID找不到用户。" + "订单号:" + orderId + " PID:" + adId);
 				}
 			}
 		} catch (Exception e) {
