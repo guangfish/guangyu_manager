@@ -802,7 +802,7 @@ public class AppSelfController {
 	}
 
 	// 申请提现
-	@RequestMapping(value = "/draw", method = RequestMethod.POST)
+	@RequestMapping(value = "/draw/v1", method = RequestMethod.POST)
 	@ResponseBody
 	public Model draw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
@@ -1039,6 +1039,146 @@ public class AppSelfController {
 		map.put("reward", reward + "");
 		map.put("orderReward", orderReward + "");
 		map.put("total", String.valueOf(((float) (Math.round(totalCommission * 100)) / 100) + reward + orderReward));
+		orderDrawVo.setData(map);
+		model.addAttribute("response", orderDrawVo);
+		return model;
+	}
+	
+	// 申请提现
+	@RequestMapping(value = "/draw", method = RequestMethod.POST)
+	@ResponseBody
+	public Model drawV2(Model model, HttpServletRequest request, HttpServletResponse response) {
+		OrderDrawVo orderDrawVo = new OrderDrawVo();
+		String version="";
+		String app="";
+		String userId = "";
+		String mobile = "";
+		String code = "";
+		User user = null;
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				mobile = SecurityUtil1.decrypts(userId);
+				user = userService.selectByMobile(mobile);
+			}
+			if (obj.get("code") != null) {
+				code = obj.get("code").getAsString();
+			}
+		} catch (IOException e) {
+			orderDrawVo.setStatus("1");
+			orderDrawVo.setDesc("系统繁忙，请稍后再试");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+		
+		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
+		if(canDrawSwitch.equals("1")){
+			//暂时关闭提现
+			orderDrawVo.setStatus("1");
+			orderDrawVo.setDesc("暂时不可提现");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}		
+
+		// 手机号码必须验证
+		if (StringUtils.isEmpty(userId)) {
+			orderDrawVo.setStatus("2");
+			orderDrawVo.setDesc("请求参数中缺少用户ID");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+		// 短信验证码必须验证
+		if (StringUtils.isEmpty(code)) {
+			orderDrawVo.setStatus("3");
+			orderDrawVo.setDesc("请求参数中缺少短信验证码");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		Object smscodeObj = jedisPool.getFromCache("", mobile);
+		if (smscodeObj == null) {
+			orderDrawVo.setStatus("4");
+			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		String vcodejds = (String) smscodeObj;
+		// 短信验证码已过期
+		if (StringUtils.isEmpty(vcodejds)) {
+			orderDrawVo.setStatus("4");
+			orderDrawVo.setDesc("短信验证码已过期，请重新获取");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		// 验证码有效验证
+		if (!code.equalsIgnoreCase(vcodejds)) {
+			orderDrawVo.setStatus("5");
+			orderDrawVo.setDesc("短信验证码验证失败");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		jedisPool.delete("", mobile);	
+		
+		float balance=user.getBalance();
+		if(balance<=0){
+			orderDrawVo.setStatus("6");
+			orderDrawVo.setDesc("可提现余额为0");
+			model.addAttribute("response", orderDrawVo);
+			return model;
+		}
+
+		//生产提现记录
+		DrawCash drawCash = new DrawCash();
+		drawCash.setMobile(mobile);
+		drawCash.setAlipayAccount(user.getAlipay());
+		drawCash.setStatus(1);
+		drawCash.setCash((double)user.getBalance());
+		drawCash.setCreateTime(new Date());
+		drawCash.setUpdateTime(new Date());
+		drawCashService.insert(drawCash);
+
+		// 更新用户余额
+		user.setBalance(0f);
+		user.setUpdateTime(new Date());
+		userService.update(user);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// 发送邮件通知有客户申请提现
+				if ("on".equals(ConfigUtil.getString("monitor.email.send.status"))) {
+					List<String> tos = new ArrayList<>();
+					String mailToStr = ConfigUtil.getString("monitor.email.to");
+					String[] mailTos = mailToStr.split(";");
+					for (int i = 0; i < mailTos.length; i++) {
+						tos.add(mailTos[i]);
+					}
+					logger.info("开始发送邮件通知");
+					MailUtil.sendEmail("逛鱼返利", "用户发起提现申请，请及时处理", tos);
+				}
+			}
+		}).start();
+
+		orderDrawVo.setStatus("0");
+		orderDrawVo.setDesc("提现成功");
+		Map<String, String> map = new HashMap<>();
+		map.put("productNums", "");
+		map.put("fanli", "0");
+		map.put("reward", "");
+		map.put("orderReward", "");
+		map.put("total", balance+"");
 		orderDrawVo.setData(map);
 		model.addAttribute("response", orderDrawVo);
 		return model;

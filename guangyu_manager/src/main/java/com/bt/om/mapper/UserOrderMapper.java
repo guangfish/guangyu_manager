@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
-import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.UserOrder;
 
 public interface UserOrderMapper {
