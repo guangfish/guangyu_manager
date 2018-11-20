@@ -293,8 +293,8 @@ public class AppSelfController {
 				data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-//				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
-				if (StringUtil.isEmpty(user.getAlipay())) {
+				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
+//				if (StringUtil.isEmpty(user.getAlipay())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
