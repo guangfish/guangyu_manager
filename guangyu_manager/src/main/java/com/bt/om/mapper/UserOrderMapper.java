@@ -85,4 +85,8 @@ public interface UserOrderMapper {
     //手工统计订单奖励
     List<UserOrder> selectManualOrderJiangli(Map<String, String> map);
     
+    List<UserOrder> selectEstimateOrderFanli(Map<String, String> map);
+    
+    List<UserOrder> selectEstimateOrderJiangli(Map<String, String> map);
+    
 }

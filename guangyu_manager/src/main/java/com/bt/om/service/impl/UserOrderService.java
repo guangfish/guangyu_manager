@@ -122,4 +122,14 @@ public class UserOrderService implements IUserOrderService {
 	public List<UserOrder> selectPicUrlIsNull() {
 		return userOrderMapper.selectPicUrlIsNull();
 	}
+	
+	@Override
+	public List<UserOrder> selectEstimateOrderFanli(Map<String,String> map) {
+		return userOrderMapper.selectEstimateOrderFanli(map);
+	}
+	
+	@Override
+	public List<UserOrder> selectEstimateOrderJiangli(Map<String,String> map) {
+		return userOrderMapper.selectEstimateOrderJiangli(map);
+	}
 }

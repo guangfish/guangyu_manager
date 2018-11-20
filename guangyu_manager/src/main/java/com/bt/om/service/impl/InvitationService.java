@@ -2,6 +2,7 @@ package com.bt.om.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,10 @@ public class InvitationService implements IInvitationService {
 		} else {
 			vo.setList(new ArrayList<Invitation>());
 		}
+	}
+	
+	@Override
+	public List<Invitation> selectManualInviteJiangli(Map<String,String> map) {
+		return invitationMapper.selectManualInviteJiangli(map);
 	}
 }

@@ -32,4 +32,8 @@ public interface IUserOrderService {
     public void getByInviteCode(SearchDataVo vo);
     
     public List<UserOrder> selectPicUrlIsNull();
+    
+    public List<UserOrder> selectEstimateOrderFanli(Map<String,String> map);
+    
+    public List<UserOrder> selectEstimateOrderJiangli(Map<String,String> map);
 }

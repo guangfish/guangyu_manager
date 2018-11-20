@@ -1,6 +1,7 @@
 package com.bt.om.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bt.om.entity.Invitation;
 import com.bt.om.vo.web.SearchDataVo;
@@ -21,4 +22,6 @@ public interface IInvitationService {
 	public int updateByPrimaryKey(Invitation record);
 	
 	public void selectByMobileFriend(SearchDataVo vo);
+	
+	public List<Invitation> selectManualInviteJiangli(Map<String,String> map);
 }
