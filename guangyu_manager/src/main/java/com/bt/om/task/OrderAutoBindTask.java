@@ -36,7 +36,7 @@ public class OrderAutoBindTask {
 	@Autowired
 	private TkOrderInputMapper tkOrderInputMapper;
 
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 0/8 * * * ?")
 	public void orderAutoBindTask() {
 		logger.info("淘宝订单自动绑定任务");
 		try {
