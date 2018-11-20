@@ -55,4 +55,5 @@ public interface UserMapper {
 	List<User> selectAll();
 	
 	User selectByTaobaoIdAndPid(Map<String,String> map);
+
 }

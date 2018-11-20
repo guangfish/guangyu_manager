@@ -88,4 +88,6 @@ public interface UserOrderMapper {
     
     List<UserOrder> selectEstimateOrderJiangli(Map<String, String> map);
     
+    List<UserOrder> selectByOrderId(String orderId);
+    
 }

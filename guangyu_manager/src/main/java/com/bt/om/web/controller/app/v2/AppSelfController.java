@@ -731,10 +731,10 @@ public class AppSelfController {
 		// 订单号长度
 		int orderLength = orderId.length();
 		String desc="";
+		User user = userService.selectByMobile(userId);
 		// 淘宝订单号处理
 		if (orderLength == 18) {
-			String orderTaobaoId = orderId.substring(16, 18) + orderId.substring(14, 16);
-			User user = userService.selectByMobile(userId);
+			String orderTaobaoId = orderId.substring(16, 18) + orderId.substring(14, 16);			
 			// 判断用户账号淘宝ID已存在的情况下，订单号是否属于当前用户
 			if (StringUtil.isNotEmpty(user.getTaobaoId())) {
 				if (!orderTaobaoId.equals(user.getTaobaoId())) {

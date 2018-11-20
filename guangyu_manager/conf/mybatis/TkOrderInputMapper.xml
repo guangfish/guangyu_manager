@@ -543,4 +543,11 @@
 		from tk_order_input
 		where product_id = #{productId,jdbcType=VARCHAR} and order_id= #{orderId,jdbcType=VARCHAR}
 	</select>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+	  select
+		order_id,ad_id
+		from tk_order_input		
+	</select>
+		
 </mapper>

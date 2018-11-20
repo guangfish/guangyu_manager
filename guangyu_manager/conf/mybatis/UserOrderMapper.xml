@@ -645,4 +645,10 @@
 		FROM user_order WHERE mobile IN (SELECT mobile FROM `user` WHERE ta_invite_code=#{taInviteCode,jdbcType=VARCHAR}) AND status1=2 AND reward_status=1
 	</select>
 	
+	<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		FROM user_order WHERE order_id=#{orderId,jdbcType=VARCHAR}
+	</select>
+	
 </mapper>

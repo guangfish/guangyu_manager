@@ -51,4 +51,6 @@ public interface TkOrderInputMapper {
 	List<TkOrderInput> selectByMap(Map<String,Object> map);
 	
 	void deleteByAccount(String account);
+	
+	List<TkOrderInput> selectAll();
 }
