@@ -254,5 +254,6 @@ public class AppBaseController {
 	public String about(Model model, HttpServletRequest request) {
 		return "searchv2/about";
 	}
+	//以上部分用户安卓版APP v1.0.0
 
 }

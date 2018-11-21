@@ -820,7 +820,7 @@ public class AppSelfController {
 
 		// 订单号长度
 		int orderLength = orderId.length();
-		String desc = "";
+		String desc = "订单号保存成功";
 		User user = userService.selectByMobile(userId);
 		// 淘宝订单号处理
 		if (orderLength == 18) {
