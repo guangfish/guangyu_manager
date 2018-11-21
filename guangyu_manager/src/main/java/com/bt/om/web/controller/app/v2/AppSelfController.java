@@ -565,12 +565,17 @@ public class AppSelfController {
 	}
 
 	private String getRealOrderStatus(UserOrder userOrder) {
-		int betweenDays = DateUtil.getBetweenDays(userOrder.getCreateTime(), new Date());
-		// 订单时间距离当前时间30天，就认为定单已核验
-		if (betweenDays >= (30)) {
-			return "已核验";
-		} else {
-			return "未核验";
+//		int betweenDays = DateUtil.getBetweenDays(userOrder.getCreateTime(), new Date());
+//		// 订单时间距离当前时间30天，就认为定单已核验
+//		if (betweenDays >= (30)) {
+//			return "已核验";
+//		} else {
+//			return "未核验";
+//		}
+		if(userOrder.getSettleStatus()==1){
+			return "未结算";
+		}else{
+			return "已结算";
 		}
 	}
 
