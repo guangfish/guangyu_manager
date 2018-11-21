@@ -51,18 +51,32 @@ public class OrderAutoBindTask {
 					map.put("pid", adId);
 					User user = userMapper.selectByTaobaoIdAndPid(map);
 					if (user != null) {
-						UserOrderTmp userOrderTmp = new UserOrderTmp();
-						userOrderTmp.setMobile(user.getMobile());
-						userOrderTmp.setBelong(1);
-						userOrderTmp.setOrderId(orderId);
-						userOrderTmp.setCreateTime(new Date());
-						userOrderTmp.setUpdateTime(new Date());
-						userOrderTmp.setStatus(1);
-						try {
+						UserOrderTmp userOrderTmp = userOrderTmpMapper.selectByOrderId(orderId);
+						if(userOrderTmp == null){
+							userOrderTmp = new UserOrderTmp();
+							userOrderTmp.setMobile(user.getMobile());
+							userOrderTmp.setBelong(1);
+							userOrderTmp.setOrderId(orderId);
+							userOrderTmp.setCreateTime(new Date());
+							userOrderTmp.setUpdateTime(new Date());
+							userOrderTmp.setStatus(1);
 							userOrderTmpMapper.insert(userOrderTmp);
-						} catch (Exception e) {
+						}else{
 							logger.error("订单号:" + orderId + "已存在");
 						}
+						
+//						UserOrderTmp userOrderTmp = new UserOrderTmp();
+//						userOrderTmp.setMobile(user.getMobile());
+//						userOrderTmp.setBelong(1);
+//						userOrderTmp.setOrderId(orderId);
+//						userOrderTmp.setCreateTime(new Date());
+//						userOrderTmp.setUpdateTime(new Date());
+//						userOrderTmp.setStatus(1);
+//						try {
+//							userOrderTmpMapper.insert(userOrderTmp);
+//						} catch (Exception e) {
+//							logger.error("订单号:" + orderId + "已存在");
+//						}
 					} else {
 						logger.info("通过订单号、广告位ID找不到用户。" + "订单号:" + orderId + " PID:" + adId);
 					}
