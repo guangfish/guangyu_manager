@@ -26,13 +26,16 @@ import com.bt.om.entity.DrawCash;
 import com.bt.om.entity.DrawCashOrder;
 import com.bt.om.entity.Hotword;
 import com.bt.om.entity.Invitation;
+import com.bt.om.entity.SettleInfo;
 import com.bt.om.entity.User;
 import com.bt.om.entity.UserOrder;
 import com.bt.om.entity.UserOrderTmp;
+import com.bt.om.mapper.SettleInfoMapper;
 import com.bt.om.service.IDrawCashOrderService;
 import com.bt.om.service.IDrawCashService;
 import com.bt.om.service.IHotwordService;
 import com.bt.om.service.IInvitationService;
+import com.bt.om.service.ISettleInfoService;
 import com.bt.om.service.IUserOrderService;
 import com.bt.om.service.IUserOrderTmpService;
 import com.bt.om.service.IUserService;
@@ -74,6 +77,8 @@ public class AppSelfController {
 	private IDrawCashOrderService drawCashOrderService;
 	@Autowired
 	private IHotwordService hotwordService;
+	@Autowired
+	private ISettleInfoService settleInfoService;
 
 	// 用户信息更新
 	@RequestMapping(value = "/userUpdate", method = RequestMethod.POST)
@@ -1139,7 +1144,7 @@ public class AppSelfController {
 			return model;
 		}
 
-		//生产提现记录
+		//生成提现记录
 		DrawCash drawCash = new DrawCash();
 		drawCash.setMobile(mobile);
 		drawCash.setAlipayAccount(user.getAlipay());
@@ -1148,6 +1153,14 @@ public class AppSelfController {
 		drawCash.setCreateTime(new Date());
 		drawCash.setUpdateTime(new Date());
 		drawCashService.insert(drawCash);
+		
+		//提现记录放入结算信息表
+		SettleInfo settleInfo=new SettleInfo();
+		settleInfo.setMobile(mobile);
+		settleInfo.setMoney(user.getBalance());
+		settleInfo.setSettleTime(new Date());
+		settleInfo.setType(4);
+		settleInfoService.insert(settleInfo);
 
 		// 更新用户余额
 		user.setBalance(0f);
@@ -1345,6 +1358,7 @@ public class AppSelfController {
 						+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao()));
 
 				map.put("drawMoney", Float.parseFloat(NumberUtil.formatDouble(drawMoney, "0.00")) + "");
+				map.put("drawStatus", drawCash.getStatus()==1?"未打款":"已打款");
 				list.add(map);
 			}
 			ItemVo itemVo = new ItemVo();
@@ -1381,6 +1395,110 @@ public class AppSelfController {
 
 		return model;
 	}
+	
+	
+	// 收支明细接口
+	@RequestMapping(value = "/incomeInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Model incomeInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
+		DrawCashVo drawCashVo = new DrawCashVo();
+		String version="";
+		String app="";
+		String userId = "";
+		String mobile = "";
+		String pageNo = "1";
+		String size = "30";
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("version") != null) {
+				version = obj.get("version").getAsString();
+			}
+			if (obj.get("app") != null) {
+				app = obj.get("app").getAsString();
+			}
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+				mobile = userId;
+			}
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsString();
+			}
+			if (obj.get("size") != null) {
+				size = obj.get("size").getAsString();
+			}
+		} catch (IOException e) {
+			drawCashVo.setStatus("1");
+			drawCashVo.setDesc("查询失败");
+			drawCashVo.setData(new ItemVo());
+			model.addAttribute("response", drawCashVo);
+			return model;
+		}
+
+		SearchDataVo vo = SearchUtil.getVoForList(Integer.parseInt(pageNo), Integer.parseInt(size));
+
+		if (StringUtil.isNotEmpty(mobile)) {
+			vo.putSearchParam("mobile", mobile, mobile);
+		}
+		settleInfoService.selectSettleInfoList(vo);
+		@SuppressWarnings("unchecked")
+		List<SettleInfo> settleInfoList = (List<SettleInfo>) vo.getList();
+		if (settleInfoList != null && settleInfoList.size() > 0) {
+			List<Map<String, String>> list = new ArrayList<>();
+			for (SettleInfo settleInfo : settleInfoList) {
+				Map<String, String> map = new HashMap<>();
+				map.put("time", DateUtil.dateFormate(settleInfo.getSettleTime(), DateUtil.CHINESE_PATTERN));       
+				map.put("money", settleInfo.getMoney() + "");
+				String type="";
+				if(settleInfo.getType()==1){
+					type="订单结算";
+				}else if(settleInfo.getType()==2){
+					type="订单奖励结算";
+				}else if(settleInfo.getType()==3){
+					type="邀请奖励结算";
+				}else if(settleInfo.getType()==4){
+					type="提现申请";
+				}
+				map.put("type", type);
+				list.add(map);
+			}
+			ItemVo itemVo = new ItemVo();
+			itemVo.setItems(list);
+			itemVo.setCurPage(Integer.parseInt(pageNo));
+			itemVo.setTotalSize(vo.getCount());
+			long maxPage = 0;
+			boolean ifHasNextPage = false;
+			if (vo.getCount() % vo.getSize() == 0) {
+				maxPage = vo.getCount() / vo.getSize();
+			} else {
+				maxPage = vo.getCount() / vo.getSize() + 1;
+			}
+			if (maxPage > Long.parseLong(pageNo)) {
+				ifHasNextPage = true;
+			} else {
+				ifHasNextPage = false;
+			}
+			itemVo.setMaxPage(maxPage);
+			itemVo.setHasNext(ifHasNextPage);
+			itemVo.setTotalSize(vo.getCount());
+			drawCashVo.setData(itemVo);
+
+			drawCashVo.setStatus("0");
+			drawCashVo.setDesc("查询成功");
+			model.addAttribute("response", drawCashVo);
+		} else {
+			drawCashVo.setStatus("2");
+			drawCashVo.setDesc("还没有收支明细");
+			drawCashVo.setData(new ItemVo());
+			model.addAttribute("response", drawCashVo);
+			return model;
+		}
+
+		return model;
+	}
+
 
 	// 查询热搜词列表
 	@SuppressWarnings("unchecked")

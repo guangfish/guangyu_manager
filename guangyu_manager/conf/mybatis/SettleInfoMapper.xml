@@ -130,4 +130,23 @@
       settle_time = #{settleTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectSettleInfoListCount" parameterType="map" resultType="int">
+		select
+		count(*)
+		from settle_info WHERE 1=1	
+		<if test="mobile != null">
+		    and mobile = #{mobile,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="selectSettleInfoList" parameterType="map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from settle_info WHERE 1=1
+		<if test="mobile != null">
+			and mobile = #{mobile,jdbcType=VARCHAR}
+		</if>
+		order by id desc
+	</select>
 </mapper>

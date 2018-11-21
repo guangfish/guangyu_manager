@@ -1,5 +1,11 @@
 package com.bt.om.mapper;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.RowBounds;
+
+import com.bt.om.entity.DrawCash;
 import com.bt.om.entity.SettleInfo;
 
 public interface SettleInfoMapper {
@@ -50,4 +56,8 @@ public interface SettleInfoMapper {
      * @mbg.generated Sat Nov 17 21:53:08 CST 2018
      */
     int updateByPrimaryKey(SettleInfo record);
+    
+    int selectSettleInfoListCount(Map<String, Object> searchMap);
+
+    List<SettleInfo> selectSettleInfoList(Map<String, Object> searchMap, RowBounds rowBounds);
 }
