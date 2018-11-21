@@ -1618,4 +1618,78 @@ public class AppSelfController {
 		model.addAttribute("response", resultVo);
 		return model;
 	}
+
+	// 平台订单奖励列表 用户安卓旧版
+	@RequestMapping(value = "/orderrewardlist", method = RequestMethod.POST)
+	@ResponseBody
+	public Model orderRewardList(Model model, HttpServletRequest request, HttpServletResponse response) {
+		ResultVo resultVo = new ResultVo();
+		String userId = "";
+		int pageNo = 1;
+		int size = 30;
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+			}
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsInt();
+			}
+			if (obj.get("size") != null) {
+				size = obj.get("size").getAsInt();
+			}
+		} catch (IOException e) {
+			resultVo.setStatus("1");
+			resultVo.setDesc("系统繁忙，请稍后再试");
+			model.addAttribute("response", resultVo);
+			return model;
+		}
+
+		User user = userService.selectByMobile(userId);
+		List<Map<String, String>> list = new ArrayList<>();
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
+		vo.putSearchParam("taInviteCode", user.getMyInviteCode(), user.getMyInviteCode());
+
+		userOrderService.getByInviteCode(vo);
+
+		@SuppressWarnings("unchecked")
+		List<UserOrder> userOrderList = (List<UserOrder>) vo.getList();
+		for (UserOrder userOrder : userOrderList) {
+			HashMap<String, String> map = new HashMap<>();
+			map.put("mobile", userOrder.getMobile());// 会员手机号
+			map.put("commission", userOrder.getCommission3() + "");// 会员订单返现金额
+			map.put("orderReward", userOrder.getCommissionReward() + "");// 订单奖励金额
+			map.put("orderRewardRate", userOrder.getCommissionRewardRate() + ""); // 订单奖励金额百分比
+			list.add(map);
+		}
+
+		ItemVo itemVo = new ItemVo();
+
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
+		}
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+
+		resultVo.setData(itemVo);
+
+		model.addAttribute("response", resultVo);
+		return model;
+	}
 }
