@@ -232,7 +232,7 @@
 	<select id="selectByMobileFriendList" parameterType="map"
 		resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
+		id, inviter_mobile, INSERT(be_inviter_mobile, 4, 4, 'XXXX') be_inviter_mobile, status, reward, money, create_time, update_time
 		from invitation WHERE 1=1
 		and inviter_mobile =
 		#{beInviterMobile,jdbcType=VARCHAR}
