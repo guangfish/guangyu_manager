@@ -28,7 +28,8 @@ public class XcxProductSearchUtil {
 			String retStr = "";
 			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
 			if ("".equals(key)) {
-				retStr = XcxMaterialSearch.materialSearch(key, cat, pageNo, size, sort);
+//				retStr = XcxMaterialSearch.materialSearch(key, cat, pageNo, size, sort);
+				retStr = XcxMaterialSearch.materialSearch("女装", pageNo, size, sort);
 			} else {
 				retStr = XcxMaterialSearch.materialSearch(key, pageNo, size, sort);
 			}
