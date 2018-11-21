@@ -220,5 +220,39 @@ public class AppBaseController {
 		model.addAttribute("response", appDownloadVo);
 		return model;
 	}
+	
+	//以下部分用户安卓版APP v1.0.0
+	@RequestMapping(value = "/help", method = { RequestMethod.GET, RequestMethod.POST })
+	public String help(Model model, HttpServletRequest request) {
+		String canDrawDays = GlobalVariable.resourceMap.get("can_draw_day");
+		String drawMoneyMin = GlobalVariable.resourceMap.get("draw_money_min");
+		model.addAttribute("canDrawDays", canDrawDays);
+		model.addAttribute("drawMoneyMin", drawMoneyMin);
+		return "searchv2/helpapp";
+	}
+
+	@RequestMapping(value = "/customer", method = { RequestMethod.GET, RequestMethod.POST })
+	public String customer(Model model, HttpServletRequest request) {
+		model.addAttribute("kefuWeixin", GlobalVariable.resourceMap.get("kefu_weixin"));
+		model.addAttribute("kefuWeixinQrcodeUrl", GlobalVariable.resourceMap.get("kefu_weixin_qrcode_url"));
+		return "searchv2/customer";
+	}
+
+	@RequestMapping(value = "/kefu", method = { RequestMethod.GET, RequestMethod.POST })
+	public String kefu(Model model, HttpServletRequest request) {
+		model.addAttribute("kefuWeixin", GlobalVariable.resourceMap.get("kefu_weixin"));
+		model.addAttribute("kefuWeixinQrcodeUrl", GlobalVariable.resourceMap.get("kefu_weixin_qrcode_url"));
+		return "searchv2/customer";
+	}
+
+	@RequestMapping(value = "/invite", method = { RequestMethod.GET, RequestMethod.POST })
+	public String invite(Model model, HttpServletRequest request) {
+		return "searchv2/inviteapp";
+	}
+
+	@RequestMapping(value = "/about", method = { RequestMethod.GET, RequestMethod.POST })
+	public String about(Model model, HttpServletRequest request) {
+		return "searchv2/about";
+	}
 
 }

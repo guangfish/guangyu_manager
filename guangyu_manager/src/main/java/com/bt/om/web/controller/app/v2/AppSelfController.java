@@ -85,11 +85,11 @@ public class AppSelfController {
 	@ResponseBody
 	public Model userUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
-		String version ="";
+		String version = "";
 		String userId = "";
 		String alipay = "";
 		String weixin = "";
-		String realname="";
+		String realname = "";
 		InputStream is;
 		try {
 			is = request.getInputStream();
@@ -145,8 +145,8 @@ public class AppSelfController {
 	public Model drawstats(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		try {
-			String version="";
-			String app="";
+			String version = "";
+			String app = "";
 			String userId = "";
 			InputStream is;
 			try {
@@ -298,8 +298,8 @@ public class AppSelfController {
 				data.put("tklSymbols", tklSymbols); // 淘口令前后特殊符号
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
-//				if (StringUtil.isEmpty(user.getAlipay())) {
+				if (StringUtil.isEmpty(user.getAlipay()) || StringUtil.isEmpty(user.getRealname())) {
+					// if (StringUtil.isEmpty(user.getAlipay())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
@@ -317,15 +317,15 @@ public class AppSelfController {
 		}
 		return null;
 	}
-	
+
 	// 用户收入信息查询接口，可扩展增加其它信息
 	@RequestMapping(value = "/drawstats", method = RequestMethod.POST)
 	@ResponseBody
 	public Model drawstatsV2(Model model, HttpServletRequest request, HttpServletResponse response) {
 		RegisterVo registerVo = new RegisterVo();
 		try {
-			String version="";
-			String app="";
+			String version = "";
+			String app = "";
 			String userId = "";
 			InputStream is;
 			try {
@@ -359,7 +359,7 @@ public class AppSelfController {
 				Map<String, String> data = new HashMap<>();
 
 				// 邀请的好友
-				Map<String,String> invitationMap=new HashMap<>();
+				Map<String, String> invitationMap = new HashMap<>();
 				invitationMap.put("mobile", userId);
 				List<Invitation> invitationList = invitationService.selectManualInviteJiangli(invitationMap);
 				float inviteReward = 0;
@@ -376,11 +376,11 @@ public class AppSelfController {
 				int canDrawOrderNum = 0;
 				double totalCommission = 0;
 				float tCommission = 0;
-				Map<String,String> userOrderMap=new HashMap<>();
+				Map<String, String> userOrderMap = new HashMap<>();
 				userOrderMap.put("mobile", userId);
-				List<UserOrder> userOrderList = userOrderService.selectEstimateOrderFanli(userOrderMap);			
+				List<UserOrder> userOrderList = userOrderService.selectEstimateOrderFanli(userOrderMap);
 				for (UserOrder userOrder : userOrderList) {
-					totalCommission=totalCommission+userOrder.getCommission3();
+					totalCommission = totalCommission + userOrder.getCommission3();
 				}
 				tCommission = ((float) (Math.round(totalCommission * 100)) / 100);
 
@@ -411,7 +411,7 @@ public class AppSelfController {
 					reason = "最小起提金额为" + drawMoneyMin + "元！";
 				}
 
-				data.put("totalMoney", user.getBalance()+"");// 总共可提现金额
+				data.put("totalMoney", user.getBalance() + "");// 总共可提现金额
 				data.put("orderMoney", NumberUtil.format(tCommission));// 订单可提金额
 				data.put("inviteReward", NumberUtil.format(inviteReward));// 邀请奖励金额
 				data.put("platformReward", NumberUtil.format(platformReward));// 平台订单奖励金额
@@ -422,8 +422,8 @@ public class AppSelfController {
 				// 2：超级会员
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-				if (StringUtil.isEmpty(user.getAlipay())||StringUtil.isEmpty(user.getRealname())) {
-//				if (StringUtil.isEmpty(user.getAlipay())) {
+				if (StringUtil.isEmpty(user.getAlipay()) || StringUtil.isEmpty(user.getRealname())) {
+					// if (StringUtil.isEmpty(user.getAlipay())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
@@ -447,8 +447,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model searchList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String orderStatus = "1";
 		int pageNo = 1;
@@ -565,18 +565,98 @@ public class AppSelfController {
 	}
 
 	private String getRealOrderStatus(UserOrder userOrder) {
-//		int betweenDays = DateUtil.getBetweenDays(userOrder.getCreateTime(), new Date());
-//		// 订单时间距离当前时间30天，就认为定单已核验
-//		if (betweenDays >= (30)) {
-//			return "已核验";
-//		} else {
-//			return "未核验";
-//		}
-		if(userOrder.getSettleStatus()==1){
+		if (userOrder.getSettleStatus() == 1) {
 			return "未结算";
-		}else{
+		} else {
 			return "已结算";
 		}
+	}
+
+	// 查询好友列表(旧接口)
+	@RequestMapping(value = "/friendlist", method = RequestMethod.POST)
+	@ResponseBody
+	public Model friendList(Model model, HttpServletRequest request, HttpServletResponse response) {
+		ResultVo resultVo = new ResultVo();
+		String userId = "";
+		int status = 1;
+		int pageNo = 1;
+		int size = 30;
+		try {
+			InputStream is = request.getInputStream();
+			Gson gson = new Gson();
+			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				userId = SecurityUtil1.decrypts(userId);
+			}
+			if (obj.get("status") != null) {
+				status = obj.get("status").getAsInt();
+			}
+			if (obj.get("pageNo") != null) {
+				pageNo = obj.get("pageNo").getAsInt();
+			}
+			if (obj.get("size") != null) {
+				size = obj.get("size").getAsInt();
+			}
+		} catch (IOException e) {
+			resultVo.setStatus("1");
+			resultVo.setDesc("系统繁忙，请稍后再试");
+			model.addAttribute("response", resultVo);
+			return model;
+		}
+
+		List<Map<String, String>> list = new ArrayList<>();
+
+		SearchDataVo vo = SearchUtil.getVoForList(pageNo, size);
+		if (StringUtil.isNotEmpty(userId)) {
+			vo.putSearchParam("beInviterMobile", userId, userId);
+		}
+		if (status == 1) {
+			vo.putSearchParam("status", status + "", status);
+		} else if (status == 2) {
+			vo.putSearchParam("status", status + "", status);
+			vo.putSearchParam("reward", "1", 1);
+		} else if (status == 3) {
+			vo.putSearchParam("status", "2", 2);
+			vo.putSearchParam("reward", "2", 2);
+		}
+		invitationService.selectByMobileFriend(vo);
+		@SuppressWarnings("unchecked")
+		List<Invitation> invitationList = (List<Invitation>) vo.getList();
+		for (Invitation invit : invitationList) {
+			HashMap<String, String> map = new HashMap<>();
+			map.put("mobile", invit.getBeInviterMobile());
+			map.put("status", invit.getStatus() == 1 ? "未激活" : "已激活");
+			map.put("ifreward", invit.getReward() == 1 ? "未领取" : "已领取");
+			map.put("rewardMoney", invit.getMoney() + ""); // 奖励金额
+			map.put("inviteTime", DateUtil.dateFormate(invit.getCreateTime(), DateUtil.CHINESE_PATTERN));// 邀请时间
+			list.add(map);
+		}
+
+		ItemVo itemVo = new ItemVo();
+
+		itemVo.setItems(list);
+		itemVo.setCurPage(pageNo);
+		long maxPage = 0;
+		boolean ifHasNextPage = false;
+		if (vo.getCount() % vo.getSize() == 0) {
+			maxPage = vo.getCount() / vo.getSize();
+		} else {
+			maxPage = vo.getCount() / vo.getSize() + 1;
+		}
+		if (maxPage > pageNo) {
+			ifHasNextPage = true;
+		} else {
+			ifHasNextPage = false;
+		}
+		itemVo.setMaxPage(maxPage);
+		itemVo.setHasNext(ifHasNextPage);
+		itemVo.setTotalSize(vo.getCount());
+
+		resultVo.setData(itemVo);
+
+		model.addAttribute("response", resultVo);
+		return model;
 	}
 
 	// 查询好友列表
@@ -584,8 +664,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model friendListNew(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ResultVo resultVo = new ResultVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		int status = 1;
 		int pageNo = 1;
@@ -695,8 +775,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model orderSave(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String orderId = "";
 		try {
@@ -740,11 +820,11 @@ public class AppSelfController {
 
 		// 订单号长度
 		int orderLength = orderId.length();
-		String desc="";
+		String desc = "";
 		User user = userService.selectByMobile(userId);
 		// 淘宝订单号处理
 		if (orderLength == 18) {
-			String orderTaobaoId = orderId.substring(16, 18) + orderId.substring(14, 16);			
+			String orderTaobaoId = orderId.substring(16, 18) + orderId.substring(14, 16);
 			// 判断用户账号淘宝ID已存在的情况下，订单号是否属于当前用户
 			if (StringUtil.isNotEmpty(user.getTaobaoId())) {
 				if (!orderTaobaoId.equals(user.getTaobaoId())) {
@@ -752,8 +832,8 @@ public class AppSelfController {
 					commonVo.setDesc("提交的订单号可能不属于您！如有疑问请联系客服加微信：ruth0520");
 					model.addAttribute("response", commonVo);
 					return model;
-				}else{
-					desc="系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
+				} else {
+					desc = "系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
 				}
 			}
 			// 判断用户账号淘宝ID不存在的情况下，是否有相同的taobaoId+pid已有用户绑定
@@ -771,20 +851,20 @@ public class AppSelfController {
 						user.setPid(pid);
 						user.setUpdateTime(new Date());
 						userService.update(user);
-						desc="系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
+						desc = "系统已为您自动绑定淘宝订单号，以后通过逛鱼购买商品后不必再绑定淘宝订单号了";
 						break;
 					}
 					cnt = cnt + 1;
 				}
 				if (cnt == taobaoPids.length) {
-					desc="订单绑定发生异常，请联系客服处理，加微信：ruth0520";
+					desc = "订单绑定发生异常，请联系客服处理，加微信：ruth0520";
 					logger.info("找不到合适的广告位ID+淘宝ID后4位的匹配关系，用户手机号为=" + user.getMobile());
 				}
 			}
 		}
 		// 京东订单号处理
 		else if (orderLength == 11) {
-           desc="订单号保存成功";
+			desc = "订单号保存成功";
 		}
 
 		UserOrderTmp userOrderTmp = new UserOrderTmp();
@@ -816,8 +896,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model draw(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String mobile = "";
 		String code = "";
@@ -846,15 +926,15 @@ public class AppSelfController {
 			model.addAttribute("response", orderDrawVo);
 			return model;
 		}
-		
-		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
-		if(canDrawSwitch.equals("1")){
-			//暂时关闭提现
+
+		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+		if (canDrawSwitch.equals("1")) {
+			// 暂时关闭提现
 			orderDrawVo.setStatus("1");
 			orderDrawVo.setDesc("暂时不可提现");
 			model.addAttribute("response", orderDrawVo);
 			return model;
-		}		
+		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
@@ -958,7 +1038,7 @@ public class AppSelfController {
 				}
 			}
 		}
-        System.out.println("totalCommission="+totalCommission);
+		System.out.println("totalCommission=" + totalCommission);
 		if (totalCommission <= 0 && orderReward <= 0 && reward <= 0) {
 			orderDrawVo.setStatus("6");
 			orderDrawVo.setDesc("可提现金额为0");
@@ -1053,14 +1133,14 @@ public class AppSelfController {
 		model.addAttribute("response", orderDrawVo);
 		return model;
 	}
-	
+
 	// 申请提现
 	@RequestMapping(value = "/draw", method = RequestMethod.POST)
 	@ResponseBody
 	public Model drawV2(Model model, HttpServletRequest request, HttpServletResponse response) {
 		OrderDrawVo orderDrawVo = new OrderDrawVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String mobile = "";
 		String code = "";
@@ -1089,15 +1169,15 @@ public class AppSelfController {
 			model.addAttribute("response", orderDrawVo);
 			return model;
 		}
-		
-		String canDrawSwitch=GlobalVariable.resourceMap.get("can_draw_switch");
-		if(canDrawSwitch.equals("1")){
-			//暂时关闭提现
+
+		String canDrawSwitch = GlobalVariable.resourceMap.get("can_draw_switch");
+		if (canDrawSwitch.equals("1")) {
+			// 暂时关闭提现
 			orderDrawVo.setStatus("1");
 			orderDrawVo.setDesc("暂时不可提现");
 			model.addAttribute("response", orderDrawVo);
 			return model;
-		}		
+		}
 
 		// 手机号码必须验证
 		if (StringUtils.isEmpty(userId)) {
@@ -1139,28 +1219,28 @@ public class AppSelfController {
 			return model;
 		}
 
-		jedisPool.delete("", mobile);	
-		
-		float balance=user.getBalance();
-		if(balance<=0){
+		jedisPool.delete("", mobile);
+
+		float balance = user.getBalance();
+		if (balance <= 0) {
 			orderDrawVo.setStatus("6");
 			orderDrawVo.setDesc("可提现余额为0");
 			model.addAttribute("response", orderDrawVo);
 			return model;
 		}
 
-		//生成提现记录
+		// 生成提现记录
 		DrawCash drawCash = new DrawCash();
 		drawCash.setMobile(mobile);
 		drawCash.setAlipayAccount(user.getAlipay());
 		drawCash.setStatus(1);
-		drawCash.setCash((double)user.getBalance());
+		drawCash.setCash((double) user.getBalance());
 		drawCash.setCreateTime(new Date());
 		drawCash.setUpdateTime(new Date());
 		drawCashService.insert(drawCash);
-		
-		//提现记录放入结算信息表
-		SettleInfo settleInfo=new SettleInfo();
+
+		// 提现记录放入结算信息表
+		SettleInfo settleInfo = new SettleInfo();
 		settleInfo.setMobile(mobile);
 		settleInfo.setMoney(user.getBalance());
 		settleInfo.setSettleTime(new Date());
@@ -1196,7 +1276,7 @@ public class AppSelfController {
 		map.put("fanli", "0");
 		map.put("reward", "");
 		map.put("orderReward", "");
-		map.put("total", balance+"");
+		map.put("total", balance + "");
 		orderDrawVo.setData(map);
 		model.addAttribute("response", orderDrawVo);
 		return model;
@@ -1207,8 +1287,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model userInviteUpdate(Model model, HttpServletRequest request, HttpServletResponse response) {
 		CommonVo commonVo = new CommonVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String inviteCode = "";
 		String userId = "";
 		String mobile = "";
@@ -1309,8 +1389,8 @@ public class AppSelfController {
 	@ResponseBody
 	public Model drawRecord(Model model, HttpServletRequest request, HttpServletResponse response) {
 		DrawCashVo drawCashVo = new DrawCashVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String mobile = "";
 		String pageNo = "1";
@@ -1363,7 +1443,7 @@ public class AppSelfController {
 						+ (drawCash.getHongbao() == null ? 0 : drawCash.getHongbao()));
 
 				map.put("drawMoney", Float.parseFloat(NumberUtil.formatDouble(drawMoney, "0.00")) + "");
-				map.put("drawStatus", drawCash.getStatus()==1?"未打款":"已打款");
+				map.put("drawStatus", drawCash.getStatus() == 1 ? "未打款" : "已打款");
 				list.add(map);
 			}
 			ItemVo itemVo = new ItemVo();
@@ -1400,15 +1480,14 @@ public class AppSelfController {
 
 		return model;
 	}
-	
-	
+
 	// 收支明细接口
 	@RequestMapping(value = "/incomeInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Model incomeInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		DrawCashVo drawCashVo = new DrawCashVo();
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String mobile = "";
 		String pageNo = "1";
@@ -1454,17 +1533,17 @@ public class AppSelfController {
 			List<Map<String, String>> list = new ArrayList<>();
 			for (SettleInfo settleInfo : settleInfoList) {
 				Map<String, String> map = new HashMap<>();
-				map.put("time", DateUtil.dateFormate(settleInfo.getSettleTime(), DateUtil.CHINESE_PATTERN));       
+				map.put("time", DateUtil.dateFormate(settleInfo.getSettleTime(), DateUtil.CHINESE_PATTERN));
 				map.put("money", settleInfo.getMoney() + "");
-				String type="";
-				if(settleInfo.getType()==1){
-					type="订单结算";
-				}else if(settleInfo.getType()==2){
-					type="订单奖励结算";
-				}else if(settleInfo.getType()==3){
-					type="邀请奖励结算";
-				}else if(settleInfo.getType()==4){
-					type="提现申请";
+				String type = "";
+				if (settleInfo.getType() == 1) {
+					type = "订单结算";
+				} else if (settleInfo.getType() == 2) {
+					type = "订单奖励结算";
+				} else if (settleInfo.getType() == 3) {
+					type = "邀请奖励结算";
+				} else if (settleInfo.getType() == 4) {
+					type = "提现申请";
 				}
 				map.put("type", type);
 				list.add(map);
@@ -1504,14 +1583,13 @@ public class AppSelfController {
 		return model;
 	}
 
-
 	// 查询热搜词列表
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/hotword", method = RequestMethod.POST)
 	@ResponseBody
 	public Model hotword(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		ResultVo resultVo = new ResultVo();
 		List<Map<String, String>> list = new ArrayList<>();
 
