@@ -16,7 +16,7 @@ public class SearchVo {
 	// 是否有优惠券 0：所有 1：有优惠券 2：无优惠券
 	private int hasCoupon = 0;
 	// 商品排序
-	private String sort = "tk_total_sales";
+	private String sort = "total_sales";
 
 	public String getKey() {
 		return key;
