@@ -207,8 +207,11 @@ public class XcxSearchController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
+		
+		String ifNeedLogin = GlobalVariable.resourceMap.get("xcx_if_login");
 
 		productInfoVo.getData().setTkl(tkl);
+		productInfoVo.getData().setIfNeedLogin(ifNeedLogin);
 		model.addAttribute("response", productInfoVo);
 
 		return model;
