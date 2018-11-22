@@ -24,28 +24,33 @@ public class XcxProductSearchUtil {
 	private static final Logger logger = Logger.getLogger(XcxSearchController.class);
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(String key, int isSearch,String userId,String pid,String showCommission, int pageNo, int size, String sort) {
+	public static ProductInfoVo productInfoApi(String key, int isSearch, String userId, String pid, int pageNo,
+			int size, String sort) {
 		ProductInfoVo productInfoVo = null;
+		// 控制小程序版本开关 1：送审 2：正式
+		String versionSwitch = GlobalVariable.resourceMap.get("xcx_version_switch");
+		String showCommission = GlobalVariable.resourceMap.get("xcx_show_commission");
+
 		try {
 			String retStr = "";
 			String cat = GlobalVariable.resourceMap.get("taobao_search_cat");
-			//用户在没有登陆状态下，默认广告位ID
-			String defalutPid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
-			SearchVo searchVo=new SearchVo();						
-			if(StringUtil.isEmpty(pid)){
-				pid=defalutPid;
-			}	
+			// 用户在没有登陆状态下，默认广告位ID
+			String defalutPid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+			SearchVo searchVo = new SearchVo();
+			if (StringUtil.isEmpty(pid)) {
+				pid = defalutPid;
+			}
 			searchVo.setPid(pid);
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
-			//非搜索请求时，查询有优惠券的商品
-			if(isSearch==1){
+			// 非搜索请求时，查询有优惠券的商品
+			if (isSearch == 1) {
 				searchVo.setHasCoupon(1);
 			}
-			
+
 			if ("".equals(key)) {
 				searchVo.setCat(cat);
-			}else{
+			} else {
 				searchVo.setKey(key);
 			}
 			retStr = XcxMaterialSearch.materialSearch(searchVo);
@@ -66,7 +71,7 @@ public class XcxProductSearchUtil {
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
 						map.put("smallImgUrls", Arrays.toString(mapDataBean.getSmall_images().getString()));
 					} else {
-						map.put("smallImgUrls", "["+mapDataBean.getPict_url() + "_800x800.jpg"+"]");
+						map.put("smallImgUrls", "[" + mapDataBean.getPict_url() + "_800x800.jpg" + "]");
 					}
 
 					map.put("shopType", mapDataBean.getUser_type() + "");// 卖家类型，0表示集市，1表示商城
@@ -112,16 +117,16 @@ public class XcxProductSearchUtil {
 
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
-					//后台控制是否显示佣金信息
-					if("1".equals(showCommission)){
-						if(StringUtil.isNotEmpty(userId)){
+					// 后台控制是否显示佣金信息
+					if ("1".equals(showCommission)) {
+						if (StringUtil.isNotEmpty(userId)) {
 							map.put("commission", actualCommission + "");
-						}else{
+						} else {
 							map.put("commission", "");
-						}	
-					}else{
+						}
+					} else {
 						map.put("commission", "");
-					}									
+					}
 
 					if (!tkurl.startsWith("http")) {
 						tkurl = "https:" + tkurl;
@@ -158,6 +163,7 @@ public class XcxProductSearchUtil {
 				itemVo.setMaxPage(maxPage);
 				itemVo.setHasNext(ifHasNextPage);
 				itemVo.setTotalSize(total_results);
+				itemVo.setvSwitch(versionSwitch);
 
 				productInfoVo = new ProductInfoVo();
 				productInfoVo.setData(itemVo);

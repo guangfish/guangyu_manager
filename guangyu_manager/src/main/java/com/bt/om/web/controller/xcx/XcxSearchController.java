@@ -106,9 +106,8 @@ public class XcxSearchController {
 			sort = "tk_total_sales";
 		}
 
-		String showCommission = GlobalVariable.resourceMap.get("xcx_show_commission");
-
-		productInfoVo = XcxProductSearchUtil.productInfoApi(key, isSearch, userId, pid, showCommission, pageNo, size,
+		
+		productInfoVo = XcxProductSearchUtil.productInfoApi(key, isSearch, userId, pid, pageNo, size,
 				sort);
 
 		if (productInfoVo == null) {
@@ -195,9 +194,8 @@ public class XcxSearchController {
 		if (StringUtil.isEmpty(pid)) {
 			pid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
 		}
-		String showCommission = GlobalVariable.resourceMap.get("xcx_show_commission");
 
-		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName, 1, userId, pid, showCommission, 1, 10,
+		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName, 1, userId, pid, 1, 10,
 				"total_sales");
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
@@ -209,9 +207,12 @@ public class XcxSearchController {
 		}
 		
 		String ifNeedLogin = GlobalVariable.resourceMap.get("xcx_if_login");
+		// 控制小程序版本开关 1：送审 2：正式
+		String versionSwitch = GlobalVariable.resourceMap.get("xcx_version_switch");
 
 		productInfoVo.getData().setTkl(tkl);
 		productInfoVo.getData().setIfNeedLogin(ifNeedLogin);
+		productInfoVo.getData().setvSwitch(versionSwitch);
 		model.addAttribute("response", productInfoVo);
 
 		return model;

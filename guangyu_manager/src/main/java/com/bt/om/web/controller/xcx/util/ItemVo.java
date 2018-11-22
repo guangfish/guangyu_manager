@@ -15,6 +15,7 @@ public class ItemVo implements Serializable {
 	private String mall = "";
 	private String tkl = "";
 	private String ifNeedLogin = "1";
+	private String vSwitch = "1";
 	private List<Map<String, String>> items = new ArrayList<>();
 
 	public long getTotalSize() {
@@ -79,6 +80,14 @@ public class ItemVo implements Serializable {
 
 	public void setIfNeedLogin(String ifNeedLogin) {
 		this.ifNeedLogin = ifNeedLogin;
+	}
+
+	public String getvSwitch() {
+		return vSwitch;
+	}
+
+	public void setvSwitch(String vSwitch) {
+		this.vSwitch = vSwitch;
 	}
 
 }
