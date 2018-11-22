@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.MapDataBean;
 import com.bt.om.taobao.api.MaterialSearchVo;
+import com.bt.om.taobao.api.SearchVo;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
@@ -22,17 +24,31 @@ public class XcxProductSearchUtil {
 	private static final Logger logger = Logger.getLogger(XcxSearchController.class);
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(String key, int pageNo, int size, String sort) {
+	public static ProductInfoVo productInfoApi(String key, int isSearch,String userId,String pid, int pageNo, int size, String sort) {
 		ProductInfoVo productInfoVo = null;
 		try {
 			String retStr = "";
-			String cat = "16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703";
-			if ("".equals(key)) {
-//				retStr = XcxMaterialSearch.materialSearch(key, cat, pageNo, size, sort);
-				retStr = XcxMaterialSearch.materialSearch("女装", pageNo, size, sort);
-			} else {
-				retStr = XcxMaterialSearch.materialSearch(key, pageNo, size, sort);
+			String cat = GlobalVariable.resourceMap.get("taobao_search_cat");
+			//用户在没有登陆状态下，默认广告位ID
+			String defalutPid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+			SearchVo searchVo=new SearchVo();						
+			if(StringUtil.isEmpty(pid)){
+				pid=defalutPid;
+			}	
+			searchVo.setPid(pid);
+			searchVo.setPage(pageNo);
+			searchVo.setSize(size);
+			//非搜索请求时，查询有优惠券的商品
+			if(isSearch==1){
+				searchVo.setHasCoupon(1);
 			}
+			
+			if ("".equals(key)) {
+				searchVo.setCat(cat);
+			}else{
+				searchVo.setKey(key);
+			}
+			retStr = XcxMaterialSearch.materialSearch(searchVo);
 
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
@@ -96,7 +112,11 @@ public class XcxProductSearchUtil {
 
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
-					map.put("commission", actualCommission + "");
+					if(StringUtil.isNotEmpty(userId)){
+						map.put("commission", actualCommission + "");
+					}else{
+						map.put("commission", "");
+					}					
 
 					if (!tkurl.startsWith("http")) {
 						tkurl = "https:" + tkurl;

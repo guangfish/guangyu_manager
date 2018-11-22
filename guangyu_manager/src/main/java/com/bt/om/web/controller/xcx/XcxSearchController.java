@@ -3,7 +3,6 @@ package com.bt.om.web.controller.xcx;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bt.om.cache.JedisPool;
+import com.bt.om.entity.User;
+import com.bt.om.service.IUserService;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
+import com.bt.om.util.ConfigUtil;
 import com.bt.om.util.GsonUtil;
+import com.bt.om.util.SecurityUtil1;
 import com.bt.om.util.StringUtil;
 import com.bt.om.web.controller.xcx.util.ItemVo;
 import com.bt.om.web.controller.xcx.util.ProductInfoVo;
@@ -33,24 +36,37 @@ public class XcxSearchController {
 	private static final Logger logger = Logger.getLogger(XcxSearchController.class);
 	@Autowired
 	private JedisPool jedisPool;
+	@Autowired
+	private IUserService userService;
 
 	@RequestMapping(value = "/productList", method = RequestMethod.POST)
 	@ResponseBody
 	public Model productList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = null;
+		String userId="";
+		String mobile="";
 		String key = null;
 		int ifHot = 1;
+		int isSearch=1;
 		int pageNo = 1;
 		int size = 30;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
+			if (obj.get("userId") != null) {
+				userId = obj.get("userId").getAsString();
+				mobile = SecurityUtil1.decrypts(userId);
+				
+			}
 			if (obj.get("key") != null) {
 				key = obj.get("key").getAsString();
 			}
 			if (obj.get("ifHot") != null) {
 				ifHot = obj.get("ifHot").getAsInt();
+			}
+			if (obj.get("isSearch") != null) {
+				isSearch = obj.get("isSearch").getAsInt();
 			}
 			if (obj.get("pageNo") != null) {
 				pageNo = obj.get("pageNo").getAsInt();
@@ -66,6 +82,19 @@ public class XcxSearchController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
+		
+		String pid = "";
+		if (StringUtil.isNotEmpty(mobile)) {
+			User user = userService.selectByMobile(mobile);
+			if (user != null) {
+				if (StringUtil.isNotEmpty(user.getPid())) {
+					pid = user.getPid();
+				}
+			}
+		}		
+		if(StringUtil.isEmpty(pid)){
+			pid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}
 
 		if ("全部".equals(key)) {
 			key = "";
@@ -76,7 +105,7 @@ public class XcxSearchController {
 			sort = "tk_total_sales";
 		}
 
-		productInfoVo = XcxProductSearchUtil.productInfoApi(key, pageNo, size, sort);
+		productInfoVo = XcxProductSearchUtil.productInfoApi(key,isSearch,userId,pid, pageNo, size, sort);
 
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
@@ -97,6 +126,7 @@ public class XcxSearchController {
 	public Model productItemInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = null;
 		String userId = "";
+		String mobile = "";
 		String categoryName = "";
 		String productId = "";
 		String tkUrl = "";
@@ -108,6 +138,7 @@ public class XcxSearchController {
 			JsonObject obj = gson.fromJson(new InputStreamReader(is), JsonObject.class);
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
+				mobile = SecurityUtil1.decrypts(userId);
 			}
 			if (obj.get("categoryName") != null) {
 				categoryName = obj.get("categoryName").getAsString();
@@ -147,8 +178,21 @@ public class XcxSearchController {
 						7 * 24 * 60 * 60);
 			}
 		}
+		
+		String pid = "";
+		if (StringUtil.isNotEmpty(mobile)) {
+			User user = userService.selectByMobile(mobile);
+			if (user != null) {
+				if (StringUtil.isNotEmpty(user.getPid())) {
+					pid = user.getPid();
+				}
+			}
+		}		
+		if(StringUtil.isEmpty(pid)){
+			pid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}
 
-		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName, 1, 10, "tk_total_sales");
+		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName,1,userId,pid, 1, 10, "tk_total_sales");
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
 			productInfoVo.setDesc("未查到商品信息");
