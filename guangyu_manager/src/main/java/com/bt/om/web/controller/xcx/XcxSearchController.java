@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.User;
 import com.bt.om.service.IUserService;
+import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.TaoKouling;
 import com.bt.om.taobao.api.TklResponse;
 import com.bt.om.util.ConfigUtil;
@@ -43,11 +44,11 @@ public class XcxSearchController {
 	@ResponseBody
 	public Model productList(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = null;
-		String userId="";
-		String mobile="";
+		String userId = "";
+		String mobile = "";
 		String key = null;
 		int ifHot = 1;
-		int isSearch=1;
+		int isSearch = 1;
 		int pageNo = 1;
 		int size = 30;
 		try {
@@ -57,7 +58,7 @@ public class XcxSearchController {
 			if (obj.get("userId") != null) {
 				userId = obj.get("userId").getAsString();
 				mobile = SecurityUtil1.decrypts(userId);
-				
+
 			}
 			if (obj.get("key") != null) {
 				key = obj.get("key").getAsString();
@@ -82,7 +83,7 @@ public class XcxSearchController {
 			model.addAttribute("response", productInfoVo);
 			return model;
 		}
-		
+
 		String pid = "";
 		if (StringUtil.isNotEmpty(mobile)) {
 			User user = userService.selectByMobile(mobile);
@@ -91,9 +92,9 @@ public class XcxSearchController {
 					pid = user.getPid();
 				}
 			}
-		}		
-		if(StringUtil.isEmpty(pid)){
-			pid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}
+		if (StringUtil.isEmpty(pid)) {
+			pid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
 		}
 
 		if ("全部".equals(key)) {
@@ -105,7 +106,10 @@ public class XcxSearchController {
 			sort = "tk_total_sales";
 		}
 
-		productInfoVo = XcxProductSearchUtil.productInfoApi(key,isSearch,userId,pid, pageNo, size, sort);
+		String showCommission = GlobalVariable.resourceMap.get("xcx_show_commission");
+
+		productInfoVo = XcxProductSearchUtil.productInfoApi(key, isSearch, userId, pid, showCommission, pageNo, size,
+				sort);
 
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
@@ -178,7 +182,7 @@ public class XcxSearchController {
 						7 * 24 * 60 * 60);
 			}
 		}
-		
+
 		String pid = "";
 		if (StringUtil.isNotEmpty(mobile)) {
 			User user = userService.selectByMobile(mobile);
@@ -187,12 +191,14 @@ public class XcxSearchController {
 					pid = user.getPid();
 				}
 			}
-		}		
-		if(StringUtil.isEmpty(pid)){
-			pid=ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
 		}
+		if (StringUtil.isEmpty(pid)) {
+			pid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
+		}
+		String showCommission = GlobalVariable.resourceMap.get("xcx_show_commission");
 
-		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName,1,userId,pid, 1, 10, "tk_total_sales");
+		productInfoVo = XcxProductSearchUtil.productInfoApi(categoryName, 1, userId, pid, showCommission, 1, 10,
+				"total_sales");
 		if (productInfoVo == null) {
 			productInfoVo = new ProductInfoVo();
 			productInfoVo.setDesc("未查到商品信息");

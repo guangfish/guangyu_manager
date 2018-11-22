@@ -24,7 +24,7 @@ public class XcxProductSearchUtil {
 	private static final Logger logger = Logger.getLogger(XcxSearchController.class);
 
 	// 通过淘宝API查询商品信息
-	public static ProductInfoVo productInfoApi(String key, int isSearch,String userId,String pid, int pageNo, int size, String sort) {
+	public static ProductInfoVo productInfoApi(String key, int isSearch,String userId,String pid,String showCommission, int pageNo, int size, String sort) {
 		ProductInfoVo productInfoVo = null;
 		try {
 			String retStr = "";
@@ -112,11 +112,16 @@ public class XcxProductSearchUtil {
 
 					actualCommission = ((float) (Math.round(actualPrice * (incomeRate)
 							* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100) / 100) / 100);
-					if(StringUtil.isNotEmpty(userId)){
-						map.put("commission", actualCommission + "");
+					//后台控制是否显示佣金信息
+					if("1".equals(showCommission)){
+						if(StringUtil.isNotEmpty(userId)){
+							map.put("commission", actualCommission + "");
+						}else{
+							map.put("commission", "");
+						}	
 					}else{
 						map.put("commission", "");
-					}					
+					}									
 
 					if (!tkurl.startsWith("http")) {
 						tkurl = "https:" + tkurl;
