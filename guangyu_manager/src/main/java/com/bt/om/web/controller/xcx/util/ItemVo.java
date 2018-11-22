@@ -63,7 +63,7 @@ public class ItemVo implements Serializable {
 	}
 
 	public void setTkl(String tkl) {
-		this.tkl = tkl;
+		this.tkl = tkl; 
 	}
 
 	public List<Map<String, String>> getItems() {
