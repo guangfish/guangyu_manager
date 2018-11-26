@@ -156,7 +156,7 @@ public class AppSearchController {
 			if (mapDataBeanList != null && mapDataBeanList.size() > 0) {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
-					Map<String, String> map = new HashMap<>();
+					Map<String, String> map = new HashMap<>(); 
 					map.put("pid", pid);
 					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
