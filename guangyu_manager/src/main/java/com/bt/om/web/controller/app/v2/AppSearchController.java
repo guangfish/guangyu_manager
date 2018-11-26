@@ -318,6 +318,7 @@ public class AppSearchController {
 	@RequestMapping(value = "/getTkl", method = RequestMethod.POST)
 	@ResponseBody
 	public Model getTkl(Model model, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("调用获取淘口令接口");
 		com.bt.om.web.controller.xcx.util.ProductInfoVo productInfoVo = new com.bt.om.web.controller.xcx.util.ProductInfoVo();
 		String version ="";
 		String app="";
