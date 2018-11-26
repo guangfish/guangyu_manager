@@ -391,6 +391,7 @@ public class AppSearchController {
 						tklResponse.getTbk_tpwd_create_response().getData().getModel(), 7 * 24 * 60 * 60);
 			}
 		}
+		logger.info("淘口令="+tkl);
 
 		productInfoVo.setData(new com.bt.om.web.controller.xcx.util.ItemVo());
 		productInfoVo.getData().setTkl(tkl);
