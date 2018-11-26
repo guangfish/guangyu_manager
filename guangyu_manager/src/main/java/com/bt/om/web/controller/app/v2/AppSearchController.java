@@ -165,6 +165,7 @@ public class AppSearchController {
 						map.put("smallImgUrls", "");
 					}
 
+					map.put("shopType", mapDataBean.getUser_type()+"");//卖家类型，0表示集市，1表示商城
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("productShortName", mapDataBean.getShort_title());
