@@ -349,8 +349,8 @@ public class AppSearchController {
 			if (obj.get("tkUrl") != null) {
 				tkUrl = obj.get("tkUrl").getAsString();
 			}
-			if (obj.get("title") != null) {
-				title = obj.get("title").getAsString();
+			if (obj.get("productName") != null) {
+				title = obj.get("productName").getAsString();
 			}
 			if (obj.get("imgUrl") != null) {
 				imgUrl = obj.get("imgUrl").getAsString();
