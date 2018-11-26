@@ -238,51 +238,51 @@ public class AppSearchController {
 					}
 				}
 
-//				BlockingQueue<Map<String, String>> queue = new LinkedBlockingQueue<>();
-//				for (Map<String, String> map : list) {
-//					queue.put(map);
-//				}
-//
-//				// 启动固定线程数据模式
-//				for (int i = 0; i < 10; i++) {
-//					Thread thread = new Thread(new Runnable() {
-//						@Override
-//						public void run() {
-//							Map<String, String> map = null;
-//							Object redisTklObj = null;
-//							String tklStr = "";
-//							while (true) {
-//								try {
-//									map = queue.remove();
-//									redisTklObj = jedisPool.getFromCache("tkl",
-//											map.get("pid") + "_" + map.get("productId"));
-//									if (redisTklObj != null) {
-//										System.out.println(map.get("pid") + "_" + map.get("productId") + "缓存命中了。。。");
-//										tklStr = (String) redisTklObj;
-//										map.put("tkl", tklStr);
-//									} else {
-//										tklStr = TaoKouling.createTkl(map.get("tkUrl"), map.get("title"),
-//												map.get("pictUrl"));
-//										if (StringUtil.isNotEmpty(tklStr)) {
-//											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
-//											map.put("tkl",
-//													tklResponse.getTbk_tpwd_create_response().getData().getModel());
-//											jedisPool.putInCache("tkl", map.get("pid") + "_" + map.get("productId"),
-//													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
-//													7 * 24 * 60 * 60);
-//										}
-//									}
-//								} catch (Exception e) {
-//									// e.printStackTrace();
-//									// 抛出异常代表线程结束
-//									break;
-//								}
-//							}
-//						}
-//					});
-//					thread.start();
-//					thread.join();
-//				}
+				BlockingQueue<Map<String, String>> queue = new LinkedBlockingQueue<>();
+				for (Map<String, String> map : list) {
+					queue.put(map);
+				}
+
+				// 启动固定线程数据模式
+				for (int i = 0; i < 10; i++) {
+					Thread thread = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							Map<String, String> map = null;
+							Object redisTklObj = null;
+							String tklStr = "";
+							while (true) {
+								try {
+									map = queue.remove();
+									redisTklObj = jedisPool.getFromCache("tkl",
+											map.get("pid") + "_" + map.get("productId"));
+									if (redisTklObj != null) {
+										System.out.println(map.get("pid") + "_" + map.get("productId") + "缓存命中了。。。");
+										tklStr = (String) redisTklObj;
+										map.put("tkl", tklStr);
+									} else {
+										tklStr = TaoKouling.createTkl(map.get("tkUrl"), map.get("title"),
+												map.get("pictUrl"));
+										if (StringUtil.isNotEmpty(tklStr)) {
+											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
+											map.put("tkl",
+													tklResponse.getTbk_tpwd_create_response().getData().getModel());
+											jedisPool.putInCache("tkl", map.get("pid") + "_" + map.get("productId"),
+													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
+													7 * 24 * 60 * 60);
+										}
+									}
+								} catch (Exception e) {
+									// e.printStackTrace();
+									// 抛出异常代表线程结束
+									break;
+								}
+							}
+						}
+					});
+					thread.start();
+					thread.join();
+				}
 
 				ItemVo itemVo = new ItemVo();
 				itemVo.setItems(list);
