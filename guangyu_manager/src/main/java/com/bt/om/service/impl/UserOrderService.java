@@ -132,4 +132,14 @@ public class UserOrderService implements IUserOrderService {
 	public List<UserOrder> selectEstimateOrderJiangli(Map<String,String> map) {
 		return userOrderMapper.selectEstimateOrderJiangli(map);
 	}
+	
+	@Override
+	public List<UserOrder> selectByOrderId(String orderId) {
+		return userOrderMapper.selectByOrderId(orderId);
+	}
+	
+	@Override
+	public int deleteByOrderId(String orderId) {
+		return userOrderMapper.deleteByOrderId(orderId);
+	}
 }

@@ -11,7 +11,7 @@ import com.bt.om.cache.JedisPool;
 import com.bt.om.web.controller.app.vo.ProductInfoVo;
 import com.bt.om.web.controller.util.ProductSearchUtil;
 
-@Component
+//@Component
 public class ProductSearchTask {
 	private static final Logger logger = Logger.getLogger(ProductSearchTask.class);
 

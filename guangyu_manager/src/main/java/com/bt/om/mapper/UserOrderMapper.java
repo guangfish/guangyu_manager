@@ -90,4 +90,6 @@ public interface UserOrderMapper {
     
     List<UserOrder> selectByOrderId(String orderId);
     
+    int deleteByOrderId(String orderId);
+    
 }

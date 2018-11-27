@@ -207,7 +207,7 @@
 		<include refid="Base_Column_List" />
 		from invitation
 		where status =1 and be_inviter_mobile in (select mobile
-		from user_order where status1 = 2 and status2 = 3)
+		from user_order where settle_status = 2)
 	</select>
 
 	<select id="selectByMobileFriendCount" parameterType="map"

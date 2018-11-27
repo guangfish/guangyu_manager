@@ -23,7 +23,7 @@ import com.bt.om.system.GlobalVariable;
 /**
  * 淘宝订单状态为“订单结算”，但是由于退货等原因需要再次核验订单
  */
-@Component
+//@Component
 public class UserOrderUnValidCheckTask {
 	private static final Logger logger = Logger.getLogger(UserOrderUnValidCheckTask.class);
 	@Autowired

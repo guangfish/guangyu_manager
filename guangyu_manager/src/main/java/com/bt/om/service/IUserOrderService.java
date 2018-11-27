@@ -36,4 +36,8 @@ public interface IUserOrderService {
     public List<UserOrder> selectEstimateOrderFanli(Map<String,String> map);
     
     public List<UserOrder> selectEstimateOrderJiangli(Map<String,String> map);
+    
+    public List<UserOrder> selectByOrderId(String orderId);
+    
+    int deleteByOrderId(String orderId);
 }
