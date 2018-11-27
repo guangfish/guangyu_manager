@@ -422,8 +422,8 @@ public class AppSelfController {
 				// 2：超级会员
 				data.put("canDraw", canDraw);// 是否可以提现 true/false
 				data.put("reason", reason);// 不可提现原因
-				if (StringUtil.isEmpty(user.getAlipay()) || StringUtil.isEmpty(user.getRealname())) {
-					// if (StringUtil.isEmpty(user.getAlipay())) {
+//				if (StringUtil.isEmpty(user.getAlipay()) || StringUtil.isEmpty(user.getRealname())) {
+				if (StringUtil.isEmpty(user.getAlipay())) {
 					data.put("hasBindAccount", "false");// 还没绑定支付宝账号
 				} else {
 					data.put("hasBindAccount", "true");// 已经绑定支付宝账号
@@ -1619,7 +1619,7 @@ public class AppSelfController {
 		return model;
 	}
 
-	// 平台订单奖励列表 用户安卓旧版
+	// 平台订单奖励列表 用于安卓旧版
 	@RequestMapping(value = "/orderrewardlist", method = RequestMethod.POST)
 	@ResponseBody
 	public Model orderRewardList(Model model, HttpServletRequest request, HttpServletResponse response) {
