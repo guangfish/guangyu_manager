@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.bt.om.cache.JedisPool;
 import com.bt.om.entity.ProductInfo;
 import com.bt.om.entity.TkOrderInput;
 import com.bt.om.entity.User;
@@ -41,12 +42,14 @@ import com.bt.om.util.StringUtil;
 public class OrderAutoBindTask {
 	private static final Logger logger = Logger.getLogger(OrderAutoBindTask.class);
 	@Autowired
+	private JedisPool jedisPool;
+	@Autowired
 	private UserMapper userMapper;
 	@Autowired
 	private UserOrderTmpMapper userOrderTmpMapper;
 	@Autowired
 	private TkOrderInputMapper tkOrderInputMapper;
-	
+
 	@Autowired
 	private IUserOrderTmpService userOrderTmpService;
 	@Autowired
@@ -59,9 +62,9 @@ public class OrderAutoBindTask {
 		logger.info("淘宝订单自动绑定任务");
 		try {
 			List<TkOrderInput> tkOrderInputList = tkOrderInputMapper.selectAll();
-			if(tkOrderInputList!=null && tkOrderInputList.size()>0){
+			if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
 				for (TkOrderInput tkOrderInput : tkOrderInputList) {
-					//订单失效的数据不自动绑定
+					// 订单失效的数据不自动绑定
 					if (!"订单失效".equals(tkOrderInput.getOrderStatus())) {
 						String orderId = tkOrderInput.getOrderId();
 						String taobaoId = getTaobaoId(orderId);
@@ -72,7 +75,7 @@ public class OrderAutoBindTask {
 						User user = userMapper.selectByTaobaoIdAndPid(map);
 						if (user != null) {
 							UserOrderTmp userOrderTmp = userOrderTmpMapper.selectByOrderId(orderId);
-							if(userOrderTmp == null){
+							if (userOrderTmp == null) {
 								userOrderTmp = new UserOrderTmp();
 								userOrderTmp.setMobile(user.getMobile());
 								userOrderTmp.setBelong(1);
@@ -81,7 +84,7 @@ public class OrderAutoBindTask {
 								userOrderTmp.setUpdateTime(new Date());
 								userOrderTmp.setStatus(1);
 								userOrderTmpMapper.insert(userOrderTmp);
-							}else{
+							} else {
 								userOrderTmp.setStatus(1);
 								userOrderTmp.setUpdateTime(new Date());
 								userOrderTmpMapper.updateByPrimaryKey(userOrderTmp);
@@ -92,79 +95,89 @@ public class OrderAutoBindTask {
 						}
 					}
 				}
-				
+
 				userOrderCheck();
-				
-				//清空tk_order_input表
-				if(tkOrderInputList!=null && tkOrderInputList.size()>0){
+
+				// 清空tk_order_input表
+				if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
 					tkOrderInputMapper.truncateTkOrderInput();
 				}
-			}else{
+			} else {
 				logger.info("tk_order_input 表为空");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	//用户订单绑定或重新绑定
+
+	// 用户订单绑定或重新绑定
 	private void userOrderCheck() {
 		logger.info("用户订单绑定或重新绑定");
-		int minAgencyRewardRate = (int) (Float
-				.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_min")) * 100);
-		int maxAgencyRewardRate = (int) (Float
-				.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_max")) * 100);
-		
+		int minAgencyRewardRate = (int) (Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_min"))
+				* 100);
+		int maxAgencyRewardRate = (int) (Float.parseFloat(GlobalVariable.resourceMap.get("agency_reward_rate_max"))
+				* 100);
+
 		List<UserOrderTmp> userOrderTmpList = userOrderTmpService.selectUnCheckOrder(1);
 		if (userOrderTmpList != null && userOrderTmpList.size() > 0) {
 			for (UserOrderTmp userOrderTmp : userOrderTmpList) {
-				//1:不需要重绑定 2：需要重绑定
-				int ifNeedBind=2;
-				List<UserOrder> userOrderList=userOrderService.selectByOrderId(userOrderTmp.getOrderId());
-				if(userOrderList!=null && userOrderList.size()>0){
-					for(UserOrder userOrder:userOrderList){
-						//如果订单列表中有已结算的订单，那么就不删除订单
-						if(userOrder.getSettleStatus()==2){
-							ifNeedBind=1;
+				// 1:不需要重绑定 2：需要重绑定
+				int ifNeedBind = 2;
+				List<UserOrder> userOrderList = userOrderService.selectByOrderId(userOrderTmp.getOrderId());
+				if (userOrderList != null && userOrderList.size() > 0) {
+					for (UserOrder userOrder : userOrderList) {
+						// 如果订单列表中有已结算的订单，那么就不删除订单
+						if (userOrder.getSettleStatus() == 2) {
+							ifNeedBind = 1;
 							break;
 						}
 					}
-					
-					if(ifNeedBind==2){
-						//绑定订单前，先删掉已绑定未结算的订单
-						logger.info("删除已帮的订单数据，订单号："+userOrderTmp.getOrderId());
+
+					if (ifNeedBind == 2) {
+						// 绑定订单前，先删掉已绑定未结算的订单
+						logger.info("删除已帮的订单数据，订单号：" + userOrderTmp.getOrderId());
 						userOrderService.deleteByOrderId(userOrderTmp.getOrderId());
 					}
 				}
-				
-				if(ifNeedBind==2){
+
+				if (ifNeedBind == 2) {
 					logger.info("订单" + userOrderTmp.getOrderId() + "为非结算状态，做订单重绑定");
-					List<TkOrderInput> tkOrderInputList = tkOrderInputMapper
-							.selectByOrderId(userOrderTmp.getOrderId());
+					List<TkOrderInput> tkOrderInputList = tkOrderInputMapper.selectByOrderId(userOrderTmp.getOrderId());
 					if (tkOrderInputList != null && tkOrderInputList.size() > 0) {
 						double commission = 0;
 						double commission3 = 0;
 						int status1 = 1;
-						String productInfoStr="";
-						ProductInfoVo productInfoVo=null;
+						String productInfoStr = "";
+						ProductInfoVo productInfoVo = null;
 						for (TkOrderInput tkOrderInput : tkOrderInputList) {
 							UserOrder userOrder = new UserOrder();
 							userOrder.setBelong(1);
 							userOrder.setMobile(userOrderTmp.getMobile());
 							userOrder.setProductId(tkOrderInput.getProductId());
-							
-							//调用淘宝商品信息查询接口，根据商品ID获取商品图片
-							productInfoStr = ProductApi.getProductInfo(tkOrderInput.getProductId());
-							if (StringUtil.isNotEmpty(productInfoStr)) {
-								productInfoVo = GsonUtil.GsonToBean(productInfoStr, ProductInfoVo.class);
-								try {
-									userOrder.setProductImgUrl(productInfoVo.getTbk_item_info_get_response()
-											.getResults().getN_tbk_item().get(0).getPict_url() + "_200x200.jpg");
-								} catch (Exception e) {
-									e.printStackTrace();
+
+							Object productImgObj = jedisPool.getFromCache("productImg", tkOrderInput.getProductId());
+							String productImgUrl = "";
+							if (productImgObj != null) {
+								productImgUrl = (String) productImgObj;
+								userOrder.setProductImgUrl(productImgUrl);
+							} else {
+								// 调用淘宝商品信息查询接口，根据商品ID获取商品图片
+								productInfoStr = ProductApi.getProductInfo(tkOrderInput.getProductId());
+								if (StringUtil.isNotEmpty(productInfoStr)) {
+									productInfoVo = GsonUtil.GsonToBean(productInfoStr, ProductInfoVo.class);
+									try {
+										userOrder.setProductImgUrl(productInfoVo.getTbk_item_info_get_response()
+												.getResults().getN_tbk_item().get(0).getPict_url() + "_200x200.jpg");
+										jedisPool.putInCache("productImg", tkOrderInput.getProductId(),
+												productInfoVo.getTbk_item_info_get_response().getResults()
+														.getN_tbk_item().get(0).getPict_url() + "_200x200.jpg",
+												50 * 24 * 60 * 60);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
 							}
-							
+
 							userOrder.setOrderId(userOrderTmp.getOrderId());
 							userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
 							userOrder.setRate(tkOrderInput.getCommissionRate());
@@ -189,7 +202,7 @@ public class OrderAutoBindTask {
 							commission3 = ((double) (Math.round(commission
 									* Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")) * 100))
 									/ 100);
-							
+
 							userOrder.setFanliMultiple(1f);
 
 							if ("订单结算".equals(tkOrderInput.getOrderStatus())) {
@@ -202,17 +215,18 @@ public class OrderAutoBindTask {
 							userOrder.setStatus3(1);
 							userOrder.setSettleStatus(1);
 							int agencyRewardRate = 0;
-							//佣金大于10元是，用最小的订单奖励比例
-							String commissionRewardMoneyStr=GlobalVariable.resourceMap.get("commission_reward_money");
-							int commissionRewardMoney=Integer.parseInt(commissionRewardMoneyStr);
+							// 佣金大于10元是，用最小的订单奖励比例
+							String commissionRewardMoneyStr = GlobalVariable.resourceMap.get("commission_reward_money");
+							int commissionRewardMoney = Integer.parseInt(commissionRewardMoneyStr);
 							if (commission3 >= commissionRewardMoney) {
 								agencyRewardRate = minAgencyRewardRate;
 							} else {
-								//佣金小于10时，订单奖励范围最小20%，最大为订单奖励比例最小值+最大值
-								agencyRewardRate = minAgencyRewardRate + NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
+								// 佣金小于10时，订单奖励范围最小20%，最大为订单奖励比例最小值+最大值
+								agencyRewardRate = minAgencyRewardRate
+										+ NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
 							}
 							userOrder.setCommissionReward(
-									(double) (Math.round(commission3 * (agencyRewardRate) * 100)/100) / 100);
+									(double) (Math.round(commission3 * (agencyRewardRate) * 100) / 100) / 100);
 							userOrder.setCommissionRewardRate(agencyRewardRate);
 							userOrder.setRewardStatus(1);
 							userOrder.setCreateTime(new Date());
@@ -227,14 +241,15 @@ public class OrderAutoBindTask {
 							// 更新状态
 							userOrderTmp.setStatus(2);
 							userOrderTmpService.update(userOrderTmp);
-							
-							productInfoStr="";
-							
+
+							productInfoStr = "";
+
 						}
 					} else {
-//						logger.info("订单" + userOrderTmp.getOrderId() + "未从阿里妈妈导入、或订单不存在");
+						// logger.info("订单" + userOrderTmp.getOrderId() +
+						// "未从阿里妈妈导入、或订单不存在");
 					}
-				}else{
+				} else {
 					logger.info("订单" + userOrderTmp.getOrderId() + "为已结算状态，不做订单重绑定");
 					// 更新状态
 					userOrderTmp.setStatus(2);
