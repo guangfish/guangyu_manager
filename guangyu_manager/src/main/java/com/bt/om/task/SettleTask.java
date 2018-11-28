@@ -121,12 +121,15 @@ public class SettleTask {
 					invitationMapper.updateByPrimaryKey(invitation);
 				}
 
-				// 账号余额结算
-				float userBalance = orderFanliF + orderJiangliF + orderInviteli + user.getHongbao();
-				user.setBalance(user.getBalance() + userBalance);
-				user.setHongbao(0f);
-				user.setUpdateTime(new Date());
-				userMapper.updateByPrimaryKey(user);
+				//订单返现或订单奖励或邀请奖励其中一个大于0，就更新用户账号余额
+				if (orderFanli > 0 || orderJiangli > 0 || orderInviteli > 0) {
+					// 账号余额结算
+					float userBalance = orderFanliF + orderJiangliF + orderInviteli + user.getHongbao();
+					user.setBalance(user.getBalance() + userBalance);
+					user.setHongbao(0f);
+					user.setUpdateTime(new Date());
+					userMapper.updateByPrimaryKey(user);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

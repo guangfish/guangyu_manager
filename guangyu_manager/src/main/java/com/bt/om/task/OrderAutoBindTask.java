@@ -58,7 +58,8 @@ public class OrderAutoBindTask {
 	@Autowired
 	private IProductInfoService productInfoService;
 
-	@Scheduled(cron = "0 0/3 * * * ?")
+	//每天6点到22点，没隔3分钟执行一次
+	@Scheduled(cron = "0 0/3 6-22 * * ?")
 	public void orderAutoBindTask() {
 		logger.info("淘宝订单自动绑定任务");
 		try {
