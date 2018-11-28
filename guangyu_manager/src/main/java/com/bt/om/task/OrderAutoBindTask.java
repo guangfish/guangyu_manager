@@ -27,6 +27,7 @@ import com.bt.om.service.IUserOrderTmpService;
 import com.bt.om.system.GlobalVariable;
 import com.bt.om.taobao.api.ProductApi;
 import com.bt.om.taobao.api.product.ProductInfoVo;
+import com.bt.om.util.DateUtil;
 import com.bt.om.util.GsonUtil;
 import com.bt.om.util.NumberUtil;
 import com.bt.om.util.StringUtil;
@@ -178,6 +179,7 @@ public class OrderAutoBindTask {
 								}
 							}
 
+							userOrder.setOrderTime(DateUtil.getDateDf(tkOrderInput.getCreateTime(), DateUtil.FULL_CHINESE_PATTERN));
 							userOrder.setOrderId(userOrderTmp.getOrderId());
 							userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
 							userOrder.setRate(tkOrderInput.getCommissionRate());

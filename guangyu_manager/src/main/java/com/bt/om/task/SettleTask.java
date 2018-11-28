@@ -49,7 +49,7 @@ public class SettleTask {
 				Map<String, String> map = new HashMap<>();
 				// 订单结算
 				map.put("mobile", user.getMobile());
-				map.put("createTime", DateUtil.dateFormate(new Date(), "yyyy-MM") + "-01 00:00:00");
+				map.put("orderTime", DateUtil.dateFormate(new Date(), "yyyy-MM") + "-01 00:00:00");
 				List<UserOrder> orderFanliList = userOrderMapper.selectManualOrderFanli(map);
 				double orderFanli = 0d;
 				float orderFanliF = 0f;
@@ -75,7 +75,7 @@ public class SettleTask {
 				// 订单奖励
 				settleInfo = new SettleInfo();
 				map.clear();
-				map.put("createTime", DateUtil.dateFormate(new Date(), "yyyy-MM") + "-01 00:00:00");
+				map.put("orderTime", DateUtil.dateFormate(new Date(), "yyyy-MM") + "-01 00:00:00");
 				map.put("taInviteCode", user.getMyInviteCode());
 				List<UserOrder> orderJiangliList = userOrderMapper.selectManualOrderJiangli(map);
 				double orderJiangli = 0d;

@@ -211,6 +211,7 @@ public class AppLoginAndRegisterController {
 //				/ 100);
 		//注册不送红包
 		user.setHongbao(0f);
+		user.setBalance(0f);
 
 		try {
 			userService.insert(user);

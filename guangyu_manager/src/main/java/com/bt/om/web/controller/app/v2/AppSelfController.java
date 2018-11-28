@@ -534,7 +534,7 @@ public class AppSelfController {
 			} else {
 				map.put("orderStatus", userOrder.getOrderStatus());
 			}
-			map.put("orderTime", DateUtil.dateFormate(userOrder.getCreateTime(), DateUtil.CHINESE_PATTERN));
+			map.put("orderTime", DateUtil.dateFormate(userOrder.getOrderTime(), DateUtil.CHINESE_PATTERN));
 			list.add(map);
 		}
 
