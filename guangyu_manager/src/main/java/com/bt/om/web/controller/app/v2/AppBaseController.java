@@ -103,12 +103,12 @@ public class AppBaseController {
 		logger.info(mobile + "的验证码：" + vcode);
 		jedisPool.putInCache("", mobile, vcode, 120);
 
-		// 发送短信验证码
-		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
-			if (!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))) {
-				TaobaoSmsNewUtil.sendSms("逛鱼返利", "SMS_125955002", "vcode", vcode, mobile);
-			}
-		}
+//		// 发送短信验证码
+//		if ("on".equals(ConfigUtil.getString("is.sms.send"))) {
+//			if (!remoteIp.equals(GlobalVariable.resourceMap.get("send_sms_ignoy_ip"))) {
+//				TaobaoSmsNewUtil.sendSms("逛鱼返利", "SMS_125955002", "vcode", vcode, mobile);
+//			}
+//		}
 
 		commonVo.setStatus("0");
 		commonVo.setDesc("验证码发送成功");
