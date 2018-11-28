@@ -68,10 +68,10 @@ public class DrawCashService implements IDrawCashService {
 			throw new Exception("uppate drawcache failed");
 		}
 		
-		flag = drawCashMapper.updateUserOrderStatus2AndStatus3(id, sysDate);
-		if (flag == 0) {
-			throw new Exception("update userorder failed");
-		}
+//		flag = drawCashMapper.updateUserOrderStatus2AndStatus3(id, sysDate);
+//		if (flag == 0) {
+//			throw new Exception("update userorder failed");
+//		}
 	}
 	
 	@Override
