@@ -60,8 +60,8 @@ public class AppSearchController {
 	public Model productInfo(Model model, HttpServletRequest request, HttpServletResponse response) {
 		ProductInfoVo productInfoVo = new ProductInfoVo();
 		model.addAttribute("response", productInfoVo);
-		String version="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String productUrl = "";
 		int pageNo = 1;
@@ -156,7 +156,7 @@ public class AppSearchController {
 			if (mapDataBeanList != null && mapDataBeanList.size() > 0) {
 				String tkurl = "";
 				for (MapDataBean mapDataBean : mapDataBeanList) {
-					Map<String, String> map = new HashMap<>(); 
+					Map<String, String> map = new HashMap<>();
 					map.put("pid", pid);
 					map.put("imgUrl", mapDataBean.getPict_url() + "_290x290.jpg");
 					if (mapDataBean.getSmall_images() != null && mapDataBean.getSmall_images().getString().length > 0) {
@@ -165,7 +165,7 @@ public class AppSearchController {
 						map.put("smallImgUrls", "");
 					}
 
-					map.put("shopType", mapDataBean.getUser_type()+"");//卖家类型，0表示集市，1表示商城
+					map.put("shopType", mapDataBean.getUser_type() + "");// 卖家类型，0表示集市，1表示商城
 					map.put("shopName", mapDataBean.getShop_title());
 					map.put("productName", mapDataBean.getTitle());
 					map.put("productShortName", mapDataBean.getShort_title());
@@ -238,51 +238,56 @@ public class AppSearchController {
 					}
 				}
 
-//				BlockingQueue<Map<String, String>> queue = new LinkedBlockingQueue<>();
-//				for (Map<String, String> map : list) {
-//					queue.put(map);
-//				}
-//
-//				// 启动固定线程数据模式
-//				for (int i = 0; i < 10; i++) {
-//					Thread thread = new Thread(new Runnable() {
-//						@Override
-//						public void run() {
-//							Map<String, String> map = null;
-//							Object redisTklObj = null;
-//							String tklStr = "";
-//							while (true) {
-//								try {
-//									map = queue.remove();
-//									redisTklObj = jedisPool.getFromCache("tkl",
-//											map.get("pid") + "_" + map.get("productId"));
-//									if (redisTklObj != null) {
-//										System.out.println(map.get("pid") + "_" + map.get("productId") + "缓存命中了。。。");
-//										tklStr = (String) redisTklObj;
-//										map.put("tkl", tklStr);
-//									} else {
-//										tklStr = TaoKouling.createTkl(map.get("tkUrl"), map.get("title"),
-//												map.get("pictUrl"));
-//										if (StringUtil.isNotEmpty(tklStr)) {
-//											TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
-//											map.put("tkl",
-//													tklResponse.getTbk_tpwd_create_response().getData().getModel());
-//											jedisPool.putInCache("tkl", map.get("pid") + "_" + map.get("productId"),
-//													tklResponse.getTbk_tpwd_create_response().getData().getModel(),
-//													7 * 24 * 60 * 60);
-//										}
-//									}
-//								} catch (Exception e) {
-//									// e.printStackTrace();
-//									// 抛出异常代表线程结束
-//									break;
-//								}
-//							}
-//						}
-//					});
-//					thread.start();
-//					thread.join();
-//				}
+				// BlockingQueue<Map<String, String>> queue = new
+				// LinkedBlockingQueue<>();
+				// for (Map<String, String> map : list) {
+				// queue.put(map);
+				// }
+				//
+				// // 启动固定线程数据模式
+				// for (int i = 0; i < 10; i++) {
+				// Thread thread = new Thread(new Runnable() {
+				// @Override
+				// public void run() {
+				// Map<String, String> map = null;
+				// Object redisTklObj = null;
+				// String tklStr = "";
+				// while (true) {
+				// try {
+				// map = queue.remove();
+				// redisTklObj = jedisPool.getFromCache("tkl",
+				// map.get("pid") + "_" + map.get("productId"));
+				// if (redisTklObj != null) {
+				// System.out.println(map.get("pid") + "_" +
+				// map.get("productId") + "缓存命中了。。。");
+				// tklStr = (String) redisTklObj;
+				// map.put("tkl", tklStr);
+				// } else {
+				// tklStr = TaoKouling.createTkl(map.get("tkUrl"),
+				// map.get("title"),
+				// map.get("pictUrl"));
+				// if (StringUtil.isNotEmpty(tklStr)) {
+				// TklResponse tklResponse = GsonUtil.GsonToBean(tklStr,
+				// TklResponse.class);
+				// map.put("tkl",
+				// tklResponse.getTbk_tpwd_create_response().getData().getModel());
+				// jedisPool.putInCache("tkl", map.get("pid") + "_" +
+				// map.get("productId"),
+				// tklResponse.getTbk_tpwd_create_response().getData().getModel(),
+				// 7 * 24 * 60 * 60);
+				// }
+				// }
+				// } catch (Exception e) {
+				// // e.printStackTrace();
+				// // 抛出异常代表线程结束
+				// break;
+				// }
+				// }
+				// }
+				// });
+				// thread.start();
+				// thread.join();
+				// }
 
 				ItemVo itemVo = new ItemVo();
 				itemVo.setItems(list);
@@ -320,8 +325,8 @@ public class AppSearchController {
 	public Model getTkl(Model model, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("调用获取淘口令接口");
 		com.bt.om.web.controller.xcx.util.ProductInfoVo productInfoVo = new com.bt.om.web.controller.xcx.util.ProductInfoVo();
-		String version ="";
-		String app="";
+		String version = "";
+		String app = "";
 		String userId = "";
 		String productId = "";
 		String tkUrl = "";
@@ -372,7 +377,7 @@ public class AppSearchController {
 				}
 			}
 		}
-		
+
 		System.out.println(tkUrl);
 
 		if (StringUtil.isEmpty(pid)) {
@@ -382,7 +387,7 @@ public class AppSearchController {
 		Object redisTklObj = jedisPool.getFromCache("tkl", pid + "_" + productId);
 		String tkl = "";
 		if (redisTklObj != null) {
-			logger.info(productId + "淘口令缓存命中");
+			logger.info(productId + "::" + pid + "淘口令缓存命中");
 			tkl = (String) redisTklObj;
 		} else {
 			String tklStr = TaoKouling.createTkl(tkUrl, title, imgUrl);
@@ -390,10 +395,10 @@ public class AppSearchController {
 				TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 				tkl = tklResponse.getTbk_tpwd_create_response().getData().getModel();
 				jedisPool.putInCache("tkl", pid + "_" + productId,
-						tklResponse.getTbk_tpwd_create_response().getData().getModel(), 7 * 24 * 60 * 60);
+						tklResponse.getTbk_tpwd_create_response().getData().getModel(), 1 * 24 * 60 * 60);
 			}
 		}
-		logger.info("淘口令="+tkl);
+		logger.info("淘口令=" + tkl);
 
 		productInfoVo.setData(new com.bt.om.web.controller.xcx.util.ItemVo());
 		productInfoVo.getData().setTkl(tkl);
