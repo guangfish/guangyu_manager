@@ -39,7 +39,7 @@ import com.bt.om.util.StringUtil;
  *         然后有用户订单匹配任务去生产用户订单信息 userOrderMatchTask
  *
  */
-@Component
+//@Component
 public class OrderAutoBindTask {
 	private static final Logger logger = Logger.getLogger(OrderAutoBindTask.class);
 	@Autowired
