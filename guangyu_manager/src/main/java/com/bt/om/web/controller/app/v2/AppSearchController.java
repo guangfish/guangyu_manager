@@ -372,6 +372,8 @@ public class AppSearchController {
 				}
 			}
 		}
+		
+		System.out.println(tkUrl);
 
 		if (StringUtil.isEmpty(pid)) {
 			pid = ConfigUtil.getString("alimama.abigpush.default.pid", "176864894");
