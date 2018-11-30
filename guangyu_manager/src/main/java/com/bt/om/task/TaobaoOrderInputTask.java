@@ -48,7 +48,7 @@ import com.bt.om.util.NumberUtil;
 /**
  * 从系统目录下读取阿里妈妈订单报表文件，导入数据库
  */
-@Component
+//@Component
 public class TaobaoOrderInputTask {
 	private static final Logger logger = Logger.getLogger(TaobaoOrderInputTask.class);
 

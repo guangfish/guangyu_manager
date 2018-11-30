@@ -3,6 +3,7 @@ package com.bt.om.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -506,6 +507,51 @@ public final class HttpcomponentsUtil {
 
 		// 执行请求操作，并拿到结果（同步阻塞）
 		CloseableHttpResponse response = client.execute(httpPost);
+		// 获取结果实体
+		HttpEntity entity = response.getEntity();
+		if (entity != null) {
+			// 按指定编码转换结果实体为String类型
+			body = EntityUtils.toString(entity, DEFAULT_ENCODE);
+		}
+		EntityUtils.consume(entity);
+		// 释放链接
+		response.close();
+		client.close();
+		return body;
+	}
+	
+	public static String getHttpsJson(String url)
+			throws KeyManagementException, NoSuchAlgorithmException, ClientProtocolException, IOException {
+		String body = "";
+		// 采用绕过验证的方式处理https请求
+		SSLContext sslcontext = createIgnoreVerifySSL();
+
+		// 设置协议http和https对应的处理socket链接工厂的对象
+		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+				.register("http", PlainConnectionSocketFactory.INSTANCE)
+				.register("https", new SSLConnectionSocketFactory(sslcontext)).build();
+		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+		HttpClients.custom().setConnectionManager(connManager);
+
+		// 创建自定义的httpclient对象
+		CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+		// CloseableHttpClient client = HttpClients.createDefault();
+
+		// 创建get方式请求对象
+		HttpGet httpGet = new HttpGet(url);
+		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(DEFAULT_SOCKET_TIMEOUT)
+				.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT)
+				.setConnectionRequestTimeout(DEFAULT_CONNECTION_REQUEST_TIMEOUT).build();
+		httpGet.setConfig(requestConfig);
+
+		// 设置header信息
+		// 指定报文头【Content-type】、【User-Agent】
+//		httpGet.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		httpGet.setHeader("Accept", "application/json"); 
+		httpGet.setHeader("Content-Type", "application/json");
+
+		// 执行请求操作，并拿到结果（同步阻塞）
+		CloseableHttpResponse response = client.execute(httpGet);
 		// 获取结果实体
 		HttpEntity entity = response.getEntity();
 		if (entity != null) {
