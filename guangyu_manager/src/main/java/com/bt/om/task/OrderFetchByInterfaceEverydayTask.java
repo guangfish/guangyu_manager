@@ -147,7 +147,7 @@ public class OrderFetchByInterfaceEverydayTask {
 		// 每天6点执行全量获取报表任务
 
 		int hour = Integer.parseInt(DateUtil.dateFormate(new Date(), "HH"));
-		if (hour == 21) {
+		if (hour == 6) {
 			Object orderFetchAll = jedisPool.getFromCache("orderFetchAll",
 					DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN));
 			if (orderFetchAll == null) {
@@ -362,7 +362,7 @@ public class OrderFetchByInterfaceEverydayTask {
 									DateUtil.getDateDf(tkOrderInput.getCreateTime(), DateUtil.FULL_CHINESE_PATTERN));
 							userOrder.setOrderId(userOrderTmp.getOrderId());
 							userOrder.setPrice(((double) (Math.round(tkOrderInput.getPayMoney() * 100)) / 100));
-							userOrder.setRate(tkOrderInput.getCommissionRate());
+							userOrder.setRate(((double) (Math.round(tkOrderInput.getCommissionRate() * 100)) / 100));
 							userOrder.setShopName(tkOrderInput.getShopName());
 							userOrder.setProductNum(tkOrderInput.getProductNum());
 							userOrder.setProductInfo(tkOrderInput.getProductInfo());
