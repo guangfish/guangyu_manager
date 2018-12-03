@@ -17,7 +17,7 @@ public class MaterialSearch extends BaseApi{
 		// req.setStartDsr(10L);
 		req.setPageSize(searchVo.getSize());
 		req.setPageNo(searchVo.getPage());
-		req.setPlatform(2L);
+//		req.setPlatform(2L);
 		// req.setEndTkRate(1234L);
 		// req.setStartTkRate(1234L);
 		// req.setEndPrice(10L);
@@ -56,12 +56,13 @@ public class MaterialSearch extends BaseApi{
 
 	public static void main(String[] args) {
 		SearchVo searchVo=new SearchVo();
-		searchVo.setKey("");
-		searchVo.setCat("16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703");
+		searchVo.setKey("美绩加厚垃圾袋家用一次性小号彩色手提背心式塑料袋拉圾袋中大号");
+//		searchVo.setCat("16,30,14,35,50010788,50020808,50002766,50010728,50006843,50022703");
 		searchVo.setPid("176864894");
 		searchVo.setPage(1l);
-		searchVo.setSize(20l);
+		searchVo.setSize(50l);
 		String retStr = materialSearch(searchVo);
+		System.out.println(retStr);
 
 		MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 		System.out.println(materialSearchVo.getTbk_dg_material_optional_response().getResult_list().getMap_data().get(0).getPict_url());
