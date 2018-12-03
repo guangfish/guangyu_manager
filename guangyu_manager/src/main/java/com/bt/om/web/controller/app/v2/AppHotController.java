@@ -105,7 +105,7 @@ public class AppHotController {
 		if (productInfoVoObj == null) {
 			productInfoVo = ProductSearchUtil.productInfoApi(jedisPool, userId, pid, key, pageNo, size);
 			if (productInfoVo != null) {
-				jedisPool.putInCache("productSearch", redisKey, productInfoVo, 24 * 60 * 60);
+				jedisPool.putInCache("productSearch", redisKey, productInfoVo, 1 * 60 * 60);
 			}
 		} else {
 			System.out.println(pid + "_" + key + "_" + pageNo + "对象缓存命中");
