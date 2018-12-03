@@ -47,7 +47,7 @@ public class AppHotController {
 		String mobile = "";
 		String key = null;
 		int pageNo = 1;
-		int size = 20;
+		int size = 50;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();

@@ -65,7 +65,7 @@ public class AppSearchController {
 		String userId = "";
 		String productUrl = "";
 		int pageNo = 1;
-		int size = 20;
+		int size = 50;
 		try {
 			InputStream is = request.getInputStream();
 			Gson gson = new Gson();
