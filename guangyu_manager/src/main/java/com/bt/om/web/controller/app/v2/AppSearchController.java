@@ -146,7 +146,7 @@ public class AppSearchController {
 			searchVo.setPage(pageNo);
 			searchVo.setSize(size);
 			String retStr = MaterialSearch.materialSearch(searchVo);
-			// logger.info(retStr);
+			 logger.info(retStr);
 			MaterialSearchVo materialSearchVo = GsonUtil.GsonToBean(retStr, MaterialSearchVo.class);
 			List<MapDataBean> mapDataBeanList = materialSearchVo.getTbk_dg_material_optional_response().getResult_list()
 					.getMap_data();
