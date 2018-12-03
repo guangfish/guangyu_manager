@@ -233,9 +233,9 @@ public class AppSearchController {
 							incomeRate * Float.parseFloat(GlobalVariable.resourceMap.get("commission.rate")), "0.00"));
 					map.put("per", pre + "");
 
-					if ((int) actualCommission > 0) {
+//					if ((int) actualCommission > 0) {
 						list.add(map);
-					}
+//					}
 				}
 
 				// BlockingQueue<Map<String, String>> queue = new
