@@ -97,7 +97,7 @@ public class CreateTaobaoPid {
 					if (hour == 23) {
 						Thread.sleep(60000 * 60 * 10);
 					} else {
-						Thread.sleep(60000 * 2);
+						Thread.sleep(NumberUtil.getRandomNumber(60000 * 2, 60000 * 3));
 					}
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
