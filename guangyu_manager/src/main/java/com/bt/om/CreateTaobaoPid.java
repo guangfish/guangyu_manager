@@ -3,6 +3,7 @@ package com.bt.om;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -12,6 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.bt.om.selenium.util.PageUtils;
 import com.bt.om.util.ConfigUtil;
+import com.bt.om.util.DateUtil;
 import com.bt.om.util.NumberUtil;
 
 public class CreateTaobaoPid {
@@ -91,7 +93,12 @@ public class CreateTaobaoPid {
 				e.printStackTrace();
 				driver.navigate().refresh();
 				try {
-					Thread.sleep(60000 * 2);
+					int hour = Integer.parseInt(DateUtil.dateFormate(new Date(), "HH"));
+					if (hour == 23) {
+						Thread.sleep(60000 * 60 * 10);
+					} else {
+						Thread.sleep(60000 * 2);
+					}
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
