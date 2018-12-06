@@ -189,8 +189,8 @@ public class OrderFetchByInterfaceEverydayTask {
 								* Double.parseDouble(n_tbk_order.getTotal_commission_rate()), "0.00")));
 				// 预估收入
 				tkOrderInput.setEstimateIncome(Double.parseDouble(n_tbk_order.getCommission()));
-				// 收入比例，该字段无实际用途，接口无返回该字段
-				// tkOrderInput.setIncomeRate(incomeRate);
+				// 收入比例（卖家设置佣金比率+平台补贴比率）
+				tkOrderInput.setIncomeRate(Double.parseDouble(n_tbk_order.getIncome_rate()));
 				tkOrderInput.setOrderId(n_tbk_order.getTrade_parent_id());
 				String orderStatus = n_tbk_order.getTk_status();
 				if ("3".equals(orderStatus) || "14".equals(orderStatus)) {
