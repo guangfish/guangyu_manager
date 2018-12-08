@@ -523,19 +523,8 @@ public final class HttpcomponentsUtil {
 	public static String getHttpsJson(String url)
 			throws KeyManagementException, NoSuchAlgorithmException, ClientProtocolException, IOException {
 		String body = "";
-		// 采用绕过验证的方式处理https请求
-		SSLContext sslcontext = createIgnoreVerifySSL();
 
-		// 设置协议http和https对应的处理socket链接工厂的对象
-		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-				.register("http", PlainConnectionSocketFactory.INSTANCE)
-				.register("https", new SSLConnectionSocketFactory(sslcontext)).build();
-		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-		HttpClients.custom().setConnectionManager(connManager);
-
-		// 创建自定义的httpclient对象
-		CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
-		// CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpClient client = HttpClients.createDefault();
 
 		// 创建get方式请求对象
 		HttpGet httpGet = new HttpGet(url);
