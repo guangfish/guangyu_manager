@@ -397,15 +397,19 @@ public class OrderFetchByInterfaceEverydayTask {
 							userOrder.setSettleStatus(1);
 							int agencyRewardRate = 0;
 							// 佣金大于10元是，用最小的订单奖励比例
-							String commissionRewardMoneyStr = GlobalVariable.resourceMap.get("commission_reward_money");
-							int commissionRewardMoney = Integer.parseInt(commissionRewardMoneyStr);
-							if (commission3 >= commissionRewardMoney) {
-								agencyRewardRate = minAgencyRewardRate;
-							} else {
-								// 佣金小于10时，订单奖励范围最小20%，最大为订单奖励比例最小值+最大值
-								agencyRewardRate = minAgencyRewardRate
-										+ NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
-							}
+//							String commissionRewardMoneyStr = GlobalVariable.resourceMap.get("commission_reward_money");
+//							int commissionRewardMoney = Integer.parseInt(commissionRewardMoneyStr);
+//							if (commission3 >= commissionRewardMoney) {
+//								agencyRewardRate = minAgencyRewardRate;
+//							} else {
+//								// 佣金小于10时，订单奖励范围最小20%，最大为订单奖励比例最小值+最大值
+//								agencyRewardRate = minAgencyRewardRate
+//										+ NumberUtil.getRandomNumber(0, maxAgencyRewardRate);
+//							}
+							
+							//统一用订单奖励比例
+							agencyRewardRate = minAgencyRewardRate;
+							
 							userOrder.setCommissionReward(
 									(double) (Math.round(commission3 * (agencyRewardRate) * 100) / 100) / 100);
 							userOrder.setCommissionRewardRate(agencyRewardRate);
