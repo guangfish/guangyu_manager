@@ -145,9 +145,8 @@ public class OrderFetchByInterfaceEverydayTask {
 		orderAutoBindTask();
 
 		// 每天6点执行全量获取报表任务
-
 		int hour = Integer.parseInt(DateUtil.dateFormate(new Date(), "HH"));
-		if (hour == 6) {
+		if (hour == Integer.parseInt(GlobalVariable.resourceMap.get("fetch_all_report_by_interface"))) {
 			Object orderFetchAll = jedisPool.getFromCache("orderFetchAll",
 					DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN));
 			if (orderFetchAll == null) {
