@@ -48,21 +48,21 @@ public class CreateTaobaoPid {
 		int i = 1;
 		while (true) {
 			try {
-				Thread.sleep(NumberUtil.getRandomNumber(1000, 3000));
+				Thread.sleep(NumberUtil.getRandomNumber(1000, 2000));
 
 				// 点击立即推广按钮
 				WebElement element = driver
 						.findElement(By.xpath("//*[@id=\"J_search_results\"]/div/div[1]/div[4]/a[1]"));
 				PageUtils.scrollToElementAndClick(element, driver);
 
-				Thread.sleep(NumberUtil.getRandomNumber(1000, 3000));
+				Thread.sleep(NumberUtil.getRandomNumber(1000, 2000));
 
-//				WebElement element0 = driver
-//						.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/button/span[2]/span[1]"));
-//				PageUtils.scrollToElementAndClick(element0, driver);
-//
-//				element0 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/div/ul/li[2]/a"));
-//				PageUtils.scrollToElementAndClick(element0, driver);
+				WebElement element0 = driver
+						.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/button/span[2]/span[1]"));
+				PageUtils.scrollToElementAndClick(element0, driver);
+
+				element0 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/div/ul/li[2]/a"));
+				PageUtils.scrollToElementAndClick(element0, driver);
 
 				// 点击“新建推广位”
 				WebElement element1 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[3]/div/label[2]/input"));
@@ -71,13 +71,13 @@ public class CreateTaobaoPid {
 				// 输入广告位名称
 				driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[4]/input")).sendKeys("大推网ADB" + i);
 
-				Thread.sleep(NumberUtil.getRandomNumber(1000, 3000));
+				Thread.sleep(NumberUtil.getRandomNumber(1000, 2000));
 
 				// 点击确定按钮
 				WebElement element2 = driver.findElement(By.xpath("//*[@id=\"J_global_dialog\"]/div/div[3]/button[1]"));
 				PageUtils.scrollToElementAndClick(element2, driver);
 
-				Thread.sleep(NumberUtil.getRandomNumber(1000, 3000));
+				Thread.sleep(NumberUtil.getRandomNumber(1000, 2000));
 
 				try {
 					// 点击关闭按钮
