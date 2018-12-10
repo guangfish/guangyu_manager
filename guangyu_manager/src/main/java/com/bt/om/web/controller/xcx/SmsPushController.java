@@ -48,4 +48,17 @@ public class SmsPushController {
 		
 		return "redirect:" + redirectUrl;
 	}
+	
+	@RequestMapping(value = "/abc360/stats", method = RequestMethod.GET)
+	public String abc360Stats(Model model, HttpServletRequest request, HttpServletResponse response) {
+		String ip = RequestUtil.getRealIp(request);
+		String redirectUrl = "http://www.abc360.com/MemberCenterWap/spreadindex?from=Dec-yxiao01";
+		SmsPushStats smsPushStats=new SmsPushStats();
+		smsPushStats.setCreateTime(new Date());
+		smsPushStats.setIp(ip);
+		smsPushStats.setType("abc360");
+		smsPushStatsMapper.insert(smsPushStats);
+		
+		return "redirect:" + redirectUrl;
+	}
 }
