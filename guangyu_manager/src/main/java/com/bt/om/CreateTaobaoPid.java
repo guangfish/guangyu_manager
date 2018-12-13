@@ -57,12 +57,12 @@ public class CreateTaobaoPid {
 
 				Thread.sleep(NumberUtil.getRandomNumber(1000, 2000));
 
-				WebElement element0 = driver
-						.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/button/span[2]/span[1]"));
-				PageUtils.scrollToElementAndClick(element0, driver);
-
-				element0 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/div/ul/li[2]/a"));
-				PageUtils.scrollToElementAndClick(element0, driver);
+//				WebElement element0 = driver
+//						.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/button/span[2]/span[1]"));
+//				PageUtils.scrollToElementAndClick(element0, driver);
+//
+//				element0 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[2]/div/div/ul/li[2]/a"));
+//				PageUtils.scrollToElementAndClick(element0, driver);
 
 				// 点击“新建推广位”
 				WebElement element1 = driver.findElement(By.xpath("//*[@id=\"zone-form\"]/div[3]/div/label[2]/input"));
