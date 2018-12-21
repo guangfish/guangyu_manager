@@ -124,11 +124,17 @@ public class SearchControllerV2 extends BasicController {
 						tkurl = couponBean.getCoupon_click_url();
 						productInfo.setCouponPromoLink(tkurl);
 					}
-					String tklStr = TaoKouling.createTkl(tkurl, couponBean.getTitle(), couponBean.getPict_url());
+					//标题太短，生成淘口令会报错
+					if(couponBean.getTitle().length()<=6){
+						continue;
+					}
+					String tklStr = "";					
+					tklStr = TaoKouling.createTkl(tkurl, couponBean.getTitle(), couponBean.getPict_url());
 					if (StringUtil.isNotEmpty(tklStr)) {
 						TklResponse tklResponse = GsonUtil.GsonToBean(tklStr, TklResponse.class);
 						productInfo.setTkl(tklResponse.getTbk_tpwd_create_response().getData().getModel());
-					}
+					}					
+					
 					float commission = 0f;
 					float actualCommission = 0f;
 					double actualPrice = 0d;
