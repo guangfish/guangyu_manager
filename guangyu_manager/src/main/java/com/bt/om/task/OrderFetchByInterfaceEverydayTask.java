@@ -461,20 +461,20 @@ public class OrderFetchByInterfaceEverydayTask {
 		int thisDay = Integer.parseInt(DateUtil.dateFormate(new Date(), "dd"));
 		String startDatetime = "";
 		String endDatetime = "";
-//		if (thisDay >= 1 && thisDay <= 20) {
+		if (thisDay >= 1 && thisDay <= 20) {
 			logger.info("当前时间在1-20之间，拉取上月+本月截至今日前一天数据");
 			// 上月1日
 			startDatetime = DateUtil.dateFormate(DateUtil.getBeforeMonth(new Date()), DateUtil.MONTH_PATTERN)
 					+ "-01 00:00:00";
 			// 今日00:00:00
 			endDatetime = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN) + " 00:00:00";
-//		} else {
-//			logger.info("当前时间在21日以后到月底，拉取本月截至今日前一天数据");
-//			// 本月1日
-//			startDatetime = DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN) + "-01 00:00:00";
-//			// 今日00:00:00
-//			endDatetime = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN) + " 00:00:00";
-//		}
+		} else {
+			logger.info("当前时间在21日以后到月底，拉取本月截至今日前一天数据");
+			// 本月1日
+			startDatetime = DateUtil.dateFormate(new Date(), DateUtil.MONTH_PATTERN) + "-01 00:00:00";
+			// 今日00:00:00
+			endDatetime = DateUtil.dateFormate(new Date(), DateUtil.CHINESE_PATTERN) + " 00:00:00";
+		}
 
 		String uri = "";
 
