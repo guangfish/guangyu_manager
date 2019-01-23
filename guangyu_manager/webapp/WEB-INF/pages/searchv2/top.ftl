@@ -16,7 +16,7 @@
 	<!--<script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>-->
 	<script src="/static/frontv2/js/flexible/flexible_css.debug.js"></script>
     <script src="/static/frontv2/js/flexible/flexible.debug.js"></script>
-	<title>多拼点 </title>	
+	<title>拼多鱼 </title>	
 </head>
 <body>
 
