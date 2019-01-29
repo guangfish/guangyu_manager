@@ -184,35 +184,35 @@ public class ApiControllerV2 extends BasicController {
 			return model;
 		}		
 		
-		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
-		String[] tklSymbols = tklSymbolsStr.split(";");
-		for (String symbol : tklSymbols) {
-			String reg0 = symbol + ".*" + symbol;
-			Pattern pattern0 = Pattern.compile(reg0);
-			Matcher matcher0 = pattern0.matcher(productUrl);
-			if (matcher0.find()) {
-				productUrl = TaoKouling.parserTkl(productUrl);
-				logger.info("通过淘口令转换获得的商品链接==>" + productUrl);
-				if (StringUtils.isEmpty(productUrl)) {
-					productInfoVo.setStatus("3");
-					productInfoVo.setDesc("商品链接解析失败");
-					model.addAttribute("response", productInfoVo);
-					return model;
-				} else {
-					Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
-					String puri=urlMap0.get("puri");
-					String pid="";
-					if(puri.contains("a.m.taobao.com")){
-						pid=puri.substring(puri.lastIndexOf("/")+2, puri.lastIndexOf("."));
-						productUrl = "https://item.taobao.com/item.htm" + "?id=" + pid;
-					}else{
-						productUrl = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
-					}
-					logger.info("通过淘口令转换获得的商品缩短链接==>" + productUrl);
-				}
-				break;
-			}
-		}
+//		String tklSymbolsStr = GlobalVariable.resourceMap.get("tkl.symbol");
+//		String[] tklSymbols = tklSymbolsStr.split(";");
+//		for (String symbol : tklSymbols) {
+//			String reg0 = symbol + ".*" + symbol;
+//			Pattern pattern0 = Pattern.compile(reg0);
+//			Matcher matcher0 = pattern0.matcher(productUrl);
+//			if (matcher0.find()) {
+//				productUrl = TaoKouling.parserTkl(productUrl);
+//				logger.info("通过淘口令转换获得的商品链接==>" + productUrl);
+//				if (StringUtils.isEmpty(productUrl)) {
+//					productInfoVo.setStatus("3");
+//					productInfoVo.setDesc("商品链接解析失败");
+//					model.addAttribute("response", productInfoVo);
+//					return model;
+//				} else {
+//					Map<String, String> urlMap0 = StringUtil.urlSplit(productUrl);
+//					String puri=urlMap0.get("puri");
+//					String pid="";
+//					if(puri.contains("a.m.taobao.com")){
+//						pid=puri.substring(puri.lastIndexOf("/")+2, puri.lastIndexOf("."));
+//						productUrl = "https://item.taobao.com/item.htm" + "?id=" + pid;
+//					}else{
+//						productUrl = urlMap0.get("puri") + "?id=" + urlMap0.get("id");
+//					}
+//					logger.info("通过淘口令转换获得的商品缩短链接==>" + productUrl);
+//				}
+//				break;
+//			}
+//		}
 
 		Map<String, String> urlMap = StringUtil.urlSplit(productUrl);
 		String platform = "taobao";

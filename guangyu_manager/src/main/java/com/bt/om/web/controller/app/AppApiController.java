@@ -167,109 +167,109 @@ public class AppApiController extends BasicController {
 		ProductInfoVo productInfoVo = null;
 		try {
 			// 是淘口令请求时的逻辑
-			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
-				logger.info("用户发送的是淘口令请求");
-				// 解析淘口令
-				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
-				String productUrlRedis = null;
-				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
-				if (productUrlRedisObj != null) {
-					productUrlRedis = productUrlRedisObj.toString();
-				}
-				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
-				if (productUrlRedis != null) {
-					productInfoVo = (ProductInfoVo) jedisPool.getFromCache("", productUrlRedis.hashCode() + pageNo);
-					if (productInfoVo == null) {
-						productInfoVo = productInfoApi(userId,productUrlRedis, pageNo, size);
-					}
-				} else {
-					String productUrlTmp = productUrl;
-					String productTitle = tklObject != null ? tklObject.get("content").getAsString() : "";
-					String productTitleTmp = productTitle;
-					long queueSize = Queue.getSize();
-
-					// 队列长度大于3的话，直接走api接口
-					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
-					int queueLength = Integer.parseInt(queueLengthControl);
-					if (queueSize >= queueLength) {
-						logger.info("APP爬虫队列长度=" + queueSize + ",走API接口");
-						if (tklObject != null) {
-							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
-							// 特殊淘口令链接的处理，根据不同情况这里增加其他逻辑
-							if (productTitleTmp.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
-								try {
-									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-									productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
-											productTitleTmp.lastIndexOf("("));
-								} catch (Exception e) {
-									logger.info("特殊标题分析错误，标题为【" + productTitleTmp + "】");
-									e.printStackTrace();
-								}
-							}
-							logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
-
-							productInfoVo = (ProductInfoVo) jedisPool.getFromCache("",
-									productTitleTmp.hashCode() + pageNo);
-							if (productInfoVo == null) {
-								productInfoVo = productInfoApi(userId,productTitleTmp, pageNo, size);
-								if (productInfoVo != null) {
-									// 把查询到的数据保存在Redis中，保留12小时
-									jedisPool.putInCache("", productTitleTmp.hashCode() + pageNo, productInfoVo,
-											12 * 60 * 60);
-								}
-							}
-						}
-					} else {
-						// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								logger.info("启动线程，通过API获取商品数据");
-								ProductInfoVo productInfoVoApi = null;
-								String ptitle = productTitle;
-								// 特殊淘口令链接的处理
-								if (productTitle.contains("这个#手聚App团购#宝贝不错")
-										|| productTitle.contains("这个#聚划算团购#宝贝不错")) {
-									try {
-										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-										ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
-												productTitle.lastIndexOf("("));
-									} catch (Exception e) {
-										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
-										e.printStackTrace();
-									}
-								}
-								logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
-								productInfoVoApi = productInfoApi(userId,ptitle, 1, 30);
-								jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
-							}
-						}).start();
-
-						productInfoVo = (ProductInfoVo) jedisPool.getFromCache("", productUrl.hashCode());
-						if (productInfoVo == null) {
-							productInfoVo = productInfoAppCrawl(userId, productUrl, tklObject);
-						}
-
-						if (productInfoVo.getData().getItems().size() <= 0) {
-							if (tklObject != null) {
-								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
-								// 从redis中获取提前通过线程获得的结果
-								productInfoVo = (ProductInfoVo) (jedisPool.getFromCache("obj", productUrl.hashCode()));
-
-							}
-						} else {
-							// 把查询到的数据保存在Redis中，保留12小时
-							jedisPool.putInCache("", productUrl.hashCode(), productInfoVo, 12 * 60 * 60);
-						}
-					}
-				}
-			}
+//			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
+//				logger.info("用户发送的是淘口令请求");
+//				// 解析淘口令
+//				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
+//				String productUrlRedis = null;
+//				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
+//				if (productUrlRedisObj != null) {
+//					productUrlRedis = productUrlRedisObj.toString();
+//				}
+//				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
+//				if (productUrlRedis != null) {
+//					productInfoVo = (ProductInfoVo) jedisPool.getFromCache("", productUrlRedis.hashCode() + pageNo);
+//					if (productInfoVo == null) {
+//						productInfoVo = productInfoApi(userId,productUrlRedis, pageNo, size);
+//					}
+//				} else {
+//					String productUrlTmp = productUrl;
+//					String productTitle = tklObject != null ? tklObject.get("content").getAsString() : "";
+//					String productTitleTmp = productTitle;
+//					long queueSize = Queue.getSize();
+//
+//					// 队列长度大于3的话，直接走api接口
+//					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+//					int queueLength = Integer.parseInt(queueLengthControl);
+//					if (queueSize >= queueLength) {
+//						logger.info("APP爬虫队列长度=" + queueSize + ",走API接口");
+//						if (tklObject != null) {
+//							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+//							jedisPool.putInCache("", productUrl.hashCode(), productTitleTmp, 120);
+//							// 特殊淘口令链接的处理，根据不同情况这里增加其他逻辑
+//							if (productTitleTmp.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
+//								try {
+//									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+//									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+//									productTitleTmp = productTitleTmp.substring(productTitleTmp.indexOf(":") + 1,
+//											productTitleTmp.lastIndexOf("("));
+//								} catch (Exception e) {
+//									logger.info("特殊标题分析错误，标题为【" + productTitleTmp + "】");
+//									e.printStackTrace();
+//								}
+//							}
+//							logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
+//
+//							productInfoVo = (ProductInfoVo) jedisPool.getFromCache("",
+//									productTitleTmp.hashCode() + pageNo);
+//							if (productInfoVo == null) {
+//								productInfoVo = productInfoApi(userId,productTitleTmp, pageNo, size);
+//								if (productInfoVo != null) {
+//									// 把查询到的数据保存在Redis中，保留12小时
+//									jedisPool.putInCache("", productTitleTmp.hashCode() + pageNo, productInfoVo,
+//											12 * 60 * 60);
+//								}
+//							}
+//						}
+//					} else {
+//						// 启动线程，提前通过API获取数据，若爬虫爬不到数据则直接用接口返回值替换
+//						new Thread(new Runnable() {
+//							@Override
+//							public void run() {
+//								logger.info("启动线程，通过API获取商品数据");
+//								ProductInfoVo productInfoVoApi = null;
+//								String ptitle = productTitle;
+//								// 特殊淘口令链接的处理
+//								if (productTitle.contains("这个#手聚App团购#宝贝不错")
+//										|| productTitle.contains("这个#聚划算团购#宝贝不错")) {
+//									try {
+//										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+//										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+//										ptitle = productTitle.substring(productTitle.indexOf(":") + 1,
+//												productTitle.lastIndexOf("("));
+//									} catch (Exception e) {
+//										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
+//										e.printStackTrace();
+//									}
+//								}
+//								logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
+//								productInfoVoApi = productInfoApi(userId,ptitle, 1, 30);
+//								jedisPool.putInCache("obj", productUrlTmp.hashCode(), productInfoVoApi, 60);
+//							}
+//						}).start();
+//
+//						productInfoVo = (ProductInfoVo) jedisPool.getFromCache("", productUrl.hashCode());
+//						if (productInfoVo == null) {
+//							productInfoVo = productInfoAppCrawl(userId, productUrl, tklObject);
+//						}
+//
+//						if (productInfoVo.getData().getItems().size() <= 0) {
+//							if (tklObject != null) {
+//								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+//								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+//								// 从redis中获取提前通过线程获得的结果
+//								productInfoVo = (ProductInfoVo) (jedisPool.getFromCache("obj", productUrl.hashCode()));
+//
+//							}
+//						} else {
+//							// 把查询到的数据保存在Redis中，保留12小时
+//							jedisPool.putInCache("", productUrl.hashCode(), productInfoVo, 12 * 60 * 60);
+//						}
+//					}
+//				}
+//			}
 			// 请求为URL时的逻辑
-			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
+			if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
 				// 走网页爬虫逻辑，APP爬虫不支持按url搜索
 				productInfoVo = productInfoWebCrawl(userId, productUrl, null);
 				// // 爬不到数据就走api接口
@@ -307,85 +307,85 @@ public class AppApiController extends BasicController {
 		ProductInfoVo productInfoVo = null;
 		try {
 			// 淘口令请求
-			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
-				// 解析淘口令
-				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
-				String productUrlRedis = null;
-				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
-				if (productUrlRedisObj != null) {
-					productUrlRedis = productUrlRedisObj.toString();
-				}
-
-				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
-				if (StringUtil.isNotEmpty(productUrlRedis)) {
-					productInfoVo = productInfoApi(userId,productUrlRedis, pageNo, size);
-				} else {
-					// // 用正则去匹配标题，可能会匹配错误
-					// String productNameRegex =
-					// GlobalVariable.resourceMap.get("productName_regex");
-					// List<String[]> lists =
-					// RegexUtil.getListMatcher(productUrl, productNameRegex);
-					String productTitle = "";
-					if (tklObject != null) {
-						productTitle = tklObject.get("content").getAsString();
-						logger.info("淘口令解析后获得的商品标题==>" + productTitle);
-					}
-					long queueSize = WebQueue.getSize();
-					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
-					int queueLength = Integer.parseInt(queueLengthControl);
-					// 队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
-					if (queueSize >= queueLength + 1) {
-						logger.info("WEB爬虫队列长度=" + queueSize + ",走API接口");
-						if (tklObject != null) {
-							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
-
-							// 特殊淘口令链接的处理
-							if (productTitle.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
-								try {
-									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-									productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
-											productTitle.lastIndexOf("("));
-								} catch (Exception e) {
-									logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
-									e.printStackTrace();
-								}
-							}
-							logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
-							productInfoVo = productInfoApi(userId,productTitle, pageNo, size);
-						}
-					} else {
-						productInfoVo = productInfoWebCrawl(userId, productUrl, tklObject);
-						// 网页爬虫爬不到数据，走API接口
-						if (productInfoVo.getData().getItems().size() <= 0) {
-							logger.info("网页爬虫爬不到数据，走API接口");
-							if (tklObject != null) {
-								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
-								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
-
-								// 特殊淘口令链接的处理
-								if (productTitle.contains("这个#手聚App团购#宝贝不错")
-										|| productTitle.contains("这个#聚划算团购#宝贝不错")) {
-									try {
-										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
-										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
-										productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
-												productTitle.lastIndexOf("("));
-									} catch (Exception e) {
-										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
-										e.printStackTrace();
-									}
-								}
-								logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
-								productInfoVo = productInfoApi(userId,productTitle, pageNo, size);
-							}
-						}
-					}
-				}
-			}
+//			if (TaobaoUtil.ifTkl(productUrl, tklSymbolsStr)) {
+//				// 解析淘口令
+//				JsonObject tklObject = TaoKouling.parserTklObj(productUrl);
+//				String productUrlRedis = null;
+//				Object productUrlRedisObj = jedisPool.getFromCache("", productUrl.hashCode());
+//				if (productUrlRedisObj != null) {
+//					productUrlRedis = productUrlRedisObj.toString();
+//				}
+//
+//				// 如果redis里有搜索过的商品名称，则直接通过API获取数据
+//				if (StringUtil.isNotEmpty(productUrlRedis)) {
+//					productInfoVo = productInfoApi(userId,productUrlRedis, pageNo, size);
+//				} else {
+//					// // 用正则去匹配标题，可能会匹配错误
+//					// String productNameRegex =
+//					// GlobalVariable.resourceMap.get("productName_regex");
+//					// List<String[]> lists =
+//					// RegexUtil.getListMatcher(productUrl, productNameRegex);
+//					String productTitle = "";
+//					if (tklObject != null) {
+//						productTitle = tklObject.get("content").getAsString();
+//						logger.info("淘口令解析后获得的商品标题==>" + productTitle);
+//					}
+//					long queueSize = WebQueue.getSize();
+//					String queueLengthControl = GlobalVariable.resourceMap.get("queue_length_control");
+//					int queueLength = Integer.parseInt(queueLengthControl);
+//					// 队列长度操作预设阈值时，就走API接口，网页爬虫比APP爬虫速度快，这里阈值再加1
+//					if (queueSize >= queueLength + 1) {
+//						logger.info("WEB爬虫队列长度=" + queueSize + ",走API接口");
+//						if (tklObject != null) {
+//							// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+//							jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+//
+//							// 特殊淘口令链接的处理
+//							if (productTitle.contains("这个#手聚App团购#宝贝不错") || productTitle.contains("这个#聚划算团购#宝贝不错")) {
+//								try {
+//									// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+//									// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+//									productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
+//											productTitle.lastIndexOf("("));
+//								} catch (Exception e) {
+//									logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
+//									e.printStackTrace();
+//								}
+//							}
+//							logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
+//							productInfoVo = productInfoApi(userId,productTitle, pageNo, size);
+//						}
+//					} else {
+//						productInfoVo = productInfoWebCrawl(userId, productUrl, tklObject);
+//						// 网页爬虫爬不到数据，走API接口
+//						if (productInfoVo.getData().getItems().size() <= 0) {
+//							logger.info("网页爬虫爬不到数据，走API接口");
+//							if (tklObject != null) {
+//								// 根据淘口令搜索不到数据或无结果返回时，用商品名称通过API搜索，同时把商品名称放到redis中，在翻页搜索时起作用，就不用重复爬虫方式了
+//								jedisPool.putInCache("", productUrl.hashCode(), productTitle, 120);
+//
+//								// 特殊淘口令链接的处理
+//								if (productTitle.contains("这个#手聚App团购#宝贝不错")
+//										|| productTitle.contains("这个#聚划算团购#宝贝不错")) {
+//									try {
+//										// 【这个#手聚App团购#宝贝不错:飞歌新品GS1大众迈腾雷凌卡罗拉英朗大屏导航一体智能车机(分享自@手机淘宝android客户端)】http://m.tb.cn/h.32A9Sl2
+//										// 点击链接，再选择浏览器咑閞；或復·制这段描述€GpKqb0uYtSj€后到淘♂寳♀
+//										productTitle = productTitle.substring(productTitle.indexOf(":") + 1,
+//												productTitle.lastIndexOf("("));
+//									} catch (Exception e) {
+//										logger.info("特殊标题分析错误，标题为【" + productTitle + "】");
+//										e.printStackTrace();
+//									}
+//								}
+//								logger.info("通过API接口查询商品信息，商品标题==>" + productTitle);
+//								productInfoVo = productInfoApi(userId,productTitle, pageNo, size);
+//							}
+//						}
+//					}
+//				}
+//			}
 			// 请求为URL时的逻辑
-			else if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
+			if (TaobaoUtil.keyParser(productUrl, tklSymbolsStr)) {
 				productInfoVo = productInfoWebCrawl(userId, productUrl, null);
 				// if (productInfoVo.getData() == null) {
 				// String productNameRegex =
