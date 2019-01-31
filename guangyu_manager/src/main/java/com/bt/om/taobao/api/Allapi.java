@@ -27,7 +27,7 @@ import com.taobao.api.response.TbkItemInfoGetResponse;
 public class Allapi {
 	private static String serverUrl="https://eco.taobao.com/router/rest";
 	private static String appKey="24736090";
-	private static String appSecret="8759042d314ec30a88a0d6e9668e7bfe";
+	private static String appSecret="a1283648650c13636d0f5c8aa96582c9";
 	
 	private static ProductFromTkapiService productFromTkapiService;
 	static{

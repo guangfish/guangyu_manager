@@ -9,7 +9,7 @@ import com.taobao.api.response.TbkItemGetResponse;
 public class ItemGet {
 
 	public static void main(String[] args) {
-		TaobaoClient client = new DefaultTaobaoClient("https://eco.taobao.com/router/rest", "24736090", "8759042d314ec30a88a0d6e9668e7bfe");
+		TaobaoClient client = new DefaultTaobaoClient("https://eco.taobao.com/router/rest", "24736090", "a1283648650c13636d0f5c8aa96582c9");
 		TbkItemGetRequest req = new TbkItemGetRequest();
 		req.setFields(
 				"num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick");
