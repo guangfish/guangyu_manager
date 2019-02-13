@@ -10,7 +10,7 @@ import com.taobao.api.response.TbkDgItemCouponGetResponse;
 public class CouponGet {
 	private static String serverUrl = "https://eco.taobao.com/router/rest";
 	private static String appKey = "24736090";
-	private static String appSecret = "a1283648650c13636d0f5c8aa96582c9";
+	private static String appSecret = "ffbf69603078e77d886d023761f1541b";
 
 	public static String couponGet(String key, long pageNo, long size) {
 		String retStr = "";
